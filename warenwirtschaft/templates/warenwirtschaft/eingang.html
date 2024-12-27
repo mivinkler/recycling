@@ -1,0 +1,166 @@
+{% extends 'warenwirtschaft/base.html' %}
+{% load i18n %}
+{% block title %}Eingang Form{% endblock %}
+{% block content %}
+
+
+<main>
+  <div class="form-wrapper">
+    <form method="post" action="{% url 'eingang' %}" id="eingang-form">
+      {% csrf_token %}
+      
+      <div class="delivery">
+        <div class="flex">
+          <label for="supplier">Lieferant:</label>
+          <select id="supplier" name="supplier">
+            <option selected disabled>-- Bitte wählen --</option>
+            <option id="neu_supplier" class="neu_supplier">-- Neuer Lieferant --</option>
+            <hr></hr>
+            {% for supplier in suppliers %}
+              <option value="{{ supplier.id }}">
+                {{ supplier }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div hidden>
+          <div class="flex">
+            <label for="liefernummer" class="flex-items">Name:</label>
+            <input type="text" id="liefernummer" name="liefernummer" class="flex-items">
+          </div>
+          <div class="flex">
+            <label for="liefernummer" class="flex-items">Straße und Hausnummer:</label>
+            <input type="text" id="liefernummer" name="liefernummer" class="flex-items">
+          </div>
+          <div class="flex">
+            <label for="postal_code" class="flex-items">PLZ:</label>
+            <input type="text" id="postal_code" name="postal_code" class="flex-items">
+          </div>
+          <div class="flex">
+            <label for="country" class="flex-items">Stadt:</label>
+            <input type="text" id="country" name="country" class="flex-items">
+          </div>
+          <div class="flex">
+            <label for="phone" class="flex-items">Telefon:</label>
+            <input type="text" id="phone" name="phone" class="flex-items">
+          </div>
+          <div class="flex">
+            <label for="email" class="flex-items">Email:</label>
+            <input type="email" id="email" name="email" class="flex-items">
+          </div>
+          <div class="flex">
+            <label for="avv_number" class="flex-items">AVV-Nummer:</label>
+            <input type="number" id="avv_number" name="avv_number" class="flex-items">
+          </div>
+          <div class="flex">
+            <label for="note" class="flex-items">Anmerkung:</label>
+            <input type="text" id="note" name="note" class="flex-items">
+          </div>
+        </div>
+        
+        <div class="flex">
+          <label for="liefernummer" class="flex-items">Lieferscheinnummer:</label>
+          <input type="text" id="liefernummer" name="liefernummer" class="flex-items">
+        </div>
+        
+
+      </div>
+        
+      <div class="delivery-items">
+        <div class="flex">
+          <label  for="traeger_anzahl" class="flex-items">Ladungseinheiten:</label>
+          <input type="number" id="traeger_anzahl" name="traeger_anzahl" value="1" min="1" max="10" onchange="traeger()">
+        </div>
+      </div>
+      
+
+
+      <div id="traeger">
+        <div class="border block">
+          <div>
+            <div class="form-item-title">Ladungseinheit 1:</div>
+          </div>
+          <div class="flex">
+            <label for="delivery_type1">Art:</label>
+            <select id="delivery_type1">
+              <option selected disabled>-- Bitte wählen --</option>
+              <option>Gitterbox</option>
+              <option>Container</option>
+              <option>Palette</option>
+            </select>
+          </div>
+          <div class="flex">
+            <label for="device1">Inhalt:</label>
+            <select id="device1">
+              <option selected disabled>-- Bitte wählen --</option>
+              {% for device in devices %}
+                <option value="{{ device.id }}">{{ device.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="flex">
+            <label for="gewicht1" class="flex-items">Gewicht (kg):</label>
+            <input type="number" min="0" step="0.1" name="weights" id="gewicht1" required>
+          </div>
+        </div>
+      </div>
+
+
+      <button type="submit" class="record-btn">Speichern</button>
+    </form>
+  </div>
+</main>
+
+
+<script>
+  function traeger() {
+  const anzahl = parseInt(document.getElementById('traeger_anzahl').value, 10);
+  const container = document.getElementById('traeger');
+
+  // Alle Blöcke löschen, außer dem ersten
+  const firstBlock = container.querySelector('.block');
+  container.innerHTML = '';
+  container.appendChild(firstBlock);
+
+  // Zusätzliche Blöcke hinzufügen
+  for (let i = 2; i <= anzahl; i++) {
+    const newBlock = firstBlock.cloneNode(true);
+
+    // Inhalt des neuen Blocks aktualisieren
+    newBlock.querySelector('.form-item-title').textContent = `Ladungseinheit ${i}:`;
+
+    // Aktualisieren der Attribute von Elementen in einem neuen Block
+    newBlock.querySelectorAll('label, select, input').forEach((element) => {
+      const oldId = element.getAttribute('id');
+      if (oldId) {
+        const newId = oldId.replace(/\d+$/, i); // Nummer durch die aktuelle ersetzen
+        element.setAttribute('id', newId);
+        if (element.tagName === 'LABEL') {
+          element.setAttribute('for', newId);
+        }
+      }
+    });
+
+    container.appendChild(newBlock);
+  }
+}
+
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const supplierSelect = document.getElementById("supplier");
+    const newSupplier = document.getElementById("neu_supplier");
+    const hiddenBlock = document.querySelector("div[hidden]");
+
+    supplierSelect.addEventListener("change", function () {
+      if (supplierSelect.value === newSupplier.value) {
+        hiddenBlock.hidden = false;
+      } else {
+        hiddenBlock.hidden = true;
+      }
+    });
+  });
+
+</script>
+
+{% endblock %}
