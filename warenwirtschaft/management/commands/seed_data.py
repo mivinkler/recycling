@@ -65,7 +65,6 @@ class Command(BaseCommand):
                     'street': lambda x: random_street_name(),
                     'postal_code': lambda x: f'{random.randint(80000, 89999)}',
                     'city': lambda x: random.choice(city_names),
-                    'country': lambda x: "Germany",
                     'phone': lambda x: f'+{random.randint(1000000000, 9999999999)}',
                     'email': lambda x, name=name: f'{re.sub(r"[^a-z]", "", name.replace(" ", "").lower())}@example.com',
                     'avv_number': lambda x: random.randint(100000000, 999999999),

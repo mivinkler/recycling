@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Default Title{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+
+    <link rel="icon" type="image/png" href="{% static 'icons/favicon-96x96.png' %}" sizes="96x96">
+    <link rel="icon" type="image/svg+xml" href="{% static 'icons/favicon.svg' %}">
+    <link rel="shortcut icon" href="{% static 'icons/favicon.ico' %}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'icons/apple-touch-icon.png' %}">
+    <link rel="manifest" href="{% static 'icons/site.webmanifest' %}">
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <nav class="left_menu">
+                <div>
+                    <div class="left_menu_title">Lieferant</div>
+                    <ul class="left_menu_items">
+                        <li><a href="{% url 'suppliers_list' %}">List</a></li>
+                        <li><a href="{% url 'supplier_detail' pk=40%}">Detail</a></li>
+                        <li><a href="{% url 'supplier_create' %}">Create</a></li>
+                        <li><a href="{% url 'supplier_update' pk=40%}">Update</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="left_menu_title">Lieferung</div>
+                    <ul class="left_menu_items">
+                        <li><a href="{% url 'deliveries_list' %}">List</a></li>
+                        <li><a href="{% url 'delivery_units_list' %}">Behälter: List</a></li>
+                        <li><a href="{% url 'delivery_detail' pk=40%}">Detail</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="left_menu_title">Entladung</div>
+                    <ul class="left_menu_items">
+                        <li><a href="#">List</a></li>
+                        <li><a href="#">Create</a></li>
+                        <li><a href="#">Update</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="left_menu_title">Zerlegung</div>
+                    <ul class="left_menu_items">
+                        <li><a href="#">List</a></li>
+                        <li><a href="#">Create</a></li>
+                        <li><a href="#">Update</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <div class="left_menu_title">Ausgang</div>
+                    <ul class="left_menu_items">
+                        <li><a href="#">List</a></li>
+                        <li><a href="#">Create</a></li>
+                        <li><a href="#">Update</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <div class="left_menu_title">Gelbe Wagen</div>
+                    <ul class="left_menu_items">
+                        <li><a href="#">List</a></li>
+                        <li><a href="#">Create</a></li>
+                        <li><a href="#">Update</a></li>
+                    </ul>
+                </div>
+
+            </nav>
+        </aside>   
+        <main>
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+</body>
+</html>

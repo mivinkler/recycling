@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Supplier{% endblock %}
+
+{% block content %}
+
+<div class="table-name">Lieferant: create</div>
+
+<div class="form-wrapper">
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-supplier">
+            <div>
+                {% for field in form %}
+                <div class="flex form-row-supplier">
+                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                    {{ field }} <!--label -->
+                    {% if field.errors %}
+                    <div class="text-danger">
+                        {{ field.errors|striptags }}
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+
+
+            <button type="submit" class="record-btn">Save</button>
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

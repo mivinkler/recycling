@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}Lieferung-Einheiten{% endblock %}
+
+{% block content %}
+<div class="table-name"> Lieferant: detail</div>
+<table class="detail-header">
+    <tr>
+        <th>Name:</th>
+        <td>{{ supplier.name }}</td>
+    </tr>
+    <tr>
+        <th>AVV-Nummer:</th>
+        <td>{{ supplier.avv_number }}</td>
+    </tr>
+    <tr>
+        <th>Strasse:</th>
+        <td>{{ supplier.street }}</td>
+    </tr>
+    <tr>
+        <th>PLZ:</th>
+        <td>{{ supplier.postal_code }}</td>
+    </tr>
+    <tr>
+        <th>Stadt:</th>
+        <td>{{ supplier.city }}</td>
+    </tr>
+    <tr>
+        <th>Telefon:</th>
+        <td>{{ supplier.phone }}</td>
+    </tr>
+    <tr>
+        <th>Email:</th>
+        <td>{{ supplier.email }}</td>
+    </tr>
+    <tr>
+        <th>Bemerkung:</th>
+        <td>{{ supplier.note }}</td>
+    </tr>
+    <tr>
+        <th>Erstellt am:</th>
+        <td>{{ supplier.created_at|date:"d.m.Y" }}</td>
+    </tr>
+</table>
+
+
+<div class="table-action">
+    <button class="table-search btn-activ">🔍</button>
+    <button class="table-reset btn-activ"><a href="{% url 'suppliers_list' %}" class="reset-btn">⟲</a></button>
+</div>
+
+<table class="table-box">
+    <thead>
+        <tr class="table-content-title">
+            <th>Datum</th>       
+            <th>Gewicht</th>
+            <th>Amerkung</th>
+        </tr>
+    </thead>
+    <tbody class="table-content">
+        {% for delivery in page_obj %}
+        <tr>
+            <td>{{ delivery.delivery_date|date:"d.m.Y" }}</td>
+            <td>{{ delivery.weight }}</td>
+            <td>{{ delivery.note }}</td>
+        </tr>
+        {% endfor %}
+    </div>
+</table>
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}">&laquo;</a>
+        {% endif %}
+        
+        {% for num in page_obj.paginator.page_range %}
+            {% if num == page_obj.number %}
+                <span class="current">{{ num }}</span>
+            {% else %}
+                <a href="?page={{ num }}">{{ num }}</a>
+            {% endif %}
+        {% endfor %}
+        
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">&raquo;</a>
+        {% endif %}
+    </span>
+</div>
+{% endblock %}
