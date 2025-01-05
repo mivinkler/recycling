@@ -9,17 +9,15 @@ class Device(models.Model):
         return self.name
 
 class Supplier(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-    avv_number = models.PositiveIntegerField(null=True, blank=True)
-    street = models.CharField(max_length=100, null=True, blank=True)
-    postal_code = models.CharField(max_length=20, null=True, blank=True)
-    city = models.CharField(max_length=50, null=True, blank=True)
-    country = models.CharField(max_length=50, null=True, blank=True)
-    phone = models.CharField(max_length=20, null=True, blank=True)
-    email = models.EmailField(null=True, blank=True)
-    note = models.CharField(max_length=255, null=True, blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    name = models.CharField(max_length=100, unique=True, verbose_name="Name")
+    avv_number = models.PositiveIntegerField(null=True, blank=True, verbose_name="AVV-Nummer")
+    street = models.CharField(max_length=100, null=True, blank=True, verbose_name="Straße")
+    postal_code = models.CharField(max_length=20, null=True, blank=True, verbose_name="PLZ")
+    city = models.CharField(max_length=50, null=True, blank=True, verbose_name="Stadt")
+    phone = models.CharField(max_length=20, null=True, blank=True, verbose_name="Telefon")
+    email = models.EmailField(null=True, blank=True, verbose_name="Email")
+    note = models.CharField(max_length=255, null=True, blank=True, verbose_name="Bemerkung")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Erstellt am")
 
     class Meta:
         indexes = [

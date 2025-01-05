@@ -58,7 +58,6 @@ class Migration(migrations.Migration):
                 ('street', models.CharField(blank=True, max_length=100, null=True)),
                 ('postal_code', models.CharField(blank=True, max_length=20, null=True)),
                 ('city', models.CharField(blank=True, max_length=50, null=True)),
-                ('country', models.CharField(blank=True, max_length=50, null=True)),
                 ('phone', models.CharField(blank=True, max_length=20, null=True)),
                 ('email', models.EmailField(blank=True, max_length=254, null=True)),
                 ('note', models.CharField(blank=True, max_length=255, null=True)),
