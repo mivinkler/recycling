@@ -3,6 +3,7 @@
 {% load custom_filters %}
 {% load pagination %}
 {% load sorting %}
+{% load static %}
 
 {% block title %}{{ _("Einheiten") }}{% endblock %}
 
@@ -17,16 +18,16 @@
 
 <table class="table-box">
     <colgroup>
-        <col style="width: 3.5%">  <!-- Nr. -->
-        <col style="width: 20%">   <!-- Lieferung -->
-        <col style="width: 6%;">   <!-- Datum -->
-        <col style="width: 3.5%">  <!-- LID -->
-        <col style="width: 10%;">  <!-- Behälter -->
-        <col style="width: 10%;">  <!-- Inhalt -->
-        <col style="width: 6%;">   <!-- Gewicht -->
-        <col style="width: 6%;">   <!-- Status -->
+        <col style="width: 3.5%">    <!-- Nr. -->
+        <col style="width: 20%">     <!-- Lieferung -->
+        <col style="width: 6%;">     <!-- Datum -->
+        <col style="width: 3.5%">    <!-- LID -->
+        <col style="width: 10%;">    <!-- Behälter -->
+        <col style="width: 10%;">    <!-- Inhalt -->
+        <col style="width: 6%;">     <!-- Gewicht -->
+        <col style="width: 6%;">     <!-- Status -->
         <col style="width: 200px;">  <!-- Bemerkung -->
-        <col style="width: 10%; "> <!-- actions -->
+        <col style="width: 10%; ">   <!-- actions -->
     </colgroup>
 
     <thead>
@@ -111,15 +112,8 @@
 
 {% paginate page_obj %}
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const toggleButton = document.querySelector(".table-search");
-        const filterForm = document.querySelector(".table-filter");
-
-        toggleButton.addEventListener("click", function () {
-            filterForm.hidden = !filterForm.hidden;
-        });
-    });
-</script>
+{% block extra_js %}
+    <script src="{% static 'js/block_visibility.js' %}"></script>
+{% endblock %}
 
 {% endblock %}

@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
-{% load i18n %}
+
 {% load pagination %}
 {% load sorting %}
+{% load static %}
 {% block title %}Eingang{% endblock %}
 
 
@@ -24,7 +25,7 @@
         <col style="width: 6%;">    <!-- Land -->
         <col style="width: 7%;">    <!-- Telefon -->
         <col style="width: 15%;">   <!-- Email -->
-        <col style="width: 30%;"> <!-- Bemerkung -->
+        <col style="width: 30%;">   <!-- Bemerkung -->
         <col style="width: 10%; ">  <!-- actions -->
     </colgroup>
     <thead>
@@ -94,15 +95,10 @@
 
 {% paginate page_obj %}
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const toggleButton = document.querySelector(".table-search");
-        const filterForm = document.querySelector(".table-filter");
 
-        toggleButton.addEventListener("click", function () {
-            filterForm.hidden = !filterForm.hidden;
-        });
-    });
-</script>
 
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'js/block_visibility.js' %}"></script>
 {% endblock %}

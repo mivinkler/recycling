@@ -2,6 +2,7 @@
 {% load custom_filters %}
 {% load pagination %}
 {% load sorting %}
+
 {% block title %}Lieferung-Einheiten{% endblock %}
 
 {% block content %}
@@ -39,53 +40,24 @@
 
 
 <div class="table-action">
-    <button class="table-search btn-activ">🔍</button>
     <button class="table-reset btn-activ"><a href="{% url 'delivery_detail' pk=40 %}" class="reset-btn">⟲</a></button>
 </div>
 
 <table class="table-box">
     <colgroup>
-        <col style="width: 3.5%">  <!-- Nr. -->
-        <col style="width: 10%;">  <!-- Behälter -->
-        <col style="width: 10%;">  <!-- Inhalt -->
-        <col style="width: 6%;">   <!-- Gewicht -->
-        <col style="width: 6%;">   <!-- Status -->
+        <col style="width: 3.5%">    <!-- Nr. -->
+        <col style="width: 10%;">    <!-- Behälter -->
+        <col style="width: 10%;">    <!-- Inhalt -->
+        <col style="width: 6%;">     <!-- Gewicht -->
+        <col style="width: 6%;">     <!-- Status -->
         <col style="width: 200px;">  <!-- Bemerkung -->
-        <col style="width: 10%; "> <!-- actions -->
+        <col style="width: 10%; ">   <!-- actions -->
     </colgroup>
 
     <thead>
-        <tr class="table-filter" hidden>
-            <form method="GET" name="filter">
-                <td><input type="text" name="id" placeholder="id" value="{{ request.GET.id }}"></td>
-                <td>
-                    <select name="delivery_type">
-                        <option value="" disabled selected hidden>Behälter</option>
-                        <option value="1" {% if request.GET.delivery_type == "1" %}selected{% endif %}>Container</option>
-                        <option value="2" {% if request.GET.delivery_type == "2" %}selected{% endif %}>Gitterbox</option>
-                        <option value="3" {% if request.GET.delivery_type == "3" %}selected{% endif %}>Palette</option>
-                        <option value="4" {% if request.GET.delivery_type == "4" %}selected{% endif %}>Ohne Behälter</option>
-                    </select>
-                </td>
-                <td><input type="text" name="device" placeholder="Inhalt" value="{{ request.GET.device }}"></td>
-                <td><input type="text" name="weight" placeholder="Gewicht" value="{{ request.GET.weight }}"></td>
-                <td>
-                    <select name="status">
-                        <option value="" disabled selected hidden>Status</option>
-                        <option value="1" {% if request.GET.status == "1" %}selected{% endif %}>Eingang</option>
-                        <option value="2" {% if request.GET.status == "2" %}selected{% endif %}>Zerlegung</option>
-                        <option value="3" {% if request.GET.status == "3" %}selected{% endif %}>Erledigt</option>
-                    </select>
-                </td>
-                <td>
-                    <button class="btn-activ" type="submit">Suchen</button>
-                </td>
-            </form>
-        </tr>
-  
         <tr class="table-content-title">
             <th>{% sort "ID" "id" request.GET.sort %}</th>
-            <th>{% sort "Behälter" "container" request.GET.sort %}</th>
+            <th>{% sort "Behälter" "delivery_type" request.GET.sort %}</th>
             <th>{% sort "Inhalt" "device" request.GET.sort %}</th>
             <th>{% sort "Gewicht" "weight" request.GET.sort %}</th>
             <th>{% sort "Status" "status" request.GET.sort %}</th>
@@ -126,16 +98,5 @@
 </table>
 
 {% paginate page_obj %}
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const toggleButton = document.querySelector(".table-search");
-        const filterForm = document.querySelector(".table-filter");
-
-        toggleButton.addEventListener("click", function () {
-            filterForm.hidden = !filterForm.hidden;
-        });
-    });
-</script>
 
 {% endblock %}

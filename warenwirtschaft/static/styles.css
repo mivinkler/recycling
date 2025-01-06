@@ -365,3 +365,11 @@ th {
   width: 150px;
   vertical-align: top;
 }
+
+
+/* ============ unload ================*/
+
+.table-content td:first-child {
+  text-align: center;
+  padding: 4px;
+}
