@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
-{% load i18n %}
+
+{% load static %}
 {% load pagination %}
 {% load sorting %}
+
 {% block title %}{{ _("Lieferungen") }}{% endblock %}
 
 {% block content %}
@@ -88,16 +90,9 @@
 
 {% paginate page_obj %}
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const toggleButton = document.querySelector(".table-search");
-        const filterForm = document.querySelector(".table-filter");
-
-        toggleButton.addEventListener("click", function () {
-            filterForm.hidden = !filterForm.hidden;
-        });
-    });
-</script>
+{% block extra_js %}
+    <script src="{% static 'js/block_visibility.js' %}"></script>
+{% endblock %}
 
 {% endblock %}
 

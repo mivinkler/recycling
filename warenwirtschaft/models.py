@@ -57,7 +57,7 @@ class DeliveryUnits(models.Model):
         (4, "Ohne Behälter"),
     ]
 
-    delivery = models.ForeignKey("Delivery", on_delete=models.SET_NULL, null=True, blank=True)
+    delivery = models.ForeignKey("Delivery", on_delete=models.SET_NULL, null=True, blank=True, related_name='deliveryunits')
     device = models.ForeignKey("Device", on_delete=models.CASCADE, null=True, blank=True)
     weight = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     status = models.PositiveSmallIntegerField(choices=STATUS_CHOICES, default=1)

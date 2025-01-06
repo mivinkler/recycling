@@ -1,8 +1,6 @@
-from django.views.generic.detail import DetailView
+from django.views.generic import DetailView
 from django.core.paginator import Paginator
-from django.db.models import Q
-from warenwirtschaft.models import Delivery, DeliveryUnits
-
+from warenwirtschaft.models import Delivery
 
 class DeliveryDetailView(DetailView):
     model = Delivery
@@ -10,61 +8,30 @@ class DeliveryDetailView(DetailView):
     context_object_name = 'delivery'
     
     def get_queryset(self):
-        queryset = super().get_queryset()
+        # Используем правильное имя для prefetch_related
+        queryset = super().get_queryset().prefetch_related('deliveryunits_set')  
 
-        # Filtering
-        filter_mapping = {
-            "id": "id",
-            "delivery": "delivery__id",
-            "delivery_date": "delivery__delivery_date",
-            "delivery_id": "delivery_receipt__icontains",
-            "delivery_type": "delivery_type",
-            "device": "device__name__icontains",
-            "weight": "weight",
-            "status": "status",
-            "note": "note__icontains",
-        }
-        filters = {
-            field: self.request.GET.get(param)
-            for param, field in filter_mapping.items()
-            if self.request.GET.get(param)
-        }
-        if filters:
-            queryset = queryset.filter(Q(**filters))
-
-        # Sorting
         sort_mapping = {
-            "id_asc": "id",
-            "id_desc": "-id",
-            "delivery_asc": "delivery__id",
-            "delivery_desc": "-delivery__id",
-            "date_asc": "delivery__delivery_date",
-            "date_desc": "-delivery__delivery_date",
-            "lid_asc": "delivery_receipt",
-            "lid_desc": "-delivery_receipt",
-            "container_asc": "delivery_type",
-            "container_desc": "-delivery_type",
-            "device_asc": "device__name",
-            "device_desc": "-device__name",
-            "weight_asc": "weight",
-            "weight_desc": "-weight",
-            "status_asc": "status",
-            "status_desc": "-status",
-            "note_asc": "note",
-            "note_desc": "-note",
+            "id_asc": "id", "id_desc": "-id",
+            "delivery_type_asc": "deliveryunits__delivery_type", "delivery_type_desc": "-deliveryunits__delivery_type",
+            "device_asc": "deliveryunits__device", "device_desc": "-deliveryunits__device",
+            "weight_asc": "weight", "weight_desc": "-weight",
+            "status_asc": "deliveryunits__status", "status_desc": "-deliveryunits__status",
+            "note_asc": "note", "note_desc": "-note",
         }
         sort_field = sort_mapping.get(self.request.GET.get("sort", "id_asc"), "id")
         queryset = queryset.order_by(sort_field)
 
         return queryset
 
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-    
+        context['request'] = self.request  # Передаем запрос в контекст
+        
         delivery = self.object
 
-        delivery_units = DeliveryUnits.objects.filter(delivery=delivery)
+        # Убедитесь, что имя связи верное
+        delivery_units = delivery.deliveryunits_set.all()  
 
         paginator = Paginator(delivery_units, 14)
         page_number = self.request.GET.get('page')
