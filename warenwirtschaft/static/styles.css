@@ -369,7 +369,60 @@ th {
 
 /* ============ unload ================*/
 
-.table-content td:first-child {
+.text-center {
   text-align: center;
-  padding: 4px;
+}
+
+.select_cargo {
+  margin-top: 20px;
+}
+
+.unload_cargo {
+  margin-top: 100px;
+  display: flex;
+  gap: 14px;
+}
+
+.unload_cargo .unload-unit {
+  width: 40%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+  border: 1px solid #e8eaec;
+  height: 0%;
+}
+
+.unload_cargo .table-box {
+  width: 60%;
+}
+
+caption p {
+  text-align: left;
+  padding: 8px 0;
+  font-weight: bold;
+  font-size: 1.2em;
+  color: #344b5e;
+}
+
+.row-counter {
+  margin-top: 40px;
+  width: 84px;
+  height: 26px;
+}
+
+.row-counter input {
+  width: 40px;
+  height: 100%;
+  padding: 3px 0 3px 6px;
+  font-size: 0.95rem;
+  background-color: #f1f1f1;
+  border: 1px solid #ccc;
+}
+
+.row-counter span {
+  color: #abaeb1;
+}
+
+.row-counter input[type=number]::-webkit-inner-spin-button,
+.row-counter input[type=number]::-webkit-outer-spin-button {
+  opacity: 1;
 }

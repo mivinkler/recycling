@@ -8,6 +8,7 @@ from warenwirtschaft.views.supplier.supplier_create_view import SupplierCreateVi
 from warenwirtschaft.views.delivery.deliveries_list_view import DeliveriesListView
 from warenwirtschaft.views.delivery.delivery_units_list_view import DeliveryUnitsListView
 from warenwirtschaft.views.delivery.delivery_detail_view import DeliveryDetailView
+from warenwirtschaft.views.delivery.delivery_create_view import DeliveryCreateView
 
 from warenwirtschaft.views.unloading.unloading_create_view import UnloadingCreateView
 
@@ -21,6 +22,7 @@ urlpatterns = [
     path('deliveries', DeliveriesListView.as_view(), name='deliveries_list'),
     path('delivery/units', DeliveryUnitsListView.as_view(), name='delivery_units_list'),
     path('delivery/<int:pk>/', DeliveryDetailView.as_view(), name='delivery_detail'),
+    path('delivery/create/', DeliveryCreateView.as_view(), name='delivery_create'),
 
     path('unloading/create/', UnloadingCreateView.as_view(), name='unloading_create'),
 ]
