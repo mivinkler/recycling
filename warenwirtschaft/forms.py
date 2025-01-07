@@ -9,3 +9,11 @@ class SupplierForm(forms.ModelForm):
         widgets = {
             'note': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Note'}),
         }
+
+class DeliveryForm(forms.ModelForm):
+    class Meta:
+        model = Delivery
+        fields = ['weight', 'units', 'delivery_receipt', 'delivery_date']
+        widgets = {
+            'note': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Note'}),
+        }
