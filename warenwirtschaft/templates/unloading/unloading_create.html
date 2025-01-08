@@ -64,16 +64,16 @@
         <caption><p>Ausgewählte Liefereinheit</p></caption>
         <thead>
             <tr class="table-content-title">
-                <th style="width: 20px">ID</th>
-                <th>Lieferant</th>
-                <th>Behälter</th>
-                <th>Inhalt</th>
-                <th>Gewicht</th>
+                <th style="width: 5%">ID</th>
+                <th style="width: 40%">Lieferant</th>
+                <th style="width: 15%">Behälter</th>
+                <th style="width: 15%">Inhalt</th>
+                <th style="width: 15%">Gewicht</th>
             </tr>
         </thead>
 
         <tbody class="table-content">
-            <tr id="selected-row">
+            <tr style="height: 50px;">
                 <td id="selected-id"></td>
                 <td id="selected-supplier"></td>
                 <td id="selected-container"></td>
@@ -86,7 +86,7 @@
     <div class="row-counter">
         <p>
             <span>🡆</span>
-            <input type="number" id="row-counter" value="5" min="5" max="30" onchange="unload()"> 
+            <input type="number" id="row-counter" value="5" min="1" max="30" onchange="unload()"> 
             <span>🡆</span>
         </p>
     </div>
@@ -104,7 +104,7 @@
                 <th style="width: 10%"></th> <!-- actions -->
             </tr>
         </thead>
-        <tbody class="table-content" id="table-body">
+        <tbody class="table-content row-height" id="table-body">
             <!-- JavaScript -->
         </tbody>
     </table>
@@ -138,20 +138,16 @@
 
 <script>
     function updateSelectedItem(radioButton) {
-        // Получаем ID элемента через data-атрибут
-        var itemId = radioButton.getAttribute('data-item-id');
 
-        // Находим строку с данным itemId
+        var itemId = radioButton.getAttribute('data-item-id');
         var selectedRow = document.querySelector(`tr[data-item-id="${itemId}"]`);
 
-        // Извлекаем данные из выбранной строки
         var id = selectedRow.querySelector('.item-id').textContent;
         var supplier = selectedRow.querySelector('.item-supplier').textContent;
         var container = selectedRow.querySelector('.item-container').textContent;
         var content = selectedRow.querySelector('.item-content').textContent;
         var weight = selectedRow.querySelector('.item-weight').textContent;
 
-        // Обновляем таблицу с выбранной записью
         document.getElementById('selected-id').textContent = id;
         document.getElementById('selected-supplier').textContent = supplier;
         document.getElementById('selected-container').textContent = container;
