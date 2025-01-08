@@ -75,7 +75,7 @@
                 <a href="#" title="Lieferung ansehen">
                     <img src="{% static 'icons/detail-icon.svg' %}">   
                 </a>
-                <a href="#" title="Bearbeiten"> 
+                <a href="{% url 'supplier_update' pk=supplier.id %}" title="Bearbeiten"> 
                     <img src="{% static 'icons/update-icon.svg' %}">
                 </a>
             </td>

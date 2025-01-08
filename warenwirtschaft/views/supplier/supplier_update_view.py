@@ -11,4 +11,4 @@ class SupplierUpdateView(UpdateView):
     context_object_name = 'supplier'
 
     def get_success_url(self):
-        return reverse_lazy('supplier_list')
+        return reverse_lazy('suppliers_list')
