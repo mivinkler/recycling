@@ -18,7 +18,7 @@ class Supplier(models.Model):
     email = models.EmailField(null=True, blank=True, verbose_name="Email")
     note = models.CharField(max_length=255, null=True, blank=True, verbose_name="Bemerkung")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Erstellt am")
-
+    updated_at = models.DateTimeField(auto_now=True)
     class Meta:
         indexes = [
             models.Index(fields=["name"]),
