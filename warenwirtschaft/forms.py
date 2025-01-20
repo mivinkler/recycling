@@ -1,4 +1,5 @@
 from django import forms
+from django.forms import modelformset_factory
 from .models import *
 
 
@@ -7,7 +8,7 @@ class SupplierForm(forms.ModelForm):
         model = Supplier
         fields = ['name', 'avv_number', 'street', 'postal_code', 'city', 'phone', 'email', 'note']
         widgets = {
-            'note': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Note'}),
+            'note': forms.Textarea(attrs={'rows': 4}),
         }
 
 class DeliveryForm(forms.ModelForm):
@@ -15,5 +16,20 @@ class DeliveryForm(forms.ModelForm):
         model = Delivery
         fields = ['weight', 'units', 'delivery_receipt', 'delivery_date']
         widgets = {
-            'note': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Note'}),
+            'note': forms.Textarea(attrs={'rows': 4}),
         }
+
+class UnloadingForm(forms.ModelForm):
+    class Meta:
+        model = Unloading
+        fields = ['unload_type', 'device', 'weight', 'purpose', 'note']
+        widgets = {
+            'note': forms.Textarea(attrs={'rows': 2}),
+            'weight': forms.NumberInput(attrs={'min': 0, 'step': 0.1}),
+        }
+
+UnloadingFormSet = modelformset_factory(
+    Unloading,
+    form=UnloadingForm,
+    extra=0
+)

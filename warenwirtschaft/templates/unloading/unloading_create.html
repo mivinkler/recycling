@@ -8,155 +8,182 @@
 {% block title %}{{ _("Einheiten") }}{% endblock %}
 
 {% block content %}
-
-<div class="table-name">Entladung</div>
-
-<div class="select_cargo">
-    <table class="table-box">
-        <thead>
-            <caption><p>Liefereinheiten</p></caption>
-            <tr class="table-content-title">
-                <th style="width: 4%" class="text-center">wählen</th>
-                <th style="width: 3.5%" class="text-center">ID</th>
-                <th style="width: 20%">Lieferant</th>
-                <th style="width: 6%">Datum</th>
-                <th style="width: 3.5%" class="text-center">LID</th>
-                <th style="width: 10%">Behälter</th>
-                <th style="width: 10%">Inhalt</th>
-                <th style="width: 6%">Gewicht</th>
-                <th style="width: 6%">Status</th>
-                <th style="width: 200px">Bemerkung</th>
-                <th style="width: 10%"></th> <!-- actions -->
-            </tr>
-        </thead>
-
-        <tbody class="table-content">
-            {% for item in page_obj %}
-            <tr data-item-id="{{ item.id }}" class="item-row">
-                <td class="text-center"><input type="radio" name="item" data-item-id="{{ item.id }}" onclick="updateSelectedItem(this)"></td>
-
-                <td class="text-center item-id">{{ item.id }}</td>
-                <td class="item-supplier">{{ item.delivery.supplier.name }}</td>
-                <td>{{ item.delivery.delivery_date|date:"d.m.Y" }}</td>
-                <td class="text-center item-delivery-id">{{ item.delivery_id }}</td>
-                <td class="item-container">{{ item|getattr:"get_delivery_type_display" }}</td>
-                <td class="item-content">{{ item.device }}</td>
-                <td class="item-weight">{{ item.weight }} </td>
-                <td class="item-status">{{ item|getattr:"get_status_display" }}</td>
-                <td class="note-column" title="{{ item.note }}">{{ item.note }}</td>
-                <td class="suppler-icons">
-                    <a href="#" title="Lieferung ansehen">
-                        <img src="{% static 'icons/detail-icon.svg' %}">   
-                    </a>
-                    <a href="#" title="Bearbeiten"> 
-                        <img src="{% static 'icons/update-icon.svg' %}">
-                    </a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    {% paginate page_obj %}
-</div>
-
-<div class="unload_cargo">
-    <table class="unload-unit">
-        <caption><p>Ausgewählte Liefereinheit</p></caption>
-        <thead>
-            <tr class="table-content-title">
-                <th style="width: 5%">ID</th>
-                <th style="width: 40%">Lieferant</th>
-                <th style="width: 15%">Behälter</th>
-                <th style="width: 15%">Inhalt</th>
-                <th style="width: 15%">Gewicht</th>
-            </tr>
-        </thead>
-
-        <tbody class="table-content">
-            <tr>
-                <td id="selected-id">&nbsp;</td>
-                <td id="selected-supplier">&nbsp;</td>
-                <td id="selected-container">&nbsp;</td>
-                <td id="selected-content">&nbsp;</td>
-                <td id="selected-weight">&nbsp;</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <div class="row-counter">
-        <p>
-            <span>🡆</span>
-            <input type="number" id="row-counter" value="5" min="1" max="30" onchange="unload()"> 
-            <span>🡆</span>
-        </p>
+<form method="post">
+    {% csrf_token %}
+    
+    <div class="form-errors">
+        {{ form.non_field_errors }}
+        {{ form.errors }}
     </div>
-    
-    <table class="table-box">
-        <caption><p>Ausleerung</p></caption>
-        <thead>
-            <tr class="table-content-title">
-                <th style="width: 3.5%">&#8470;</th>
-                <th style="width: 20%">Behälter</th>
-                <th style="width: 6%">Inhalt</th>
-                <th style="width: 3.5%">Gewicht</th>
-                <th style="width: 10%">Behälter</th>
-                <th style="width: 200px">Bemerkung</th>
-                <th style="width: 10%"></th> <!-- actions -->
-            </tr>
-        </thead>
-        <tbody class="table-content row-height" id="table-body">
-            <!-- JavaScript -->
-        </tbody>
-    </table>
-    
-    <script>
-        function unload() {
-            var rowCount = document.getElementById('row-counter').value;
-            var tbody = document.getElementById('table-body');
-            
-            tbody.innerHTML = '';
-            
-            for (var i = 0; i < rowCount; i++) {
-                var row = document.createElement('tr');
-                
-                row.innerHTML = `
-                    <td>${i + 1}</td>
-                    <td>qwer</td>
-                    <td>qwer</td>
-                    <td>qwer</td>
-                    <td>qwer</td>
-                    <td>qwer</td>
-                    <td>qwer</td>
-                `;
-                
-                tbody.appendChild(row);
-            }
-        }
 
-        unload();
-    </script>
+    <div class="table-name">Entladung</div>
+
+    <div class="select_cargo">
+        <table class="table-box">
+            <thead>
+                <caption><p>Liefereinheiten</p></caption>
+                <tr class="table-content-title">
+                    <th style="width: 4%" class="text-center">wählen</th>
+                    <th style="width: 3.5%" class="text-center">ID</th>
+                    <th style="width: 20%">Lieferant</th>
+                    <th style="width: 6%">Datum</th>
+                    <th style="width: 3.5%" class="text-center">LID</th>
+                    <th style="width: 10%">Behälter</th>
+                    <th style="width: 10%">Inhalt</th>
+                    <th style="width: 6%">Gewicht</th>
+                    <th style="width: 6%">Status</th>
+                    <th style="width: 200px">Bemerkung</th>
+                    <th style="width: 10%"></th> <!-- actions -->
+                </tr>
+            </thead>
+
+            <tbody class="table-content">
+                {% for item in page_obj %}
+                <tr class="item-row">
+                    <td class="text-center">
+                        <input type="radio" name="delivery_unit" value="{{ item.id }}" onclick="updateSelectedItem(this)">
+                    </td>
+                    <td class="text-center item-id">{{ item.id }}</td>
+                    <td class="item-supplier">{{ item.delivery.supplier.name }}</td>
+                    <td>{{ item.delivery.delivery_date|date:"d.m.Y" }}</td>
+                    <td class="text-center item-delivery-id">{{ item.delivery_id }}</td>
+                    <td class="item-container">{{ item|getattr:"get_delivery_type_display" }}</td>
+                    <td class="item-content">{{ item.device }}</td>
+                    <td class="item-weight">{{ item.weight }}</td>
+                    <td class="item-status">{{ item|getattr:"get_status_display" }}</td>
+                    <td class="note-column" title="{{ item.note }}">{{ item.note }}</td>
+                    <td class="suppler-icons">
+                        <a href="#" title="Lieferung ansehen">
+                            <img src="{% static 'icons/detail-icon.svg' %}">
+                        </a>
+                        <a href="#" title="Bearbeiten">
+                            <img src="{% static 'icons/update-icon.svg' %}">
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% paginate page_obj %}
+    </div>
+
+    <div class="unload_cargo">
+        <table class="unload-unit">
+            <caption><p>Ausgewählte Liefereinheit</p></caption>
+            <thead>
+                <tr class="table-content-title">
+                    <th style="width: 5%">ID</th>
+                    <th style="width: 40%">Lieferant</th>
+                    <th style="width: 15%">Behälter</th>
+                    <th style="width: 15%">Inhalt</th>
+                    <th style="width: 15%">Gewicht</th>
+                </tr>
+            </thead>
+            <tbody class="table-content">
+                <tr>
+                    <td id="selected-id">&nbsp;</td>
+                    <td id="selected-supplier">&nbsp;</td>
+                    <td id="selected-container">&nbsp;</td>
+                    <td id="selected-content">&nbsp;</td>
+                    <td id="selected-weight">&nbsp;</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="row-counter">
+            <p>
+                <span>🡆</span>
+                <input type="number" id="row-counter" value="1" min="1" max="30">
+                <span>🡆</span>
+            </p>
+        </div>
+
+        <table class="table-box">
+            <caption><p>Ausleerung</p></caption>
+            <thead>
+                <tr class="table-content-title">
+                    <th style="width: 5%" class="text-center">&#8470;</th>
+                    <th style="width: 20%">Behälter</th>
+                    <th style="width: 20%">Inhalt</th>
+                    <th style="width: 10%">Gewicht</th>
+                    <th style="width: 12%">Zweck</th>
+                    <th style="width: 200px">Bemerkung</th>
+                </tr>
+            </thead>
+            <tbody class="table-content table-input" id="table-body">
+                <!-- js -->
+            </tbody>
+        </table>
+    </div>
+
+    <button type="submit">Speichern</button>
+</form>
 
 <script>
     function updateSelectedItem(radioButton) {
+        const selectedRow = radioButton.closest('tr');
 
-        var itemId = radioButton.getAttribute('data-item-id');
-        var selectedRow = document.querySelector(`tr[data-item-id="${itemId}"]`);
-
-        var id = selectedRow.querySelector('.item-id').textContent;
-        var supplier = selectedRow.querySelector('.item-supplier').textContent;
-        var container = selectedRow.querySelector('.item-container').textContent;
-        var content = selectedRow.querySelector('.item-content').textContent;
-        var weight = selectedRow.querySelector('.item-weight').textContent;
-
-        document.getElementById('selected-id').textContent = id;
-        document.getElementById('selected-supplier').textContent = supplier;
-        document.getElementById('selected-container').textContent = container;
-        document.getElementById('selected-content').textContent = content;
-        document.getElementById('selected-weight').textContent = weight;
+        document.getElementById('selected-id').textContent = selectedRow.querySelector('.item-id').textContent.trim();
+        document.getElementById('selected-supplier').textContent = selectedRow.querySelector('.item-supplier').textContent.trim();
+        document.getElementById('selected-container').textContent = selectedRow.querySelector('.item-container').textContent.trim();
+        document.getElementById('selected-content').textContent = selectedRow.querySelector('.item-content').textContent.trim();
+        document.getElementById('selected-weight').textContent = selectedRow.querySelector('.item-weight').textContent.trim();
     }
-</script>
 
     
-</div>
+</script>
+<script>
+    document.getElementById('row-counter').addEventListener('input', function() {
+        updateTableRows(parseInt(this.value));
+    });
+
+    function updateTableRows(rowsCount) {
+        var tableBody = document.getElementById('table-body');
+        var currentRows = tableBody.getElementsByTagName('tr');
+
+        // Wenn es mehr Zeilen als nötig gibt, werden zusätzlichen Zeilen löscht
+        while (currentRows.length > rowsCount) {
+            tableBody.removeChild(currentRows[currentRows.length - 1]);
+        }
+
+        // Wenn weniger Zeilen als nötig gibt, werden die fehlenden Zeilen hinzugefügt
+        while (currentRows.length < rowsCount) {
+            var newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td class="text-center">${currentRows.length + 1}</td>
+                <td>
+                    <select name="unload_type">
+                        <option value="1">Gitterbox</option>
+                        <option value="2">Palette</option>
+                        <option value="3">Ohne Behälter</option>
+                    </select>
+                </td>
+                <td>
+                    <select name="device">
+                        <option selected disabled>-- Bitte wählen --</option>
+                        {% for device in devices %}
+                            <option value="{{ device.id }}">{{ device.name }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+                <td><input type="number" name="weight" min="0"></td>
+                <td>
+                    <select name="purpose">
+                        <option value="1">Zerlegung</option>
+                        <option value="2">Reparatur</option>
+                        <option value="3">Entsorgung</option>
+                    </select>
+                </td>
+                <td><input type="text" name="note"></td>
+            `;
+            tableBody.appendChild(newRow);
+        }
+    }
+
+    // Beim Laden der Seite eine Zeile hinzufügen
+    document.addEventListener('DOMContentLoaded', function() {
+        updateTableRows(1);
+    });
+</script>
 
 {% endblock %}

@@ -1,24 +1,43 @@
-from django.views.generic import ListView
+from django.views.generic import TemplateView
 from django.core.paginator import Paginator
-from warenwirtschaft.models import DeliveryUnits
+from django.urls import reverse_lazy
+from django.shortcuts import redirect, get_object_or_404
+from warenwirtschaft.models import DeliveryUnits, Device, Unloading
+from warenwirtschaft.forms import UnloadingFormSet
 
-class UnloadingCreateView(ListView):
-    model = DeliveryUnits
+
+class UnloadingCreateView(TemplateView):
     template_name = "unloading/unloading_create.html"
-    context_object_name = "unloading_units"
-
-    def get_queryset(self):
-        # gibt die Objekte mit Status 1 zurück
-        return DeliveryUnits.objects.filter(status=1)
+    success_url = reverse_lazy('unloading_create')
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["delivery_types"] = DeliveryUnits.DELIVERY_TYPE_CHOICES
-        context["statuses"] = DeliveryUnits.STATUS_CHOICES
+        formset = UnloadingFormSet(queryset=Unloading.objects.none())
+        devices = Device.objects.all()
 
-        paginator = Paginator(self.get_queryset(), 6)
-        page_number = self.request.GET.get("page", 1)
-        page_obj = paginator.get_page(page_number)
+        return {
+            **super().get_context_data(**kwargs),
+            'page_obj': self.get_paginated_units(),
+            'formset': formset,
+            'devices': devices,
+        }
 
-        context["page_obj"] = page_obj
-        return context
+    def get_paginated_units(self):
+        return Paginator(
+            DeliveryUnits.objects.filter(status=1).order_by('id'), 6
+        ).get_page(self.request.GET.get("page", 1))
+
+    def post(self, request):
+        delivery_unit = get_object_or_404(DeliveryUnits, id=request.POST.get("delivery_unit"))
+        
+        formset = UnloadingFormSet(request.POST)
+        
+        if formset.is_valid():
+            unloadings = formset.save(commit=False)
+            for unloading in unloadings:
+                unloading.delivery_unit = delivery_unit
+                unloading.supplier = delivery_unit.delivery.supplier
+                unloading.save()
+
+            return redirect(self.success_url)
+        else:
+            return self.render_to_response(self.get_context_data(formset=formset))
