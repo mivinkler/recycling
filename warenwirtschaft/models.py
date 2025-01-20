@@ -69,4 +69,30 @@ class DeliveryUnits(models.Model):
     
     def __str__(self):
         return f"{self.device} ({self.delivery.delivery_date})"
+    
 
+class Unloading(models.Model):
+    UNLOAD_TYPE_CHOICES = [
+        (1, "Gitterbox"),
+        (2, "Palette"),
+        (3, "Ohne Behälter"),
+    ]
+
+    PURPOSE_CHOICES = [
+        (1, "Zerlegung"),
+        (2, "Reparatur"),
+        (3, "Entsorgung"),
+    ]
+
+    delivery_unit = models.ForeignKey("DeliveryUnits", on_delete=models.CASCADE, related_name="cargo")
+    unload_type = models.PositiveSmallIntegerField(choices=UNLOAD_TYPE_CHOICES)
+    device = models.ForeignKey("Device", on_delete=models.CASCADE, null=True, blank=True, related_name="unload_device")
+    weight = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    purpose = models.PositiveSmallIntegerField(choices=PURPOSE_CHOICES)
+    note = models.CharField(max_length=255, null=True, blank=True)
+    supplier = models.ForeignKey("Supplier", on_delete=models.SET_NULL, null=True, blank=True, related_name="product_supplier")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Unloading: {self.delivery_unit} - {self.weight} kg - Type: {self.get_unload_type_display()} - Purpose: {self.get_purpose_display()}"
