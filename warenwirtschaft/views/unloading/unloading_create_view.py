@@ -30,9 +30,10 @@ class UnloadingCreateView(TemplateView):
         delivery_unit = get_object_or_404(DeliveryUnits, id=request.POST.get("delivery_unit"))
         
         formset = UnloadingFormSet(request.POST)
-        
+
         if formset.is_valid():
             unloadings = formset.save(commit=False)
+
             for unloading in unloadings:
                 unloading.delivery_unit = delivery_unit
                 unloading.supplier = delivery_unit.delivery.supplier

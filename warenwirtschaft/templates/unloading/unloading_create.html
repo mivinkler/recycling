@@ -10,7 +10,7 @@
 {% block content %}
 <form method="post">
     {% csrf_token %}
-    
+    {{ formset.management_form }}
     <div class="form-errors">
         {{ form.non_field_errors }}
         {{ form.errors }}
@@ -130,58 +130,59 @@
         document.getElementById('selected-weight').textContent = selectedRow.querySelector('.item-weight').textContent.trim();
     }
 
-    
 </script>
 <script>
     document.getElementById('row-counter').addEventListener('input', function() {
         updateTableRows(parseInt(this.value));
+        // this.value ist rowsCount
     });
 
     function updateTableRows(rowsCount) {
         var tableBody = document.getElementById('table-body');
         var currentRows = tableBody.getElementsByTagName('tr');
 
-        // Wenn es mehr Zeilen als nötig gibt, werden zusätzlichen Zeilen löscht
         while (currentRows.length > rowsCount) {
             tableBody.removeChild(currentRows[currentRows.length - 1]);
         }
 
-        // Wenn weniger Zeilen als nötig gibt, werden die fehlenden Zeilen hinzugefügt
         while (currentRows.length < rowsCount) {
+            var newIndex = currentRows.length;
             var newRow = document.createElement('tr');
             newRow.innerHTML = `
-                <td class="text-center">${currentRows.length + 1}</td>
+                <td class="text-center">${newIndex + 1}</td>
                 <td>
-                    <select name="unload_type">
+                    <select name="form-${newIndex}-unload_type">
                         <option value="1">Gitterbox</option>
                         <option value="2">Palette</option>
                         <option value="3">Ohne Behälter</option>
                     </select>
                 </td>
                 <td>
-                    <select name="device">
+                    <select name="form-${newIndex}-device">
                         <option selected disabled>-- Bitte wählen --</option>
                         {% for device in devices %}
                             <option value="{{ device.id }}">{{ device.name }}</option>
                         {% endfor %}
                     </select>
                 </td>
-                <td><input type="number" name="weight" min="0"></td>
+                <td><input type="number" name="form-${newIndex}-weight" min="0"></td>
                 <td>
-                    <select name="purpose">
+                    <select name="form-${newIndex}-purpose">
                         <option value="1">Zerlegung</option>
                         <option value="2">Reparatur</option>
                         <option value="3">Entsorgung</option>
                     </select>
                 </td>
-                <td><input type="text" name="note"></td>
+                <td><input type="text" name="form-${newIndex}-note"></td>
             `;
             tableBody.appendChild(newRow);
         }
+
+        document.getElementById('id_form-TOTAL_FORMS').value = rowsCount;
     }
 
-    // Beim Laden der Seite eine Zeile hinzufügen
     document.addEventListener('DOMContentLoaded', function() {
+        // ein Zeile <tr> beim Laden der Seite
         updateTableRows(1);
     });
 </script>
