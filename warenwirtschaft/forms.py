@@ -31,5 +31,5 @@ class UnloadingForm(forms.ModelForm):
 UnloadingFormSet = modelformset_factory(
     Unloading,
     form=UnloadingForm,
-    extra=0
+    extra=1,
 )

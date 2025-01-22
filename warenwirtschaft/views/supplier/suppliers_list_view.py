@@ -8,7 +8,7 @@ class SuppliersListView(ListView):
     model = Supplier
     template_name = 'supplier/suppliers_list.html'
     context_object_name = 'suppliers'
-    paginate_by = 21
+    paginate_by = 20
 
     def get_queryset(self):
         queryset = super().get_queryset()

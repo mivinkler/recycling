@@ -1,29 +1,28 @@
 from django.views.generic import ListView
 from django.core.paginator import Paginator
 from django.db.models import Q
-from warenwirtschaft.models import DeliveryUnits
+from warenwirtschaft.models import Unloading
 
-class DeliveryUnitsListView(ListView):
-    model = DeliveryUnits
-    template_name = "delivery/delivery_units_list.html"
-    context_object_name = "delivery_units"
+class UnloadingsListView(ListView):
+    model = Unloading
+    template_name = "unloading/unloading_list.html"
+    context_object_name = "unloadings"
     paginate_by = 20
 
     def get_queryset(self):
         queryset = super().get_queryset()
 
-        # Filtering
         filter_mapping = {
             "id": "id",
-            "delivery": "delivery__id",
-            "delivery_date": "delivery__delivery_date",
-            "delivery_id": "delivery_receipt__icontains",
-            "delivery_type": "delivery_type",
-            "device": "device__name__icontains",
+            "supplier": "supplier__name",
+            "delivery_unit": "delivery_unit",
+            "unload_type": "unload_type",
+            "device": "device",
             "weight": "weight",
-            "status": "status",
-            "note": "note__icontains",
+            "purpose": "purpose",
+            "note": "note",
         }
+
         filters = {
             field: self.request.GET.get(param)
             for param, field in filter_mapping.items()
@@ -32,27 +31,25 @@ class DeliveryUnitsListView(ListView):
         if filters:
             queryset = queryset.filter(Q(**filters))
 
-        # Sorting
         sort_mapping = {
             "id_asc": "id",
             "id_desc": "-id",
-            "delivery_asc": "delivery__id",
-            "delivery_desc": "-delivery__id",
-            "date_asc": "delivery__delivery_date",
-            "date_desc": "-delivery__delivery_date",
-            "lid_asc": "delivery_receipt",
-            "lid_desc": "-delivery_receipt",
-            "container_asc": "delivery_type",
-            "container_desc": "-delivery_type",
-            "device_asc": "device__name",
-            "device_desc": "-device__name",
+            "supplier_asc": "supplier__name",
+            "supplier_desc": "-supplier__name",
+            "delivery_unit_asc": "delivery_unit",
+            "delivery_unit_desc": "-delivery_unit",
+            "unload_type_asc": "unload_type",
+            "unload_type_desc": "-unload_type",
+            "device_asc": "device",
+            "device_desc": "-device",
             "weight_asc": "weight",
             "weight_desc": "-weight",
-            "status_asc": "status",
-            "status_desc": "-status",
+            "purpose_asc": "purpose",
+            "purpose_desc": "-purpose",
             "note_asc": "note",
             "note_desc": "-note",
         }
+
         sort_field = sort_mapping.get(self.request.GET.get("sort", "id_asc"), "id")
         queryset = queryset.order_by(sort_field)
 
@@ -60,8 +57,6 @@ class DeliveryUnitsListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["delivery_types"] = DeliveryUnits.DELIVERY_TYPE_CHOICES
-        context["statuses"] = DeliveryUnits.STATUS_CHOICES
 
         paginator = Paginator(self.get_queryset(), self.paginate_by)
         page_number = self.request.GET.get("page", 1)
