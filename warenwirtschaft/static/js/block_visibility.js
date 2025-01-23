@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const toggleButton = document.querySelector(".table-search");
-    const filterForm = document.querySelector(".table-filter");
+    const toggleButton = document.querySelector(".toggle-button");
+    const hiddenBlock = document.querySelector(".hidden-block");
 
     toggleButton.addEventListener("click", function () {
-        filterForm.hidden = !filterForm.hidden;
+        hiddenBlock.hidden = !hiddenBlock.hidden;
     });
 });

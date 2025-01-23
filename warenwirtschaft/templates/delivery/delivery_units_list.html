@@ -12,7 +12,7 @@
 <div class="table-name">Liefereinheiten</div>
 
 <div class="table-action">
-    <button class="table-search btn-activ">🔍</button>
+    <button class="table-search btn-activ toggle-button">🔍</button>
     <button class="table-reset btn-activ"><a href="{% url 'delivery_units_list' %}" class="reset-btn">⟲</a></button>
 </div>
 
@@ -31,7 +31,7 @@
     </colgroup>
 
     <thead>
-        <tr class="table-filter" hidden>
+        <tr class="table-filter hidden-block" hidden>
             <form method="GET" name="filter">
                 <td><input type="text" name="id" placeholder="id" value="{{ request.GET.id }}"></td>
                 <td><input type="text" name="delivery" placeholder="Lieferung" value="{{ request.GET.delivery }}"></td>
