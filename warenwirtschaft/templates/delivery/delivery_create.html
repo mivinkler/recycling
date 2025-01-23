@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
-{% load i18n %}
-{% block title %}Eingang Form{% endblock %}
-{% block content %}
 
+{% load static %}
+
+{% block title %}Eingang Form{% endblock %}
+
+{% block content %}
 
 <main>
   <div class="form-wrapper">
@@ -12,19 +14,20 @@
       <div class="delivery">
         <div class="flex">
           <label for="supplier">Lieferant:</label>
-          <select id="supplier" name="supplier">
+          <button type="button">+ Neuer Lieferant</button>
+          <!-- <select id="supplier" name="supplier">
             <option selected disabled>-- Bitte wählen --</option>
-            <option id="neu_supplier" class="neu_supplier">-- Neuer Lieferant --</option>
+            <option id="neu_supplier" class="neu_supplier toggle-button">-- Neuer Lieferant --</option>
             <hr></hr>
             {% for supplier in suppliers %}
               <option value="{{ supplier.id }}">
                 {{ supplier }}
               </option>
             {% endfor %}
-          </select>
+          </select> -->
         </div>
 
-        <div hidden>
+        <div class="hidden-block" hidden>
           <div class="flex">
             <label for="liefernummer" class="flex-items">Name:</label>
             <input type="text" id="liefernummer" name="liefernummer" class="flex-items">
@@ -141,22 +144,8 @@
     container.appendChild(newBlock);
   }
 }
-
-
-  document.addEventListener("DOMContentLoaded", function () {
-    const supplierSelect = document.getElementById("supplier");
-    const newSupplier = document.getElementById("neu_supplier");
-    const hiddenBlock = document.querySelector("div[hidden]");
-
-    supplierSelect.addEventListener("change", function () {
-      if (supplierSelect.value === newSupplier.value) {
-        hiddenBlock.hidden = false;
-      } else {
-        hiddenBlock.hidden = true;
-      }
-    });
-  });
-
 </script>
-
+{% endblock %}
+{% block extra_js %}
+    <script src="{% static 'js/block_visibility.js' %}"></script>
 {% endblock %}

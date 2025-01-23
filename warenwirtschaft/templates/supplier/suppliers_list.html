@@ -12,7 +12,7 @@
 <div class="table-name">Lieferanten</div>
 
 <div class="table-action">
-    <button class="table-search btn-activ">🔍</button>
+    <button class="table-search btn-activ toggle-button">🔍</button>
     <button class="table-reset btn-activ"><a href="{% url 'suppliers_list' %}" class="reset-btn">⟲</a></button>
 </div>
 <table class="table-box">
@@ -29,7 +29,7 @@
         <col style="width: 10%; ">  <!-- actions -->
     </colgroup>
     <thead>
-        <tr class="table-filter" hidden>
+        <tr class="table-filter hidden-block" hidden>
             <form method="GET" name="filter">
                 <td><input type="text" name="id" placeholder="id" value="{{ request.GET.id }}"></td>
                 <td><input type="text" name="avv_number" placeholder="AVV" value="{{ request.GET.avv_number }}"></td>
