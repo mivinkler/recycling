@@ -11,10 +11,6 @@
 <form method="post">
     {% csrf_token %}
     {{ formset.management_form }}
-    <div class="form-errors">
-        {{ form.non_field_errors }}
-        {{ form.errors }}
-    </div>
 
     <div class="table-name">Entladung</div>
 
@@ -41,7 +37,7 @@
                 {% for item in page_obj %}
                 <tr class="item-row">
                     <td class="text-center">
-                        <input type="radio" name="delivery_unit" value="{{ item.id }}" onclick="updateSelectedItem(this)">
+                        <input type="radio" name="delivery_unit" value="{{ item.id }}" onclick="duplicateSelectedItem(this)">
                     </td>
                     <td class="text-center item-id">{{ item.id }}</td>
                     <td class="item-supplier">{{ item.delivery.supplier.name }}</td>
@@ -93,7 +89,7 @@
         <div class="row-counter">
             <p>
                 <span>🡆</span>
-                <input type="number" id="row-counter" value="1" min="1" max="30">
+                <input type="number" id="item-counter" value="1" min="1" max="30">
                 <span>🡆</span>
             </p>
         </div>
@@ -110,30 +106,33 @@
                     <th style="width: 200px">Bemerkung</th>
                 </tr>
             </thead>
-            <tbody class="table-content table-input" id="table-body">
+            <tbody class="table-content table-input" id="item-wrapper">
                 <tr>
-                    <td class="row-number">1</td>
+                    <td id="item-number">1</td>
                     <td>
-                        <select id="unload-type-{index}" name="form-{index}-unload_type">
+                        <select id="unload-type-0" name="form-0-unload_type">
                             <option value="1">Gitterbox</option>
                             <option value="2">Palette</option>
                             <option value="3">Ohne Behälter</option>
                         </select>
                     </td>
                     <td>
-                        <select id="device-{index}" name="form-{index}-device">
+                        <select id="device-0" name="form-0-device">
                             <option selected disabled>-- Bitte wählen --</option>
+                            {% for device in devices %}
+                                <option value="{{ device.id }}">{{ device.name }}</option>
+                            {% endfor %}
                         </select>
                     </td>
-                    <td><input id="weight-{index}" type="number" name="form-{index}-weight" min="0"></td>
+                    <td><input id="weight-0" type="number" name="form-0-weight" min="0"></td>
                     <td>
-                        <select id="purpose-{index}" name="form-{index}-purpose">
+                        <select id="purpose-0" name="form-0-purpose">
                             <option value="1">Zerlegung</option>
                             <option value="2">Reparatur</option>
                             <option value="3">Entsorgung</option>
                         </select>
                     </td>
-                    <td><input id="note-{index}" type="text" name="form-{index}-note"></td>
+                    <td><input id="note-0" type="text" name="form-0-note"></td>
                 </tr>
             </tbody>
         </table>
@@ -142,22 +141,9 @@
     <button type="submit" class="container">Speichern</button>
 </form>
 
-<script>
-    function updateSelectedItem(radioButton) {
-        const selectedRow = radioButton.closest('tr');
-
-        document.getElementById('selected-id').textContent = selectedRow.querySelector('.item-id').textContent.trim();
-        document.getElementById('selected-supplier').textContent = selectedRow.querySelector('.item-supplier').textContent.trim();
-        document.getElementById('selected-container').textContent = selectedRow.querySelector('.item-container').textContent.trim();
-        document.getElementById('selected-content').textContent = selectedRow.querySelector('.item-content').textContent.trim();
-        document.getElementById('selected-weight').textContent = selectedRow.querySelector('.item-weight').textContent.trim();
-    }
-
-</script>
-
-
 {% endblock %}
 
 {% block extra_js %}
-    <script src="{% static 'js/row-counter.js' %}"></script>
+    <script src="{% static 'js/row-counter-neu.js' %}"></script>
+    <script src="{% static 'js/duplicate-selected-item.js' %}"></script>
 {% endblock %}
