@@ -1,10 +1,10 @@
 from django.views.generic import ListView
 from django.core.paginator import Paginator
 from django.db.models import Q
-from warenwirtschaft.models import DeliveryUnits
+from warenwirtschaft.models import DeliveryUnit
 
 class DeliveryUnitsListView(ListView):
-    model = DeliveryUnits
+    model = DeliveryUnit
     template_name = "delivery/delivery_units_list.html"
     context_object_name = "delivery_units"
     paginate_by = 20
@@ -60,8 +60,8 @@ class DeliveryUnitsListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["delivery_types"] = DeliveryUnits.DELIVERY_TYPE_CHOICES
-        context["statuses"] = DeliveryUnits.STATUS_CHOICES
+        context["delivery_types"] = DeliveryUnit.DELIVERY_TYPE_CHOICES
+        context["statuses"] = DeliveryUnit.STATUS_CHOICES
 
         paginator = Paginator(self.get_queryset(), self.paginate_by)
         page_number = self.request.GET.get("page", 1)
