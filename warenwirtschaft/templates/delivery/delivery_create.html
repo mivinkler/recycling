@@ -34,7 +34,7 @@
           </div>
           <div class="flex">
             <label for="liefernummer" class="flex-items">Straße und Hausnummer:</label>
-            <input type="text" id="liefernummer" name="liefernummer" class="flex-items">
+            <input type="text" id="liefernummer" name="street" class="flex-items">
           </div>
           <div class="flex">
             <label for="postal_code" class="flex-items">PLZ:</label>
@@ -70,40 +70,42 @@
         
       <div class="delivery-items">
         <div class="flex">
-          <label  for="traeger_anzahl" class="flex-items">Ladungseinheiten:</label>
-          <input type="number" id="traeger_anzahl" name="traeger_anzahl" value="1" min="1" max="10" onchange="traeger()">
+          <label for="item-counter" class="flex-items">Ladungseinheiten:</label>
+          <input type="number" id="item-counter" name="traeger_anzahl" value="1" min="1" max="10">
         </div>
       </div>
       
-      <div id="traeger">
-        <div class="border block">
-          <div>
-            <div class="form-item-title">Ladungseinheit 1:</div>
-          </div>
-          <div class="flex">
-            <label for="delivery_type1">Art:</label>
-            <select id="delivery_type1">
-              <option selected disabled>-- Bitte wählen --</option>
-              <option>Gitterbox</option>
-              <option>Container</option>
-              <option>Palette</option>
-            </select>
-          </div>
-          <div class="flex">
-            <label for="device1">Inhalt:</label>
-            <select id="device1">
-              <option selected disabled>-- Bitte wählen --</option>
-              {% for device in devices %}
-                <option value="{{ device.id }}">{{ device.name }}</option>
-              {% endfor %}
-            </select>
-          </div>
-          <div class="flex">
-            <label for="gewicht1" class="flex-items">Gewicht (kg):</label>
-            <input type="number" min="0" step="0.1" name="weights" id="gewicht1" required>
+      <section>
+        <div class="border block" id="item-wrapper">
+          <div class="item">
+            <div>
+              <div class="form-item-title">Ladungseinheit<span class="item-number">1</span></div>
+            </div>
+            <div class="flex">
+              <label>Art:</label>
+              <select name="form-0-delivery_type">
+                <option selected disabled>-- Bitte wählen --</option>
+                <option>Gitterbox</option>
+                <option>Container</option>
+                <option>Palette</option>
+              </select>
+            </div>
+            <div class="flex">
+              <label>Inhalt:</label>
+              <select name="form-0-device">
+                <option selected disabled>-- Bitte wählen --</option>
+                {% for device in devices %}
+                  <option value="{{ device.id }}">{{ device.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="flex">
+              <label class="flex-items">Gewicht (kg):</label>
+              <input name="form-0-weights" type="number" min="0" step="0.1" required>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
 
 
       <button type="submit" class="record-btn">Speichern</button>
@@ -114,5 +116,5 @@
 {% endblock %}
 
 {% block extra_js %}
-    <script src="{% static 'js/row-counter-old.js' %}"></script>
+    <script src="{% static 'js/row-counter.js' %}"></script>
 {% endblock %}

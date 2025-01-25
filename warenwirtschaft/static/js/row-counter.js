@@ -1,8 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const itemCounter = document.getElementById('item-counter');
     const itemWrapper = document.getElementById('item-wrapper');
-    const firstRow = itemWrapper.children[0]; // Erste Zeile der Tabelle
-    const totalFormsInput = document.getElementById('id_form-TOTAL_FORMS');
+    const firstRow = itemWrapper.children[0];
 
     // Zeilen aktualisieren, wenn sich der Zähler ändert
     itemCounter.addEventListener('input', () => {
@@ -28,9 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             itemWrapper.appendChild(clone);
         }
-
-        // Aktualisieren der Gesamtzahl der Formulare
-        totalFormsInput.value = count;
     }
     // Anfangsanzahl 1
     updateRows(+itemCounter.value || 1);
@@ -38,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateAttributes(row, index) {
         row.querySelectorAll('[id], [name]').forEach((el) => {
             if (el.id) el.id = el.id.replace(/-\d+/, `-${index}`);
-            if (el.name) el.name = el.name.replace(/-\d+/, `-${index}`);
+            if (el.name) el.name = el.name.replace(/-\d+/, `-${index}`);            
         });
     }
 });
