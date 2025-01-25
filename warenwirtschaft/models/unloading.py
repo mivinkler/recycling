@@ -1,0 +1,29 @@
+from django.db import models
+from .abstract_model import AbstractModel
+from .delivery_unit import DeliveryUnit
+from .supplier import Supplier
+from .device import Device
+
+class Unloading(AbstractModel):
+    UNLOAD_TYPE_CHOICES = [
+        (1, "Gitterbox"),
+        (2, "Palette"),
+        (3, "Ohne Behälter"),
+    ]
+
+    PURPOSE_CHOICES = [
+        (1, "Zerlegung"),
+        (2, "Reparatur"),
+        (3, "Entsorgung"),
+    ]
+
+    delivery_unit = models.ForeignKey(DeliveryUnit, on_delete=models.CASCADE, related_name="cargo")
+    unload_type = models.PositiveSmallIntegerField(choices=UNLOAD_TYPE_CHOICES)
+    device = models.ForeignKey(Device, on_delete=models.CASCADE, null=True, blank=True, related_name="unload_device")
+    weight = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    purpose = models.PositiveSmallIntegerField(choices=PURPOSE_CHOICES)
+    note = models.CharField(max_length=255, null=True, blank=True)
+    supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, related_name="product_supplier")
+
+    def __str__(self):
+        return f"Unloading: {self.delivery_unit} - {self.weight} kg - Type: {self.get_unload_type_display()} - Purpose: {self.get_purpose_display()}"

@@ -2,7 +2,7 @@ from django.views.generic import TemplateView
 from django.core.paginator import Paginator
 from django.urls import reverse_lazy
 from django.shortcuts import redirect, get_object_or_404
-from warenwirtschaft.models import DeliveryUnits, Device, Unloading
+from warenwirtschaft.models import DeliveryUnit, Device, Unloading
 from warenwirtschaft.forms import UnloadingFormSet
 
 
@@ -23,11 +23,11 @@ class UnloadingCreateView(TemplateView):
 
     def get_paginated_units(self):
         return Paginator(
-            DeliveryUnits.objects.filter(status=1).order_by('id'), 6
+            DeliveryUnit.objects.filter(status=1).order_by('id'), 6
         ).get_page(self.request.GET.get("page", 1))
 
     def post(self, request):
-        delivery_unit = get_object_or_404(DeliveryUnits, id=request.POST.get("delivery_unit"))
+        delivery_unit = get_object_or_404(DeliveryUnit, id=request.POST.get("delivery_unit"))
         
         formset = UnloadingFormSet(request.POST)
 
