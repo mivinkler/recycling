@@ -117,16 +117,16 @@
                         </select>
                     </td>
                     <td>
-                        <select id="device-0" name="form-0-device">
+                        <select name="form-0-device">
                             <option selected disabled>-- Bitte wählen --</option>
                             {% for device in devices %}
                                 <option value="{{ device.id }}">{{ device.name }}</option>
                             {% endfor %}
                         </select>
                     </td>
-                    <td><input id="weight-0" type="number" name="form-0-weight" min="0"></td>
+                    <td><input type="number" name="form-0-weight" min="0"></td>
                     <td>
-                        <select id="purpose-0" name="form-0-purpose">
+                        <select name="form-0-purpose">
                             <option value="1">Zerlegung</option>
                             <option value="2">Reparatur</option>
                             <option value="3">Entsorgung</option>
@@ -144,6 +144,6 @@
 {% endblock %}
 
 {% block extra_js %}
-    <script src="{% static 'js/row-counter-neu.js' %}"></script>
+    <script src="{% static 'js/row-counter.js' %}"></script>
     <script src="{% static 'js/duplicate-selected-item.js' %}"></script>
 {% endblock %}
