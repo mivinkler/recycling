@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
             updateAttributes(clone, index);
 
             // Zeilennummer einfügen
-            clone.querySelector('#item-number').textContent = index + 1;
+            clone.querySelector('.item-number').textContent = index + 1;
 
             itemWrapper.appendChild(clone);
         }
