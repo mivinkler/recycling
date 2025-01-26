@@ -4,9 +4,9 @@ from django.core.paginator import Paginator
 from warenwirtschaft.models import Supplier
 
 
-class SuppliersListView(ListView):
+class SupplierListView(ListView):
     model = Supplier
-    template_name = 'supplier/suppliers_list.html'
+    template_name = 'supplier/supplier_list.html'
     context_object_name = 'suppliers'
     paginate_by = 20
 
