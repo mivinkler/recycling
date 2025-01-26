@@ -1,12 +1,12 @@
 from django.views.generic import ListView
 from django.core.paginator import Paginator
 from django.db.models import Q
-from warenwirtschaft.models import Delivery
+from warenwirtschaft.models import unload
 
-class DeliveriesListView(ListView):
-    model = Delivery
-    template_name = "delivery/deliveries_list.html"
-    context_object_name = "deliveries"
+class unloadsListView(ListView):
+    model = unload
+    template_name = "unload/unload_list.html"
+    context_object_name = "unloads"
     paginate_by = 20
 
     def get_queryset(self):
@@ -15,10 +15,11 @@ class DeliveriesListView(ListView):
         filter_mapping = {
             "id": "id",
             "supplier": "supplier__name",
-            "units": "units",
-            "delivery_receipt": "delivery_receipt",
+            "delivery_unit": "delivery_unit",
+            "unload_type": "unload_type",
+            "device": "device",
             "weight": "weight",
-            "delivery_date": "delivery_date",
+            "purpose": "purpose",
             "note": "note",
         }
 
@@ -27,7 +28,6 @@ class DeliveriesListView(ListView):
             for param, field in filter_mapping.items()
             if self.request.GET.get(param)
         }
-
         if filters:
             queryset = queryset.filter(Q(**filters))
 
@@ -36,14 +36,16 @@ class DeliveriesListView(ListView):
             "id_desc": "-id",
             "supplier_asc": "supplier__name",
             "supplier_desc": "-supplier__name",
-            "units_asc": "units",
-            "units_desc": "-units",
-            "delivery_receipt_asc": "delivery_receipt",
-            "delivery_receipt_desc": "-delivery_receipt",
+            "delivery_unit_asc": "delivery_unit",
+            "delivery_unit_desc": "-delivery_unit",
+            "unload_type_asc": "unload_type",
+            "unload_type_desc": "-unload_type",
+            "device_asc": "device",
+            "device_desc": "-device",
             "weight_asc": "weight",
             "weight_desc": "-weight",
-            "delivery_date_asc": "delivery_date",
-            "delivery_date_desc": "-delivery_date",
+            "purpose_asc": "purpose",
+            "purpose_desc": "-purpose",
             "note_asc": "note",
             "note_desc": "-note",
         }

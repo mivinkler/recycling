@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from warenwirtschaft.models import Supplier, Device, Delivery, DeliveryUnits
+from warenwirtschaft.models import Supplier, Device, Delivery, DeliveryUnit
 import random
 from datetime import date, timedelta
 from django_seed import Seed
@@ -105,7 +105,7 @@ class Command(BaseCommand):
 
         # После сбора данных, добавление их в базу данных
         if delivery_units_data:
-            DeliveryUnits.objects.bulk_create([DeliveryUnits(**data) for data in delivery_units_data])
+            DeliveryUnit.objects.bulk_create([DeliveryUnit(**data) for data in delivery_units_data])
             self.stdout.write(self.style.SUCCESS(f'Successfully created {len(delivery_units_data)} entries in DeliveryUnits.'))
         else:
             self.stdout.write(self.style.WARNING("No delivery units to create."))

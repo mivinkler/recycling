@@ -4,7 +4,7 @@ from .delivery_unit import DeliveryUnit
 from .supplier import Supplier
 from .device import Device
 
-class Unloading(AbstractModel):
+class unload(AbstractModel):
     UNLOAD_TYPE_CHOICES = [
         (1, "Gitterbox"),
         (2, "Palette"),
@@ -26,4 +26,4 @@ class Unloading(AbstractModel):
     supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, related_name="product_supplier")
 
     def __str__(self):
-        return f"Unloading: {self.delivery_unit} - {self.weight} kg - Type: {self.get_unload_type_display()} - Purpose: {self.get_purpose_display()}"
+        return f"unload: {self.delivery_unit} - {self.weight} kg - Type: {self.get_unload_type_display()} - Purpose: {self.get_purpose_display()}"

@@ -2,16 +2,16 @@ from django.views.generic import TemplateView
 from django.core.paginator import Paginator
 from django.urls import reverse_lazy
 from django.shortcuts import redirect, get_object_or_404
-from warenwirtschaft.models import DeliveryUnit, Device, Unloading
-from warenwirtschaft.forms import UnloadingFormSet
+from warenwirtschaft.models import DeliveryUnit, Device, unload
+from warenwirtschaft.forms import unloadFormSet
 
 
-class UnloadingCreateView(TemplateView):
-    template_name = "unloading/unloading_create.html"
-    success_url = reverse_lazy('unloading_create')
+class unloadCreateView(TemplateView):
+    template_name = "unload/unload_create.html"
+    success_url = reverse_lazy('unload_create')
 
     def get_context_data(self, **kwargs):
-        formset = UnloadingFormSet(queryset=Unloading.objects.none())
+        formset = unloadFormSet(queryset=unload.objects.none())
         devices = Device.objects.all()
 
         return {
@@ -29,15 +29,15 @@ class UnloadingCreateView(TemplateView):
     def post(self, request):
         delivery_unit = get_object_or_404(DeliveryUnit, id=request.POST.get("delivery_unit"))
         
-        formset = UnloadingFormSet(request.POST)
+        formset = unloadFormSet(request.POST)
 
         if formset.is_valid():
-            unloadings = formset.save(commit=False)
+            unloads = formset.save(commit=False)
 
-            for unloading in unloadings:
-                unloading.delivery_unit = delivery_unit
-                unloading.supplier = delivery_unit.delivery.supplier
-                unloading.save()
+            for unload in unloads:
+                unload.delivery_unit = delivery_unit
+                unload.supplier = delivery_unit.delivery.supplier
+                unload.save()
 
             return redirect(self.success_url)
         else:

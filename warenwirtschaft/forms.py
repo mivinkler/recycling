@@ -19,17 +19,17 @@ class DeliveryForm(forms.ModelForm):
             'note': forms.Textarea(attrs={'rows': 4}),
         }
 
-class UnloadingForm(forms.ModelForm):
+class unloadForm(forms.ModelForm):
     class Meta:
-        model = Unloading
+        model = unload
         fields = ['unload_type', 'device', 'weight', 'purpose', 'note']
         widgets = {
             'note': forms.Textarea(attrs={'rows': 2}),
             'weight': forms.NumberInput(attrs={'min': 0, 'step': 0.1}),
         }
 
-UnloadingFormSet = modelformset_factory(
-    Unloading,
-    form=UnloadingForm,
+unloadFormSet = modelformset_factory(
+    unload,
+    form=unloadForm,
     extra=1,
 )

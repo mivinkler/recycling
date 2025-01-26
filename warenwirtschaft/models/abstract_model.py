@@ -3,7 +3,7 @@ from django.db import models
 class AbstractModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    # deleted_at = models.DateTimeField(null=True, blank=True, default=None)
+    deleted_at = models.DateTimeField(null=True, blank=True, default=None)
 
     class Meta:
         abstract = True
