@@ -1,7 +1,6 @@
 from django.db import models
-from .abstract_model import AbstractModel
 
-class Supplier(AbstractModel):
+class Supplier(models.Model):
     name = models.CharField(max_length=100, unique=True, verbose_name="Name")
     avv_number = models.PositiveIntegerField(null=True, blank=True, verbose_name="AVV-Nummer")
     street = models.CharField(max_length=100, null=True, blank=True, verbose_name="Straße")
@@ -10,6 +9,9 @@ class Supplier(AbstractModel):
     phone = models.CharField(max_length=20, null=True, blank=True, verbose_name="Telefon")
     email = models.EmailField(null=True, blank=True, verbose_name="Email")
     note = models.CharField(max_length=255, null=True, blank=True, verbose_name="Bemerkung")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(null=True, blank=True, default=None)
 
     class Meta:
         indexes = [

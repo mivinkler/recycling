@@ -16,7 +16,7 @@ main {
   flex-direction: column;
   height: 100%;
   margin: 0 14px;
-  width: auto;
+  width: 100%;
 }
 
 /* ======  Sitebar ====== */
@@ -55,14 +55,25 @@ main {
 
 /* ======  Form Eingang ====== */
 
-.form-wrapper {
-  width: 560px;
-  margin: 50px auto;
+.delivery {
+  display: flex;
+  gap: 80px;
+  margin-top: 50px;
+  width: 100%;
+}
+
+.delivery-form-wrapper {
+  width: 30%;
   padding: 2px;
   background-color: aliceblue;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+
+.delivery_suppliers {
+  width: 70%;
+}
+
 
 .flex {
   display: flex;

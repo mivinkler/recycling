@@ -1,10 +1,9 @@
 from django.db import models
-from .abstract_model import AbstractModel
 from .delivery_unit import DeliveryUnit
 from .supplier import Supplier
 from .device import Device
 
-class unload(AbstractModel):
+class unload(models.Model):
     UNLOAD_TYPE_CHOICES = [
         (1, "Gitterbox"),
         (2, "Palette"),
@@ -24,6 +23,9 @@ class unload(AbstractModel):
     purpose = models.PositiveSmallIntegerField(choices=PURPOSE_CHOICES)
     note = models.CharField(max_length=255, null=True, blank=True)
     supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, related_name="product_supplier")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(null=True, blank=True, default=None)
 
     def __str__(self):
         return f"unload: {self.delivery_unit} - {self.weight} kg - Type: {self.get_unload_type_display()} - Purpose: {self.get_purpose_display()}"

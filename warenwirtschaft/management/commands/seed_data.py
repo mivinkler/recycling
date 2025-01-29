@@ -54,10 +54,10 @@ class Command(BaseCommand):
             "Starnberg", "Haar", "Puchheim", "Freising"
         ]
 
-        # Очистка таблицы "supplier" перед генерацией данных
+        # Löschen der Tabelle supplier vor der Datengenerierung
         Supplier.objects.all().delete()
 
-        # Генерация поставщиков с проверкой уникальности
+        # Generierung von Lieferanten mit ID Prüfung
         for name in company_names:
             if not Supplier.objects.filter(name=name).exists():
                 seed.add_entity(Supplier, 1, {
@@ -88,11 +88,11 @@ class Command(BaseCommand):
         # Delivery units
         deliveries = Delivery.objects.all()
 
-        # Сбор данных для DeliveryUnits
+        # Datenerfassung für DeliveryUnits
         delivery_units_data = []
         for delivery in deliveries:
             num_units = delivery.units or random.randint(1, 5)
-            for _ in range(num_units):  # Создание нескольких записей для каждой поставки
+            for _ in range(num_units):  # Erstellung von mehreren Datensätzen für jede Lieferung
                 delivery_units_data.append({
                     'delivery_id': delivery.id,
                     'device_id': random.choice(devices).id,
@@ -103,7 +103,7 @@ class Command(BaseCommand):
                     'delivery_receipt': random.choice([None, f"Receipt-{random.randint(1000, 9999)}"]),
                 })
 
-        # После сбора данных, добавление их в базу данных
+        # Nach dem Sammelung von Daten werden diese zur Datenbank hinzugefügt
         if delivery_units_data:
             DeliveryUnit.objects.bulk_create([DeliveryUnit(**data) for data in delivery_units_data])
             self.stdout.write(self.style.SUCCESS(f'Successfully created {len(delivery_units_data)} entries in DeliveryUnits.'))
