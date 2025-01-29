@@ -1,9 +1,8 @@
 from django.db import models
-from .abstract_model import AbstractModel
 from .delivery import Delivery
 from .device import Device
 
-class DeliveryUnit(AbstractModel):
+class DeliveryUnit(models.Model):
     STATUS_CHOICES = [
         (1, "Eingang"),
         (2, "Zerlegung"),
@@ -24,6 +23,9 @@ class DeliveryUnit(AbstractModel):
     note = models.CharField(max_length=255, null=True, blank=True)
     delivery_receipt = models.CharField(max_length=50, null=True, blank=True)
     delivery_type = models.PositiveSmallIntegerField(choices=DELIVERY_TYPE_CHOICES)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(null=True, blank=True, default=None)
 
     def __str__(self):
         return f"{self.get_delivery_type_display()} - {self.weight} kg - {self.device}"

@@ -1,30 +1,23 @@
 {% extends 'base.html' %}
 
 {% load static %}
+{% load pagination %}
+{% load sorting %}
 
 {% block title %}Eingang Form{% endblock %}
 
 {% block content %}
 
-<main>
-  <div class="form-wrapper">
-    <form method="post" action="{% url 'delivery_create' %}" id="eingang-form">
-      {% csrf_token %}
-      
-      <div class="delivery">
+
+<form method="post" action="{% url 'delivery_create' %}" id="eingang-form">
+  {% csrf_token %}
+  <div class="delivery">
+
+    <section class="delivery-form-wrapper">
+      <div> 
         <div class="flex">
           <label for="supplier">Lieferant:</label>
           <button type="button">+ Neuer Lieferant</button>
-          <!-- <select id="supplier" name="supplier">
-            <option selected disabled>-- Bitte wählen --</option>
-            <option id="neu_supplier" class="neu_supplier toggle-button">-- Neuer Lieferant --</option>
-            <hr></hr>
-            {% for supplier in suppliers %}
-              <option value="{{ supplier.id }}">
-                {{ supplier }}
-              </option>
-            {% endfor %}
-          </select> -->
         </div>
 
         <div class="hidden-block" hidden>
@@ -75,43 +68,97 @@
         </div>
       </div>
       
-      <section>
-        <div class="border block" id="item-wrapper">
-          <div class="item">
-            <div>
-              <div class="form-item-title">Ladungseinheit<span class="item-number"> 1</span></div>
-            </div>
-            <div class="flex">
-              <label>Art:</label>
-              <select name="form-0-delivery_type">
-                <option selected disabled>-- Bitte wählen --</option>
-                <option>Gitterbox</option>
-                <option>Container</option>
-                <option>Palette</option>
-              </select>
-            </div>
-            <div class="flex">
-              <label>Inhalt:</label>
-              <select name="form-0-device">
-                <option selected disabled>-- Bitte wählen --</option>
-                {% for device in devices %}
-                  <option value="{{ device.id }}">{{ device.name }}</option>
-                {% endfor %}
-              </select>
-            </div>
-            <div class="flex">
-              <label class="flex-items">Gewicht (kg):</label>
-              <input name="form-0-weights" type="number" min="0" step="0.1" required>
-            </div>
+
+      <div class="border block" id="item-wrapper">
+        <div class="item">
+          <div>
+            <div class="form-item-title">Ladungseinheit<span class="item-number"> 1</span></div>
+          </div>
+          <div class="flex">
+            <label>Art:</label>
+            <select name="form-0-delivery_type">
+              <option selected disabled>-- Bitte wählen --</option>
+              <option>Gitterbox</option>
+              <option>Container</option>
+              <option>Palette</option>
+            </select>
+          </div>
+          <div class="flex">
+            <label>Inhalt:</label>
+            <select name="form-0-device">
+              <option selected disabled>-- Bitte wählen --</option>
+              {% for device in devices %}
+                <option value="{{ device.id }}">{{ device.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="flex">
+            <label class="flex-items">Gewicht (kg):</label>
+            <input name="form-0-weights" type="number" min="0" step="0.1" required>
           </div>
         </div>
-      </section>
-
+      </div>
 
       <button type="submit" class="record-btn">Speichern</button>
-    </form>
+    </section>
+
+    <section class="delivery_suppliers">
+      <div class="table-name">Lieferanten</div>
+
+      <div class="table-action">
+          <button class="table-search btn-activ toggle-button">🔍</button>
+          <button class="table-reset btn-activ"><a href="{% url 'suppliers_list' %}" class="reset-btn">⟲</a></button>
+      </div>
+      <table class="">
+          <colgroup>
+              <col style="width: 3.5%">   <!-- Nr. -->
+              <col style="width: 6%">     <!-- AVV -->
+              <col style="width: 20%;">   <!-- Name -->
+              <col style="width: 10%">    <!-- Strasse -->
+              <col style="width: 5%;">    <!-- PLZ -->
+              <col style="width: 10%;">   <!-- Stadt -->
+          </colgroup>
+          <thead>
+              <tr class="table-filter hidden-block" hidden>
+                  <form method="GET" name="filter">
+                      <td><input type="text" name="id" placeholder="id" value="{{ request.GET.id }}"></td>
+                      <td><input type="text" name="avv_number" placeholder="AVV" value="{{ request.GET.avv_number }}"></td>
+                      <td><input type="text" name="name" placeholder="Name" value="{{ request.GET.name }}"></td>
+                      <td><input type="text" name="street" placeholder="Strasse" value="{{ request.GET.street }}"></td>
+                      <td><input type="text" name="postal_code" placeholder="PLZ" value="{{ request.GET.postal_code }}"></td>
+                      <td><input type="text" name="city" placeholder="Stadt" value="{{ request.GET.city }}"></td>
+                          <button class="btn-activ btn" type="submit">Suchen</button>
+                      </td>
+                  </form>
+              </tr>
+
+              <tr class="table-content-title">
+                  <th>{% sort "&#8470;" "id" request.GET.sort %}</th>
+                  <th>{% sort "AVV" "avv_number" request.GET.sort %}</th>
+                  <th>{% sort "Name" "name" request.GET.sort %}</th>
+                  <th>{% sort "Adresse" "street" request.GET.sort %}</th>
+                  <th>{% sort "PLZ" "postal_code" request.GET.sort %}</th>
+                  <th>{% sort "Stadt" "city" request.GET.sort %}</th>
+              </tr>
+          </thead>
+          <tbody class="table-content">
+              {% for supplier in page_obj %}
+              <tr>
+                  <td>{{ supplier.id }}</td>
+                  <td>{{ supplier.avv_number }}</td>
+                  <td>{{ supplier.name }}</td>
+                  <td>{{ supplier.street }}</td>
+                  <td>{{ supplier.postal_code }}</td>
+                  <td>{{ supplier.city }}</td>
+              </tr>
+              {% endfor %}
+          </tbody>
+      </table>
+
+      {% paginate page_obj %}
+    </section>
   </div>
-</main>
+</form>
 
 {% endblock %}
 
