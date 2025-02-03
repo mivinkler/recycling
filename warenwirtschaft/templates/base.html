@@ -5,7 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Default Title{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/layout.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/table.css' %}">
 
     <link rel="icon" type="image/png" href="{% static 'icons/favicon-96x96.png' %}" sizes="96x96">
     <link rel="icon" type="image/svg+xml" href="{% static 'icons/favicon.svg' %}">
@@ -20,9 +22,9 @@
                 <div class="left_menu_title">Lieferant</div>
                 <ul class="left_menu_items">
                     <li><a href="{% url 'suppliers_list' %}">List</a></li>
-                    <li><a href="{% url 'supplier_detail' pk=40%}">Detail</a></li>
+                    <li><a href="{% url 'supplier_detail' pk=1%}">Detail</a></li>
                     <li><a href="{% url 'supplier_create' %}">Create</a></li>
-                    <li><a href="{% url 'supplier_update' pk=40%}">Update</a></li>
+                    <li><a href="{% url 'supplier_update' pk=1%}">Update</a></li>
                 </ul>
             </div>
             <div>
@@ -30,7 +32,7 @@
                 <ul class="left_menu_items">
                     <li><a href="{% url 'deliveries_list' %}">List</a></li>
                     <li><a href="{% url 'delivery_units_list' %}">List: Liefereinheiten</a></li>
-                    <li><a href="{% url 'delivery_detail' pk=40%}">Detail</a></li>
+                    <li><a href="{% url 'delivery_detail' pk=1%}">Detail</a></li>
                     <li><a href="{% url 'delivery_create' %}">Create</a></li>
                 </ul>
             </div>

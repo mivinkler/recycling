@@ -9,7 +9,7 @@
 
 {% block content %}
 
-<div class="table-name">Liefereinheiten</div>
+<div class="title">Liefereinheiten</div>
 
 <div class="table-action">
     <button class="table-search btn-activ toggle-button">🔍</button>
@@ -23,7 +23,7 @@
         <col style="width: 6%;">     <!-- Datum -->
         <col style="width: 3.5%">    <!-- LID -->
         <col style="width: 10%;">    <!-- Behälter -->
-        <col style="width: 10%;">    <!-- Inhalt -->
+        <col style="width: 10%;">    <!-- Material -->
         <col style="width: 6%;">     <!-- Gewicht -->
         <col style="width: 6%;">     <!-- Status -->
         <col style="width: 200px;">  <!-- Bemerkung -->
@@ -46,7 +46,7 @@
                         <option value="4" {% if request.GET.delivery_type == "4" %}selected{% endif %}>Ohne Behälter</option>
                     </select>
                 </td>
-                <td><input type="text" name="device" placeholder="Inhalt" value="{{ request.GET.device }}"></td>
+                <td><input type="text" name="device" placeholder="Material" value="{{ request.GET.device }}"></td>
                 <td><input type="text" name="weight" placeholder="Gewicht" value="{{ request.GET.weight }}"></td>
                 <td>
                     <select name="status">
@@ -68,7 +68,7 @@
             <th>{% sort "Datum" "date" request.GET.sort %}</th>
             <th>{% sort "LID" "lid" request.GET.sort %}</th>
             <th>{% sort "Behälter" "container" request.GET.sort %}</th>
-            <th>{% sort "Inhalt" "device" request.GET.sort %}</th>
+            <th>{% sort "Material" "device" request.GET.sort %}</th>
             <th>{% sort "Gewicht" "weight" request.GET.sort %}</th>
             <th>{% sort "Status" "status" request.GET.sort %}</th>
             <th>{% sort "Bemerkung" "note" request.GET.sort %}</th>

@@ -9,7 +9,7 @@
 
 {% block content %}
 
-<div class="table-name">Entladungen</div>
+<div class="title">Entladungen</div>
 
 <div class="table-action">
     <button class="table-search btn-activ">🔍</button>
@@ -21,7 +21,7 @@
         <col style="width: 20%">    <!-- Lieferant -->
         <col style="width: 20%;">   <!-- Liefereinheit -->
         <col style="width: 10%">    <!-- Behälter -->
-        <col style="width: 10%;">   <!-- Inhalt -->
+        <col style="width: 10%;">   <!-- Material -->
         <col style="width: 7%;">    <!-- Gewicht -->
         <col style="width: 10%">    <!-- Zweck -->
         <col style="width: 10%">    <!-- Bemerkung -->
@@ -41,7 +41,7 @@
                         <option value="3" {% if request.GET.unload_type == "3" %}selected{% endif %}>Ohne Behälter</option>
                     </select>
                 </td>
-                <td><input type="text" name="device" placeholder="Inhalt" value="{{ request.GET.device }}"></td>
+                <td><input type="text" name="device" placeholder="Material" value="{{ request.GET.device }}"></td>
                 <td><input type="text" name="weight" placeholder="Gewicht" value="{{ request.GET.weight }}"></td>
 
 
@@ -56,9 +56,6 @@
                     </select>
                 </td>
 
-
-
-
                 <td><input type="text" name="note" placeholder="Bemerkung" value="{{ request.GET.note }}"></td>
                 
                 <td>
@@ -72,7 +69,7 @@
             <th>{% sort "Lieferant" "supplier" request.GET.sort %}</th>
             <th>{% sort "Liefereinheit" "delivery_unit" request.GET.sort %}</th>
             <th>{% sort "Behälter" "unload_type" request.GET.sort %}</th>
-            <th>{% sort "Inhalt" "device" request.GET.sort %}</th>
+            <th>{% sort "Material" "device" request.GET.sort %}</th>
             <th>{% sort "Gewicht" "weight" request.GET.sort %}</th>
             <th>{% sort "Zweck" "purpose" request.GET.sort %}</th>
             <th>{% sort "Bemerkung" "note" request.GET.sort %}</th>

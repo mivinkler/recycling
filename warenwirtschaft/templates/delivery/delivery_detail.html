@@ -8,7 +8,7 @@
 {% block title %}Lieferung-Einheiten{% endblock %}
 
 {% block content %}
-<div class="table-name">Lieferung: detail</div>
+<div class="title">Lieferung: detail</div>
 <table class="detail-header">
     <tr>
         <th>Lieferant:</th>
@@ -49,7 +49,7 @@
     <colgroup>
         <col style="width: 3.5%">    <!-- Nr. -->
         <col style="width: 10%;">    <!-- Behälter -->
-        <col style="width: 10%;">    <!-- Inhalt -->
+        <col style="width: 10%;">    <!-- Material -->
         <col style="width: 6%;">     <!-- Gewicht -->
         <col style="width: 6%;">     <!-- Status -->
         <col style="width: 200px;">  <!-- Bemerkung -->
@@ -60,7 +60,7 @@
         <tr class="table-content-title">
             <th>{% sort "ID" "id" request.GET.sort %}</th>
             <th>{% sort "Behälter" "delivery_type" request.GET.sort %}</th>
-            <th>{% sort "Inhalt" "device" request.GET.sort %}</th>
+            <th>{% sort "Material" "device" request.GET.sort %}</th>
             <th>{% sort "Gewicht" "weight" request.GET.sort %}</th>
             <th>{% sort "Status" "status" request.GET.sort %}</th>
             <th>{% sort "Bemerkung" "note" request.GET.sort %}</th>

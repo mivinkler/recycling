@@ -5,7 +5,7 @@
 {% block content %}
 
 
-<div class="table-name">Lieferant: update</div>
+<div class="title">Lieferant: update</div>
 
 <div class="form-wrapper">
 
@@ -14,7 +14,7 @@
         {% csrf_token %}
 
         <div class="form-supplier">
-            <div class="table-name">Lieferant: {{ supplier.name }}</div>
+            <div class="title">Lieferant: {{ supplier.name }}</div>
             <div>
                 {% for field in form %}
                 <div class="flex form-row-supplier">
