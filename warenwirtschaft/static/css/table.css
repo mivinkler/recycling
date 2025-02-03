@@ -1,0 +1,266 @@
+table {
+    border-collapse: collapse;
+    font-size: 0.8rem;
+}
+  
+.table-box {
+    width: calc(100vw - 300px);
+    border-collapse: collapse;
+    font-size: 0.8rem;
+    border: 1px solid #e8eaec;
+}
+
+/* ====== Table Title ====== */
+
+
+  
+.table-filter {
+  height: 44px;
+  background-color: #dee2e6;
+  border-bottom: 3px solid #fff;
+  padding: 4px;
+}
+
+.table-content-title {
+  height: 40px;
+  background-color: #dee2e6;
+}
+  
+/* ====== Table Header ====== */
+  
+th {
+  text-align: left;
+}
+
+.sort-icons {
+  width: 22px;
+}
+
+.sort-icons a {
+  text-decoration: none;
+  font-size: 10px;
+  color: #5b849d;
+}
+
+.sort-icons a:hover {
+  font-size: 11px;
+}
+
+/* ====== Table action buttons ====== */
+
+.table-action {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 1px;
+  height: 30px;
+}
+
+.table-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 26px;
+  margin-bottom: 6px;
+}
+
+.table-head a {
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.table-head-search form {
+  display: flex;
+  align-items: center;
+}
+
+.table-head-search input {
+  height: 24px;
+  width: 220px;
+  padding: 6px;
+  border: 1px solid #bbb;
+  border-right: none;
+  outline: none;
+}
+
+.table-head-search button {
+  height: 24px;
+  width: 32px;
+  background: #d1d1d1;
+  color: #333;
+  border: 1px solid #bbb;
+  border-left: none;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.table-head-search button:hover {
+  background: #bfbfbf;
+}
+
+.table-head-title {
+  font-weight: bold;
+  font-size: 1.3em;
+  color: #344b5e;
+}
+
+.table-reset,
+.table-search {
+  cursor: pointer;
+  border: 1px solid #bebbbb;
+  background-color: #f0f3f3;
+  height: 26px;
+  width: 26px;
+}
+
+.btn-reset a {
+  cursor: pointer;
+  font-size: 18px;
+  text-decoration: none;
+}
+
+.table-search {
+  font-size: 14px;
+}
+
+.table-reset a {
+  font-size: 18px;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+/* ====== Table Filter ====== */
+
+.table-filter input,
+.table-filter select {
+  width: 100%;
+  box-sizing: border-box;
+  height: 26px;
+  border: 1px solid #bebbbb;
+  padding-left: 8px;
+}
+
+.table-filter td {
+  padding: 0 4px;
+}
+
+.table-filter input:focus {
+  outline: 1px solid #9b9b9b;
+    outline-offset: -1px;
+}
+
+.table-filter select {
+  padding-left: 2px;
+}
+
+.table-filter select:first-child {
+  color: #747474; 
+}
+
+/* ====== Table Body ====== */
+
+details > summary::marker {
+  display: none;
+  content: '';
+}
+
+
+.table-content-title {
+  font-weight: bold;
+  width: 100%;
+}
+
+.table-content-title th,
+.table-content td {
+  border: 1px solid #e8eaec;
+  padding: 4px 10px;
+  line-height: 24px;
+}
+
+.table-content-title th div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.table-filter button {
+  height: 26px;
+  cursor: pointer;
+  margin-left: 8px;
+  border: 1px solid #bebbbb;
+  color: #4d4d4d;
+  background-color: #f0f3f3;
+}
+
+.btn {
+  padding: 0 8px;
+}
+
+.btn-activ:hover {
+  background-color: #d6d4d4;
+  color: #4b4b4b;
+  outline: 1px solid #afafaf;
+  outline-offset: -1px;
+}
+
+.table-content tr:nth-child(odd) {
+  background-color: #f8f9fa;
+}
+
+.table-content tr:hover {
+  background-color: #e9ecef;
+}
+
+.note-column p {
+  white-space: nowrap;       
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 300px;
+}
+
+.suppler-icons a {
+  text-decoration: none;
+  margin-left: 5px;
+}
+
+/* ====== Pagination ====== */
+
+.pagination {
+  display: flex;
+  height: 40px;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8em;
+  margin-top: auto;
+}
+
+.pagination a {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  text-decoration: none;
+  color: #333;
+  background-color: #f9f9f9;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.pagination a:hover {
+  background-color: #ddd;
+  color: #000;
+}
+
+.pagination .current {
+  padding: 7px 11px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #e0e0e0;
+  color: #333;
+  font-weight: bold;
+}
+
+.pagination span {
+  padding: 8px 12px;
+  color: #888;
+}

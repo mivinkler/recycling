@@ -1,11 +1,8 @@
-from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView
-from warenwirtschaft.models import Delivery
-from warenwirtschaft.forms import DeliveryForm
-from warenwirtschaft.models import Device
-from warenwirtschaft.models import Supplier
 from django.core.paginator import Paginator
 from django.db.models import Q
+from warenwirtschaft.models import Delivery, Device, Supplier
+from warenwirtschaft.forms import DeliveryForm
 
 
 class DeliveryCreateView(CreateView):
@@ -14,55 +11,52 @@ class DeliveryCreateView(CreateView):
     form_class = DeliveryForm
     paginate_by = 20
 
+    # Поля, по которым будем искать
+    search_fields = ["id", "avv_number", "name", "street", "postal_code", "city", "phone", "email", "note"]
+
+    # Автоматическая генерация сортировки
+    sort_mapping = {field: field for field in search_fields}
+    sort_mapping.update({f"{key}_desc": f"-{val}" for key, val in sort_mapping.items()})
+
+    def apply_search(self, queryset):
+        """Поиск по всем полям из search_fields."""
+        search_query = self.request.GET.get("search", "").strip()
+        if not search_query:
+            return queryset
+
+        q_objects = Q()
+        for field in self.search_fields:
+            lookup = f"{field}__icontains"
+            q_objects |= Q(**{lookup: search_query})
+
+        return queryset.filter(q_objects)
+
+    def apply_sorting(self, queryset):
+        """Сортировка по переданному GET-параметру."""
+        sort_field = self.sort_mapping.get(self.request.GET.get("sort"), "id")
+        return queryset.order_by(sort_field)
+
     def get_queryset(self):
+        """Фильтрация и сортировка списка доставок."""
         queryset = super().get_queryset()
+        return self.apply_sorting(self.apply_search(queryset))
 
-        filter_mapping = {
-            'id': 'id',
-            'avv_number': 'avv_number',
-            'name': 'name',
-            'street': 'street',
-            'postal_code': 'postal_code',
-            'city': 'city',
-        }
-
-        filters = {
-            field: self.request.GET.get(param)
-            for param, field in filter_mapping.items()
-            if self.request.GET.get(param)
-        }
-
-        if filters:
-            queryset = queryset.filter(Q(**filters))
-
-        sort_mapping = {
-            'id_asc': 'id', 
-            'id_desc': '-id',
-            'avv_number_asc': 'avv_number', 
-            'avv_number_desc': '-avv_number',
-            'name_asc': 'name', 
-            'name_desc': '-name',
-            'street_asc': 'street', 
-            'street_desc': '-street',
-            'postal_code_asc': 'postal_code', 
-            'postal_code_desc': '-postal_code',
-            'city_asc': 'city', 
-            'city_desc': '-city',
-        }
-
-        sort_field = sort_mapping.get(self.request.GET.get('sort', 'id_asc'), 'id')
-        queryset = queryset.order_by(sort_field)
-
-        return queryset
+    def get_paginated_queryset(self, queryset):
+        """Пагинация списка."""
+        paginator = Paginator(queryset, self.paginate_by)
+        page_number = self.request.GET.get("page", 1)
+        return paginator.get_page(page_number)
 
     def get_context_data(self, **kwargs):
+        """Добавляем в контекст список устройств и поставщиков."""
         context = super().get_context_data(**kwargs)
-        context['devices'] = Device.objects.all()
+        context["devices"] = Device.objects.all()
 
-        suppliers_list = Supplier.objects.all()
-        supplier_paginator = Paginator(suppliers_list, self.paginate_by)
-        supplier_page_number = self.request.GET.get('supplier_page', 1)
-        supplier_page_obj = supplier_paginator.get_page(supplier_page_number)
+        # Фильтрация и сортировка поставщиков
+        suppliers_queryset = self.apply_sorting(self.apply_search(Supplier.objects.all()))
+        context["page_obj"] = self.get_paginated_queryset(suppliers_queryset)
 
-        context['page_obj'] = supplier_page_obj
+        # Передаём текущее значение поиска
+        context["search_query"] = self.request.GET.get("search", "")
+
         return context
