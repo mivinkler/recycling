@@ -33,17 +33,16 @@ th {
 }
 
 .sort-icons {
-  width: 22px;
+  display: flex;
+  flex-direction: column;
+  width: 10px;
 }
 
 .sort-icons a {
   text-decoration: none;
   font-size: 10px;
   color: #5b849d;
-}
-
-.sort-icons a:hover {
-  font-size: 11px;
+  line-height: normal;
 }
 
 /* ====== Table action buttons ====== */
@@ -219,9 +218,10 @@ details > summary::marker {
   width: 300px;
 }
 
-.suppler-icons a {
+.suppler-icons * {
   text-decoration: none;
-  margin-left: 5px;
+  margin-left: 3px;
+  vertical-align: middle;
 }
 
 /* ====== Pagination ====== */

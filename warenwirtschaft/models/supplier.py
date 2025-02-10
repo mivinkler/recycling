@@ -21,4 +21,4 @@ class Supplier(models.Model):
 
     def __str__(self):
         avv_number = self.avv_number if self.avv_number else "Unknown AVV number"
-        return f"{self.name} (AVV: {avv_number})"
+        return f"{self.name}"

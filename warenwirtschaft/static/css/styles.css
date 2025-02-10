@@ -28,10 +28,19 @@
 .delivery {
   display: flex;
   justify-content: space-between;
+  margin-left: 50px;
+}
+
+.delivery section:nth-child(1) {
+  margin-top: 34px;
+  width: 30%;
+}
+
+.delivery section:nth-child(2) {
+  width: 65%;
 }
 
 .delivery-form-wrapper {
-  width: 30%;
   height: min-content;
   padding: 12px;
   background-color: aliceblue;
@@ -50,10 +59,9 @@
   width: 50px;
 }
 
-.delivery_suppliers {
-  width: 68%;
-  padding-right: 12px;
-}
+/* .delivery_suppliers {
+  width: 60%;
+} */
 
 .flex > #wareneingang, #traeger_anzahl {
   width: min-content
