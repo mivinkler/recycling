@@ -72,7 +72,7 @@
             <td>{{ supplier.email }}</td>
             <td class="note-column" title="{{ supplier.note }}"><p>{{ supplier.note }}</p></td>
             <td class="suppler-icons">
-                <a href="#" title="Lieferung ansehen">
+                <a href="{% url 'supplier_detail' pk=supplier.id %}" title="Detail">
                     <img src="{% static 'icons/detail-icon.svg' %}">   
                 </a>
                 <a href="{% url 'supplier_update' pk=supplier.id %}" title="Bearbeiten"> 
