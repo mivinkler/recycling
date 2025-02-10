@@ -67,7 +67,7 @@
             <td>{{ delivery.delivery_date|date:"d.m.Y" }}</td>
             <td class="note-column" title="{{ delivery.note }}"><p>{{ delivery.note }}</p></td>
             <td class="suppler-icons">
-                <a href="#" title="Lieferung ansehen">
+                <a href="{% url 'delivery_detail' pk=delivery.id %}" title="Detail">
                     <img src="{% static 'icons/detail-icon.svg' %}">   
                 </a>
                 <a href="#" title="Bearbeiten"> 
