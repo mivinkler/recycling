@@ -1,19 +1,26 @@
 {% extends 'base.html' %}
 
 {% load static %}
-{% load pagination %}
+<!-- {% load pagination %} -->
 {% load sorting %}
 
 {% block title %}{{ _("Lieferungen") }}{% endblock %}
 
 {% block content %}
 
-<div class="title">Lieferungen</div>
-
-<div class="table-action">
+<!-- <div class="table-action">
     <button class="table-search btn-activ toggle-button">🔍</button>
     <button class="table-reset btn-activ"><a href="{% url 'deliveries_list' %}" class="reset-btn">⟲</a></button>
-</div>
+</div> -->
+<div class="table-head">
+    <div class="table-head-title">Lieferungen<a href="{% url 'deliveries_list' %}"> ⟲</a></div>
+    <div class="table-head-search">
+      <form method="GET">
+        <input type="text" name="search" placeholder="Suchen..." value="{{ search_query }}">
+        <button type="submit">🔍</button>
+      </form>
+    </div>
+  </div>
 <table class="table-box">
     <colgroup>
         <col style="width: 3.5%">   <!-- Nr. -->
@@ -26,7 +33,7 @@
         <col style="width: 10%">    <!-- actions -->
     </colgroup>
     <thead>
-        <tr class="table-filter hidden-block" hidden>
+        <!-- <tr class="table-filter hidden-block" hidden>
             <form method="GET" name="filter">
                 <td><input type="text" name="id" placeholder="Nr." value="{{ request.GET.id }}"></td>
                 <td><input type="text" name="supplier" placeholder="Lieferant" value="{{ request.GET.supplier }}"></td>
@@ -40,7 +47,7 @@
                     <button class="btn-activ" type="submit">Suchen</button>
                 </td>
             </form>
-        </tr>
+        </tr> -->
 
 
         <tr class="table-content-title">

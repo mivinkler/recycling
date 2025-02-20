@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
-{% load i18n %}
+
+{% load static %}
+{% load sorting %}
+
 {% block title %}Lieferung-Einheiten{% endblock %}
 
 {% block content %}
@@ -44,29 +47,68 @@
 </table>
 
 
-<div class="table-action">
-    <button class="table-search btn-activ">🔍</button>
-    <button class="table-reset btn-activ"><a href="{% url 'suppliers_list' %}" class="reset-btn">⟲</a></button>
-</div>
 
-<table class="table-box">
-    <thead>
-        <tr class="table-content-title">
-            <th>Datum</th>       
-            <th>Gewicht</th>
-            <th>Amerkung</th>
-        </tr>
-    </thead>
-    <tbody class="table-content">
-        {% for delivery in page_obj %}
-        <tr>
-            <td>{{ delivery.delivery_date|date:"d.m.Y" }}</td>
-            <td>{{ delivery.weight }}</td>
-            <td>{{ delivery.note }}</td>
-        </tr>
-        {% endfor %}
+<div class="table-head">
+    <!-- <div class="table-action">
+        <button class="table-search btn-activ">🔍</button>
+        <button class="table-reset btn-activ"><a href="{% url 'suppliers_list' %}" class="reset-btn">⟲</a></button>
+    </div> -->
+    <div class="table-head-title">Lieferant<a href="{% url 'suppliers_list' %}"> ⟲</a></div>
+    <div class="table-head-search">
+      <form method="GET">
+        <input type="text" name="search" placeholder="Suchen..." value="{{ search_query }}">
+        <button type="submit">🔍</button>
+      </form>
     </div>
-</table>
+  </div>
+</div>
+    <table class="table-box">
+        <colgroup>
+            <col style="width: 3.5%">   <!-- Nr. -->
+            <col style="width: 3.5%;">  <!-- Teile -->
+            <col style="width: 10%">    <!-- Lieferschein -->
+            <col style="width: 5%;">    <!-- Gewicht -->
+            <col style="width: 8%;">    <!-- Datum -->
+            <col style="width: 10%">    <!-- Bemerkung -->
+            <col style="width: 10%">    <!-- actions -->
+        </colgroup>
+        <thead>
+            <tr class="table-content-title">
+                <th>{% sort "&#8470;" "id" request.GET.sort %}</th>
+                <th>{% sort "Behälter" "units" request.GET.sort %}</th>
+                <th>{% sort "Lieferschein" "delivery_receipt" request.GET.sort %}</th>
+                <th>{% sort "Gewicht" "weight" request.GET.sort %}</th>
+                <th>{% sort "Datum" "delivery_date" request.GET.sort %}</th>
+                <th>{% sort "Bemerkung" "note" request.GET.sort %}</th>
+                <th></th> <!-- actions -->
+            </tr>
+        </thead>
+
+        <tbody class="table-content">
+            {% for delivery in page_obj %}
+            <tr>
+                <td>{{ delivery.id }}</td>
+                <td class="tooltip-wrapper" title="{% for deliveryunit in delivery.deliveryunits_set.all %}&bull; {{ deliveryunit.device }} - {{ deliveryunit.weight }} kg - {{ deliveryunit.get_status_display }}&#10;{% endfor %}">
+                    {{ delivery.deliveryunits_set.all|length }}
+                </td>                
+                <td>{{ delivery.delivery_receipt }}</td>
+                <td>{{ delivery.weight }}</td>
+                <td>{{ delivery.delivery_date|date:"d.m.Y" }}</td>
+                <td class="note-column" title="{{ delivery.note }}"><p>{{ delivery.note }}</p></td>
+                <td class="suppler-icons">
+                    <a href="{% url 'delivery_detail' pk=delivery.id %}" title="Detail">
+                        <img src="{% static 'icons/detail-icon.svg' %}">   
+                    </a>
+                    <a href="#" title="Bearbeiten"> 
+                        <img src="{% static 'icons/update-icon.svg' %}">
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+<div>
 <div class="pagination">
     <span class="step-links">
         {% if page_obj.has_previous %}

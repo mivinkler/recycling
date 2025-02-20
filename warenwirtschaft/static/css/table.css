@@ -1,18 +1,13 @@
 table {
     border-collapse: collapse;
-    font-size: 0.8rem;
 }
   
 .table-box {
-    width: calc(100vw - 300px);
     border-collapse: collapse;
-    font-size: 0.8rem;
     border: 1px solid #e8eaec;
 }
 
 /* ====== Table Title ====== */
-
-
   
 .table-filter {
   height: 44px;
@@ -35,14 +30,16 @@ th {
 .sort-icons {
   display: flex;
   flex-direction: column;
-  width: 10px;
+  /* width: 10px; */
+  height: 100%;
 }
 
 .sort-icons a {
   text-decoration: none;
   font-size: 10px;
   color: #5b849d;
-  line-height: normal;
+  line-height: 10px;
+  
 }
 
 /* ====== Table action buttons ====== */
@@ -222,6 +219,11 @@ details > summary::marker {
   text-decoration: none;
   margin-left: 3px;
   vertical-align: middle;
+}
+
+.input-btn {
+  padding: 3px 6px;
+  margin-top: 12px;
 }
 
 /* ====== Pagination ====== */

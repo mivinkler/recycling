@@ -28,7 +28,6 @@
 .delivery {
   display: flex;
   justify-content: space-between;
-  margin-left: 50px;
 }
 
 .delivery section:nth-child(1) {
@@ -103,7 +102,8 @@ select {
 /* ============ Supplier Create ================*/
 
 .form-supplier {
-  margin: 30px 15px;
+  margin-top: 30px;
+  width: 500px;
 }
 
 .form-supplier > div {
@@ -168,7 +168,7 @@ select {
 }
 
 .unload_cargo .table-box {
-  width: 60%;
+  width: calc(60% - 100px);
 }
 
 caption p {
@@ -181,7 +181,7 @@ caption p {
 
 .row-counter {
   margin-top: 40px;
-  width: 84px;
+  width: 90px;
   height: 26px;
 }
 
