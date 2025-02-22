@@ -9,63 +9,43 @@ class DeliveryUnitsListView(ListView):
     context_object_name = "delivery_units"
     paginate_by = 20
 
+    search_fields = ["id", "delivery__id", "delivery_receipt", 
+                     "delivery_type", "device__name", "weight", "status", "note"]
+
+    sort_mapping = {field: field for field in search_fields}
+    sort_mapping.update({f"{key}_desc": f"-{val}" for key, val in sort_mapping.items()})
+
+    def apply_search(self, queryset):
+        search_query = self.request.GET.get("search", "").strip()
+        if not search_query:
+            return queryset
+
+        q_objects = Q()
+        for field in self.search_fields:
+            lookup = f"{field}__icontains"
+            q_objects |= Q(**{lookup: search_query})
+
+        return queryset.filter(q_objects)
+
+    def apply_sorting(self, queryset):
+        sort_field = self.sort_mapping.get(self.request.GET.get("sort"), "id")
+        return queryset.order_by(sort_field)
+
     def get_queryset(self):
         queryset = super().get_queryset()
+        return self.apply_sorting(self.apply_search(queryset))
 
-        # Filtering
-        filter_mapping = {
-            "id": "id",
-            "delivery": "delivery__id",
-            "delivery_date": "delivery__delivery_date",
-            "delivery_id": "delivery_receipt__icontains",
-            "delivery_type": "delivery_type",
-            "device": "device__name__icontains",
-            "weight": "weight",
-            "status": "status",
-            "note": "note__icontains",
-        }
-        filters = {
-            field: self.request.GET.get(param)
-            for param, field in filter_mapping.items()
-            if self.request.GET.get(param)
-        }
-        if filters:
-            queryset = queryset.filter(Q(**filters))
-
-        # Sorting
-        sort_mapping = {
-            "id_asc": "id",
-            "id_desc": "-id",
-            "delivery_asc": "delivery__id",
-            "delivery_desc": "-delivery__id",
-            "date_asc": "delivery__delivery_date",
-            "date_desc": "-delivery__delivery_date",
-            "lid_asc": "delivery_receipt",
-            "lid_desc": "-delivery_receipt",
-            "container_asc": "delivery_type",
-            "container_desc": "-delivery_type",
-            "device_asc": "device__name",
-            "device_desc": "-device__name",
-            "weight_asc": "weight",
-            "weight_desc": "-weight",
-            "status_asc": "status",
-            "status_desc": "-status",
-            "note_asc": "note",
-            "note_desc": "-note",
-        }
-        sort_field = sort_mapping.get(self.request.GET.get("sort", "id_asc"), "id")
-        queryset = queryset.order_by(sort_field)
-
-        return queryset
+    def get_paginated_queryset(self, queryset):
+        paginator = Paginator(queryset, self.paginate_by)
+        page_number = self.request.GET.get("page", 1)
+        return paginator.get_page(page_number)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        filtered_queryset = self.get_queryset()
+        context["page_obj"] = self.get_paginated_queryset(filtered_queryset)
+        context["search_query"] = self.request.GET.get("search", "")
+        context["sort_param"] = self.request.GET.get("sort", "")
         context["delivery_types"] = DeliveryUnit.DELIVERY_TYPE_CHOICES
         context["statuses"] = DeliveryUnit.STATUS_CHOICES
-
-        paginator = Paginator(self.get_queryset(), self.paginate_by)
-        page_number = self.request.GET.get("page", 1)
-        page_obj = paginator.get_page(page_number)
-
-        context["page_obj"] = page_obj
         return context
