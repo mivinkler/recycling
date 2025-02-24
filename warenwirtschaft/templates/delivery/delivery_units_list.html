@@ -11,9 +11,18 @@
 
 <div class="title">Liefereinheiten</div>
 
-<div class="table-action">
+<!-- <div class="table-action">
     <button class="table-search btn-activ toggle-button">🔍</button>
     <button class="table-reset btn-activ"><a href="{% url 'delivery_units_list' %}" class="reset-btn">⟲</a></button>
+</div> -->
+<div class="table-head">
+    <div class="table-head-title">Lieferanten<a href="{% url 'delivery_units_list' %}"> ⟲</a></div>
+    <div class="table-head-search">
+      <form method="GET">
+        <input type="text" name="search" placeholder="Suchen..." value="{{ search_query }}">
+        <button type="submit">🔍</button>
+      </form>
+    </div>
 </div>
 
 <table class="table-box">
@@ -31,50 +40,19 @@
     </colgroup>
 
     <thead>
-        <tr class="table-filter hidden-block" hidden>
-            <form method="GET" name="filter">
-                <td><input type="text" name="id" placeholder="id" value="{{ request.GET.id }}"></td>
-                <td><input type="text" name="delivery" placeholder="Lieferung" value="{{ request.GET.delivery }}"></td>
-                <td><input type="text" name="created_at" placeholder="Datum" value="{{ request.GET.created_at }}"></td>
-                <td><input type="text" name="delivery_date" placeholder="LID" value="{{ request.GET.delivery_date }}"></td>
-                <td>
-                    <select name="delivery_type">
-                        <option value="" disabled selected hidden>Behälter</option>
-                        <option value="1" {% if request.GET.delivery_type == "1" %}selected{% endif %}>Container</option>
-                        <option value="2" {% if request.GET.delivery_type == "2" %}selected{% endif %}>Gitterbox</option>
-                        <option value="3" {% if request.GET.delivery_type == "3" %}selected{% endif %}>Palette</option>
-                        <option value="4" {% if request.GET.delivery_type == "4" %}selected{% endif %}>Ohne Behälter</option>
-                    </select>
-                </td>
-                <td><input type="text" name="device" placeholder="Material" value="{{ request.GET.device }}"></td>
-                <td><input type="text" name="weight" placeholder="Gewicht" value="{{ request.GET.weight }}"></td>
-                <td>
-                    <select name="status">
-                        <option value="" disabled selected hidden>Status</option>
-                        <option value="1" {% if request.GET.status == "1" %}selected{% endif %}>Eingang</option>
-                        <option value="2" {% if request.GET.status == "2" %}selected{% endif %}>Zerlegung</option>
-                        <option value="3" {% if request.GET.status == "3" %}selected{% endif %}>Erledigt</option>
-                    </select>
-                </td>
-                <td>
-                    <button class="btn-activ" type="submit">Suchen</button>
-                </td>
-            </form>
-        </tr>
-  
         <tr class="table-content-title">
-            <th>{% sort "&#8470;" "id" request.GET.sort %}</th>
-            <th>{% sort "Lieferung" "delivery" request.GET.sort %}</th>
+            <th>{% sort "№" "id" request.GET.sort %}</th>
+            <th>{% sort "Lieferant" "delivery__supplier__name" request.GET.sort %}</th>
             <th>{% sort "Lieferschein" "delivery_receipt" request.GET.sort %}</th>
-            <th>{% sort "Datum" "date" request.GET.sort %}</th>
-            <th>{% sort "Gesamtgewicht" "total_weight" request.GET.sort %}</th>
-            <th>{% sort "LID" "lid" request.GET.sort %}</th>
+            <th>{% sort "Datum" "delivery__delivery_date" request.GET.sort %}</th>
+            <th>{% sort "Gesamtgewicht" "delivery__total_weight" request.GET.sort %}</th>
+            <th>{% sort "LID" "delivery__id" request.GET.sort %}</th>
             <th>{% sort "Behälter" "delivery_type" request.GET.sort %}</th>
-            <th>{% sort "Material" "device" request.GET.sort %}</th>
+            <th>{% sort "Material" "device__name" request.GET.sort %}</th>
             <th>{% sort "Gewicht" "weight" request.GET.sort %}</th>
             <th>{% sort "Status" "status" request.GET.sort %}</th>
             <th>{% sort "Bemerkung" "note" request.GET.sort %}</th>
-            <th></th> <!-- actions -->
+            <th></th>
         </tr>
     </thead>
 
@@ -82,7 +60,7 @@
         {% for item in page_obj %}
         <tr>
             <td>{{ item.id }}</td>
-            <td>{{ item.delivery.supplier }}</td>
+            <td>{{ item.delivery.supplier.name }}</td>
             <td>{{ item.delivery.delivery_receipt }}</td>
             <td>{{ item.delivery.delivery_date|date:"d.m.Y" }}</td>
             <td>{{ item.delivery.total_weight }}</td>
