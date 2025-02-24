@@ -11,7 +11,7 @@ class SupplierForm(forms.ModelForm):
 class DeliveryForm(forms.ModelForm):
     class Meta:
         model = Delivery
-        fields = ['weight', 'units', 'delivery_receipt', 'delivery_date']
+        fields = ['total_weight', 'units', 'delivery_receipt', 'delivery_date']
 
 class unloadForm(forms.ModelForm):
     class Meta:

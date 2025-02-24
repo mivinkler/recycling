@@ -11,9 +11,9 @@ class DeliveryCreateView(CreateView):
     form_class = DeliveryForm
     paginate_by = 20
 
-    search_fields = ["id", "avv_number", "name", "street", "postal_code", "city", "phone", "email", "note"]
+    active_fields= ["id", "avv_number", "name", "street", "postal_code", "city", "phone", "email", "note"]
 
-    sort_mapping = {field: field for field in search_fields}
+    sort_mapping = {field: field for field in active_fields}
     sort_mapping.update({f"{key}_desc": f"-{val}" for key, val in sort_mapping.items()})
 
     def apply_search(self, queryset):
@@ -22,7 +22,7 @@ class DeliveryCreateView(CreateView):
             return queryset
 
         q_objects = Q()
-        for field in self.search_fields:
+        for field in self.active_fields:
             lookup = f"{field}__icontains"
             q_objects |= Q(**{lookup: search_query})
 

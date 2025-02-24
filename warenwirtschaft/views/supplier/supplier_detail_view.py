@@ -10,15 +10,8 @@ class SupplierDetailView(DetailView):
     context_object_name = "supplier"
     paginate_by = 14
     
-    search_fields = ["id", "units", "delivery_receipt", "weight", "delivery_date", "note"]
-    sort_mapping = {
-        "id": "id",
-        "units": "units",
-        "delivery_receipt": "delivery_receipt",
-        "weight": "weight",
-        "delivery_date": "delivery_date",
-        "note": "note",
-    }
+    active_fields = ["id", "units", "delivery_receipt", "weight", "delivery_date", "note"]
+    sort_mapping = {field: field for field in active_fields}
     sort_mapping.update({f"{key}_desc": f"-{val}" for key, val in sort_mapping.items()})
 
     def apply_search(self, queryset):
@@ -27,7 +20,7 @@ class SupplierDetailView(DetailView):
             return queryset
         
         q_objects = Q()
-        for field in self.search_fields:
+        for field in self.active_fields:
             lookup = f"{field}__icontains"
             q_objects |= Q(**{lookup: search_query})
         
@@ -58,5 +51,5 @@ class SupplierDetailView(DetailView):
 
         context["page_obj"] = self.get_paginated_queryset(deliveries)
         context["search_query"] = self.request.GET.get("search", "")
-        context["sort"] = self.request.GET.get("sort", "id")  # Передаем текущий параметр сортировки в шаблон
+        context["sort"] = self.request.GET.get("sort", "id")  # aktuelle Sortieroption
         return context

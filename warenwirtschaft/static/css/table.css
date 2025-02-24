@@ -180,6 +180,10 @@ details > summary::marker {
   align-items: center;
 }
 
+.table-content td {
+  vertical-align: super;
+}
+
 .table-filter button {
   height: 26px;
   cursor: pointer;
@@ -200,13 +204,13 @@ details > summary::marker {
   outline-offset: -1px;
 }
 
-.table-content tr:nth-child(odd) {
+/* .table-content tr:nth-child(odd) {
   background-color: #f8f9fa;
 }
 
 .table-content tr:hover {
   background-color: #e9ecef;
-}
+} */
 
 .note-column p {
   white-space: nowrap;       

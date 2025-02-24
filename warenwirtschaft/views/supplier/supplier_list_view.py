@@ -9,8 +9,8 @@ class SupplierListView(ListView):
     context_object_name = "suppliers"
     paginate_by = 20
 
-    search_fields = ["id", "avv_number", "name", "street", "postal_code", "city", "phone", "email", "note"]
-    sort_mapping = {field: field for field in search_fields}
+    active_fields= ["id", "avv_number", "name", "street", "postal_code", "city", "phone", "email", "note"]
+    sort_mapping = {field: field for field in active_fields}
     sort_mapping.update({f"{key}_desc": f"-{val}" for key, val in sort_mapping.items()})
 
     def apply_search(self, queryset):
@@ -19,14 +19,19 @@ class SupplierListView(ListView):
             return queryset
 
         q_objects = Q()
-        for field in self.search_fields:
+        for field in self.active_fields:
             lookup = f"{field}__icontains"
             q_objects |= Q(**{lookup: search_query})
 
         return queryset.filter(q_objects)
 
     def apply_sorting(self, queryset):
-        sort_field = self.sort_mapping.get(self.request.GET.get("sort"), "id")
+        sort_param = self.request.GET.get("sort", "id_asc")  # Voreingestellte Sortierung nach id_asc
+        sort_field = sort_param.replace("_asc", "").replace("_desc", "")  # Entfern von _asc/_desc
+
+        if sort_param.endswith("_desc"):
+            sort_field = f"-{sort_field}"
+
         return queryset.order_by(sort_field)
 
     def get_queryset(self):
