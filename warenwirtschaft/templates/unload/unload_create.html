@@ -41,7 +41,7 @@
                     </td>
                     <td class="text-center item-id">{{ item.id }}</td>
                     <td class="item-supplier">{{ item.delivery.supplier.name }}</td>
-                    <td>{{ item.delivery.delivery_date|date:"d.m.Y" }}</td>
+                    <td>{{ item.delivery.created_at|date:"d.m.Y" }}</td>
                     <td class="text-center item-delivery-id">{{ item.delivery_id }}</td>
                     <td class="item-container">{{ item|getattr:"get_delivery_type_display" }}</td>
                     <td class="item-content">{{ item.device }}</td>

@@ -128,51 +128,35 @@
           <col style="width: 10%;">   <!-- Stadt -->
           <col style="width: 10%;">   <!-- Bemerkung -->
       </colgroup>
-      <thead>
-        
-        <!-- <tr class="table-filter hidden-block" hidden>
-          <form method="GET" action="" name="filter">
-            <td></td>
-            <td><input type="text" name="id" placeholder="id" value="{{ request.GET.id|default:'' }}"></td>
-            <td><input type="text" name="avv_number" placeholder="AVV" value="{{ request.GET.avv_number|default:'' }}"></td>
-            <td><input type="text" name="name" placeholder="Name" value="{{ request.GET.name|default:'' }}"></td>
-            <td><input type="text" name="street" placeholder="Strasse" value="{{ request.GET.street|default:'' }}"></td>
-            <td><input type="text" name="postal_code" placeholder="PLZ" value="{{ request.GET.postal_code|default:'' }}"></td>
-            <td><input type="text" name="city" placeholder="Stadt" value="{{ request.GET.city|default:'' }}"></td>
-            <td>
-              <button class="btn-activ btn" type="submit">Suchen</button>
-            </td>
-        </form>
-        </tr> -->
-        
 
+      <thead>
         <tr class="table-content-title">
           <th class="text-center">wählen</th>
-          <th>{% sort "ID" "id" request.GET.sort %}</th>
-          <th>{% sort "AVV" "avv_number" request.GET.sort %}</th>
-          <th>{% sort "Name" "name" request.GET.sort %}</th>
-          <th>{% sort "Adresse" "street" request.GET.sort %}</th>
-          <th>{% sort "PLZ" "postal_code" request.GET.sort %}</th>
-          <th>{% sort "Stadt" "city" request.GET.sort %}</th>
+          <th>{% sort "ID" "supplier__id" request.GET.sort %}</th>
+          <th>{% sort "AVV" "supplier__avv_number" request.GET.sort %}</th>
+          <th>{% sort "Name" "supplier__name" request.GET.sort %}</th>
+          <th>{% sort "Adresse" "supplier__street" request.GET.sort %}</th>
+          <th>{% sort "PLZ" "supplier__postal_code" request.GET.sort %}</th>
+          <th>{% sort "Stadt" "supplier__city" request.GET.sort %}</th>
           <th></th>
         </tr>
       </thead>
+
       <tbody class="table-content">
-        {% for supplier in page_obj %}
+        {% for item in page_obj %}
         <tr>
           <td class="text-center">
-            <input class="inputField" type="radio" name="delivery_unit" value="{{ supplier.id }}"
-              data-supplier="{{ supplier }}">
+            <input class="inputField" type="radio" name="delivery_unit" value="{{ item.id }}"
+              data-supplier="{{ item.supplier }}">
           </td>
-          <td class="text-center">{{ supplier.id }}</td>
-          <td>{{ supplier.avv_number }}</td>
-          <td>{{ supplier.name }}</td>
-          <td>{{ supplier.street }}</td>
-          <td>{{ supplier.postal_code }}</td>
-          <td>{{ supplier.city }}</td>
-          <!-- <td class="note-column" title="{{ supplier.note }}"><p>{{ supplier.note }}</p></td> -->
+          <td class="text-center">{{ item.supplier.id }}</td>
+          <td>{{ item.supplier.avv_number }}</td>
+          <td>{{ item.supplier.name }}</td>
+          <td>{{ item.supplier.street }}</td>
+          <td>{{ item.supplier.postal_code }}</td>
+          <td>{{ item.supplier.city }}</td>
           <td class="suppler-icons">
-            <a href="{% url 'supplier_detail' pk=supplier.id %}" title="Detail">
+            <a href="{% url 'supplier_detail' pk=item.id %}" title="Detail">
                 <img src="{% static 'icons/detail-icon.svg' %}">   
             </a>
             <span title="{{ supplier.note }}"> 

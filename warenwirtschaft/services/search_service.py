@@ -1,6 +1,6 @@
 from django.db.models import Q
 
-class QuerysetSearcher:
+class SearchService:
     def __init__(self, request, search_fields):
         self.request = request
         self.search_fields = search_fields

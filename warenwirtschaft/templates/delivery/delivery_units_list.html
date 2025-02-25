@@ -9,14 +9,8 @@
 
 {% block content %}
 
-<div class="title">Liefereinheiten</div>
-
-<!-- <div class="table-action">
-    <button class="table-search btn-activ toggle-button">🔍</button>
-    <button class="table-reset btn-activ"><a href="{% url 'delivery_units_list' %}" class="reset-btn">⟲</a></button>
-</div> -->
 <div class="table-head">
-    <div class="table-head-title">Lieferanten<a href="{% url 'delivery_units_list' %}"> ⟲</a></div>
+    <div class="table-head-title">Lieferungen<a href="{% url 'delivery_units_list' %}"> ⟲</a></div>
     <div class="table-head-search">
       <form method="GET">
         <input type="text" name="search" placeholder="Suchen..." value="{{ search_query }}">
@@ -62,7 +56,7 @@
             <td>{{ item.id }}</td>
             <td>{{ item.delivery.supplier.name }}</td>
             <td>{{ item.delivery.delivery_receipt }}</td>
-            <td>{{ item.delivery.delivery_date|date:"d.m.Y" }}</td>
+            <td>{{ item.created_at|date:"d.m.Y" }}</td>
             <td>{{ item.delivery.total_weight }}</td>
             <td>{{ item.delivery_id }}</td>
             <td>{{ item|getattr:"get_delivery_type_display" }}</td>

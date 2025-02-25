@@ -8,14 +8,6 @@
 
 
 {% block content %}
-
-<!-- <div class="title">Lieferanten</div> -->
-
-<!-- <div class="table-action">
-    <button class="table-search btn-activ toggle-button">🔍</button>
-    <button class="table-reset btn-activ"><a href="{% url 'suppliers_list' %}" class="reset-btn">⟲</a></button>
-</div> -->
-
     
 <div class="table-head">
     <div class="table-head-title">Lieferanten<a href="{% url 'suppliers_list' %}"> ⟲</a></div>
@@ -40,23 +32,6 @@
         <col style="width: 10%; ">  <!-- actions -->
     </colgroup>
     <thead>
-        <!-- <tr class="table-filter hidden-block" hidden>
-            <form method="GET" name="filter">
-                <td><input type="text" name="id" placeholder="id" value="{{ request.GET.id }}"></td>
-                <td><input type="text" name="avv_number" placeholder="AVV" value="{{ request.GET.avv_number }}"></td>
-                <td><input type="text" name="name" placeholder="Name" value="{{ request.GET.name }}"></td>
-                <td><input type="text" name="street" placeholder="Strasse" value="{{ request.GET.street }}"></td>
-                <td><input type="text" name="postal_code" placeholder="PLZ" value="{{ request.GET.postal_code }}"></td>
-                <td><input type="text" name="city" placeholder="Stadt" value="{{ request.GET.city }}"></td>
-                <td><input type="text" name="phone" placeholder="Telefon" value="{{ request.GET.phone }}"></td>
-                <td><input type="text" name="email" placeholder="Email" value="{{ request.GET.email }}"></td>
-                <td><input type="text" name="note" placeholder="Bemerkung" value="{{ request.GET.note }}"></td>
-                <td>
-                    <button class="btn-activ btn" type="submit">Suchen</button>
-                </td>
-            </form>
-        </tr> -->
-
         <tr class="table-content-title">
             <th>{% sort "&#8470;" "id" request.GET.sort %}</th>
             <th>{% sort "AVV" "avv_number" request.GET.sort %}</th>

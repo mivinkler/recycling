@@ -20,7 +20,7 @@
     </tr>
     <tr>
         <th>Gewicht:</th>
-        <td>{{ delivery.weight }}</td>
+        <td>{{ delivery.total_weight }}</td>
     </tr>
     <tr>
         <th>Behälter:</th>
@@ -36,14 +36,9 @@
     </tr>
     <tr>
         <th>Datum:</th>
-        <td>{{ delivery.delivery_date|date:"d.m.Y" }}</td>
+        <td>{{ delivery.created_at|date:"d.m.Y" }}</td>
     </tr>
 </table>
-
-
-<div class="table-action">
-    <button class="table-reset btn-activ"><a href="{% url 'delivery_detail' pk=40 %}" class="reset-btn">⟲</a></button>
-</div>
 
 <table class="table-box">
     <colgroup>
@@ -58,25 +53,25 @@
 
     <thead>
         <tr class="table-content-title">
-            <th>{% sort "ID" "id" request.GET.sort %}</th>
-            <th>{% sort "Behälter" "delivery_type" request.GET.sort %}</th>
-            <th>{% sort "Material" "device" request.GET.sort %}</th>
-            <th>{% sort "Gewicht" "weight" request.GET.sort %}</th>
-            <th>{% sort "Status" "status" request.GET.sort %}</th>
-            <th>{% sort "Bemerkung" "note" request.GET.sort %}</th>
+            <th>ID</th>
+            <th>Behälter</th>
+            <th>Material</th>
+            <th>Gewicht</th>
+            <th>Status</th>
+            <th>Bemerkung</th>
             <th></th>
         </tr>
     </thead>
-
+    
     <tbody class="table-content">
-        {% for item in page_obj %}
+        {% for unit in delivery_units %}
         <tr>
-            <td>{{ item.id }}</td>
-            <td>{{ item|getattr:"get_delivery_type_display" }}</td>
-            <td>{{ item.device }}</td>
-            <td>{{ item.weight }} </td>
-            <td>{{ item|getattr:"get_status_display" }}</td>
-            <td class="note-column" title="{{ item.note }}">{{ item.note }}</td>
+            <td>{{ unit.id }}</td>
+            <td>{{ unit.get_delivery_type_display }}</td>
+            <td>{{ unit.device.name|default:"-" }}</td>
+            <td>{{ unit.weight|default:"-" }} kg</td>
+            <td>{{ unit.get_status_display }}</td>
+            <td class="note-column" title="{{ unit.note }}">{{ unit.note }}</td>
             <td class="suppler-icons">
                 <a href="#" title="Lieferung ansehen">
                     <img src="{% static 'icons/detail-icon.svg' %}">   
@@ -90,6 +85,6 @@
     </tbody>
 </table>
 
-{% paginate page_obj %}
+
 
 {% endblock %}

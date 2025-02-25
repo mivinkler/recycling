@@ -93,7 +93,7 @@
                 </td>                
                 <td>{{ delivery.delivery_receipt }}</td>
                 <td>{{ delivery.weight }}</td>
-                <td>{{ delivery.delivery_date|date:"d.m.Y" }}</td>
+                <td>{{ delivery.created_at|date:"d.m.Y" }}</td>
                 <td class="note-column" title="{{ delivery.note }}"><p>{{ delivery.note }}</p></td>
                 <td class="suppler-icons">
                     <a href="{% url 'delivery_detail' pk=delivery.id %}" title="Detail">

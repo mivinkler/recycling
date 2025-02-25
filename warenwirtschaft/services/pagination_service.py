@@ -1,11 +1,11 @@
 from django.core.paginator import Paginator
 
-class QuerysetPaginator:
-    def __init__(self, request, per_page):
+class PaginationService:
+    def __init__(self, request, paginate_by):
         self.request = request
-        self.per_page = per_page
+        self.paginate_by = paginate_by
 
-    def paginate(self, queryset):
-        paginator = Paginator(queryset, self.per_page)
+    def get_paginated_queryset(self, queryset):
+        paginator = Paginator(queryset, self.paginate_by)
         page_number = self.request.GET.get("page", 1)
         return paginator.get_page(page_number)

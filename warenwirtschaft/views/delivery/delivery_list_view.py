@@ -11,7 +11,7 @@ class DeliveryListView(ListView):
     paginate_by = 20
 
     search_fields = ["id", "supplier__name", "units", "delivery_receipt", 
-                     "weight", "delivery_date", "note", 
+                     "weight", "created_at", "note", 
                      "delivery_units__id", "delivery_units__delivery_receipt",
                      "delivery_units__delivery_type", "delivery_units__device__name",
                      "delivery_units__weight", "delivery_units__status", "delivery_units__note"]

@@ -76,10 +76,9 @@ class Command(BaseCommand):
         seed.add_entity(Delivery, 1000, {
             'supplier': lambda x: random.choice(list(suppliers)) if suppliers.exists() else None,
             'weight': lambda x: round(random.uniform(100, 1000), 2),
-            'units': lambda x: random.randint(1, 10),
-            'delivery_date': lambda x: date.today() - timedelta(days=random.randint(0, 365)),
             'note': lambda x: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."[:random.randint(100, 255)],
             'delivery_receipt': lambda x: random.choice([None, f"Receipt-{random.randint(1000, 9999)}"]),
+            'created_at': lambda x: date.today() - timedelta(days=random.randint(0, 365)),
         })
 
         inserted_pks = seed.execute()
