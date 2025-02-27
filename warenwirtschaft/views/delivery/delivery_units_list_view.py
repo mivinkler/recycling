@@ -4,6 +4,7 @@ from warenwirtschaft.services.search_service import SearchService
 from warenwirtschaft.services.sorting_service import SortingService
 from warenwirtschaft.services.pagination_service import PaginationService
 
+
 class DeliveryUnitsListView(ListView):
     model = DeliveryUnit
     template_name = "delivery/delivery_units_list.html"

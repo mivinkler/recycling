@@ -3,7 +3,7 @@ from .delivery_unit import DeliveryUnit
 from .supplier import Supplier
 from .device import Device
 
-class unload(models.Model):
+class Unload(models.Model):
     UNLOAD_TYPE_CHOICES = [
         (1, "Gitterbox"),
         (2, "Palette"),

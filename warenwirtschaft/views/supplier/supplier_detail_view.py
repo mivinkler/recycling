@@ -12,15 +12,15 @@ class SupplierDetailView(DetailView):
     paginate_by = 14
     
     active_fields = [
-        "id", 
-        "units", 
-        "delivery_receipt", 
-        "weight", 
-        "note"
+        "delivery__id", 
+        "delivery__units", 
+        "delivery__delivery_receipt", 
+        "delivery__total_weight", 
+        "delivery__note"
         ]
 
     def get_queryset(self):
-        queryset = super().get_queryset()
+        queryset = super().get_queryset().prefetch_related("delivery")
 
         search_service = SearchService(self.request, self.active_fields)
         sorting_service = SortingService(self.request, self.active_fields)

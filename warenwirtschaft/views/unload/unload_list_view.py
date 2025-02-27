@@ -3,7 +3,7 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from warenwirtschaft.models import unload
 
-class unloadsListView(ListView):
+class UnloadsListView(ListView):
     model = unload
     template_name = "unload/unload_list.html"
     context_object_name = "unloads"

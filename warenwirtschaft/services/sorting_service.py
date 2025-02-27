@@ -4,8 +4,8 @@ class SortingService:
         self.sort_fields = {}
 
         for field in sort_fields:
-            self.sort_fields[f"{field}_asc"] = field  # По возрастанию
-            self.sort_fields[f"{field}_desc"] = f"-{field}"  # По убыванию
+            self.sort_fields[f"{field}_asc"] = field
+            self.sort_fields[f"{field}_desc"] = f"-{field}"
 
     def apply_sorting(self, queryset):
         sort_param = self.request.GET.get("sort", "id_asc")

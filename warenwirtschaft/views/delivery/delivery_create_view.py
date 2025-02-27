@@ -1,9 +1,10 @@
 from django.views.generic.edit import CreateView
-from warenwirtschaft.models import Delivery, Device, Supplier
+from warenwirtschaft.models import Delivery, Device
 from warenwirtschaft.forms import DeliveryForm
 from warenwirtschaft.services.search_service import SearchService
 from warenwirtschaft.services.sorting_service import SortingService
 from warenwirtschaft.services.pagination_service import PaginationService
+
 
 class DeliveryCreateView(CreateView):
     model = Delivery
@@ -11,13 +12,13 @@ class DeliveryCreateView(CreateView):
     form_class = DeliveryForm
     paginate_by = 20
 
-    active_fields= ["supplier__id", 
+    active_fields = ["supplier__id", 
                     "supplier__avv_number", 
                     "supplier__name", 
                     "supplier__street", 
                     "supplier__postal_code", 
-                    "supplier__city", 
-                    "supplier__phone", 
+                    "supplier__city",
+                    "supplier__phone",
                     "supplier__email", 
                     "supplier__note"
                     ]
