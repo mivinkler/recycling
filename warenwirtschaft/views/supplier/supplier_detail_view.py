@@ -10,33 +10,34 @@ class SupplierDetailView(DetailView):
     template_name = "supplier/supplier_detail.html"
     context_object_name = "supplier"
     paginate_by = 14
-    
+
     active_fields = [
-        "delivery__id", 
-        "delivery__units", 
-        "delivery__delivery_receipt", 
-        "delivery__total_weight", 
-        "delivery__note"
-        ]
+        "delivery__id",
+        "delivery__delivery_receipt",
+        "delivery__total_weight",
+        "delivery__note",
+        "delivery__created_at"
+    ]
 
     def get_queryset(self):
-        queryset = super().get_queryset().prefetch_related("delivery")
-
-        search_service = SearchService(self.request, self.active_fields)
+        queryset = super().get_queryset().prefetch_related("deliveries")
         sorting_service = SortingService(self.request, self.active_fields)
-
-        queryset = search_service.apply_search(queryset)
-        queryset = sorting_service.apply_sorting(queryset)
-
-        return queryset
+        return sorting_service.apply_sorting(queryset)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        paginator = PaginationService(self.request, self.paginate_by)
-        page_obj = paginator.get_paginated_queryset(self.get_queryset())
+        deliveries = self.object.deliveries.all()
 
+        sorting_service = SortingService(self.request, self.active_fields)
+        deliveries = sorting_service.apply_sorting(deliveries)
+
+        paginator = PaginationService(self.request, self.paginate_by)
+        page_obj = paginator.get_paginated_queryset(deliveries)
+
+        context["deliveries"] = page_obj
         context["page_obj"] = page_obj
         context["search_query"] = self.request.GET.get("search", "")
-        context["sort"] = self.request.GET.get("sort", "id")  # aktuelle Sortieroption
+        context["sort"] = self.request.GET.get("sort", "id_asc")
+
         return context

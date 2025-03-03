@@ -53,7 +53,7 @@
         <button class="table-search btn-activ">🔍</button>
         <button class="table-reset btn-activ"><a href="{% url 'suppliers_list' %}" class="reset-btn">⟲</a></button>
     </div> -->
-    <div class="table-head-title">Lieferungen<a href="{% url 'suppliers_list' %}"> ⟲</a></div>
+    <div class="table-head-title">Lieferungen<a href="#"> ⟲</a></div>
     <div class="table-head-search">
       <form method="GET">
         <input type="text" name="search" placeholder="Suchen..." value="{{ search_query }}">
@@ -70,27 +70,23 @@
             <col style="width: 5%;">    <!-- Gewicht -->
             <col style="width: 8%;">    <!-- Datum -->
             <col style="width: 10%">    <!-- Bemerkung -->
-            <col style="width: 10%">    <!-- actions -->
+            <col style="width: auto">    <!-- actions -->
         </colgroup>
         <thead>
             <tr class="table-content-title">
-                <th>{% sort "&#8470;" "id" request.GET.sort %}</th>
-                <th>{% sort "Behälter" "units" request.GET.sort %}</th>
-                <th>{% sort "Lieferschein" "delivery_receipt" request.GET.sort %}</th>
-                <th>{% sort "Gewicht" "total_weight" request.GET.sort %}</th>
-                <th>{% sort "Datum" "delivery_date" request.GET.sort %}</th>
-                <th>{% sort "Bemerkung" "note" request.GET.sort %}</th>
+                <th>{% sort "&#8470;" "deliveries__id" request.GET.sort %}</th>
+                <th>{% sort "Lieferschein" "deliveries__delivery_receipt" request.GET.sort %}</th>
+                <th>{% sort "Gewicht" "deliveries__total_weight" request.GET.sort %}</th>
+                <th>{% sort "Datum" "deliveries__delivery_date" request.GET.sort %}</th>
+                <th>{% sort "Bemerkung" "deliveries__note" request.GET.sort %}</th>
                 <th></th> <!-- actions -->
             </tr>
         </thead>
 
         <tbody class="table-content">
-            {% for delivery in page_obj %}
+            {% for delivery in deliveries %}
             <tr>
-                <td>{{ delivery.id }}</td>
-                <td class="tooltip-wrapper" title="{% for deliveryunit in delivery.deliveryunits_set.all %}&bull; {{ deliveryunit.device }} - {{ deliveryunit.weight }} kg - {{ deliveryunit.get_status_display }}&#10;{% endfor %}">
-                    {{ delivery.deliveryunits_set.all|length }}
-                </td>                
+                <td>{{ delivery.id }}</td>               
                 <td>{{ delivery.delivery_receipt }}</td>
                 <td>{{ delivery.total_weight }}</td>
                 <td>{{ delivery.created_at|date:"d.m.Y" }}</td>
@@ -111,20 +107,20 @@
 <div>
 <div class="pagination">
     <span class="step-links">
-        {% if page_obj.has_previous %}
-            <a href="?page={{ page_obj.previous_page_number }}">&laquo;</a>
+        {% if deliveries.has_previous %}
+            <a href="?page={{ deliveries.previous_page_number }}">&laquo;</a>
         {% endif %}
         
-        {% for num in page_obj.paginator.page_range %}
-            {% if num == page_obj.number %}
+        {% for num in deliveries.paginator.page_range %}
+            {% if num == deliveries.number %}
                 <span class="current">{{ num }}</span>
             {% else %}
                 <a href="?page={{ num }}">{{ num }}</a>
             {% endif %}
         {% endfor %}
         
-        {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">&raquo;</a>
+        {% if deliveries.has_next %}
+            <a href="?page={{ deliveries.next_page_number }}">&raquo;</a>
         {% endif %}
     </span>
 </div>

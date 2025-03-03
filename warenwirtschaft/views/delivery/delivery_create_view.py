@@ -1,5 +1,5 @@
 from django.views.generic.edit import CreateView
-from warenwirtschaft.models import Delivery, Device
+from warenwirtschaft.models import Delivery, Material
 from warenwirtschaft.forms import DeliveryForm
 from warenwirtschaft.services.search_service import SearchService
 from warenwirtschaft.services.sorting_service import SortingService
@@ -41,7 +41,7 @@ class DeliveryCreateView(CreateView):
         page_obj = paginator.get_paginated_queryset(self.get_queryset())
 
         context["page_obj"] = page_obj
-        context["devices"] = Device.objects.all()
+        context["materials"] = Material.objects.all()
         context["search_query"] = self.request.GET.get("search", "")
         context["sort_param"] = self.request.GET.get("sort", "")
 

@@ -42,7 +42,7 @@
             <th>{% sort "Gesamtgewicht" "delivery__total_weight" request.GET.sort %}</th>
             <th>{% sort "LID" "delivery__id" request.GET.sort %}</th>
             <th>{% sort "Behälter" "delivery_type" request.GET.sort %}</th>
-            <th>{% sort "Material" "device__name" request.GET.sort %}</th>
+            <th>{% sort "Material" "material__name" request.GET.sort %}</th>
             <th>{% sort "Gewicht" "weight" request.GET.sort %}</th>
             <th>{% sort "Status" "status" request.GET.sort %}</th>
             <th>{% sort "Bemerkung" "note" request.GET.sort %}</th>
@@ -60,7 +60,7 @@
             <td>{{ item.delivery.total_weight }}</td>
             <td>{{ item.delivery_id }}</td>
             <td>{{ item|getattr:"get_delivery_type_display" }}</td>
-            <td>{{ item.device }}</td>
+            <td>{{ item.material }}</td>
             <td>{{ item.weight }} </td>
             <td>{{ item|getattr:"get_status_display" }}</td>
             <td class="note-column" title="{{ item.note }}">{{ item.note }}</td>

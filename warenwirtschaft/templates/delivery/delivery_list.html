@@ -30,7 +30,7 @@
             <th>{% sort "Lieferschein" "delivery_receipt" request.GET.sort %}</th>
             <th>{% sort "Gewicht" "weight" request.GET.sort %}</th>
             <th>{% sort "Behälter" "container" request.GET.sort %}</th>
-            <th>{% sort "Material" "device" request.GET.sort %}</th>
+            <th>{% sort "Material" "material" request.GET.sort %}</th>
             <th>{% sort "Gewicht" "weight" request.GET.sort %}</th>
             <th>{% sort "Status" "status" request.GET.sort %}</th>
         </tr>
@@ -47,7 +47,7 @@
                         <td rowspan="{{ delivery.deliveryunits.all|length }}">{{ delivery.created_at|date:"d.m.Y" }}</td>
                     {% endif %}
                     <td>{{ unit.delivery_type }}</td>
-                    <td>{{ unit.device }}</td>
+                    <td>{{ unit.material }}</td>
                     <td>{{ unit.weight }} </td>
                     <td>{{ unit.status }}</td>
                     <!-- {% if forloop.first %}

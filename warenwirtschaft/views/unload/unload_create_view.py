@@ -1,6 +1,6 @@
 from django.views.generic.edit import CreateView
 from warenwirtschaft.forms import UnloadForm
-from warenwirtschaft.models import Device, Unload, DeliveryUnit
+from warenwirtschaft.models import Material, Unload, DeliveryUnit
 from warenwirtschaft.services.search_service import SearchService
 from warenwirtschaft.services.sorting_service import SortingService
 from warenwirtschaft.services.pagination_service import PaginationService
@@ -14,7 +14,7 @@ class UnloadCreateView(CreateView):
 
     active_fields = ["deliveryunits__delivery_unit", 
                     "deliveryunits__unload_type", 
-                    "deliveryunits__device", 
+                    "deliveryunits__material", 
                     "deliveryunits__weight", 
                     "deliveryunits__purpose", 
                     "deliveryunits__note", 
@@ -39,7 +39,7 @@ class UnloadCreateView(CreateView):
         page_obj = paginator.get_paginated_queryset(self.get_queryset())
 
         context["page_obj"] = page_obj
-        context["devices"] = Device.objects.all()
+        context["materials"] = Material.objects.all()
         context["search_query"] = self.request.GET.get("search", "")
         context["sort_param"] = self.request.GET.get("sort", "")
 

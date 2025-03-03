@@ -41,7 +41,7 @@
                         <option value="3" {% if request.GET.unload_type == "3" %}selected{% endif %}>Ohne Behälter</option>
                     </select>
                 </td>
-                <td><input type="text" name="device" placeholder="Material" value="{{ request.GET.device }}"></td>
+                <td><input type="text" name="material" placeholder="Material" value="{{ request.GET.material }}"></td>
                 <td><input type="text" name="weight" placeholder="Gewicht" value="{{ request.GET.weight }}"></td>
 
 
@@ -69,7 +69,7 @@
             <th>{% sort "Lieferant" "supplier" request.GET.sort %}</th>
             <th>{% sort "Liefereinheit" "delivery_unit" request.GET.sort %}</th>
             <th>{% sort "Behälter" "unload_type" request.GET.sort %}</th>
-            <th>{% sort "Material" "device" request.GET.sort %}</th>
+            <th>{% sort "Material" "material" request.GET.sort %}</th>
             <th>{% sort "Gewicht" "weight" request.GET.sort %}</th>
             <th>{% sort "Zweck" "purpose" request.GET.sort %}</th>
             <th>{% sort "Bemerkung" "note" request.GET.sort %}</th>
@@ -83,7 +83,7 @@
             <td>{{ unload.supplier }}</td>
             <td>{{ unload.delivery_unit }}</td> 
             <td>{{ unload|getattr:"get_unload_type_display" }}</td>
-            <td>{{ unload.device }}</td>
+            <td>{{ unload.material }}</td>
             <td>{{ unload.weight }}</td>
             <td>{{ unload|getattr:"get_purpose_display" }}</td>
             <td class="note-column" title="{{ unload.note }}"><p>{{ unload.note }}</p></td>

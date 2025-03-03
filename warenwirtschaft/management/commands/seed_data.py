@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from warenwirtschaft.models import Supplier, Device, Delivery, DeliveryUnit
+from warenwirtschaft.models import Supplier, Material, Delivery, DeliveryUnit
 import random
 from datetime import date, timedelta
 from django_seed import Seed
@@ -10,7 +10,7 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         seed = Seed.seeder()
 
-        devices_data = [
+        materials_data = [
             "Notebook", "PC", "Dockingstation", "Monitor", "Mini-PCs",
             "Kabel", "Gemischte Teile", "HDD", "SSD", "Prozessoren", 
             "Grafikkarten", "Festplatten", "Netzteile", "Laufwerke",
@@ -20,12 +20,12 @@ class Command(BaseCommand):
             "Waschtrockner", "Kühlschränke", "Klimageräte",
         ]
 
-        def create_devices():
-            for device_name in devices_data:
-                Device.objects.get_or_create(name=device_name)
+        def create_materials():
+            for material_name in materials_data:
+                Material.objects.get_or_create(name=material_name)
 
-        create_devices()
-        self.stdout.write(self.style.SUCCESS("Devices have been created."))
+        create_materials()
+        self.stdout.write(self.style.SUCCESS("Materials have been created."))
 
         # Lieferant
         street_names = [
@@ -70,7 +70,7 @@ class Command(BaseCommand):
                     'avv_number': lambda x: random.randint(100000000, 999999999),
                 })
 
-        devices = Device.objects.all()
+        materials = Material.objects.all()
         suppliers = Supplier.objects.all()
 
         seed.add_entity(Delivery, 1000, {
@@ -94,7 +94,7 @@ class Command(BaseCommand):
             for _ in range(num_units):  # Erstellung von mehreren Datensätzen für jede Lieferung
                 delivery_units_data.append({
                     'delivery_id': delivery.id,
-                    'device_id': random.choice(devices).id,
+                    'material_id': random.choice(materials).id,
                     'weight': round(random.uniform(100, 1000), 2),
                     'status': random.choice([1, 2, 3]),
                     'delivery_type': random.choice([1, 2, 3, 4]),

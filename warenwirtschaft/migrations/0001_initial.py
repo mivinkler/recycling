@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='Device',
+            name='Material',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=50)),
@@ -44,7 +44,7 @@ class Migration(migrations.Migration):
                 ('delivery_receipt', models.CharField(blank=True, max_length=50, null=True)),
                 ('delivery_type', models.PositiveSmallIntegerField(choices=[(1, 'Container'), (2, 'Gitterbox'), (3, 'Palette'), (4, 'Ohne Behälter')])),
                 ('delivery', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='deliveryunits', to='warenwirtschaft.delivery')),
-                ('device', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='warenwirtschaft.device')),
+                ('material', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='warenwirtschaft.material')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('deleted_at', models.DateTimeField(blank=True, default=None, null=True)),
@@ -83,7 +83,7 @@ class Migration(migrations.Migration):
                 ('weight', models.DecimalField(blank=True, decimal_places=2, max_digits=10, null=True)),
                 ('purpose', models.PositiveSmallIntegerField(choices=[(1, 'Zerlegung'), (2, 'Reparatur'), (3, 'Entsorgung')])),
                 ('delivery_unit', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='cargo', to='warenwirtschaft.deliveryunit')),
-                ('device', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='unload_device', to='warenwirtschaft.device')),
+                ('material', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='unload_material', to='warenwirtschaft.material')),
                 ('supplier', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='product_supplier', to='warenwirtschaft.supplier')),
                 ('note', models.CharField(blank=True, max_length=255, null=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),

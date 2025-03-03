@@ -19,14 +19,14 @@ class DeliveryUnitsListView(ListView):
         "delivery__delivery_receipt",
         "created_at",
         "delivery_type",
-        "device__name",
+        "material__name",
         "weight",
         "status",
         "note",
     ]
 
     def get_queryset(self):
-        queryset = super().get_queryset().select_related("delivery", "delivery__supplier", "device")
+        queryset = super().get_queryset().select_related("delivery", "delivery__supplier", "material")
 
         search_service = SearchService(self.request, self.active_fields)
         sorting_service = SortingService(self.request, self.active_fields)

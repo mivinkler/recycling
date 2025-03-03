@@ -8,7 +8,7 @@ class DeliveryDetailView(DetailView):
     context_object_name = "delivery"
 
     def get_queryset(self):
-        return super().get_queryset().prefetch_related("deliveryunits", "deliveryunits__device")
+        return super().get_queryset().prefetch_related("deliveryunits", "deliveryunits__material")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -18,5 +18,6 @@ class DeliveryDetailView(DetailView):
         context["sort_param"] = self.request.GET.get("sort", "")
         context["delivery_type"] = DeliveryUnit.DELIVERY_TYPE_CHOICES
         context["statuses"] = DeliveryUnit.STATUS_CHOICES
+        
         return context
 

@@ -17,7 +17,7 @@ class DeliveryForm(forms.ModelForm):
 class UnloadForm(forms.ModelForm):
     class Meta:
         model = Unload
-        fields = ['unload_type', 'device', 'weight', 'purpose', 'note']
+        fields = ['unload_type', 'material', 'weight', 'purpose', 'note']
 
 # unloadFormSet = modelformset_factory(
 #     unload,

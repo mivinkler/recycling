@@ -68,7 +68,7 @@
         <tr>
             <td>{{ unit.id }}</td>
             <td>{{ unit.get_delivery_type_display }}</td>
-            <td>{{ unit.device.name|default:"-" }}</td>
+            <td>{{ unit.material.name|default:"-" }}</td>
             <td>{{ unit.weight|default:"-" }} kg</td>
             <td>{{ unit.get_status_display }}</td>
             <td class="note-column" title="{{ unit.note }}">{{ unit.note }}</td>

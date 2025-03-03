@@ -1,7 +1,7 @@
 from django.db import models
 from .delivery_unit import DeliveryUnit
 from .supplier import Supplier
-from .device import Device
+from .material import Material
 
 class Unload(models.Model):
     UNLOAD_TYPE_CHOICES = [
@@ -18,7 +18,7 @@ class Unload(models.Model):
 
     delivery_unit = models.ForeignKey(DeliveryUnit, on_delete=models.CASCADE, related_name="cargo")
     unload_type = models.PositiveSmallIntegerField(choices=UNLOAD_TYPE_CHOICES)
-    device = models.ForeignKey(Device, on_delete=models.CASCADE, null=True, blank=True, related_name="unload_device")
+    material = models.ForeignKey(Material, on_delete=models.CASCADE, null=True, blank=True, related_name="unload_material")
     weight = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     purpose = models.PositiveSmallIntegerField(choices=PURPOSE_CHOICES)
     note = models.CharField(max_length=255, null=True, blank=True)

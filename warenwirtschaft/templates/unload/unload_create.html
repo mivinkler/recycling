@@ -44,7 +44,7 @@
                     <td>{{ item.delivery.created_at|date:"d.m.Y" }}</td>
                     <td class="text-center item-delivery-id">{{ item.delivery_id }}</td>
                     <td class="item-container">{{ item|getattr:"get_delivery_type_display" }}</td>
-                    <td class="item-content">{{ item.device }}</td>
+                    <td class="item-content">{{ item.material }}</td>
                     <td class="item-weight">{{ item.weight }}</td>
                     <td class="item-status">{{ item|getattr:"get_status_display" }}</td>
                     <td class="note-column" title="{{ item.note }}">{{ item.note }}</td>
@@ -117,10 +117,10 @@
                         </select>
                     </td>
                     <td>
-                        <select name="form-0-device">
+                        <select name="form-0-material">
                             <option selected disabled>-- Bitte wählen --</option>
-                            {% for device in devices %}
-                                <option value="{{ device.id }}">{{ device.name }}</option>
+                            {% for material in materials %}
+                                <option value="{{ material.id }}">{{ material.name }}</option>
                             {% endfor %}
                         </select>
                     </td>

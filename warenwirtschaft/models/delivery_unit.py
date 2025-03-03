@@ -1,6 +1,6 @@
 from django.db import models
 from .delivery import Delivery
-from .device import Device
+from .material import Material
 
 class DeliveryUnit(models.Model):
     STATUS_CHOICES = [
@@ -17,7 +17,7 @@ class DeliveryUnit(models.Model):
     ]
 
     delivery = models.ForeignKey(Delivery, on_delete=models.SET_NULL, null=True, blank=True, related_name='deliveryunits')
-    device = models.ForeignKey(Device, on_delete=models.CASCADE, null=True, blank=True)
+    material = models.ForeignKey(Material, on_delete=models.CASCADE, null=True, blank=True)
     weight = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     status = models.PositiveSmallIntegerField(choices=STATUS_CHOICES, default=1)
     delivery_type = models.PositiveSmallIntegerField(choices=DELIVERY_TYPE_CHOICES)
@@ -27,4 +27,4 @@ class DeliveryUnit(models.Model):
     deleted_at = models.DateTimeField(null=True, blank=True, default=None)
 
     def __str__(self):
-        return f"{self.get_delivery_type_display()} - {self.weight} kg - {self.device}"
+        return f"{self.get_delivery_type_display()} - {self.weight} kg - {self.material}"

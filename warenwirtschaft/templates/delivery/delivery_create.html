@@ -87,10 +87,10 @@
           </div>
           <div class="flex">
             <label>Material:</label>
-            <select name="form-0-device">
+            <select name="form-0-material">
               <option selected disabled>-- Bitte wählen --</option>
-              {% for device in devices %}
-                <option value="{{ device.id }}">{{ device.name }}</option>
+              {% for material in materials %}
+                <option value="{{ material.id }}">{{ material.name }}</option>
               {% endfor %}
             </select>
           </div>
