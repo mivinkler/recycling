@@ -10,11 +10,20 @@ class DeliveryListView(ListView):
     context_object_name = "deliveries"
     paginate_by = 20
 
-    search_fields = ["id", "supplier__name", "units", "delivery_receipt", 
-                     "weight", "created_at", "note", 
-                     "delivery_units__id", "delivery_units__delivery_receipt",
-                     "delivery_units__delivery_type", "delivery_units__material__name",
-                     "delivery_units__weight", "delivery_units__status", "delivery_units__note"]
+    search_fields = ["id", 
+                     "supplier__name", 
+                     "units", 
+                     "delivery_receipt", 
+                     "weight", 
+                     "created_at", 
+                     "note", 
+                     "delivery_units__id", 
+                     "delivery_units__delivery_receipt",
+                     "delivery_units__delivery_type", 
+                     "delivery_units__material__name",
+                     "delivery_units__weight", 
+                     "delivery_units__status", 
+                     "delivery_units__note"]
     
     sort_mapping = {field: field for field in search_fields}
     sort_mapping.update({f"{key}_desc": f"-{val}" for key, val in sort_mapping.items()})

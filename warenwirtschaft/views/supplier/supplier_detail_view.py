@@ -1,6 +1,5 @@
 from django.views.generic.detail import DetailView
-from warenwirtschaft.models import Supplier, Delivery
-from warenwirtschaft.services.search_service import SearchService
+from warenwirtschaft.models import Supplier
 from warenwirtschaft.services.sorting_service import SortingService
 from warenwirtschaft.services.pagination_service import PaginationService
 
