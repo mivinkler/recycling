@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
 
-{% load static %}
-<!-- {% load pagination %} -->
+{% load custom_filters %}
+{% load pagination %}
 {% load sorting %}
+{% load static %}
 
 {% block title %}{{ _("Lieferungen") }}{% endblock %}
 
@@ -28,9 +29,10 @@
             <th>{% sort "&#8470;" "id" request.GET.sort %}</th>
             <th>{% sort "Lieferant" "supplier" request.GET.sort %}</th>
             <th>{% sort "Lieferschein" "delivery_receipt" request.GET.sort %}</th>
-            <th>{% sort "Gewicht" "weight" request.GET.sort %}</th>
-            <th>{% sort "Behälter" "container" request.GET.sort %}</th>
-            <th>{% sort "Material" "material" request.GET.sort %}</th>
+            <th>{% sort "Gewicht" "total_weight" request.GET.sort %}</th>
+            <th>{% sort "Datum" "created_at" request.GET.sort %}</th>
+            <th>{% sort "Behälter" "delivery_type" request.GET.sort %}</th>
+            <th>{% sort "Material" "material_name" request.GET.sort %}</th>
             <th>{% sort "Gewicht" "weight" request.GET.sort %}</th>
             <th>{% sort "Status" "status" request.GET.sort %}</th>
         </tr>
@@ -39,27 +41,17 @@
         {% for delivery in page_obj %}
             {% for unit in delivery.deliveryunits.all %}
                 <tr>
-                    {% if forloop.first %} {# Только в первой строке показываем данные Delivery #}
+                    {% if forloop.first %}
                         <td rowspan="{{ delivery.deliveryunits.all|length }}">{{ delivery.id }}</td>
                         <td rowspan="{{ delivery.deliveryunits.all|length }}">{{ delivery.supplier.name }}</td>
                         <td rowspan="{{ delivery.deliveryunits.all|length }}">{{ delivery.delivery_receipt }}</td>
-                        <td rowspan="{{ delivery.deliveryunits.all|length }}">{{ delivery.weight }}</td>
+                        <td rowspan="{{ delivery.deliveryunits.all|length }}">{{ delivery.total_weight }}</td>
                         <td rowspan="{{ delivery.deliveryunits.all|length }}">{{ delivery.created_at|date:"d.m.Y" }}</td>
                     {% endif %}
-                    <td>{{ unit.delivery_type }}</td>
+                    <td>{{ unit|getattr:"get_delivery_type_display" }}</td>
                     <td>{{ unit.material }}</td>
                     <td>{{ unit.weight }} </td>
-                    <td>{{ unit.status }}</td>
-                    <!-- {% if forloop.first %}
-                        <td rowspan="{{ delivery.deliveryunits.all|length }}" class="suppler-icons">
-                            <a href="{% url 'delivery_detail' pk=delivery.id %}" title="Detail">
-                                <img src="{% static 'icons/detail-icon.svg' %}">   
-                            </a>
-                            <a href="#" title="Bearbeiten"> 
-                                <img src="{% static 'icons/update-icon.svg' %}">
-                            </a>
-                        </td>
-                    {% endif %} -->
+                    <td>{{ unit|getattr:"get_status_display" }}</td>
                 </tr>          
             {% endfor %}
         {% endfor %}

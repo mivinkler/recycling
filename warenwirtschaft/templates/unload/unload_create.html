@@ -34,15 +34,15 @@
             </thead>
 
             <tbody class="table-content">
-                {% for item in page_obj %}
+                {% for item in delivery_units %}
                 <tr class="item-row">
                     <td class="text-center">
                         <input type="radio" name="delivery_unit" value="{{ item.id }}" onclick="duplicateSelectedItem(this)">
                     </td>
-                    <td class="text-center item-id">{{ item.id }}</td>
+                    <td class="text-center item-id">{{ item.delivery.supplier.id }}</td>
                     <td class="item-supplier">{{ item.delivery.supplier.name }}</td>
-                    <td>{{ item.delivery.created_at|date:"d.m.Y" }}</td>
-                    <td class="text-center item-delivery-id">{{ item.delivery_id }}</td>
+                    <td>{{ item.created_at|date:"d.m.Y" }}</td>
+                    <td class="text-center item-delivery-id">{{ item.id }}</td>
                     <td class="item-container">{{ item|getattr:"get_delivery_type_display" }}</td>
                     <td class="item-content">{{ item.material }}</td>
                     <td class="item-weight">{{ item.weight }}</td>
@@ -58,8 +58,11 @@
                     </td>
                 </tr>
                 {% endfor %}
+
+                
             </tbody>
         </table>
+        {% paginate delivery_units %}
     </div>
 
     <div class="unload_cargo">

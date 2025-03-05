@@ -23,7 +23,7 @@ class DeliveryUnitsListView(ListView):
         "weight",
         "status",
         "note",
-    ]
+        ]
 
     def get_queryset(self):
         queryset = super().get_queryset().select_related("delivery", "delivery__supplier", "material")
