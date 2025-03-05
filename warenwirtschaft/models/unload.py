@@ -22,7 +22,7 @@ class Unload(models.Model):
     weight = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     purpose = models.PositiveSmallIntegerField(choices=PURPOSE_CHOICES)
     note = models.CharField(max_length=255, null=True, blank=True)
-    supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, related_name="product_supplier")
+    supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, related_name="unload_supplier")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(null=True, blank=True, default=None)
