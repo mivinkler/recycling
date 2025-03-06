@@ -32,21 +32,18 @@ class DeliveryListView(ListView):
         ]
     
     def get_queryset(self):
-        queryset = (
-            super()
-            .get_queryset()
-            .annotate(
-                material_name=Subquery(
-                    DeliveryUnit.objects.filter(delivery=OuterRef("id"))
-                    .order_by("id")
-                    .values("material__name")[:1]  # Берем имя материала первого DeliveryUnit
-                )
+        queryset = super().get_queryset().annotate(
+            first_unit_weight=Subquery(
+                DeliveryUnit.objects.filter(delivery=OuterRef("id"))
+                .order_by("id")
+                .values("weight")[:1]
             )
-            .prefetch_related("deliveryunits__material")  # Загружаем связанные материалы
-        )
+        ).prefetch_related("deliveryunits")
 
-        # Применяем сортировку
-        sorting_service = SortingService(self.request, ["id", "supplier__name", "material_name"])
+        search_service = SearchService(self.request, self.active_fields)
+        sorting_service = SortingService(self.request, self.active_fields)
+
+        queryset = search_service.apply_search(queryset)
         queryset = sorting_service.apply_sorting(queryset)
 
         return queryset

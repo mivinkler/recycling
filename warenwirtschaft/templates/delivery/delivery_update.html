@@ -7,7 +7,101 @@
 
 <div class="title">Delivery: update</div>
 
-<div class="form-wrapper">
+<section class="delivery-form-wrapper">
+    
+    <form method="post" action="{% url 'delivery_create' %}" id="eingang-form">
+      {% csrf_token %}
+      <div>
+        <div class="flex">
+          <label for="supplier" class="flex-items">Lieferant:</label>
+          <input type="text" id="supplier" name="supplier" title="Wählen Sie einen Lieferanten" class="flex-items output" readonly>
+        </div> 
+        <details>
+          <summary>+ Neuer Lieferant</summary>
+          <div class="flex">
+            <label for="name" class="flex-items">Name:</label>
+            <input type="text" id="name" name="name" class="flex-items">
+          </div>
+          <div class="flex">
+            <label for="street" class="flex-items">Straße und Hausnummer:</label>
+            <input type="text" id="street" name="street" class="flex-items">
+          </div>
+          <div class="flex">
+            <label for="postal_code" class="flex-items">PLZ:</label>
+            <input type="text" id="postal_code" name="postal_code" class="flex-items">
+          </div>
+          <div class="flex">
+            <label for="country" class="flex-items">Stadt:</label>
+            <input type="text" id="country" name="country" class="flex-items">
+          </div>
+          <div class="flex">
+            <label for="phone" class="flex-items">Telefon:</label>
+            <input type="text" id="phone" name="phone" class="flex-items">
+          </div>
+          <div class="flex">
+            <label for="email" class="flex-items">Email:</label>
+            <input type="email" id="email" name="email" class="flex-items">
+          </div>
+          <div class="flex">
+            <label for="avv_number" class="flex-items">AVV-Nummer:</label>
+            <input type="number" id="avv_number" name="avv_number" class="flex-items">
+          </div>
+          <div class="flex">
+            <label for="note" class="flex-items">Bemerkung:</label>
+            <input type="text" id="note" name="note" class="flex-items">
+          </div>
+        </details>
+
+        <div class="flex">
+          <label for="liefernummer" class="flex-items">Lieferscheinnummer:</label>
+          <input type="text" id="liefernummer" name="liefernummer" class="flex-items">
+        </div>  
+      </div>
+    
+      <!-- counter -->
+      <div class="delivery-items">
+        <div class="flex">
+          <label for="item-counter" class="flex-items">Ladungseinheiten:</label>
+          <input type="number" id="item-counter" name="traeger_anzahl" value="1" min="1" max="10">
+        </div>
+      </div>
+      
+      <!-- Ladung -->
+      <div class="block" id="item-wrapper">
+        <div class="item">
+          <div>
+            <div class="form-item-title">Ladungseinheit<span class="item-number"> 1</span></div>
+          </div>
+          <div class="flex">
+            <label>Art:</label>
+            <select name="form-0-delivery_type">
+              <option selected disabled>-- Bitte wählen --</option>
+              <option>Gitterbox</option>
+              <option>Container</option>
+              <option>Palette</option>
+            </select>
+          </div>
+          <div class="flex">
+            <label>Material:</label>
+            <select name="form-0-material">
+              <option selected disabled>-- Bitte wählen --</option>
+              {% for material in materials %}
+                <option value="{{ material.id }}">{{ material.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="flex">
+            <label for="num" class="flex-items">Gewicht (kg):</label>
+            <input id="num" name="form-0-weights" type="number" min="0" step="0.1">
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="record-btn" form="eingang-form">Speichern</button>
+    </form>
+  </section>
+
+<!-- <div class="form-wrapper">
 
 
     <form method="post">
@@ -19,7 +113,7 @@
                 {% for field in form %}
                 <div class="flex form-row-supplier">
                     <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
-                    {{ field }} <!--input -->
+                    {{ field }}
                     {% if field.errors %}
                     <div class="text-danger">
                         {{ field.errors|striptags }}
@@ -32,6 +126,6 @@
             <button type="submit" class="record-btn">Speichern</button>
         </div>
     </form>
-</div>
+</div> -->
 
-{% endblock %}
+{% endblock %}<srfga
