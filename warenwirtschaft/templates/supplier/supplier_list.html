@@ -10,7 +10,14 @@
 {% block content %}
     
 <div class="table-head">
-    <div class="table-head-title">Lieferanten<a href="{% url 'suppliers_list' %}"> ⟲</a></div>
+    <div class="table-head-title">
+        <div>
+            {% include 'components/left_navi.html' %}
+        </div>
+        
+        <h2>Lieferanten</h2>
+        <a class="reset-btn" href="{% url 'suppliers_list' %}"> ⟲</a>
+    </div>
     <div class="table-head-search">
       <form method="GET">
         <input type="text" name="search" placeholder="Suchen..." value="{{ search_query }}">

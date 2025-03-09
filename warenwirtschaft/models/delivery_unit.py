@@ -17,7 +17,7 @@ class DeliveryUnit(models.Model):
     ]
 
     delivery = models.ForeignKey(Delivery, on_delete=models.SET_NULL, null=True, blank=True, related_name='deliveryunits')
-    material = models.ForeignKey(Material, on_delete=models.CASCADE, null=True, blank=True)
+    material = models.ForeignKey(Material, on_delete=models.CASCADE, null=True, blank=True, related_name='material')
     weight = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     status = models.PositiveSmallIntegerField(choices=STATUS_CHOICES, default=1)
     delivery_type = models.PositiveSmallIntegerField(choices=DELIVERY_TYPE_CHOICES)

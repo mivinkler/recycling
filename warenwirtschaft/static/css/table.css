@@ -53,15 +53,15 @@ th {
 
 .table-head {
   display: flex;
-  align-items: center;
   justify-content: space-between;
   height: 26px;
   margin-bottom: 6px;
 }
 
-.table-head a {
-  text-decoration: none;
-  font-size: 16px;
+.table-head h2 {
+  font-size: 18px;
+}
+.reset-btn {
   font-weight: bold;
 }
 
@@ -96,10 +96,13 @@ th {
 }
 
 .table-head-title {
-  font-weight: bold;
   font-size: 1.3em;
   color: #344b5e;
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
 }
+
 
 .table-reset,
 .table-search {

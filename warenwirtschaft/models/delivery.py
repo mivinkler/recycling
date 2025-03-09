@@ -11,4 +11,4 @@ class Delivery(models.Model):
     deleted_at = models.DateTimeField(null=True, blank=True, default=None)
 
     def __str__(self):
-        return f"{self.supplier} • {self.total_weight}kg"
+        return f"Lieferschein: {self.delivery_receipt} \n Gewicht: {self.total_weight}kg"

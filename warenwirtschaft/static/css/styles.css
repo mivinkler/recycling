@@ -1,3 +1,17 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  letter-spacing: 0.2px;
+}
+
+a {
+  text-decoration: none;
+  font-size: 16px;
+}
+
 .flex {
   display: flex;
   flex-wrap: wrap;
@@ -18,7 +32,7 @@
 
 .title {
   font-weight: bold;
-  font-size: 1.5em;
+  font-size: 1.2em;
   color: #344b5e;
   margin: 20px 0;
 }
