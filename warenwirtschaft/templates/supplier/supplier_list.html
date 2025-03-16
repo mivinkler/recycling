@@ -8,8 +8,69 @@
 
 
 {% block content %}
-    
-<div class="table-head">
+
+<div class="table-header">
+    <div>ANDERWERK <span style="color: red; font-weight: bold; width: 100px;">❯</span></div>
+    <div class="table-header-user">
+        <div>Max Musterman</div>
+        <img class="user-white-icon" src="/static/icons/user-white-icon.svg">
+    </div>
+</div>
+
+<div class="top-menu">
+    <div><a href="{% url 'delivery_create' %}">Neue Lieferung</a></div>
+    <div><a href="{% url 'delivery_units_list' %}">Lieferungen</a></div>
+    <div><a href="{% url 'supplier_create' %}">Neuer Lieferant</a></div>
+    <div><a href="{% url 'suppliers_list' %}">Lieferanten</a></div>
+    <div><a href="{% url 'unload_create' %}">Neue Fraktionen</a></div>
+    <div><a href="{% url 'unloads_list' %}">Fraktionen</a></div>
+</div>
+
+<div class="table-navi">
+    <div class="border-right">
+        {% include 'components/left_navi.html' %}
+        <img class="user-white-icon" src="/static/icons/copy-icon.svg">
+        <p class="table-navi-title">Allgemein</p>
+    </div>
+
+    <div class="border-right">
+        <a href="#" title="Detail">
+            <img src="{% static 'icons/detail-icon.svg' %}">   
+        </a>
+        <a href="#" title="Bearbeiten"> 
+            <img src="{% static 'icons/edit-icon.svg' %}">
+        </a>
+        <p class="table-navi-title">Zeile</p>
+    </div>
+
+    <div class="border-right">
+        <a href="#" title="suchen">
+            <img src="{% static 'icons/search-icon.svg' %}">   
+        </a>
+        <a href="#" title="sortieren"> 
+            <img src="{% static 'icons/sort-icon.svg' %}">
+        </a>
+        <p class="table-navi-title">Action</p>
+    </div>
+
+    <div class="border-right">
+        <a href="#" title="suchen">
+            <img src="{% static 'icons/statistic-icon.svg' %}">   
+        </a>
+        <a href="#" title="suchen">
+            <img src="{% static 'icons/diagram-icon.svg' %}">   
+        </a>
+        <p class="table-navi-title">Statistik</p>
+    </div>
+</div>
+
+
+
+
+
+
+
+<!-- <div>
     <div class="table-head-title">
         <div>
             {% include 'components/left_navi.html' %}
@@ -24,7 +85,7 @@
         <button type="submit">🔍</button>
       </form>
     </div>
-</div>
+</div> -->
 <table class="table-box">
     <colgroup>
         <col style="width: 3.5%">   <!-- Nr. -->
@@ -66,10 +127,10 @@
             <td class="note-column" title="{{ supplier.note }}"><p>{{ supplier.note }}</p></td>
             <td class="suppler-icons">
                 <a href="{% url 'supplier_detail' pk=supplier.id %}" title="Detail">
-                    <img src="{% static 'icons/detail-icon.svg' %}">   
+                    <img src="{% static 'icons/detail-icon-alt.svg' %}">   
                 </a>
                 <a href="{% url 'supplier_update' pk=supplier.id %}" title="Bearbeiten"> 
-                    <img src="{% static 'icons/update-icon.svg' %}">
+                    <img src="{% static 'icons/update-icon-alt.svg' %}">
                 </a>
             </td>
         </tr>
