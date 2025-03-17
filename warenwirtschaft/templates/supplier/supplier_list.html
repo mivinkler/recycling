@@ -28,39 +28,71 @@
 
 <div class="table-navi">
     <div class="border-right">
-        {% include 'components/left_navi.html' %}
-        <img class="user-white-icon" src="/static/icons/copy-icon.svg">
+        <div class="table-navi-icons">
+            {% include 'components/left_navi.html' %}
+            <img class="user-white-icon" src="/static/icons/copy-icon.svg">
+        </div>
         <p class="table-navi-title">Allgemein</p>
     </div>
 
     <div class="border-right">
-        <a href="#" title="Detail">
-            <img src="{% static 'icons/detail-icon.svg' %}">   
-        </a>
-        <a href="#" title="Bearbeiten"> 
-            <img src="{% static 'icons/edit-icon.svg' %}">
-        </a>
+        <div class="table-navi-icons">
+            <a href="#" title="Detail">
+                <img src="{% static 'icons/detail-icon.svg' %}">   
+            </a>
+            <a href="#" title="Bearbeiten"> 
+                <img src="{% static 'icons/edit-icon.svg' %}">
+            </a>
+        </div>
         <p class="table-navi-title">Zeile</p>
     </div>
 
     <div class="border-right">
-        <a href="#" title="suchen">
-            <img src="{% static 'icons/search-icon.svg' %}">   
-        </a>
-        <a href="#" title="sortieren"> 
-            <img src="{% static 'icons/sort-icon.svg' %}">
-        </a>
-        <p class="table-navi-title">Action</p>
+        <div class="table-navi-icons">
+            <a href="#" title="suchen">
+                <img src="{% static 'icons/search-icon.svg' %}">   
+            </a>
+            <a href="#" title="sortieren"> 
+                <img src="{% static 'icons/sort-icon.svg' %}">
+            </a>
+        </div>
+                    <p class="table-navi-title">Action</p>
     </div>
 
     <div class="border-right">
-        <a href="#" title="suchen">
-            <img src="{% static 'icons/statistic-icon.svg' %}">   
-        </a>
-        <a href="#" title="suchen">
-            <img src="{% static 'icons/diagram-icon.svg' %}">   
-        </a>
+        <div class="table-navi-icons">
+            <a href="#" title="suchen">
+                <img src="{% static 'icons/statistic-icon.svg' %}">   
+            </a>
+            <a href="#" title="suchen">
+                <img src="{% static 'icons/diagram-icon.svg' %}">   
+            </a>
+        </div>
         <p class="table-navi-title">Statistik</p>
+    </div>
+
+    <div class="border-right">
+        <div class="table-navi-icons">
+            <a href="{% url 'supplier_create' %}" title="suchen">
+                <img src="{% static 'icons/supplier-icon.svg' %}">   
+            </a>
+            <a href="{% url 'delivery_create' %}" title="suchen">
+                <img src="{% static 'icons/delivery-icon.svg' %}">   
+            </a>
+            <a href="{% url 'unload_create' %}" title="suchen">
+                <img src="{% static 'icons/unload-icon.svg' %}">   
+            </a>
+            <a href="#" title="suchen">
+                <img src="{% static 'icons/recycle-icon.svg' %}">   
+            </a>
+            <a href="#" title="suchen">
+                <img src="{% static 'icons/loading-icon.svg' %}">   
+            </a>
+            <a href="#" title="suchen">
+                <img src="{% static 'icons/shipping-icon.svg' %}"> 
+            </a>
+        </div>
+        <p class="table-navi-title">Erstellen</p>
     </div>
 </div>
 

@@ -19,6 +19,10 @@ table {
   background-color: #217346;
 }
 
+.table-header-logo {
+  height: 30px;
+}
+
 .table-header-user {
   display: flex;
   align-items: center;
@@ -63,21 +67,17 @@ table {
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
 }
 
-.table-navi > div {
+.table-navi-icons {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
-  min-width: 110px;
-  width: min-content;
-  padding: 5px 20px;
+  height: 50px;
+  gap: 30px;
+  /* width: min-content; */
+  padding: 5px 24px;
   border-right: 1px #cdcdcd solid;
 }
 
-.table-navi div:first-child {
-  padding-left: 5px;
-  min-width: 105px;
-}
+
 
 .table-navi-title {
   width: 100%;
