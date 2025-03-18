@@ -18,11 +18,8 @@
 </div>
 
 <div class="top-menu">
-    <div><a href="{% url 'delivery_create' %}">Neue Lieferung</a></div>
     <div><a href="{% url 'delivery_units_list' %}">Lieferungen</a></div>
-    <div><a href="{% url 'supplier_create' %}">Neuer Lieferant</a></div>
     <div><a href="{% url 'suppliers_list' %}">Lieferanten</a></div>
-    <div><a href="{% url 'unload_create' %}">Neue Fraktionen</a></div>
     <div><a href="{% url 'unloads_list' %}">Fraktionen</a></div>
 </div>
 
@@ -80,16 +77,13 @@
                 <img src="{% static 'icons/delivery-icon.svg' %}">   
             </a>
             <a href="{% url 'unload_create' %}" title="suchen">
-                <img src="{% static 'icons/unload-icon.svg' %}">   
+                <img src="{% static 'icons/warehouse-icon.svg' %}">   
             </a>
             <a href="#" title="suchen">
-                <img src="{% static 'icons/recycle-icon.svg' %}">   
+                <img src="{% static 'icons/conveyor-icon.svg' %}">   
             </a>
             <a href="#" title="suchen">
                 <img src="{% static 'icons/loading-icon.svg' %}">   
-            </a>
-            <a href="#" title="suchen">
-                <img src="{% static 'icons/shipping-icon.svg' %}"> 
             </a>
         </div>
         <p class="table-navi-title">Erstellen</p>

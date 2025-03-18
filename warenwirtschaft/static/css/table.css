@@ -50,7 +50,7 @@ table {
   color: #444;
   font-size: 14px;
   padding-bottom: 4px;
-  border-bottom: 4px solid transparent; /* Zunächst transparenter Border */
+  border-bottom: 4px solid transparent;
   transition: border-color 0.2s ease-in-out, font-weight 0.2s ease-in-out;
 }
 
@@ -60,7 +60,7 @@ table {
 }
 
 .table-navi {
-  height: 100px;
+  height: 110px;
   display: flex;
   background-color: var(--background-primary-color);
   padding: 10px 0;
