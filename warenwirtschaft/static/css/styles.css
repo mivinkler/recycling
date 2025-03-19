@@ -76,10 +76,6 @@ a {
   width: 50px;
 }
 
-/* .delivery_suppliers {
-  width: 60%;
-} */
-
 .flex > #wareneingang, #traeger_anzahl {
   width: min-content
 }

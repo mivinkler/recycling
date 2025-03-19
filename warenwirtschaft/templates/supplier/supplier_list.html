@@ -21,18 +21,20 @@
     <div><a href="{% url 'delivery_units_list' %}">Lieferungen</a></div>
     <div><a href="{% url 'suppliers_list' %}">Lieferanten</a></div>
     <div><a href="{% url 'unloads_list' %}">Fraktionen</a></div>
+    <div><a href="{% url 'unloads_list' %}">Recycling</a></div>
+    <div><a href="{% url 'unloads_list' %}">Versand</a></div>
 </div>
 
 <div class="table-navi">
-    <div class="border-right">
+    <div>
         <div class="table-navi-icons">
             {% include 'components/left_navi.html' %}
-            <img class="user-white-icon" src="/static/icons/copy-icon.svg">
+            <img src="/static/icons/download-icon.svg">
         </div>
         <p class="table-navi-title">Allgemein</p>
     </div>
 
-    <div class="border-right">
+    <div>
         <div class="table-navi-icons">
             <a href="#" title="Detail">
                 <img src="{% static 'icons/detail-icon.svg' %}">   
@@ -44,7 +46,7 @@
         <p class="table-navi-title">Zeile</p>
     </div>
 
-    <div class="border-right">
+    <div>
         <div class="table-navi-icons">
             <a href="#" title="suchen">
                 <img src="{% static 'icons/search-icon.svg' %}">   
@@ -53,10 +55,10 @@
                 <img src="{% static 'icons/sort-icon.svg' %}">
             </a>
         </div>
-                    <p class="table-navi-title">Action</p>
+        <p class="table-navi-title">Action</p>
     </div>
 
-    <div class="border-right">
+    <div>
         <div class="table-navi-icons">
             <a href="#" title="suchen">
                 <img src="{% static 'icons/statistic-icon.svg' %}">   
@@ -68,22 +70,22 @@
         <p class="table-navi-title">Statistik</p>
     </div>
 
-    <div class="border-right">
+    <div>
         <div class="table-navi-icons">
-            <a href="{% url 'supplier_create' %}" title="suchen">
+            <a href="{% url 'supplier_create' %}" title="Lieferant">
                 <img src="{% static 'icons/supplier-icon.svg' %}">   
             </a>
-            <a href="{% url 'delivery_create' %}" title="suchen">
-                <img src="{% static 'icons/delivery-icon.svg' %}">   
+            <a href="{% url 'delivery_create' %}" title="Lieferung">
+                <img src="{% static 'icons/container-icon.svg' %}">   
             </a>
-            <a href="{% url 'unload_create' %}" title="suchen">
-                <img src="{% static 'icons/warehouse-icon.svg' %}">   
+            <a href="{% url 'unload_create' %}" title="Leerung">
+                <img src="{% static 'icons/forklift-icon.svg' %}">   
             </a>
-            <a href="#" title="suchen">
+            <a href="#" title="Recycling">
                 <img src="{% static 'icons/conveyor-icon.svg' %}">   
             </a>
-            <a href="#" title="suchen">
-                <img src="{% static 'icons/loading-icon.svg' %}">   
+            <a href="#" title="Versand">
+                <img src="{% static 'icons/shipping-icon.svg' %}">   
             </a>
         </div>
         <p class="table-navi-title">Erstellen</p>
