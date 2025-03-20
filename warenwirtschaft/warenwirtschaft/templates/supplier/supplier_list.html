@@ -20,7 +20,7 @@
 <div class="top-menu">
     <div><a href="{% url 'delivery_units_list' %}">Lieferungen</a></div>
     <div><a href="{% url 'suppliers_list' %}">Lieferanten</a></div>
-    <div><a href="{% url 'unloads_list' %}">Leerung</a></div>
+    <div><a href="{% url 'unloads_list' %}">Fraktionen</a></div>
     <div><a href="{% url 'unloads_list' %}">Recycling</a></div>
     <div><a href="{% url 'unloads_list' %}">Versand</a></div>
 </div>
@@ -54,10 +54,10 @@
                     <img src="{% static 'icons/search-icon.svg' %}">
                 </div>
                 <div class="icon-detail-box hidden-block" hidden>
-                    <div class="icon-search">
+                    <div class="table-head-search">
                         <form method="GET">
-                            <input type="text" name="search" placeholder="Suchen..." value="{{ search_query }}">
-                            <button type="submit">🔍</button>
+                        <input type="text" name="search" placeholder="Suchen..." value="{{ search_query }}">
+                        <button type="submit">🔍</button>
                         </form>
                     </div>
                 </div>

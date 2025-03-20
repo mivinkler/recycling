@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% load custom_filters %}
+{% load pagination %}
+{% load sorting %}
+{% load static %}
+
+{% block title %}Lieferung-Einheiten{% endblock %}
+
+{% block content %}
+<div class="title">Lieferung: detail</div>
+<table class="detail-header">
+    <tr>
+        <th>Lieferant:</th>
+        <td>{{ delivery.supplier }}</td>
+    </tr>
+    <tr>
+        <th>Lieferung-ID:</th>
+        <td>{{ delivery.id }}</td>
+    </tr>
+    <tr>
+        <th>Gewicht:</th>
+        <td>{{ delivery.total_weight }}</td>
+    </tr>
+    <tr>
+        <th>Behälter:</th>
+        <td>{{ delivery.units }}</td>
+    </tr>
+    <tr>
+        <th>Lieferschein:</th>
+        <td>{{ delivery.delivery_receipt }}</td>
+    </tr>
+    <tr>
+        <th>Bemerkung:</th>
+        <td>{{ delivery.note }}</td>
+    </tr>
+    <tr>
+        <th>Datum:</th>
+        <td>{{ delivery.created_at|date:"d.m.Y" }}</td>
+    </tr>
+</table>
+
+<table class="table-box">
+    <colgroup>
+        <col style="width: 3.5%">    <!-- Nr. -->
+        <col style="width: 10%;">    <!-- Behälter -->
+        <col style="width: 10%;">    <!-- Material -->
+        <col style="width: 6%;">     <!-- Gewicht -->
+        <col style="width: 6%;">     <!-- Status -->
+        <col style="width: 200px;">  <!-- Bemerkung -->
+        <col style="width: 10%; ">   <!-- actions -->
+    </colgroup>
+
+    <thead>
+        <tr class="table-content-title">
+            <th>ID</th>
+            <th>Behälter</th>
+            <th>Material</th>
+            <th>Gewicht</th>
+            <th>Status</th>
+            <th>Bemerkung</th>
+            <th></th>
+        </tr>
+    </thead>
+    
+    <tbody class="table-content">
+        {% for unit in delivery_units %}
+        <tr>
+            <td>{{ unit.id }}</td>
+            <td>{{ unit.get_delivery_type_display }}</td>
+            <td>{{ unit.material.name|default:"-" }}</td>
+            <td>{{ unit.weight|default:"-" }} kg</td>
+            <td>{{ unit.get_status_display }}</td>
+            <td class="note-column" title="{{ unit.note }}">{{ unit.note }}</td>
+            <td class="suppler-icons">
+                <a href="#" title="Lieferung ansehen">
+                    <img src="{% static 'icons/detail-icon.svg' %}">   
+                </a>
+                <a href="#" title="Bearbeiten"> 
+                    <img src="{% static 'icons/update-icon.svg' %}">
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+
+{% endblock %}

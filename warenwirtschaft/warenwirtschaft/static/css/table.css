@@ -103,53 +103,24 @@ table th, td {
   text-align: center;
 }
 
-
-
-
-
-.icon-search form {
-  display: flex;
-  align-items: center;
-  height: 24px;
-  width: 220px;
-}
-
-.icon-search input {
-  width: 100%;
-  padding: 6px;
-  border: 1px solid #bbb;
-  outline: none;
-}
-
-.icon-search button {
-  height: 100%;
-  background: #d1d1d1;
-  color: #333;
-  border: 1px solid #bbb;
-  border-left: none;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.table-head-search button:hover {
-  background: #bfbfbf;
-}
-
-
-.table-reset,
-.table-search {
-  cursor: pointer;
-  border: 1px solid #bebbbb;
-  background-color: #f0f3f3;
-  height: 26px;
-  width: 26px;
-}
-
 .table-content-title {
   background-color: var(--background-second-color);
   border-top: 14px solid var(--background-second-color);
   width: 100%;
 }
+
+.table-content-title th div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+
+
+
+
 
 
 
@@ -317,6 +288,13 @@ table th, td {
 details > summary::marker {
   display: none;
   content: '';
+}
+
+
+
+
+.table-content td {
+  vertical-align: super;
 }
 
 .table-filter button {
