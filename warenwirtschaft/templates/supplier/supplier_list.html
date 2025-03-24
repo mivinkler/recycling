@@ -4,8 +4,7 @@
 {% load sorting %}
 {% load static %}
 
-{% block title %}Eingang{% endblock %}
-
+{% block title %}Lieferanten{% endblock %}
 
 {% block content %}
 
@@ -92,9 +91,6 @@
                 <img src="{% static 'icons/reset-icon.svg' %}">
 
             </a>
-            <a href="{% url 'suppliers_list' %}" title="Reset"> 
-                <img src="{% static 'icons/reset-icon.svg' %}">
-            </a>
         </div>
 
         <p class="icons-title">Suchen</p>
@@ -135,14 +131,6 @@
         <p class="icons-title">Erstellen</p>
     </div>
 </div>
-
-
-
-
-
-
-
-
 
 <table class="table-box">
     <thead>
@@ -188,14 +176,8 @@
 
 {% endblock %}
 
-<script>
-    let dateStart = new Date();
-    dateStart.setMonth(dateStart.getMonth() - 1);
-
-    document.getElementById("dateStart").valueAsDate = dateStart;
-    document.getElementById("dateEnd").valueAsDate = new Date();
-</script>
-
 {% block extra_js %}
     <script src="{% static 'js/block_visibility.js' %}"></script>
+    <script src="{% static 'js/current-date.js' %}"></script>
 {% endblock %}
+

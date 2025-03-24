@@ -11,6 +11,10 @@ body {
   letter-spacing: 0.1px;
 }
 
+main {
+  height: 100vh;
+}
+
 a {
   text-decoration: none;
 }
