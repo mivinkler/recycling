@@ -4,11 +4,22 @@
 }
 
 table {
-    border-collapse: collapse;
-    border: 1px solid #e8eaec;
+  border-collapse: collapse;
 }
 
-/* ====== Table header ====== */
+th {
+  border: 1px solid #cdcdcd;
+  padding-bottom: 5px;
+  font-weight: 200;
+}
+
+td {
+  border: 1px solid #cdcdcd;;
+  padding: 0 10px;
+  line-height: 28px;
+}
+
+/* ============ table-header =============*/
 
 .table-header {
   padding: 12px;
@@ -30,79 +41,181 @@ table {
 }
 
 .user-white-icon {
-  width: 20px;
+  height: 20px;
 }
 
+
+/* ============ Top-menu =============*/
+
 .top-menu {
-  padding: 15px 5px;
+  padding: 15px 5px 5px;
   display: flex;
-  gap: 16px;
+  gap: 2px;
   background-color: var(--background-primary-color);
 }
 
 .top-menu div {
   min-width: 110px;
+  height: 20px;
   text-align: center;
   display: inline-block;
 }
 
 .top-menu a {
-  color: #444;
+  color: #000;
   font-size: 14px;
   padding-bottom: 4px;
-  border-bottom: 4px solid transparent;
-  transition: border-color 0.2s ease-in-out, font-weight 0.2s ease-in-out;
+  transition: border-color 0.2s ease-in-out;
 }
 
 .top-menu a:hover {
-  font-weight: bold;
-  border-bottom-color: #217346;
+  border-bottom: 4px solid #217346;
 }
 
-.table-navi {
-  height: 110px;
+.top-menu .selected {
+  font-weight: bold;
+  border-bottom: 4px solid #217346;
+}
+
+/* ============ Navigation icons =============*/
+
+.navi-icons {
   display: flex;
+  position: relative;
+  height: 90px;
+  padding: 20px 0 12px 0;
   background-color: var(--background-primary-color);
-  padding: 10px 0;
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
 }
 
-.table-navi-icons {
-  display: flex;
-  align-items: center;
-  height: 50px;
-  gap: 30px;
-  /* width: min-content; */
-  padding: 5px 24px;
+.navi-icons > div {
   border-right: 1px #cdcdcd solid;
 }
 
+.navi-icon {
+  display: flex;
+  align-items: flex-start;
+  gap: 30px;
+  padding: 5px 24px;
+  height: 76%;
+}
 
+.icon-detail {
+  position: absolute;
+  padding: 8px;
+  border: 1px solid #cdcdcd;
+  background-color: #fff;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+}
 
-.table-navi-title {
-  width: 100%;
-  align-self: flex-end;
+.icons-title {
+  color: #444;
   text-align: center;
 }
 
-.table-content-title {
-  height: 40px;
+/* ============ Navigation icon: search =============*/
+
+.icon-search {
+  display: flex;
+  align-items: center;
+}
+
+.icon-search-input {
+  width: 100%;
+  height: 28px;
+  padding: 6px;
+  border: 1px solid #bbb;
+  outline: none;
+}
+
+.icon-search-date {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.icon-search-date input {
+  border: 1px solid #bbb; 
+  color: #333;
+  padding: 4px;
+  font-family: "Noto Sans", sans-serif;
+  font-size: 14px;
+  letter-spacing: 0.1px;
+}
+
+.icon-search-button {
+  width: 28px;
+  height: 28px;
+  background: #d1d1d1;
+  color: #333;
+  border: 1px solid #bbb;
+  border-left: none;
+  cursor: pointer;
+}
+
+/* ============ Navigation icon: sort =============*/
+
+.icon-sort {
+  display: flex;
+  justify-content: space-between;
+  line-height: 24px;
+  width: 150px;
+}
+
+.icon-sort a {
+  color: #333;
+  font-size: 12px;  
+}
+
+.icon-sort a:hover {
+  color: #217346;
+  display: inline-block;
+  transform: scale(1.3);
+}
+
+/* ============ Table title =============*/
+
+
+.thead-title {
   background-color: var(--background-second-color);
+  border-top: 10px solid var(--background-second-color);
   width: 100%;
 }
 
-.table-content-title th,
-.table-content td {
-  border: 1px solid #e8eaec;
-  padding: 4px 10px;
-  line-height: 24px;
-}
 
-.table-content-title th div {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+/* ============ Table rows size =============*/
+
+.tbody-id {
+  width: auto;
+  text-align: right;
+  padding: 0 7px 0 3px ;
+  color: #000;
+  background-color: var(--background-second-color);
 }
+.tbody-avv {width: 6%;}
+.tbody-name {width: 20%;}
+.tbody-street {width: 10%}
+.tbody-postal {width: 5%;}
+.tbody-city {width: 10%;}
+.tbody-phone {width: 10%;}
+.tbody-email {width: 10%;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -137,9 +250,9 @@ table {
   
 /* ====== Table Header ====== */
   
-th {
-  text-align: left;
-}
+/* th {
+  text-align: center;
+} */
 
 .sort-icons {
   display: flex;
@@ -175,6 +288,7 @@ th {
 .table-head h2 {
   font-size: 18px;
 }
+
 .reset-btn {
   font-weight: bold;
 }
@@ -276,13 +390,6 @@ th {
 details > summary::marker {
   display: none;
   content: '';
-}
-
-
-
-
-.table-content td {
-  vertical-align: super;
 }
 
 .table-filter button {

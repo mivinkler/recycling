@@ -7,13 +7,12 @@
 body {
   background: #fff;
   font-family: "Noto Sans", sans-serif;
-  color: #444;
   font-size: 14px;
+  letter-spacing: 0.1px;
 }
 
 a {
   text-decoration: none;
-  font-size: 16px;
 }
 
 .flex {
@@ -75,10 +74,6 @@ a {
 #item-counter {
   width: 50px;
 }
-
-/* .delivery_suppliers {
-  width: 60%;
-} */
 
 .flex > #wareneingang, #traeger_anzahl {
   width: min-content

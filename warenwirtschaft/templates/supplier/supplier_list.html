@@ -10,7 +10,9 @@
 {% block content %}
 
 <div class="table-header">
-    <div>ANDERWERK <span style="color: red; font-weight: bold; width: 100px;">❯</span></div>
+    <div>
+        ANDERWERK <span style="color: red; font-weight: bold; width: 100px;">❯</span>
+    </div>
     <div class="table-header-user">
         <div>Max Musterman</div>
         <img class="user-white-icon" src="/static/icons/user-white-icon.svg">
@@ -18,46 +20,82 @@
 </div>
 
 <div class="top-menu">
-    <div><a href="{% url 'delivery_units_list' %}">Lieferungen</a></div>
-    <div><a href="{% url 'suppliers_list' %}">Lieferanten</a></div>
-    <div><a href="{% url 'unloads_list' %}">Fraktionen</a></div>
+    <div><a href="{% url 'suppliers_list' %}" class="{% if selected_menu == 'supplier_list' %} selected {% endif %}">Lieferanten</a></div>
+    <div><a href="{% url 'delivery_units_list' %}">Eingang</a></div>
+    <div><a href="{% url 'unloads_list' %}">Leerung</a></div>
+    <div><a href="{% url 'unloads_list' %}">Recycling</a></div>
+    <div><a href="{% url 'unloads_list' %}">Versand</a></div>
 </div>
 
-<div class="table-navi">
-    <div class="border-right">
-        <div class="table-navi-icons">
+<div class="navi-icons">
+    <div>
+        <div class="navi-icon">
             {% include 'components/left_navi.html' %}
-            <img class="user-white-icon" src="/static/icons/copy-icon.svg">
+            <img src="/static/icons/download-icon.svg">
+            <img src="/static/icons/print-icon.svg">
+
         </div>
-        <p class="table-navi-title">Allgemein</p>
+        <p class="icons-title">Action</p>
     </div>
 
-    <div class="border-right">
-        <div class="table-navi-icons">
+    <div>
+        <div class="navi-icon">
             <a href="#" title="Detail">
-                <img src="{% static 'icons/detail-icon.svg' %}">   
+                <img src="{% static 'icons/info-icon.svg' %}">   
             </a>
             <a href="#" title="Bearbeiten"> 
                 <img src="{% static 'icons/edit-icon.svg' %}">
             </a>
         </div>
-        <p class="table-navi-title">Zeile</p>
+        <p class="icons-title">Zeile</p>
     </div>
 
-    <div class="border-right">
-        <div class="table-navi-icons">
-            <a href="#" title="suchen">
-                <img src="{% static 'icons/search-icon.svg' %}">   
-            </a>
-            <a href="#" title="sortieren"> 
-                <img src="{% static 'icons/sort-icon.svg' %}">
+    <div>
+        <div class="navi-icon">
+            <div class="navi-icon-js">
+                <div class="toggle-button">
+                    <img src="{% static 'icons/search-icon.svg' %}">
+                </div>
+                <div class="icon-detail hidden-block" hidden>
+                    <form class="icon-search" method="GET">
+                        <input class="icon-search-input" type="text" name="search" placeholder="Suchen..." value="{{ search_query }}">
+                        <button class="icon-search-button" type="submit">🔍</button>
+                    </form>
+                
+                    <form class="icon-search-date" method="GET">
+                        <input type="date" id="dateStart">
+                        <input type="date" id="dateEnd">
+                    </form>
+                </div>
+            </div>
+            
+            <div class="navi-icon-js">
+                <div class="toggle-button">
+                    <img src="{% static 'icons/sort-icon.svg' %}">
+                </div>
+                <div class="icon-detail hidden-block" hidden>
+                    <div>
+                        {% for field, label in active_fields %}
+                        <div class="icon-sort">
+                            <span>{{ label }}</span>
+                            <div>
+                                <a href="?sort={{ field }}_asc">&#9650;</a>
+                                <a href="?sort={{ field }}_desc">&#9660;</a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <a href="{% url 'suppliers_list' %}" title="Reset"> 
+                <img src="{% static 'icons/reset-icon.svg' %}">
             </a>
         </div>
-                    <p class="table-navi-title">Action</p>
+        <p class="icons-title">Suchen</p>
     </div>
 
-    <div class="border-right">
-        <div class="table-navi-icons">
+    <div>
+        <div class="navi-icon">
             <a href="#" title="suchen">
                 <img src="{% static 'icons/statistic-icon.svg' %}">   
             </a>
@@ -65,91 +103,57 @@
                 <img src="{% static 'icons/diagram-icon.svg' %}">   
             </a>
         </div>
-        <p class="table-navi-title">Statistik</p>
+        <p class="icons-title">Statistik</p>
     </div>
 
-    <div class="border-right">
-        <div class="table-navi-icons">
-            <a href="{% url 'supplier_create' %}" title="suchen">
+    <div>
+        <div class="navi-icon">
+            <a href="{% url 'supplier_create' %}" title="Lieferant">
                 <img src="{% static 'icons/supplier-icon.svg' %}">   
             </a>
-            <a href="{% url 'delivery_create' %}" title="suchen">
-                <img src="{% static 'icons/delivery-icon.svg' %}">   
+            <a href="{% url 'delivery_create' %}" title="Lieferung">
+                <img src="{% static 'icons/container-icon.svg' %}">   
             </a>
-            <a href="{% url 'unload_create' %}" title="suchen">
-                <img src="{% static 'icons/warehouse-icon.svg' %}">   
+            <a href="{% url 'unload_create' %}" title="Leerung">
+                <img src="{% static 'icons/forklift-icon.svg' %}">   
             </a>
-            <a href="#" title="suchen">
+            <a href="#" title="Recycling">
                 <img src="{% static 'icons/conveyor-icon.svg' %}">   
             </a>
-            <a href="#" title="suchen">
-                <img src="{% static 'icons/loading-icon.svg' %}">   
+            <a href="#" title="Versand">
+                <img src="{% static 'icons/shipping-icon.svg' %}">   
             </a>
         </div>
-        <p class="table-navi-title">Erstellen</p>
+        <p class="icons-title">Erstellen</p>
     </div>
 </div>
 
-
-
-
-
-
-
-<!-- <div>
-    <div class="table-head-title">
-        <div>
-            {% include 'components/left_navi.html' %}
-        </div>
-        
-        <h2>Lieferanten</h2>
-        <a class="reset-btn" href="{% url 'suppliers_list' %}"> ⟲</a>
-    </div>
-    <div class="table-head-search">
-      <form method="GET">
-        <input type="text" name="search" placeholder="Suchen..." value="{{ search_query }}">
-        <button type="submit">🔍</button>
-      </form>
-    </div>
-</div> -->
-<table class="table-box">
-    <colgroup>
-        <col style="width: 3.5%">   <!-- Nr. -->
-        <col style="width: 6%">     <!-- AVV -->
-        <col style="width: 20%;">   <!-- Name -->
-        <col style="width: 10%">    <!-- Strasse -->
-        <col style="width: 5%;">    <!-- PLZ -->
-        <col style="width: 10%;">   <!-- Stadt -->
-        <col style="width: 10%;">    <!-- Telefon -->
-        <col style="width: 10%;">   <!-- Email -->
-        <col style="width: 20%;">   <!-- Bemerkung -->
-        <col style="width: 10%; ">  <!-- actions -->
-    </colgroup>
+<table>
     <thead>
-        <tr class="table-content-title">
-            <th>{% sort "&#8470;" "id" request.GET.sort %}</th>
-            <th>{% sort "AVV" "avv_number" request.GET.sort %}</th>
-            <th>{% sort "Name" "name" request.GET.sort %}</th>
-            <th>{% sort "Adresse" "street" request.GET.sort %}</th>
-            <th>{% sort "PLZ" "postal_code" request.GET.sort %}</th>
-            <th>{% sort "Stadt" "city" request.GET.sort %}</th>
-            <th>{% sort "Telefon" "phone" request.GET.sort %}</th>
-            <th>{% sort "Email" "email" request.GET.sort %}</th>
+        <tr class="thead-title">
+            <th class=""></th>
+            <th>AVV</th>
+            <th>Name</th>
+            <th>Adresse</th>
+            <th>PLZ</th>
+            <th>Stadt</th>
+            <th>Telefon</th>
+            <th>Email</th>
             <th>Bemerkung</th>
             <th></th> <!-- actions -->
         </tr>
     </thead>
-    <tbody class="table-content">
+    <tbody>
         {% for supplier in page_obj %}
         <tr>
-            <td>{{ supplier.id }}</td>
-            <td>{{ supplier.avv_number }}</td>
-            <td>{{ supplier.name }}</td>
-            <td>{{ supplier.street }}</td>
-            <td>{{ supplier.postal_code }}</td>
-            <td>{{ supplier.city }}</td>
-            <td>{{ supplier.phone }}</td>
-            <td>{{ supplier.email }}</td>
+            <td class="tbody-id">{{ supplier.id }}</td>
+            <td class="tbody-avv">{{ supplier.avv_number }}</td>
+            <td class="tbody-name">{{ supplier.name }}</td>
+            <td class="tbody-street">{{ supplier.street }}</td>
+            <td class="tbody-postal">{{ supplier.postal_code }}</td>
+            <td class="tbody-city">{{ supplier.city }}</td>
+            <td class="tbody-phone">{{ supplier.phone }}</td>
+            <td class="tbody-email">{{ supplier.email }}</td>
             <td class="note-column" title="{{ supplier.note }}"><p>{{ supplier.note }}</p></td>
             <td class="suppler-icons">
                 <a href="{% url 'supplier_detail' pk=supplier.id %}" title="Detail">
@@ -167,6 +171,14 @@
 {% paginate page_obj %}
 
 {% endblock %}
+
+<script>
+    let dateStart = new Date();
+    dateStart.setMonth(dateStart.getMonth() - 1);
+
+    document.getElementById("dateStart").valueAsDate = dateStart;
+    document.getElementById("dateEnd").valueAsDate = new Date();
+</script>
 
 {% block extra_js %}
     <script src="{% static 'js/block_visibility.js' %}"></script>
