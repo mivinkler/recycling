@@ -7,13 +7,19 @@ table {
   border-collapse: collapse;
 }
 
-table th, td {
-  border-collapse: collapse;
-  border: 1px solid #dcdcdc;
+th {
+  border: 1px solid #cdcdcd;
+  padding-bottom: 5px;
+  font-weight: 200;
+}
+
+td {
+  border: 1px solid #cdcdcd;;
   padding: 0 10px;
   line-height: 28px;
-  color: #585858;
 }
+
+/* ============ table-header =============*/
 
 .table-header {
   padding: 12px;
@@ -35,13 +41,16 @@ table th, td {
 }
 
 .user-white-icon {
-  width: 20px;
+  height: 20px;
 }
+
+
+/* ============ Top-menu =============*/
 
 .top-menu {
   padding: 15px 5px 5px;
   display: flex;
-  gap: 16px;
+  gap: 2px;
   background-color: var(--background-primary-color);
 }
 
@@ -53,22 +62,29 @@ table th, td {
 }
 
 .top-menu a {
-  color: #444;
+  color: #000;
   font-size: 14px;
   padding-bottom: 4px;
   transition: border-color 0.2s ease-in-out;
 }
 
 .top-menu a:hover {
+  border-bottom: 4px solid #217346;
+}
+
+.top-menu .selected {
   font-weight: bold;
   border-bottom: 4px solid #217346;
 }
 
-.table-navi {
-  height: 100px;
+/* ============ Navigation icons =============*/
+
+.navi-icons {
   display: flex;
+  position: relative;
+  height: 90px;
+  padding: 20px 0 12px 0;
   background-color: var(--background-primary-color);
-  padding: 10px 0;
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
   position: relative;
 }
@@ -77,79 +93,141 @@ table th, td {
   border-right: 1px #cdcdcd solid;
 }
 
-.table-navi-icons {
+.navi-icons > div {
+  border-right: 1px #cdcdcd solid;
+}
+
+.navi-icon {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 30px;
-  padding: 0 24px;
+  padding: 5px 24px;
   height: 76%;
 }
 
 .icon-detail {
-  position: relative;
-}
-
-.icon-detail-box {
   position: absolute;
-  width: 240px;
-  background-color: #fff;
-  border: 1px solid #cdcdcd;
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
   padding: 8px;
+  border: 1px solid #cdcdcd;
+  background-color: #fff;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
 }
 
-.table-navi-title {
+.icons-title {
   color: #444;
   text-align: center;
 }
 
+/* ============ Navigation icon: search =============*/
 
-
-
-
-.icon-search form {
+.icon-search {
   display: flex;
   align-items: center;
-  height: 24px;
-  width: 220px;
 }
 
-.icon-search input {
+.icon-search-input {
   width: 100%;
+  height: 28px;
   padding: 6px;
   border: 1px solid #bbb;
   outline: none;
 }
 
-.icon-search button {
-  height: 100%;
+.icon-search-date {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.icon-search-date input {
+  border: 1px solid #bbb; 
+  color: #333;
+  padding: 4px;
+  font-family: "Noto Sans", sans-serif;
+  font-size: 14px;
+  letter-spacing: 0.1px;
+}
+
+.icon-search-button {
+  width: 28px;
+  height: 28px;
   background: #d1d1d1;
   color: #333;
   border: 1px solid #bbb;
   border-left: none;
   cursor: pointer;
-  transition: 0.2s;
 }
 
-.table-head-search button:hover {
-  background: #bfbfbf;
+/* ============ Navigation icon: sort =============*/
+
+.icon-sort {
+  display: flex;
+  justify-content: space-between;
+  line-height: 24px;
+  width: 150px;
 }
 
-
-.table-reset,
-.table-search {
-  cursor: pointer;
-  border: 1px solid #bebbbb;
-  background-color: #f0f3f3;
-  height: 26px;
-  width: 26px;
+.icon-sort a {
+  color: #333;
+  font-size: 12px;  
 }
 
-.table-content-title {
+.icon-sort a:hover {
+  color: #217346;
+  display: inline-block;
+  transform: scale(1.3);
+}
+
+/* ============ Table title =============*/
+
+
+.thead-title {
   background-color: var(--background-second-color);
-  border-top: 14px solid var(--background-second-color);
+  border-top: 10px solid var(--background-second-color);
   width: 100%;
 }
+
+
+/* ============ Table rows size =============*/
+
+.tbody-id {
+  width: auto;
+  text-align: right;
+  padding: 0 7px 0 3px ;
+  color: #000;
+  background-color: var(--background-second-color);
+}
+.tbody-avv {width: 6%;}
+.tbody-name {width: 20%;}
+.tbody-street {width: 10%}
+.tbody-postal {width: 5%;}
+.tbody-city {width: 10%;}
+.tbody-phone {width: 10%;}
+.tbody-email {width: 10%;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -177,14 +255,10 @@ table th, td {
   
 /* ====== Table Header ====== */
   
-/* th {
-  text-align: center;
-} */
 
 .sort-icons {
   display: flex;
   flex-direction: column;
-  /* width: 10px; */
   height: 100%;
 }
 

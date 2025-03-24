@@ -1,6 +1,5 @@
 .menu-toggle {
   position: relative;
-  padding-left: 8px;
   font-weight: normal;
 }
 
@@ -8,7 +7,6 @@
   color: black;
   border: none;
   cursor: pointer;
-  font-size: 24px;
 }
 
 .sidebar {
