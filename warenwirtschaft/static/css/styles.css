@@ -7,8 +7,12 @@
 body {
   background: #fff;
   font-family: "Noto Sans", sans-serif;
-  font-size: 14px;
+  font-size: 13px;
   letter-spacing: 0.1px;
+}
+
+main {
+  height: 100vh;
 }
 
 a {
