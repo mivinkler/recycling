@@ -4,8 +4,7 @@
 {% load sorting %}
 {% load static %}
 
-{% block title %}Eingang{% endblock %}
-
+{% block title %}Lieferanten{% endblock %}
 
 {% block content %}
 
@@ -51,6 +50,7 @@
     </div>
 
     <div>
+
         <div class="navi-icon">
             <div class="navi-icon-js">
                 <div class="toggle-button">
@@ -89,13 +89,16 @@
             </div>
             <a href="{% url 'suppliers_list' %}" title="Reset"> 
                 <img src="{% static 'icons/reset-icon.svg' %}">
+
             </a>
         </div>
+
         <p class="icons-title">Suchen</p>
     </div>
 
     <div>
         <div class="navi-icon">
+
             <a href="#" title="suchen">
                 <img src="{% static 'icons/statistic-icon.svg' %}">   
             </a>
@@ -107,6 +110,7 @@
     </div>
 
     <div>
+
         <div class="navi-icon">
             <a href="{% url 'supplier_create' %}" title="Lieferant">
                 <img src="{% static 'icons/supplier-icon.svg' %}">   
@@ -128,7 +132,7 @@
     </div>
 </div>
 
-<table>
+<table class="table-box">
     <thead>
         <tr class="thead-title">
             <th class=""></th>
@@ -154,8 +158,8 @@
             <td class="tbody-city">{{ supplier.city }}</td>
             <td class="tbody-phone">{{ supplier.phone }}</td>
             <td class="tbody-email">{{ supplier.email }}</td>
-            <td class="note-column" title="{{ supplier.note }}"><p>{{ supplier.note }}</p></td>
-            <td class="suppler-icons">
+            <td class="tbody-note" title="{{ supplier.note }}"><p>{{ supplier.note }}</p></td>
+            <td class="tbody-icons">
                 <a href="{% url 'supplier_detail' pk=supplier.id %}" title="Detail">
                     <img src="{% static 'icons/detail-icon-alt.svg' %}">   
                 </a>
@@ -172,14 +176,8 @@
 
 {% endblock %}
 
-<script>
-    let dateStart = new Date();
-    dateStart.setMonth(dateStart.getMonth() - 1);
-
-    document.getElementById("dateStart").valueAsDate = dateStart;
-    document.getElementById("dateEnd").valueAsDate = new Date();
-</script>
-
 {% block extra_js %}
     <script src="{% static 'js/block_visibility.js' %}"></script>
+    <script src="{% static 'js/current-date.js' %}"></script>
 {% endblock %}
+

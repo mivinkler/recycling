@@ -1,6 +1,12 @@
 :root {
-  --background-primary-color: #f3f2f1;
-  --background-second-color: #e6e6e6;
+  --color-gray-100: #f3f2f1;
+  --color-gray-200: #e6e6e6;
+  --color-gray-300: #cdcdcd;
+  --color-gray-400: #ccc;
+  --color-gray-500: #bbb;
+  /* --color-gray-600: #aaa; */
+  --color-gray-800: #444;
+  --color-gray-900: #333;
 }
 
 table {
@@ -8,15 +14,14 @@ table {
 }
 
 th {
-  border: 1px solid #cdcdcd;
+  border: 1px solid var(--color-gray-300);
   padding-bottom: 5px;
-  font-weight: 200;
+  font-weight: 400;
 }
 
 td {
-  border: 1px solid #cdcdcd;;
-  padding: 0 10px;
-  line-height: 28px;
+  border: 1px solid var(--color-gray-300);
+  padding: 5px 10px;
 }
 
 /* ============ table-header =============*/
@@ -44,14 +49,13 @@ td {
   height: 20px;
 }
 
-
 /* ============ Top-menu =============*/
 
 .top-menu {
   padding: 15px 5px 5px;
   display: flex;
   gap: 2px;
-  background-color: var(--background-primary-color);
+  background-color: var(--color-gray-100);
 }
 
 .top-menu div {
@@ -84,12 +88,17 @@ td {
   position: relative;
   height: 90px;
   padding: 20px 0 12px 0;
-  background-color: var(--background-primary-color);
+  background-color: var(--color-gray-100);
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.table-navi > div {
+  border-right: 1px solid var(--color-gray-300);
 }
 
 .navi-icons > div {
-  border-right: 1px #cdcdcd solid;
+  border-right: 1px solid var(--color-gray-300);
 }
 
 .navi-icon {
@@ -103,13 +112,13 @@ td {
 .icon-detail {
   position: absolute;
   padding: 8px;
-  border: 1px solid #cdcdcd;
+  border: 1px solid var(--color-gray-300);
   background-color: #fff;
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
 }
 
 .icons-title {
-  color: #444;
+  color: var(--color-gray-800);
   text-align: center;
 }
 
@@ -124,7 +133,7 @@ td {
   width: 100%;
   height: 28px;
   padding: 6px;
-  border: 1px solid #bbb;
+  border: 1px solid var(--color-gray-500);
   outline: none;
 }
 
@@ -136,8 +145,8 @@ td {
 }
 
 .icon-search-date input {
-  border: 1px solid #bbb; 
-  color: #333;
+  border: 1px solid var(--color-gray-500);
+  color: var(--color-gray-900);
   padding: 4px;
   font-family: "Noto Sans", sans-serif;
   font-size: 14px;
@@ -147,9 +156,9 @@ td {
 .icon-search-button {
   width: 28px;
   height: 28px;
-  background: #d1d1d1;
-  color: #333;
-  border: 1px solid #bbb;
+  background: var(--color-gray-500);
+  color: var(--color-gray-900);
+  border: 1px solid var(--color-gray-500);
   border-left: none;
   cursor: pointer;
 }
@@ -164,7 +173,7 @@ td {
 }
 
 .icon-sort a {
-  color: #333;
+  color: var(--color-gray-900);
   font-size: 12px;  
 }
 
@@ -176,32 +185,77 @@ td {
 
 /* ============ Table title =============*/
 
-
 .thead-title {
-  background-color: var(--background-second-color);
-  border-top: 10px solid var(--background-second-color);
+  background-color: var(--color-gray-100);
+  border-top: 10px solid var(--color-gray-100);
   width: 100%;
 }
 
-
-/* ============ Table rows size =============*/
+/* ============ Table rows =============*/
 
 .tbody-id {
   width: auto;
   text-align: right;
-  padding: 0 7px 0 3px ;
   color: #000;
-  background-color: var(--background-second-color);
+  background-color: var(--color-gray-100);
+  border-left: 8px solid var(--color-gray-100);
+  padding-left: 5px;
 }
 .tbody-avv {width: 6%;}
 .tbody-name {width: 20%;}
-.tbody-street {width: 10%}
+.tbody-street {width: 20%}
 .tbody-postal {width: 5%;}
 .tbody-city {width: 10%;}
 .tbody-phone {width: 10%;}
 .tbody-email {width: 10%;}
+.tbody-note {width: 10%;}
+.tbody-icons {width: 8%;}
+
+.tbody-note p {
+  white-space: nowrap;       
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 100px;
+}
+
+.tbody-icons * {
+  text-decoration: none;
+  margin-left: 3px;
+  vertical-align: middle;
+}
 
 
+/* ====== Pagination ====== */
+
+.pagination {
+  display: inline-block;
+  position: fixed;
+  bottom: 20px;
+  width: 100vw;
+  text-align: center;
+}
+
+.pagination a, 
+.pagination span {
+  padding: 5px 10px;
+  border: 1px solid var(--color-gray-400);
+  border-radius: 3px;
+  text-decoration: none;
+  color: var(--color-gray-800);
+  background-color: #f9f9f9;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.pagination a:hover {
+  background-color: var(--color-gray-400);
+  color: #000;
+}
+
+.pagination .current {
+  background-color: var(--color-gray-300);
+  border-color: var(--color-gray-500);
+  color: white;
+}
 
 
 
@@ -250,14 +304,10 @@ td {
   
 /* ====== Table Header ====== */
   
-/* th {
-  text-align: center;
-} */
 
 .sort-icons {
   display: flex;
   flex-direction: column;
-  /* width: 10px; */
   height: 100%;
 }
 
@@ -302,7 +352,7 @@ td {
   height: 24px;
   width: 220px;
   padding: 6px;
-  border: 1px solid #bbb;
+  border: 1px solid var(--color-gray-500);
   border-right: none;
   outline: none;
 }
@@ -311,8 +361,8 @@ td {
   height: 24px;
   width: 32px;
   background: #d1d1d1;
-  color: #333;
-  border: 1px solid #bbb;
+  color: var(--color-gray-900);
+  border: 1px solid var(--color-gray-500);
   border-left: none;
   font-size: 14px;
   cursor: pointer;
@@ -420,61 +470,11 @@ details > summary::marker {
   background-color: #e9ecef;
 } */
 
-.note-column p {
-  white-space: nowrap;       
-  text-overflow: ellipsis;
-  overflow: hidden;
-  width: 300px;
-}
 
-.suppler-icons * {
-  text-decoration: none;
-  margin-left: 3px;
-  vertical-align: middle;
-}
+
+
 
 .input-btn {
   padding: 3px 6px;
   margin-top: 12px;
-}
-
-/* ====== Pagination ====== */
-
-.pagination {
-  display: flex;
-  height: 40px;
-  justify-content: center;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.8em;
-  margin-top: auto;
-}
-
-.pagination a {
-  padding: 6px 10px;
-  border: 1px solid #ccc;
-  border-radius: 2px;
-  text-decoration: none;
-  color: #333;
-  background-color: #f9f9f9;
-  transition: background-color 0.3s, color 0.3s;
-}
-
-.pagination a:hover {
-  background-color: #ddd;
-  color: #000;
-}
-
-.pagination .current {
-  padding: 7px 11px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background-color: #e0e0e0;
-  color: #333;
-  font-weight: bold;
-}
-
-.pagination span {
-  padding: 8px 12px;
-  color: #888;
 }
