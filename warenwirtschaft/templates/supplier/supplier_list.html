@@ -26,116 +26,12 @@
     <div><a href="{% url 'unloads_list' %}">Versand</a></div>
 </div>
 
-<div class="navi-icons">
-    <div>
-        <div class="navi-icon">
-            {% include 'components/left_navi.html' %}
-            <img src="/static/icons/download-icon.svg">
-            <img src="/static/icons/print-icon.svg">
+{% include 'components/top_navi.html' %}
 
-        </div>
-        <p class="icons-title">Action</p>
-    </div>
-
-    <div>
-        <div class="navi-icon">
-            <a href="#" title="Detail">
-                <img src="{% static 'icons/info-icon.svg' %}">   
-            </a>
-            <a href="#" title="Bearbeiten"> 
-                <img src="{% static 'icons/edit-icon.svg' %}">
-            </a>
-        </div>
-        <p class="icons-title">Zeile</p>
-    </div>
-
-    <div>
-
-        <div class="navi-icon">
-            <div class="navi-icon-js">
-                <div class="toggle-button">
-                    <img src="{% static 'icons/search-icon.svg' %}">
-                </div>
-                <div class="icon-detail hidden-block" hidden>
-                    <form class="icon-search" method="GET">
-                        <input class="icon-search-input" type="text" name="search" placeholder="Suchen..." value="{{ search_query }}">
-                        <button class="icon-search-button" type="submit">🔍</button>
-                    </form>
-                
-                    <form class="icon-search-date" method="GET">
-                        <input type="date" id="dateStart">
-                        <input type="date" id="dateEnd">
-                    </form>
-                </div>
-            </div>
-            
-            <div class="navi-icon-js">
-                <div class="toggle-button">
-                    <img src="{% static 'icons/sort-icon.svg' %}">
-                </div>
-                <div class="icon-detail hidden-block" hidden>
-                    <div>
-                        {% for field, label in active_fields %}
-                        <div class="icon-sort">
-                            <span>{{ label }}</span>
-                            <div>
-                                <a href="?sort={{ field }}_asc">&#9650;</a>
-                                <a href="?sort={{ field }}_desc">&#9660;</a>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-            <a href="{% url 'suppliers_list' %}" title="Reset"> 
-                <img src="{% static 'icons/reset-icon.svg' %}">
-
-            </a>
-        </div>
-
-        <p class="icons-title">Suchen</p>
-    </div>
-
-    <div>
-        <div class="navi-icon">
-
-            <a href="#" title="suchen">
-                <img src="{% static 'icons/statistic-icon.svg' %}">   
-            </a>
-            <a href="#" title="suchen">
-                <img src="{% static 'icons/diagram-icon.svg' %}">   
-            </a>
-        </div>
-        <p class="icons-title">Statistik</p>
-    </div>
-
-    <div>
-
-        <div class="navi-icon">
-            <a href="{% url 'supplier_create' %}" title="Lieferant">
-                <img src="{% static 'icons/supplier-icon.svg' %}">   
-            </a>
-            <a href="{% url 'delivery_create' %}" title="Lieferung">
-                <img src="{% static 'icons/container-icon.svg' %}">   
-            </a>
-            <a href="{% url 'unload_create' %}" title="Leerung">
-                <img src="{% static 'icons/forklift-icon.svg' %}">   
-            </a>
-            <a href="#" title="Recycling">
-                <img src="{% static 'icons/conveyor-icon.svg' %}">   
-            </a>
-            <a href="#" title="Versand">
-                <img src="{% static 'icons/shipping-icon.svg' %}">   
-            </a>
-        </div>
-        <p class="icons-title">Erstellen</p>
-    </div>
-</div>
-
-<table class="table-box">
+<table class="selectable-table">
     <thead>
         <tr class="thead-title">
-            <th class=""></th>
+            <th>ID</th>
             <th>AVV</th>
             <th>Name</th>
             <th>Adresse</th>
@@ -144,12 +40,14 @@
             <th>Telefon</th>
             <th>Email</th>
             <th>Bemerkung</th>
-            <th></th> <!-- actions -->
         </tr>
     </thead>
     <tbody>
         {% for supplier in page_obj %}
-        <tr>
+        <tr class="selectable-row" data-id="{{ supplier.id }}" data-url-detail="{% url 'supplier_detail' pk=supplier.id %}" data-url-update="{% url 'supplier_update' pk=supplier.id %}">
+            <td class="tbody-input">
+                <input type="radio" name="selected_supplier" value="{{ supplier.id }}">
+            </td>
             <td class="tbody-id">{{ supplier.id }}</td>
             <td class="tbody-avv">{{ supplier.avv_number }}</td>
             <td class="tbody-name">{{ supplier.name }}</td>
@@ -159,14 +57,6 @@
             <td class="tbody-phone">{{ supplier.phone }}</td>
             <td class="tbody-email">{{ supplier.email }}</td>
             <td class="tbody-note" title="{{ supplier.note }}"><p>{{ supplier.note }}</p></td>
-            <td class="tbody-icons">
-                <a href="{% url 'supplier_detail' pk=supplier.id %}" title="Detail">
-                    <img src="{% static 'icons/detail-icon-alt.svg' %}">   
-                </a>
-                <a href="{% url 'supplier_update' pk=supplier.id %}" title="Bearbeiten"> 
-                    <img src="{% static 'icons/update-icon-alt.svg' %}">
-                </a>
-            </td>
         </tr>
         {% endfor %}
     </tbody>
@@ -177,7 +67,7 @@
 {% endblock %}
 
 {% block extra_js %}
+    <script src="{% static 'js/selectable-row.js' %}"></script>
     <script src="{% static 'js/block_visibility.js' %}"></script>
     <script src="{% static 'js/current-date.js' %}"></script>
 {% endblock %}
-
