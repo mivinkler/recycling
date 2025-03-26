@@ -16,6 +16,24 @@
     <link rel="manifest" href="{% static 'icons/logo/site.webmanifest' %}">
 </head>
 <body>
+        <div class="table-header">
+            <div>
+                ANDERWERK <span style="color: red; font-weight: bold; width: 100px;">❯</span>
+            </div>
+            <div class="table-header-user">
+                <div>Max Musterman</div>
+                <img class="user-white-icon" src="/static/icons/user-white-icon.svg">
+            </div>
+        </div>
+        <div class="top-menu">
+            <div><a href="{% url 'suppliers_list' %}" class="{% if selected_menu == 'supplier_list' %} selected {% endif %}">Lieferanten</a></div>
+            <div><a href="{% url 'delivery_units_list' %}">Eingang</a></div>
+            <div><a href="{% url 'unloads_list' %}">Leerung</a></div>
+            <div><a href="{% url 'unloads_list' %}">Recycling</a></div>
+            <div><a href="{% url 'unloads_list' %}">Versand</a></div>
+        </div>
+        
+        {% include 'components/top_navi.html' %}
 
     <main>
         {% block content %}{% endblock %}

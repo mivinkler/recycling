@@ -8,13 +8,12 @@
 
 {% block content %}
 
-<div class="title">Wareneingang</div>
 <div class="delivery">
-
   <section class="delivery-form-wrapper">
     
     <form method="post" action="{% url 'delivery_create' %}" id="eingang-form">
       {% csrf_token %}
+      <div class="title">Wareneingang</div>
       <div>
         <div class="flex">
           <label for="supplier" class="flex-items">Lieferant:</label>
@@ -106,63 +105,33 @@
   </section>
 
   <section class="delivery_suppliers">
-    
-    <div class="table-head">
-      <div class="table-head-title">Lieferant auswählen<a href="{% url 'delivery_create' %}"> ⟲</a></div>
-      <div class="table-head-search">
-        <form method="GET">
-          <input type="text" name="search" placeholder="Suchen..." value="{{ search_query }}">
-          <button type="submit">🔍</button>
-        </form>
-      </div>
-    </div>
-    
     <table>
-      <colgroup>
-          <col style="width: auto">     <!-- input -->
-          <col style="width: auto">     <!-- ID. -->
-          <col style="width: auto">    <!-- AVV -->
-          <col style="width: 30%;">   <!-- Name -->
-          <col style="width: 20%">    <!-- Strasse -->
-          <col style="width: auto">    <!-- PLZ -->
-          <col style="width: 10%;">   <!-- Stadt -->
-          <col style="width: 10%;">   <!-- Bemerkung -->
-      </colgroup>
-
       <thead>
-        <tr class="table-content-title">
-          <th class="text-center">wählen</th>
-          <th>{% sort "ID" "supplier__id" request.GET.sort %}</th>
-          <th>{% sort "AVV" "supplier__avv_number" request.GET.sort %}</th>
-          <th>{% sort "Name" "supplier__name" request.GET.sort %}</th>
-          <th>{% sort "Adresse" "supplier__street" request.GET.sort %}</th>
-          <th>{% sort "PLZ" "supplier__postal_code" request.GET.sort %}</th>
-          <th>{% sort "Stadt" "supplier__city" request.GET.sort %}</th>
-          <th></th>
+        <tr class="thead-title">
+          <th class="tbody-input">wählen</th>
+          <th class="tbody-id">{% sort "ID" "supplier__id" request.GET.sort %}</th>
+          <th class="tbody-avv">{% sort "AVV" "supplier__avv_number" request.GET.sort %}</th>
+          <th class="tbody-name">{% sort "Name" "supplier__name" request.GET.sort %}</th>
+          <th class="tbody-street">{% sort "Adresse" "supplier__street" request.GET.sort %}</th>
+          <th class="tbody-postal">{% sort "PLZ" "supplier__postal_code" request.GET.sort %}</th>
+          <th class="tbody-city">{% sort "Stadt" "supplier__city" request.GET.sort %}</th>
+          <th class="tbody-note">{% sort "Note" "supplier__note" request.GET.sort %}</th>
         </tr>
       </thead>
 
       <tbody class="table-content">
         {% for item in page_obj %}
         <tr>
-          <td class="text-center">
-            <input class="inputField" type="radio" name="delivery_unit" value="{{ item.id }}"
-              data-supplier="{{ item.supplier }}">
+          <td class="tbody-input">
+            <input type="radio" name="delivery_unit" value="{{ item.id }}" data-supplier="{{ item.supplier }}">
           </td>
-          <td class="text-center">{{ item.supplier.id }}</td>
-          <td>{{ item.supplier.avv_number }}</td>
-          <td>{{ item.supplier.name }}</td>
-          <td>{{ item.supplier.street }}</td>
-          <td>{{ item.supplier.postal_code }}</td>
-          <td>{{ item.supplier.city }}</td>
-          <td class="suppler-icons">
-            <a href="{% url 'supplier_detail' pk=item.id %}" title="Detail">
-                <img src="{% static 'icons/detail-icon.svg' %}">   
-            </a>
-            <span title="{{ supplier.note }}"> 
-                <img src="{% static 'icons/info-icon.svg' %}">
-            </span>
-          </td>
+          <td class="">{{ item.supplier.id }}</td>
+          <td class="tbody-avv">{{ item.supplier.avv_number }}</td>
+          <td class="tbody-name">{{ item.supplier.name }}</td>
+          <td class="tbody-street">{{ item.supplier.street }}</td>
+          <td class="tbody-postal">{{ item.supplier.postal_code }}</td>
+          <td class="tbody-city">{{ item.supplier.city }}</td>
+          <td class="tbody-note" title="{{ item.supplier.note }}"><p>{{ item.supplier.note }}</p></td>
         </tr>
         {% endfor %}
       </tbody>

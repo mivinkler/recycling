@@ -9,92 +9,33 @@
 
 {% block content %}
 
-<div class="title">Entladungen</div>
-
-<div class="table-action">
-    <button class="table-search btn-activ">🔍</button>
-    <button class="table-reset btn-activ"><a href="{% url 'unloads_list' %}" class="reset-btn">⟲</a></button>
-</div>
-<table class="table-box">
-    <colgroup>
-        <col style="width: 3.5%">   <!-- Nr. -->
-        <col style="width: 20%">    <!-- Lieferant -->
-        <col style="width: 20%;">   <!-- Liefereinheit -->
-        <col style="width: 10%">    <!-- Behälter -->
-        <col style="width: 10%;">   <!-- Material -->
-        <col style="width: 7%;">    <!-- Gewicht -->
-        <col style="width: 10%">    <!-- Zweck -->
-        <col style="width: 10%">    <!-- Bemerkung -->
-        <col style="width: 6%">     <!-- action -->
-    </colgroup>
+<table class="selectable-table">
     <thead>
-        <tr class="table-filter" hidden>
-            <form method="GET" name="filter">
-                <td><input type="text" name="id" placeholder="Nr." value="{{ request.GET.id }}"></td>
-                <td><input type="text" name="supplier" placeholder="Lieferant" value="{{ request.GET.supplier }}"></td>
-                <td><input type="text" name="delivery_unit" placeholder="Liefereinheit" value="{{ request.GET.delivery_unit }}"></td>
-                <td>
-                    <select name="unload_type">
-                        <option value="" disabled selected hidden>Behälter</option>
-                        <option value="1" {% if request.GET.unload_type == "1" %}selected{% endif %}>Gitterbox</option>
-                        <option value="2" {% if request.GET.unload_type == "2" %}selected{% endif %}>Palette</option>
-                        <option value="3" {% if request.GET.unload_type == "3" %}selected{% endif %}>Ohne Behälter</option>
-                    </select>
-                </td>
-                <td><input type="text" name="material" placeholder="Material" value="{{ request.GET.material }}"></td>
-                <td><input type="text" name="weight" placeholder="Gewicht" value="{{ request.GET.weight }}"></td>
-
-
-
-                <!-- <td><input type="text" name="purpose" placeholder="Zweck" value="{{ request.GET.purpose }}"></td> -->
-                <td>
-                    <select name="purpose">
-                        <option value="" disabled selected hidden>Zweck</option>
-                        <option value="1" {% if request.GET.unload_type == "1" %}selected{% endif %}>Zerlegung</option>
-                        <option value="2" {% if request.GET.unload_type == "2" %}selected{% endif %}>Reparatur</option>
-                        <option value="3" {% if request.GET.unload_type == "3" %}selected{% endif %}>Entsorgung</option>
-                    </select>
-                </td>
-
-                <td><input type="text" name="note" placeholder="Bemerkung" value="{{ request.GET.note }}"></td>
-                
-                <td>
-                    <button class="btn-activ" type="submit">Suchen</button>
-                </td>
-            </form>
-        </tr>
-
-        <tr class="table-content-title">
-            <th>{% sort "&#8470;" "id" request.GET.sort %}</th>
-            <th>{% sort "Lieferant" "supplier" request.GET.sort %}</th>
-            <th>{% sort "Liefereinheit" "delivery_unit" request.GET.sort %}</th>
-            <th>{% sort "Behälter" "unload_type" request.GET.sort %}</th>
-            <th>{% sort "Material" "material" request.GET.sort %}</th>
-            <th>{% sort "Gewicht" "weight" request.GET.sort %}</th>
-            <th>{% sort "Zweck" "purpose" request.GET.sort %}</th>
-            <th>{% sort "Bemerkung" "note" request.GET.sort %}</th>
-            <th></th> <!-- actions -->
+        <tr class="thead-title">
+            <th>&#8470;</th>
+            <th>Lieferant</th>
+            <th>Liefereinheit</th>
+            <th>Behälter</th>
+            <th>Material</th>
+            <th>Gewicht</th>
+            <th>Zweck</th>
+            <th>Bemerkung</th>
         </tr>
     </thead>
-    <tbody class="table-content">
+    <tbody>
         {% for unload in page_obj %}
-        <tr>
-            <td>{{ unload.id }}</td>
-            <td>{{ unload.supplier }}</td>
-            <td>{{ unload.delivery_unit }}</td> 
-            <td>{{ unload|getattr:"get_unload_type_display" }}</td>
-            <td>{{ unload.material }}</td>
-            <td>{{ unload.weight }}</td>
-            <td>{{ unload|getattr:"get_purpose_display" }}</td>
-            <td class="note-column" title="{{ unload.note }}"><p>{{ unload.note }}</p></td>
-            <td class="suppler-icons">
-                <a href="#" title="Lieferung ansehen">
-                    <img src="{% static 'icons/detail-icon.svg' %}">   
-                </a>
-                <a href="#" title="Bearbeiten"> 
-                    <img src="{% static 'icons/update-icon.svg' %}">
-                </a>
+        <tr class="selectable-row" data-id="{{ unload.id }}" data-url-detail="{% url 'delivery_detail' pk=unload.id %}" data-url-update="{% url 'delivery_update' pk=unload.id %}">
+            <td class="tbody-input-hidden">
+                <input type="radio" value="{{ uload.id }}">
             </td>
+            <td class="tbody-id">{{ unload.id }}</td>
+            <td class="tbody-name">{{ unload.supplier }}</td>
+            <td class="">{{ unload.delivery_unit }}</td> 
+            <td class="tbody-delivery-type">{{ unload|getattr:"get_unload_type_display" }}</td>
+            <td class="tbody-material">{{ unload.material }}</td>
+            <td class="tbody-weight">{{ unload.weight }}</td>
+            <td class="">{{ unload|getattr:"get_purpose_display" }}</td>
+            <td class="note-column" title="{{ unload.note }}"><p>{{ unload.note }}</p></td>
         </tr>
         {% endfor %}
     </tbody>
@@ -105,6 +46,8 @@
 {% endblock %}
 
 {% block extra_js %}
+    <script src="{% static 'js/selectable-row.js' %}"></script>
     <script src="{% static 'js/block_visibility.js' %}"></script>
+    <script src="{% static 'js/current-date.js' %}"></script>
 {% endblock %}
 

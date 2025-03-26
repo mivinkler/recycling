@@ -1,39 +1,41 @@
 :root {
   --color-gray-100: #f3f2f1;
   --color-gray-200: #e6e6e6;
-  --color-gray-300: #cdcdcd;
+  --color-gray-300: #ddd;
   --color-gray-400: #ccc;
   --color-gray-500: #bbb;
-  /* --color-gray-600: #aaa; */
+  --color-gray-600: #aaa;
   --color-gray-800: #444;
-  --color-gray-900: var(--color-gray-900);
+  --color-gray-900: #333;
+  --color-hero: #217346;
 }
 
 table {
+  width: 100%;
+  table-layout: fixed;
   border-collapse: collapse;
 }
 
 th {
   border: 1px solid var(--color-gray-300);
   padding-bottom: 5px;
-  font-weight: 200;
+  font-weight: 400;
 }
 
 td {
-  border: 1px solid var(--color-gray-300);
-  padding: 0 10px;
-  line-height: 28px;
+  border: 1px solid var(--color-gray-200);
+  padding: 5px 10px;
 }
 
 /* ============ table-header =============*/
 
 .table-header {
-  padding: 12px;
+  padding: 10px 22px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   color: #fff;
-  background-color: #217346;
+  background-color: var(--color-hero);
 }
 
 .table-header-logo {
@@ -67,19 +69,19 @@ td {
 }
 
 .top-menu a {
-  color: #000;
-  font-size: 14px;
+  color: var(--color-gray-800);
+  font-size: 13px;
   padding-bottom: 4px;
   transition: border-color 0.2s ease-in-out;
+  font-weight: bold;
 }
 
 .top-menu a:hover {
-  border-bottom: 4px solid #217346;
+  border-bottom: 3px solid var(--color-hero);
 }
 
 .top-menu .selected {
-  font-weight: bold;
-  border-bottom: 4px solid #217346;
+  border-bottom: 3px solid var(--color-hero);
 }
 
 /* ============ Navigation icons =============*/
@@ -88,7 +90,7 @@ td {
   display: flex;
   position: relative;
   height: 90px;
-  padding: 20px 0 12px 0;
+  padding: 18px 0 12px 0;
   background-color: var(--color-gray-100);
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
   position: relative;
@@ -121,6 +123,23 @@ td {
 .icons-title {
   color: var(--color-gray-800);
   text-align: center;
+}
+
+
+/* ============ Navigation icon: Detail and Update =============*/
+
+.selectable-row:hover {
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
+.row-selected {
+  background-color: #d0e4f5 !important;
+}
+
+.navi-icon a.disabled {
+  pointer-events: none;
+  opacity: 0.5;
 }
 
 /* ============ Navigation icon: search =============*/
@@ -179,7 +198,7 @@ td {
 }
 
 .icon-sort a:hover {
-  color: #217346;
+  color: var(--color-hero);
   display: inline-block;
   transform: scale(1.3);
 }
@@ -192,33 +211,50 @@ td {
   width: 100%;
 }
 
-/* ============ Table rows size =============*/
+/* ============ Table rows =============*/
 
+.tbody-input {
+  width: 5%;
+  background-color: var(--color-gray-100);
+  text-align: center;
+}
+.tbody-input-hidden {display: none;}
 .tbody-id {
-  width: auto;
+  width: 50px;
   text-align: right;
   color: #000;
   background-color: var(--color-gray-100);
-  border-left: 8px solid var(--color-gray-100);
-  padding-left: 5px;
+  padding-right: 8px;
 }
 .tbody-avv {width: 6%;}
 .tbody-name {width: 20%;}
-.tbody-street {width: 10%}
-.tbody-postal {width: 5%;}
+.tbody-street {width: 20%}
+.tbody-postal {width: 70px;}
 .tbody-city {width: 10%;}
-.tbody-phone {width: 10%;}
-.tbody-email {width: 10%;}
+.tbody-phone {width: 120px;}
+.tbody-email {width: 20%;}
+.tbody-note {width: 20%;}
+.tbody-note p {
+  white-space: nowrap;       
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.tbody-delivery-receipt {width: 10%;}
+.tbody-data {width: 100px; text-align: center;}
+.tbody-weight {width: 100px; text-align: right; padding-right: 8px;}
+.tbody-lid {width: 3%; text-align: right; padding-right: 8px;}
+.tbody-delivery-type {width: 10%;}
+.tbody-material {width: 10%;}
+.tbody-status {width: 100px;}
 
 
 /* ====== Pagination ====== */
 
 .pagination {
   display: inline-block;
-  position: fixed;
-  bottom: 20px;
   width: 100vw;
   text-align: center;
+  margin-top: 20px;
 }
 
 .pagination a, 
@@ -238,10 +274,21 @@ td {
 }
 
 .pagination .current {
-  background-color: var(--color-gray-300);
-  border-color: var(--color-gray-500);
+  background-color: var(--color-gray-600);
+  border-color: var(--color-gray-600);
   color: white;
 }
+
+
+/* ====== Delivery create ====== */
+
+.title-sort {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+}
+
+
 
 
 
@@ -456,18 +503,9 @@ details > summary::marker {
   background-color: #e9ecef;
 } */
 
-.note-column p {
-  white-space: nowrap;       
-  text-overflow: ellipsis;
-  overflow: hidden;
-  width: 300px;
-}
 
-.suppler-icons * {
-  text-decoration: none;
-  margin-left: 3px;
-  vertical-align: middle;
-}
+
+
 
 .input-btn {
   padding: 3px 6px;

@@ -12,7 +12,7 @@ def sort(name, field_name, current_sort):
     desc_class = "active" if is_desc else ""
 
     html = f"""
-        <div>
+        <div class="title-sort">
             <div>{name}</div>
             <div class="sort-icons">
                 <a href="?sort={field_name}_asc" class="{asc_class}">△</a>
