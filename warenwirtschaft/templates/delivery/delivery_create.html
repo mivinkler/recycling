@@ -109,7 +109,7 @@
       <thead>
         <tr class="thead-title">
           <th class="tbody-input">wählen</th>
-          <th class="tbody-id">{% sort "ID" "supplier__id" request.GET.sort %}</th>
+          <th class="tbody-id-simple">{% sort "ID" "supplier__id" request.GET.sort %}</th>
           <th class="tbody-avv">{% sort "AVV" "supplier__avv_number" request.GET.sort %}</th>
           <th class="tbody-name">{% sort "Name" "supplier__name" request.GET.sort %}</th>
           <th class="tbody-street">{% sort "Adresse" "supplier__street" request.GET.sort %}</th>
@@ -125,7 +125,7 @@
           <td class="tbody-input">
             <input type="radio" name="delivery_unit" value="{{ item.id }}" data-supplier="{{ item.supplier }}">
           </td>
-          <td class="">{{ item.supplier.id }}</td>
+          <td class="tbody-id-simple">{{ item.supplier.id }}</td>
           <td class="tbody-avv">{{ item.supplier.avv_number }}</td>
           <td class="tbody-name">{{ item.supplier.name }}</td>
           <td class="tbody-street">{{ item.supplier.street }}</td>

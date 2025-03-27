@@ -12,14 +12,14 @@
 <table class="selectable-table">
     <thead>
         <tr class="thead-title">
-            <th>&#8470;</th>
-            <th>Lieferant</th>
-            <th>Liefereinheit</th>
-            <th>Behälter</th>
-            <th>Material</th>
-            <th>Gewicht</th>
-            <th>Zweck</th>
-            <th>Bemerkung</th>
+            <th class="tbody-id">&#8470;</th>
+            <th class="tbody-name">Lieferant</th>
+            <th class="tbody-name">Liefereinheit</th>
+            <th class="tbody-delivery-type">Behälter</th>
+            <th class="tbody-material">Material</th>
+            <th class="tbody-weight">Gewicht</th>
+            <th class="tbody-purpose">Zweck</th>
+            <th class="note-column">Bemerkung</th>
         </tr>
     </thead>
     <tbody>
@@ -34,7 +34,7 @@
             <td class="tbody-delivery-type">{{ unload|getattr:"get_unload_type_display" }}</td>
             <td class="tbody-material">{{ unload.material }}</td>
             <td class="tbody-weight">{{ unload.weight }}</td>
-            <td class="">{{ unload|getattr:"get_purpose_display" }}</td>
+            <td class="tbody-purpose">{{ unload|getattr:"get_purpose_display" }}</td>
             <td class="note-column" title="{{ unload.note }}"><p>{{ unload.note }}</p></td>
         </tr>
         {% endfor %}

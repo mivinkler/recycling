@@ -9,7 +9,7 @@ class SupplierListView(ListView):
     model = Supplier
     template_name = "supplier/supplier_list.html"
     context_object_name = "suppliers"
-    paginate_by = 20
+    paginate_by = 22
 
     active_fields = [
         ("id", "ID"),

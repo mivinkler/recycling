@@ -9,7 +9,7 @@ class DeliveryUnitsListView(ListView):
     model = DeliveryUnit
     template_name = "delivery/delivery_units_list.html"
     context_object_name = "delivery_units"
-    paginate_by = 20
+    paginate_by = 22
 
     active_fields = [
         "id",

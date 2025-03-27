@@ -9,10 +9,9 @@ body {
   font-family: "Noto Sans", sans-serif;
   font-size: 13px;
   letter-spacing: 0.1px;
-}
-
-main {
-  height: 100vh;
+  overflow-x: hidden;
+  width: 100%;
+  height: 100%;
 }
 
 a {
@@ -41,7 +40,7 @@ a {
   font-weight: bold;
   font-size: 1.2em;
   color: #344b5e;
-  margin: 20px 0;
+  margin-bottom: 20px;
 }
 
 /* ========== delivery ======== */
@@ -62,10 +61,10 @@ a {
 
 .delivery-form-wrapper {
   height: min-content;
-  padding: 12px;
-  background-color: aliceblue;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  padding: 26px 20px;
+  background-color: #f3f2f1;;
+  border: 1px solid #e6e6e6;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
 }
 
 .delivery-form-wrapper summary {
@@ -107,7 +106,8 @@ select {
 .record-btn {
   width: 100%;
   padding: 12px;
-  background-color: #4CAF50;
+  background-color: #217346;
+  opacity: 0.7;
   color: white;
   border: none;
   border-radius: 4px;

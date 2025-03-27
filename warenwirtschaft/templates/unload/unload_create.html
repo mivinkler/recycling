@@ -13,47 +13,38 @@
     {{ formset.management_form }}
 
     <div class="select_cargo">
-        <table class="table-box">
+        <table>
             <thead>
                 <caption><p>Liefereinheiten</p></caption>
-                <tr class="table-content-title">
-                    <th style="width: 4%" class="text-center">wählen</th>
-                    <th style="width: 3.5%" class="text-center">ID</th>
-                    <th style="width: 20%">Lieferant</th>
-                    <th style="width: 6%">Datum</th>
-                    <th style="width: 3.5%" class="text-center">LID</th>
-                    <th style="width: 10%">Behälter</th>
-                    <th style="width: 10%">Material</th>
-                    <th style="width: 6%">Gewicht</th>
-                    <th style="width: 6%">Status</th>
-                    <th style="width: 200px">Bemerkung</th>
-                    <th style="width: 10%"></th> <!-- actions -->
+                <tr class="thead-title">
+                    <th class="tbody-input">wählen</th>
+                    <th class="tbody-id-simple text-center">ID</th>
+                    <th class="tbody-name">Lieferant</th>
+                    <th class="tbody-data">Datum</th>
+                    <th class="tbody-lid">LID</th>
+                    <th class="tbody-delivery-type">Behälter</th>
+                    <th class="tbody-material">Material</th>
+                    <th class="tbody-weight">Gewicht</th>
+                    <th class="tbody-status">Status</th>
+                    <th class="tbody-note">Bemerkung</th>
                 </tr>
             </thead>
 
             <tbody class="table-content">
                 {% for item in delivery_units %}
                 <tr class="item-row">
-                    <td class="text-center">
+                    <td class="tbody-input">
                         <input type="radio" name="delivery_unit" value="{{ item.id }}" onclick="duplicateSelectedItem(this)">
                     </td>
-                    <td class="text-center item-id">{{ item.delivery.supplier.id }}</td>
-                    <td class="item-supplier">{{ item.delivery.supplier.name }}</td>
-                    <td>{{ item.created_at|date:"d.m.Y" }}</td>
-                    <td class="text-center item-delivery-id">{{ item.id }}</td>
-                    <td class="item-container">{{ item|getattr:"get_delivery_type_display" }}</td>
-                    <td class="item-content">{{ item.material }}</td>
-                    <td class="item-weight">{{ item.weight }}</td>
-                    <td class="item-status">{{ item|getattr:"get_status_display" }}</td>
-                    <td class="note-column" title="{{ item.note }}">{{ item.note }}</td>
-                    <td class="suppler-icons">
-                        <a href="#" title="Lieferung ansehen">
-                            <img src="{% static 'icons/detail-icon.svg' %}">
-                        </a>
-                        <a href="#" title="Bearbeiten">
-                            <img src="{% static 'icons/update-icon.svg' %}">
-                        </a>
-                    </td>
+                    <td class="tbody-id-simple">{{ item.delivery.supplier.id }}</td>
+                    <td class="tbody-name">{{ item.delivery.supplier.name }}</td>
+                    <td class="tbody-data">{{ item.created_at|date:"d.m.Y" }}</td>
+                    <td class="tbody-lid">{{ item.id }}</td>
+                    <td class="tbody-delivery-type">{{ item|getattr:"get_delivery_type_display" }}</td>
+                    <td class="tbody-material">{{ item.material }}</td>
+                    <td class="tbody-weight">{{ item.weight }}</td>
+                    <td class="tbody-status">{{ item|getattr:"get_status_display" }}</td>
+                    <td class="tbody-note" title="{{ item.note }}">{{ item.note }}</td>
                 </tr>
                 {% endfor %}
 

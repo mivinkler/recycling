@@ -27,6 +27,17 @@ td {
   padding: 5px 10px;
 }
 
+/* ============ Utility CSS =============*/
+
+.flex {
+  display: flex;
+  align-items: center;
+}
+
+.text-center {
+  text-align: center;
+}
+
 /* ============ table-header =============*/
 
 .table-header {
@@ -89,8 +100,8 @@ td {
 .navi-icons {
   display: flex;
   position: relative;
-  height: 90px;
-  padding: 18px 0 12px 0;
+  height: 96px;
+  padding: 20px 0 17px 0;
   background-color: var(--color-gray-100);
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
   position: relative;
@@ -220,27 +231,22 @@ td {
 }
 .tbody-input-hidden {display: none;}
 .tbody-id {
-  width: 50px;
+  width: 36px;
   text-align: right;
   color: #000;
   background-color: var(--color-gray-100);
   padding-right: 8px;
-
 }
-.tbody-avv {width: 6%;}
+.tbody-id-simple {width: 5%; text-align: right; padding-right: 8px;}
+.tbody-avv {width: 10%;}
 .tbody-name {width: 20%;}
 .tbody-street {width: 20%}
 .tbody-postal {width: 70px;}
 .tbody-city {width: 10%;}
 .tbody-phone {width: 120px;}
 .tbody-email {width: 20%;}
-
 .tbody-note {width: 20%;}
-.tbody-note p {
-  white-space: nowrap;       
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
+.tbody-note p {white-space: nowrap; text-overflow: ellipsis; overflow: hidden;}
 .tbody-delivery-receipt {width: 10%;}
 .tbody-data {width: 100px; text-align: center;}
 .tbody-weight {width: 100px; text-align: right; padding-right: 8px;}
@@ -248,6 +254,8 @@ td {
 .tbody-delivery-type {width: 10%;}
 .tbody-material {width: 10%;}
 .tbody-status {width: 100px;}
+.tbody-delivery-type {width: 10%;}
+.tbody-purpose {width: 10%;}
 
 
 /* ====== Pagination ====== */
