@@ -225,6 +225,7 @@ td {
   color: #000;
   background-color: var(--color-gray-100);
   padding-right: 8px;
+
 }
 .tbody-avv {width: 6%;}
 .tbody-name {width: 20%;}
@@ -233,6 +234,7 @@ td {
 .tbody-city {width: 10%;}
 .tbody-phone {width: 120px;}
 .tbody-email {width: 20%;}
+
 .tbody-note {width: 20%;}
 .tbody-note p {
   white-space: nowrap;       
@@ -287,6 +289,10 @@ td {
   justify-content: space-between;
   padding: 0 10px;
 }
+
+
+
+
 
 
 
