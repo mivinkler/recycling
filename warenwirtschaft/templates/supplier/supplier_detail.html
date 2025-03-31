@@ -6,122 +6,89 @@
 {% block title %}Lieferung-Einheiten{% endblock %}
 
 {% block content %}
-<div class="title"> Lieferant: detail</div>
-<table class="detail-header">
-    <tr>
-        <th>Name:</th>
-        <td>{{ supplier.name }}</td>
-    </tr>
-    <tr>
-        <th>AVV-Nummer:</th>
-        <td>{{ supplier.avv_number }}</td>
-    </tr>
-    <tr>
-        <th>Strasse:</th>
-        <td>{{ supplier.street }}</td>
-    </tr>
-    <tr>
-        <th>PLZ:</th>
-        <td>{{ supplier.postal_code }}</td>
-    </tr>
-    <tr>
-        <th>Stadt:</th>
-        <td>{{ supplier.city }}</td>
-    </tr>
-    <tr>
-        <th>Telefon:</th>
-        <td>{{ supplier.phone }}</td>
-    </tr>
-    <tr>
-        <th>Email:</th>
-        <td>{{ supplier.email }}</td>
-    </tr>
-    <tr>
-        <th>Bemerkung:</th>
-        <td>{{ supplier.note }}</td>
-    </tr>
-    <tr>
-        <th>Erstellt am:</th>
-        <td>{{ supplier.created_at|date:"d.m.Y" }}</td>
-    </tr>
-</table>
-
-
-
-<div class="table-head">
-    <!-- <div class="table-action">
-        <button class="table-search btn-activ">🔍</button>
-        <button class="table-reset btn-activ"><a href="{% url 'suppliers_list' %}" class="reset-btn">⟲</a></button>
-    </div> -->
-    <div class="table-head-title">Lieferungen<a href="#"> ⟲</a></div>
-    <div class="table-head-search">
-      <form method="GET">
-        <input type="text" name="search" placeholder="Suchen..." value="{{ search_query }}">
-        <button type="submit">🔍</button>
-      </form>
+<div class="entity-card-wrapper">
+    <div class="entity-title">Lieferant: {{ supplier.name }}</div>
+    <div class="entity-card">
+        <div><span class="label">Name:</span> <span class="value">{{ supplier.name }}</span></div>
+        <div><span class="label">Strasse:</span> <span class="value">{{ supplier.street }}</span></div>
+        <div><span class="label">Stadt:</span> <span class="value">{{ supplier.postal_code }} {{ supplier.city }}</span></div>
+        <div><span class="label">Telefon:</span> <span class="value">{{ supplier.phone }}</span></div>
+        <div><span class="label">Email:</span> <span class="value">{{ supplier.email }}</span></div>
     </div>
-  </div>
+    <div class="entity-card-second">
+        <div><span class="label">AVV-Nummer:</span> <span class="value">{{ supplier.avv_number }}</span></div>
+        <div><span class="label">Anmerkung:</span> <span class="value">{{ supplier.note }}</span></div>
+        <div><span class="label">Erstellt am:</span> <span class="value">{{ supplier.created_at|date:"d.m.Y" }}</span></div>
+    </div>
 </div>
-    <table class="table-box">
-        <colgroup>
-            <col style="width: 3.5%">   <!-- Nr. -->
-            <col style="width: 3.5%;">  <!-- Teile -->
-            <col style="width: 10%">    <!-- Lieferschein -->
-            <col style="width: 5%;">    <!-- Gewicht -->
-            <col style="width: 8%;">    <!-- Datum -->
-            <col style="width: 10%">    <!-- Bemerkung -->
-            <col style="width: auto">    <!-- actions -->
-        </colgroup>
+
+
+<table class="selectable-table">
+    <thead>
         <thead>
-            <tr class="table-content-title">
-                <th>{% sort "&#8470;" "deliveries__id" request.GET.sort %}</th>
-                <th>{% sort "Lieferschein" "deliveries__delivery_receipt" request.GET.sort %}</th>
-                <th>{% sort "Gewicht" "deliveries__total_weight" request.GET.sort %}</th>
-                <th>{% sort "Datum" "deliveries__created_at" request.GET.sort %}</th>
-                <th>{% sort "Bemerkung" "deliveries__note" request.GET.sort %}</th>
-                <th></th> <!-- actions -->
+            <tr class="thead-title">
+                <th class="tbody-id">ID</th>
+                <th class="tbody-lid">LID</th>
+                <th class="tbody-delivery-receipt">Lieferschein</th>
+                <th class="tbody-note">Anmerkung</th>
+                <th class="tbody-delivery-type">Behälter</th>
+                <th class="tbody-material">Material</th>
+                <th class="tbody-weight">Gewicht</th>
+                <th class="tbody-data">Datum</th>
+                <th class="tbody-status">Status</th>
+                <th class="tbody-note">Anmerkung</th>
             </tr>
         </thead>
+        <!-- <tr class="table-content-title">
+            <th>{% sort "&#8470;" "deliveries__id" request.GET.sort %}</th>
+            <th>{% sort "Lieferschein" "deliveries__delivery_receipt" request.GET.sort %}</th>
+            <th>{% sort "Gewicht" "deliveries__total_weight" request.GET.sort %}</th>
+            <th>{% sort "Datum" "deliveries__created_at" request.GET.sort %}</th>
+            <th>{% sort "Anmerkung" "deliveries__note" request.GET.sort %}</th>
+            <th></th> 
+        </tr> -->
+    </thead>
 
-        <tbody class="table-content">
-            {% for delivery in deliveries %}
-            <tr>
-                <td>{{ delivery.id }}</td>               
-                <td>{{ delivery.delivery_receipt }}</td>
-                <td>{{ delivery.total_weight }}</td>
-                <td>{{ delivery.created_at|date:"d.m.Y" }}</td>
-                <td class="note-column" title="{{ delivery.note }}"><p>{{ delivery.note }}</p></td>
-                <td class="suppler-icons">
-                    <a href="{% url 'delivery_detail' pk=delivery.id %}" title="Detail">
-                        <img src="{% static 'icons/detail-icon.svg' %}">   
-                    </a>
-                    <a href="#" title="Bearbeiten"> 
-                        <img src="{% static 'icons/update-icon.svg' %}">
-                    </a>
-                </td>
-            </tr>
+    <tbody class="table-content">
+        {% for delivery in deliveries %}
+            {% for item in delivery.list %}
+                <tr class="selectable-row" data-id="{{ item.id }}" data-url-detail="{% url 'delivery_detail' pk=item.id %}" data-url-update="{% url 'delivery_update' pk=item.id %}">
+                    <td class="tbody-input-hidden">
+                        <input type="radio" value="{{ item.id }}">
+                    </td>
+                    <td class="tbody-id">{{ item.id }}</td>
+                    <td class="tbody-lid">{{ item.delivery_id }}</td>
+                    {% if forloop.first %}
+                        <td rowspan="{{ delivery.list|length }}" class="tbody-name">{{ item.delivery.supplier.name }}</td>
+                        <td rowspan="{{ delivery.list|length }}" class="tbody-delivery-receipt">{{ item.delivery.delivery_receipt }}</td>
+                        <td rowspan="{{ delivery.list|length }}" class="tbody-weight">{{ item.delivery.total_weight }}</td>
+                        <td rowspan="{{ delivery.list|length }}" class="tbody-note" title="{{ item.note }}"><p>{{ item.note }}</p></td>
+                    {% endif %}
+
+                    <td class="tbody-delivery-type">{{ item|getattr:"get_delivery_type_display" }}</td>
+                    <td class="tbody-material">{{ item.material }}</td>
+                    <td class="tbody-weight">{{ item.weight }}</td>
+                    <td class="tbody-data">{{ item.created_at|date:"d.m.Y" }}</td>
+                    <td class="tbody-status">{{ item|getattr:"get_status_display" }}</td>
+                </tr>
             {% endfor %}
-        </tbody>
-
-    </table>
-<div>
-<div class="pagination">
-    <span class="step-links">
-        {% if deliveries.has_previous %}
-            <a href="?page={{ deliveries.previous_page_number }}">&laquo;</a>
-        {% endif %}
-        
-        {% for num in deliveries.paginator.page_range %}
-            {% if num == deliveries.number %}
-                <span class="current">{{ num }}</span>
-            {% else %}
-                <a href="?page={{ num }}">{{ num }}</a>
-            {% endif %}
+        <!-- <tr>
+            <td>{{ delivery.id }}</td>               
+            <td>{{ delivery.delivery_receipt }}</td>
+            <td>{{ delivery.total_weight }}</td>
+            <td>{{ delivery.created_at|date:"d.m.Y" }}</td>
+            <td class="note-column" title="{{ delivery.note }}"><p>{{ delivery.note }}</p></td>
+            <td class="suppler-icons">
+                <a href="{% url 'delivery_detail' pk=delivery.id %}" title="Detail">
+                    <img src="{% static 'icons/detail-icon.svg' %}">   
+                </a>
+                <a href="#" title="Bearbeiten"> 
+                    <img src="{% static 'icons/update-icon.svg' %}">
+                </a>
+            </td>
+        </tr> -->
         {% endfor %}
-        
-        {% if deliveries.has_next %}
-            <a href="?page={{ deliveries.next_page_number }}">&raquo;</a>
-        {% endif %}
-    </span>
-</div>
+    </tbody>
+</table>
+
 {% endblock %}

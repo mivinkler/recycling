@@ -16,7 +16,7 @@ class Unload(models.Model):
         (3, "Entsorgung"),
     ]
 
-    delivery_unit = models.ForeignKey(DeliveryUnit, on_delete=models.CASCADE, related_name="cargo")
+    delivery_unit = models.ForeignKey(DeliveryUnit, on_delete=models.CASCADE, related_name="unload_delivery_unit")
     unload_type = models.PositiveSmallIntegerField(choices=UNLOAD_TYPE_CHOICES)
     material = models.ForeignKey(Material, on_delete=models.CASCADE, null=True, blank=True, related_name="unload_material")
     weight = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)

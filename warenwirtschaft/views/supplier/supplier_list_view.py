@@ -20,7 +20,7 @@ class SupplierListView(ListView):
         ("city", "Stadt"),
         ("phone", "Telefon"),
         ("email", "Email"),
-        ("note", "Bemerkung"),
+        ("note", "Anmerkung"),
     ]
 
     def get_queryset(self):

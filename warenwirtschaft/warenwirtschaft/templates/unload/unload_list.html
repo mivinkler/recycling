@@ -24,7 +24,7 @@
         <col style="width: 10%;">   <!-- Material -->
         <col style="width: 7%;">    <!-- Gewicht -->
         <col style="width: 10%">    <!-- Zweck -->
-        <col style="width: 10%">    <!-- Bemerkung -->
+        <col style="width: 10%">    <!-- Anmerkung -->
         <col style="width: 6%">     <!-- action -->
     </colgroup>
     <thead>
@@ -56,7 +56,7 @@
                     </select>
                 </td>
 
-                <td><input type="text" name="note" placeholder="Bemerkung" value="{{ request.GET.note }}"></td>
+                <td><input type="text" name="note" placeholder="Anmerkung" value="{{ request.GET.note }}"></td>
                 
                 <td>
                     <button class="btn-activ" type="submit">Suchen</button>
@@ -72,7 +72,7 @@
             <th>{% sort "Material" "material" request.GET.sort %}</th>
             <th>{% sort "Gewicht" "weight" request.GET.sort %}</th>
             <th>{% sort "Zweck" "purpose" request.GET.sort %}</th>
-            <th>{% sort "Bemerkung" "note" request.GET.sort %}</th>
+            <th>{% sort "Anmerkung" "note" request.GET.sort %}</th>
             <th></th> <!-- actions -->
         </tr>
     </thead>

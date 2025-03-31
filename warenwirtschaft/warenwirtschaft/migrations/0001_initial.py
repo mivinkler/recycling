@@ -61,7 +61,7 @@ class Migration(migrations.Migration):
                 ('city', models.CharField(blank=True, max_length=50, null=True, verbose_name='Stadt')),
                 ('phone', models.CharField(blank=True, max_length=20, null=True, verbose_name='Telefon')),
                 ('email', models.EmailField(blank=True, max_length=254, null=True, verbose_name='Email')),
-                ('note', models.CharField(blank=True, max_length=255, null=True, verbose_name='Bemerkung')),
+                ('note', models.CharField(blank=True, max_length=255, null=True, verbose_name='Anmerkung')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
                 ('deleted_at', models.DateTimeField(blank=True, default=None, null=True)),

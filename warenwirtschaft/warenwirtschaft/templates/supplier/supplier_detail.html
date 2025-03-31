@@ -37,7 +37,7 @@
         <td>{{ supplier.email }}</td>
     </tr>
     <tr>
-        <th>Bemerkung:</th>
+        <th>Anmerkung:</th>
         <td>{{ supplier.note }}</td>
     </tr>
     <tr>
@@ -69,7 +69,7 @@
             <col style="width: 10%">    <!-- Lieferschein -->
             <col style="width: 5%;">    <!-- Gewicht -->
             <col style="width: 8%;">    <!-- Datum -->
-            <col style="width: 10%">    <!-- Bemerkung -->
+            <col style="width: 10%">    <!-- Anmerkung -->
             <col style="width: auto">    <!-- actions -->
         </colgroup>
         <thead>
@@ -78,7 +78,7 @@
                 <th>{% sort "Lieferschein" "deliveries__delivery_receipt" request.GET.sort %}</th>
                 <th>{% sort "Gewicht" "deliveries__total_weight" request.GET.sort %}</th>
                 <th>{% sort "Datum" "deliveries__created_at" request.GET.sort %}</th>
-                <th>{% sort "Bemerkung" "deliveries__note" request.GET.sort %}</th>
+                <th>{% sort "Anmerkung" "deliveries__note" request.GET.sort %}</th>
                 <th></th> <!-- actions -->
             </tr>
         </thead>

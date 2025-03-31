@@ -16,6 +16,7 @@ class DeliveryUnit(models.Model):
         (4, "Ohne Behälter"),
     ]
 
+    # TODO related_name anwenden
     delivery = models.ForeignKey(Delivery, on_delete=models.SET_NULL, null=True, blank=True, related_name='deliveryunits')
     material = models.ForeignKey(Material, on_delete=models.CASCADE, null=True, blank=True, related_name='material')
     weight = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
@@ -27,4 +28,4 @@ class DeliveryUnit(models.Model):
     deleted_at = models.DateTimeField(null=True, blank=True, default=None)
 
     def __str__(self):
-        return f"{self.get_delivery_type_display()} - {self.weight} kg - {self.material}"
+        return f"{self.get_delivery_type_display()} - {self.weight} kg"

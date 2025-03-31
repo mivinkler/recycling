@@ -21,7 +21,7 @@ urlpatterns = [
     path('supplier/create/', SupplierCreateView.as_view(), name='supplier_create'),
     path('supplier/update/<int:pk>/', SupplierUpdateView.as_view(), name='supplier_update'),
 
-    path('delivery/list', DeliveryListView.as_view(), name='deliveries_list'),
+    path('delivery/list', DeliveryListView.as_view(), name='delivery_list'),
     path('delivery/units', DeliveryUnitsListView.as_view(), name='delivery_units_list'),
     path('delivery/<int:pk>/', DeliveryDetailView.as_view(), name='delivery_detail'),
     path('delivery/create/', DeliveryCreateView.as_view(), name='delivery_create'),

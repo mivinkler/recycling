@@ -90,7 +90,7 @@
             <th style="width: 5%;">Status</th>
             <th style="width: 8%;">Behälter</th>
             <th style="width: 8%;">Material</th>
-            <th style="width: 30%">Bemerkung</th>
+            <th style="width: 30%">Anmerkung</th>
             <th style="width: auto"></th> <!-- actions -->
         </tr>
     </thead>
@@ -201,7 +201,7 @@
           </div>
   
           <div class="flex">
-              <label for="note-{{ forloop.counter0 }}" class="flex-items">Bemerkung:</label>
+              <label for="note-{{ forloop.counter0 }}" class="flex-items">Anmerkung:</label>
               <input id="note-{{ forloop.counter0 }}" name="form-{{ forloop.counter0 }}-note" type="text" value="{{ item.note }}">
           </div>
       </div>
@@ -280,7 +280,7 @@
     <td>
       <input type="number" id="avv_number" name="avv_number" value="{{ delivery.avv_number }}">
     </td>
-    <th for="note">Bemerkung:</th>
+    <th for="note">Anmerkung:</th>
     <td>
       <input type="text" id="note" name="note" value="{{ delivery.note }}"> 
     </td>

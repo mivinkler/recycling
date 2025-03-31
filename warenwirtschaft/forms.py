@@ -1,5 +1,6 @@
 from django import forms
 from django.forms import modelformset_factory
+from django.forms import inlineformset_factory
 from .models import *
 from warenwirtschaft.models import Unload
 
@@ -12,7 +13,13 @@ class SupplierForm(forms.ModelForm):
 class DeliveryForm(forms.ModelForm):
     class Meta:
         model = Delivery
-        fields = ['total_weight', 'delivery_receipt']
+        fields = ['supplier', 'delivery_receipt', 'note' ]
+    
+DeliveryUnitFormSet = inlineformset_factory(
+    Delivery, DeliveryUnit,  
+    fields=['delivery_type', 'material', 'weight'], 
+    extra=1, # mindestens 1 Objekt
+)
 
 class UnloadForm(forms.ModelForm):
     class Meta:

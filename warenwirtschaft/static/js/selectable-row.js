@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", function () {
             let editUrl = selectedRow.dataset.urlUpdate;
 
             if (!detailUrl || !editUrl) {
-                console.error("Ошибка: отсутствует URL");
+                console.error("Fehler: Url");
                 return;
             }
 

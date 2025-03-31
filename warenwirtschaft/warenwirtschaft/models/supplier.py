@@ -8,7 +8,7 @@ class Supplier(models.Model):
     city = models.CharField(max_length=50, null=True, blank=True, verbose_name="Stadt")
     phone = models.CharField(max_length=20, null=True, blank=True, verbose_name="Telefon")
     email = models.EmailField(null=True, blank=True, verbose_name="Email")
-    note = models.CharField(max_length=255, null=True, blank=True, verbose_name="Bemerkung")
+    note = models.CharField(max_length=255, null=True, blank=True, verbose_name="Anmerkung")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     deleted_at = models.DateTimeField(null=True, blank=True, default=None)

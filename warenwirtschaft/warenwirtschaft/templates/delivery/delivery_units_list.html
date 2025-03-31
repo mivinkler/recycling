@@ -29,7 +29,7 @@
         <col style="width: 10%;">    <!-- Material -->
         <col style="width: 6%;">     <!-- Gewicht -->
         <col style="width: 6%;">     <!-- Status -->
-        <col style="width: 200px;">  <!-- Bemerkung -->
+        <col style="width: 200px;">  <!-- Anmerkung -->
         <col style="width: 10%; ">   <!-- actions -->
     </colgroup>
 
@@ -44,7 +44,7 @@
             <th>{% sort "Material" "material__name" request.GET.sort %}</th>
             <th>{% sort "Gewicht" "weight" request.GET.sort %}</th>
             <th>{% sort "Status" "status" request.GET.sort %}</th>
-            <th>{% sort "Bemerkung" "note" request.GET.sort %}</th>
+            <th>{% sort "Anmerkung" "note" request.GET.sort %}</th>
             <th></th>
         </tr>
     </thead>

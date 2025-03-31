@@ -8,122 +8,96 @@
 
 {% block content %}
 
-<div class="delivery">
-  <section class="delivery-form-wrapper">
-    
+<div class="tform">
+  <section class="tform-form">
     <form method="post" action="{% url 'delivery_create' %}" id="eingang-form">
       {% csrf_token %}
-      <div class="title">Wareneingang</div>
-      <div>
-        <div class="flex">
-          <label for="supplier" class="flex-items">Lieferant:</label>
-          <input type="text" id="supplier" name="supplier" title="Wählen Sie einen Lieferanten" class="flex-items output" readonly>
-        </div> 
-        <details>
-          <summary>+ Neuer Lieferant</summary>
-          <div class="flex">
-            <label for="name" class="flex-items">Name:</label>
-            <input type="text" id="name" name="name" class="flex-items">
+      <div class="tform-title">Wareneingang</div>
+      <div class="tform-header">
+          <div class="tform-row">
+              <label for="selectable-input">Lieferant:</label>
+              <input type="text" id="select-input" title="Wählen Sie ein Element" readonly>
+              <input type="hidden" id="result-input" name="supplier" value="{{ form.supplier.value }}">
           </div>
-          <div class="flex">
-            <label for="street" class="flex-items">Straße und Hausnummer:</label>
-            <input type="text" id="street" name="street" class="flex-items">
+  
+          {% include 'components/new_supplier.html' %}
+          
+          <div class="tform-row">
+              <label for="liefernummer">Lieferscheinnummer:</label>
+              <input type="text" id="liefernummer" name="delivery_receipt">
           </div>
-          <div class="flex">
-            <label for="postal_code" class="flex-items">PLZ:</label>
-            <input type="text" id="postal_code" name="postal_code" class="flex-items">
+  
+          <div class="tform-row">
+              <label for="note">Anmerkung:</label>
+              <div class="tform-note">
+                  <textarea id="note" name="note" rows="3"></textarea>
+              </div>
           </div>
-          <div class="flex">
-            <label for="country" class="flex-items">Stadt:</label>
-            <input type="text" id="country" name="country" class="flex-items">
+  
+          <!-- counter -->
+          <div class="tform-row">
+              <label for="item-counter">Ladungseinheiten:</label>
+              <input type="number" id="item-counter" name="traeger_anzahl" class="tform-counter" value="1" min="1" max="10">
           </div>
-          <div class="flex">
-            <label for="phone" class="flex-items">Telefon:</label>
-            <input type="text" id="phone" name="phone" class="flex-items">
-          </div>
-          <div class="flex">
-            <label for="email" class="flex-items">Email:</label>
-            <input type="email" id="email" name="email" class="flex-items">
-          </div>
-          <div class="flex">
-            <label for="avv_number" class="flex-items">AVV-Nummer:</label>
-            <input type="number" id="avv_number" name="avv_number" class="flex-items">
-          </div>
-          <div class="flex">
-            <label for="note" class="flex-items">Bemerkung:</label>
-            <input type="text" id="note" name="note" class="flex-items">
-          </div>
-        </details>
-
-        <div class="flex">
-          <label for="liefernummer" class="flex-items">Lieferscheinnummer:</label>
-          <input type="text" id="liefernummer" name="liefernummer" class="flex-items">
-        </div>  
       </div>
-    
-      <!-- counter -->
-      <div class="delivery-items">
-        <div class="flex">
-          <label for="item-counter" class="flex-items">Ladungseinheiten:</label>
-          <input type="number" id="item-counter" name="traeger_anzahl" value="1" min="1" max="10">
-        </div>
-      </div>
-      
+  
       <!-- Ladung -->
       <div class="block" id="item-wrapper">
-        <div class="item">
           <div>
-            <div class="form-item-title">Ladungseinheit<span class="item-number"> 1</span></div>
+              <div class="tform-row">
+                  <div></div>
+                  <div class="form-item-title">Ladungseinheit<span class="item-number"> 1</span></div>
+              </div>
+              <div class="tform-row">
+                  <label>Art:</label>
+                  <select name="form-0-delivery_type">
+                      <option selected disabled>-- Bitte wählen --</option>
+                      <option value="1">Container</option>
+                      <option value="2">Gitterbox</option>
+                      <option value="3">Palette</option>
+                      <option value="4">Ohne Behälter</option>
+                  </select>
+              </div>
+              <div class="tform-row">
+                  <label>Material:</label>
+                  <select name="form-0-material">
+                      <option selected disabled>-- Bitte wählen --</option>
+                      {% for material in materials %}
+                          <option value="{{ material.id }}">{{ material.name }}</option>
+                      {% endfor %}
+                  </select>
+              </div>
+              <div class="tform-row">
+                  <label for="num" class="flex-items">Gewicht (kg):</label>
+                  <input id="num" name="form-0-weight" type="number" min="0" step="0.1">
+              </div>
           </div>
-          <div class="flex">
-            <label>Art:</label>
-            <select name="form-0-delivery_type">
-              <option selected disabled>-- Bitte wählen --</option>
-              <option>Gitterbox</option>
-              <option>Container</option>
-              <option>Palette</option>
-            </select>
-          </div>
-          <div class="flex">
-            <label>Material:</label>
-            <select name="form-0-material">
-              <option selected disabled>-- Bitte wählen --</option>
-              {% for material in materials %}
-                <option value="{{ material.id }}">{{ material.name }}</option>
-              {% endfor %}
-            </select>
-          </div>
-          <div class="flex">
-            <label for="num" class="flex-items">Gewicht (kg):</label>
-            <input id="num" name="form-0-weights" type="number" min="0" step="0.1">
-          </div>
-        </div>
       </div>
-
-      <button type="submit" class="record-btn" form="eingang-form">Speichern</button>
+      <button type="submit" class="record-btn">Speichern</button>
     </form>
   </section>
 
-  <section class="delivery_suppliers">
+  <section class="tform-list">
     <table>
       <thead>
         <tr class="thead-title">
-          <th class="tbody-input">wählen</th>
-          <th class="tbody-id-simple">{% sort "ID" "supplier__id" request.GET.sort %}</th>
-          <th class="tbody-avv">{% sort "AVV" "supplier__avv_number" request.GET.sort %}</th>
-          <th class="tbody-name">{% sort "Name" "supplier__name" request.GET.sort %}</th>
-          <th class="tbody-street">{% sort "Adresse" "supplier__street" request.GET.sort %}</th>
-          <th class="tbody-postal">{% sort "PLZ" "supplier__postal_code" request.GET.sort %}</th>
-          <th class="tbody-city">{% sort "Stadt" "supplier__city" request.GET.sort %}</th>
-          <th class="tbody-note">{% sort "Note" "supplier__note" request.GET.sort %}</th>
+          <th class="tbody-input"></th>
+          <th class="tbody-id">ID</th>
+          <th class="tbody-avv">AVV</th>
+          <th class="tbody-name">Name</th>
+          <th class="tbody-street">Adresse</th>
+          <th class="tbody-postal">PLZ</th>
+          <th class="tbody-city">Stadt</th>
+          <th class="tbody-note">Anmerkung</th>
         </tr>
       </thead>
 
       <tbody class="table-content">
         {% for item in page_obj %}
-        <tr>
+        <tr class="selectable-row" data-id="{{ item.supplier.id }}" data-url-detail="{% url 'supplier_detail' pk=item.supplier.id %}" data-url-update="{% url 'supplier_update' pk=item.supplier.id %}">
           <td class="tbody-input">
-            <input type="radio" name="delivery_unit" value="{{ item.id }}" data-supplier="{{ item.supplier }}">
+            <input type="radio" name="selected_item" value="{{ item.supplier.id }}" 
+                   class="inputField" id="radio-{{ item.supplier.id }}" data-value="{{ item.supplier.name }}">
           </td>
           <td class="tbody-id-simple">{{ item.supplier.id }}</td>
           <td class="tbody-avv">{{ item.supplier.avv_number }}</td>
@@ -139,15 +113,15 @@
     {% paginate page_obj %}
   </section>
 </div>
+
+<script src="{% static 'js/block_visibility.js' %}"></script>
+<script src="{% static 'js/duplicate-item.js' %}"></script>
+<script src="{% static 'js/current-date.js' %}"></script>
+<script src="{% static 'js/row-counter.js' %}"></script>
+<script src="{% static 'js/selectable-row.js' %}"></script>
 {% endblock %}
 
-{% block extra_js %}
-    <script src="{% static 'js/row-counter.js' %}"></script>
-    <script>
-      document.querySelectorAll('.inputField').forEach(radio => {
-        radio.addEventListener('change', function() {
-          document.getElementById('supplier').value = this.dataset.supplier;
-        });
-      });
-    </script>
-{% endblock %}
+
+    
+
+

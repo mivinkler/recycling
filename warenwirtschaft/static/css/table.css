@@ -136,8 +136,7 @@ td {
   text-align: center;
 }
 
-
-/* ============ Navigation icon: Detail and Update =============*/
+/* ============ Navigation icon: Detail and Update ======*/
 
 .selectable-row:hover {
   background-color: #f0f0f0;
@@ -222,6 +221,12 @@ td {
   width: 100%;
 }
 
+.thead-title-sort {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+}
+
 /* ============ Table rows =============*/
 
 .tbody-input {
@@ -240,7 +245,7 @@ td {
 .tbody-id-simple {width: 5%; text-align: right; padding-right: 8px;}
 .tbody-avv {width: 10%;}
 .tbody-name {width: 20%;}
-.tbody-street {width: 20%}
+.tbody-street {width: 20%;}
 .tbody-postal {width: 70px;}
 .tbody-city {width: 10%;}
 .tbody-phone {width: 120px;}
@@ -250,19 +255,20 @@ td {
 .tbody-delivery-receipt {width: 10%;}
 .tbody-data {width: 100px; text-align: center;}
 .tbody-weight {width: 100px; text-align: right; padding-right: 8px;}
-.tbody-lid {width: 3%; text-align: right; padding-right: 8px;}
+.tbody-lid {width: 36px; text-align: right; padding-right: 8px;}
 .tbody-delivery-type {width: 10%;}
 .tbody-material {width: 10%;}
 .tbody-status {width: 100px;}
 .tbody-delivery-type {width: 10%;}
 .tbody-purpose {width: 10%;}
-
+.tbody-delivery {width: 20%;}
+.tbody-delivery-unit {width: 10%;}
 
 /* ====== Pagination ====== */
 
 .pagination {
   display: inline-block;
-  width: 100vw;
+  width: 100%;
   text-align: center;
   margin-top: 20px;
 }
@@ -289,13 +295,102 @@ td {
   color: white;
 }
 
+/* ====== Create Table  ====== */
 
-/* ====== Delivery create ====== */
-
-.title-sort {
+.tform {
   display: flex;
+  gap: 60px;
+  justify-content:space-between;
+}
+
+.tform-form {
+  width: 40%;
+  height: min-content;
+  margin-top: 30px;
+  margin-left: 50px;
+  padding: 26px 20px;
+  background-color: var(--color-gray-100);
+  border: 1px solid var(--color-gray-200);
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+}
+
+.tform-list {
+  width: 60%;
+}
+
+.tform-title {
+  font-weight: bold;
+  font-size: 1.3em;
+  color: var(--color-hero);
+  filter: brightness(75%);
+  margin-bottom: 16px;
+}
+
+.tform-row {
+  display: flex;
+  gap: 16px;
   justify-content: space-between;
-  padding: 0 10px;
+  margin-top: 12px;
+}
+
+.tform-row * {
+  width: 50%;
+  padding: 5px 2px;
+}
+
+.tform-header summary {
+  padding: 2px;
+  cursor: pointer;
+  text-align: end;
+}
+
+.tform-note {
+  padding: 0;
+}
+
+.tform-note textarea {
+  width: 100%;
+  resize: vertical;
+
+}
+
+.tform-counter {
+  width: 50px;
+}
+
+.tform-row:has(.tform-counter) {
+  justify-content: flex-start;
+  gap: 8px;
+}
+
+.record-btn {
+  width: 100%;
+  height: 40px;
+  margin-top: 40px;
+  background-color: var(--color-hero);
+  opacity: 0.7;
+  font-size: 16px;
+  color: white;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+}
+
+/* ====== Detail ====== */
+
+
+.entity-card-wrapper {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.entity-card {
+  width: 50%;
+}
+
+.entity-card-second {
+  width: 50%;
 }
 
 
@@ -325,34 +420,19 @@ td {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.table-filter {
+/* .table-filter {
   height: 44px;
   background-color: #dee2e6;
   border-bottom: 3px solid #fff;
   padding: 4px;
-}
+} */
 
 
   
 /* ====== Table Header ====== */
   
 
-.sort-icons {
+/* .sort-icons {
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -364,11 +444,11 @@ td {
   color: #5b849d;
   line-height: 10px;
   
-}
+} */
 
 /* ====== Table action buttons ====== */
 
-.table-action {
+/* .table-action {
   display: flex;
   gap: 6px;
   margin-bottom: 1px;
@@ -452,11 +532,11 @@ td {
   font-size: 18px;
   font-weight: bold;
   text-decoration: none;
-}
+} */
 
 /* ====== Table Filter ====== */
 
-.table-filter input,
+/* .table-filter input,
 .table-filter select {
   width: 100%;
   box-sizing: border-box;
@@ -480,15 +560,12 @@ td {
 
 .table-filter select:first-child {
   color: #747474; 
-}
+} */
 
 /* ====== Table Body ====== */
 
-details > summary::marker {
-  display: none;
-  content: '';
-}
 
+/* 
 .table-filter button {
   height: 26px;
   cursor: pointer;
@@ -507,7 +584,7 @@ details > summary::marker {
   color: #4b4b4b;
   outline: 1px solid #afafaf;
   outline-offset: -1px;
-}
+} */
 
 /* .table-content tr:nth-child(odd) {
   background-color: #f8f9fa;
@@ -517,11 +594,7 @@ details > summary::marker {
   background-color: #e9ecef;
 } */
 
-
-
-
-
-.input-btn {
+/* .input-btn {
   padding: 3px 6px;
   margin-top: 12px;
-}
+} */

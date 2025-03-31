@@ -37,3 +37,8 @@
   color: white;
   transition: background-color 0.3s;
 }
+
+details > summary::marker {
+  display: none;
+  content: '';
+}
