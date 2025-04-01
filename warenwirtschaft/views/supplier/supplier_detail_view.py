@@ -20,7 +20,7 @@ class SupplierDetailView(DetailView):
     ]
 
     def get_queryset(self):
-        queryset = super().get_queryset().prefetch_related("deliveries", "deliveries__deliveryunits", "deliveries__material")
+        queryset = super().get_queryset().prefetch_related("deliveries", "deliveries__deliveryunits", "deliveries__deliveryunits__material")
 
         search_service = SearchService(self.request, self.active_fields)
         sorting_service = SortingService(self.request, self.active_fields)
@@ -34,6 +34,7 @@ class SupplierDetailView(DetailView):
         context = super().get_context_data(**kwargs)
 
         deliveries = self.object.deliveries.all()
+        deliveries = deliveries.order_by('id')
 
         paginator = PaginationService(self.request, self.paginate_by)
         page_obj = paginator.get_paginated_queryset(deliveries)

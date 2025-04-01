@@ -229,6 +229,11 @@ td {
 
 /* ============ Table rows =============*/
 
+.table-title {
+  background-color: var(--color-gray-100);
+  height: 40px;
+}
+
 .tbody-input {
   width: 5%;
   background-color: var(--color-gray-100);
@@ -236,7 +241,7 @@ td {
 }
 .tbody-input-hidden {display: none;}
 .tbody-id {
-  width: 36px;
+  width: 3%;
   text-align: right;
   color: #000;
   background-color: var(--color-gray-100);
@@ -378,19 +383,30 @@ td {
 
 /* ====== Detail ====== */
 
+.entity {
+  padding: 24px;
+  background-color: var(--color-gray-100);
+  border-bottom: 1px solid var(--color-gray-200);
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+}
 
-.entity-card-wrapper {
+.entity-wrapper {
   display: flex;
-  gap: 10px;
+  gap: 100px;
   width: 100%;
 }
 
-.entity-card {
-  width: 50%;
+.entity-wrapper:nth-child(1) {
+  min-width: 20%;
+}
+.entity-row {
+  line-height: 26px;
+  max-width: 600px;
 }
 
-.entity-card-second {
-  width: 50%;
+.entity-row span:nth-child(1) {
+  min-width: 100px;
+  font-weight: bold;
 }
 
 

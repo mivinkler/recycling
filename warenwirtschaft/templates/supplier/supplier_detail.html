@@ -6,87 +6,57 @@
 {% block title %}Lieferung-Einheiten{% endblock %}
 
 {% block content %}
-<div class="entity-card-wrapper">
-    <div class="entity-title">Lieferant: {{ supplier.name }}</div>
-    <div class="entity-card">
-        <div><span class="label">Name:</span> <span class="value">{{ supplier.name }}</span></div>
-        <div><span class="label">Strasse:</span> <span class="value">{{ supplier.street }}</span></div>
-        <div><span class="label">Stadt:</span> <span class="value">{{ supplier.postal_code }} {{ supplier.city }}</span></div>
-        <div><span class="label">Telefon:</span> <span class="value">{{ supplier.phone }}</span></div>
-        <div><span class="label">Email:</span> <span class="value">{{ supplier.email }}</span></div>
+<section class="entity">
+    <div class="tform-title">Lieferant: {{ supplier.name }}</div>
+    <div class="entity-wrapper">
+        <div>
+            <!-- <div class="entity-row"><span>Lieferant:</span> {{ supplier.name }}</div> -->
+            <div class="entity-row"><span>Strasse:</span> {{ supplier.street }}</div>
+            <div class="entity-row"><span>Stadt:</span> {{ supplier.postal_code }} {{ supplier.city }}</div>
+            <div class="entity-row"><span>Telefon:</span> {{ supplier.phone }}</div>
+            <div class="entity-row"><span>Email:</span> {{ supplier.email }}</div>
+        </div>
+        <div>
+            <div class="entity-row"><span>AVV-Nummer:</span> {{ supplier.avv_number }}</div>
+            <div class="entity-row"><span>Anmerkung:</span> {{ supplier.note }}</div>
+            <div class="entity-row"><span>Erstellt am:</span> {{ supplier.created_at|date:"d.m.Y" }}</div>
+        </div>
     </div>
-    <div class="entity-card-second">
-        <div><span class="label">AVV-Nummer:</span> <span class="value">{{ supplier.avv_number }}</span></div>
-        <div><span class="label">Anmerkung:</span> <span class="value">{{ supplier.note }}</span></div>
-        <div><span class="label">Erstellt am:</span> <span class="value">{{ supplier.created_at|date:"d.m.Y" }}</span></div>
-    </div>
-</div>
+</section>
 
 
 <table class="selectable-table">
     <thead>
-        <thead>
-            <tr class="thead-title">
-                <th class="tbody-id">ID</th>
-                <th class="tbody-lid">LID</th>
-                <th class="tbody-delivery-receipt">Lieferschein</th>
-                <th class="tbody-note">Anmerkung</th>
-                <th class="tbody-delivery-type">Behälter</th>
-                <th class="tbody-material">Material</th>
-                <th class="tbody-weight">Gewicht</th>
-                <th class="tbody-data">Datum</th>
-                <th class="tbody-status">Status</th>
-                <th class="tbody-note">Anmerkung</th>
-            </tr>
-        </thead>
-        <!-- <tr class="table-content-title">
-            <th>{% sort "&#8470;" "deliveries__id" request.GET.sort %}</th>
-            <th>{% sort "Lieferschein" "deliveries__delivery_receipt" request.GET.sort %}</th>
-            <th>{% sort "Gewicht" "deliveries__total_weight" request.GET.sort %}</th>
-            <th>{% sort "Datum" "deliveries__created_at" request.GET.sort %}</th>
-            <th>{% sort "Anmerkung" "deliveries__note" request.GET.sort %}</th>
-            <th></th> 
-        </tr> -->
+        <tr class="thead-title">
+            <th class="tbody-id">ID</th>
+            <th class="tbody-delivery-receipt">Lieferschein</th>
+            <th class="tbody-data">Datum</th>
+            <th class="tbody-note">Anmerkung</th>
+            <th class="tbody-lid">Unit-ID</th>
+            <th class="tbody-delivery-type">Behälter</th>
+            <th class="tbody-material">Material</th>
+            <th class="tbody-weight">Gewicht</th>
+            <th class="tbody-status">Status</th>
+        </tr>
     </thead>
 
     <tbody class="table-content">
         {% for delivery in deliveries %}
-            {% for item in delivery.list %}
-                <tr class="selectable-row" data-id="{{ item.id }}" data-url-detail="{% url 'delivery_detail' pk=item.id %}" data-url-update="{% url 'delivery_update' pk=item.id %}">
-                    <td class="tbody-input-hidden">
-                        <input type="radio" value="{{ item.id }}">
-                    </td>
-                    <td class="tbody-id">{{ item.id }}</td>
-                    <td class="tbody-lid">{{ item.delivery_id }}</td>
+            {% for unit in delivery.deliveryunits.all %}
+                <tr>
                     {% if forloop.first %}
-                        <td rowspan="{{ delivery.list|length }}" class="tbody-name">{{ item.delivery.supplier.name }}</td>
-                        <td rowspan="{{ delivery.list|length }}" class="tbody-delivery-receipt">{{ item.delivery.delivery_receipt }}</td>
-                        <td rowspan="{{ delivery.list|length }}" class="tbody-weight">{{ item.delivery.total_weight }}</td>
-                        <td rowspan="{{ delivery.list|length }}" class="tbody-note" title="{{ item.note }}"><p>{{ item.note }}</p></td>
+                        <td class="tbody-id" rowspan="{{ delivery.deliveryunits.all|length }}">{{ delivery.id }}</td>
+                        <td class="tbody-delivery-receipt" rowspan="{{ delivery.deliveryunits.all|length }}">{{ delivery.delivery_receipt }}</td>
+                        <td class="tbody-data" rowspan="{{ delivery.deliveryunits.all|length }}">{{ delivery.created_at|date:"d.m.Y" }}</td>
+                        <td class="tbody-note" rowspan="{{ delivery.deliveryunits.all|length }}">{{ delivery.note }}</td>
                     {% endif %}
-
-                    <td class="tbody-delivery-type">{{ item|getattr:"get_delivery_type_display" }}</td>
-                    <td class="tbody-material">{{ item.material }}</td>
-                    <td class="tbody-weight">{{ item.weight }}</td>
-                    <td class="tbody-data">{{ item.created_at|date:"d.m.Y" }}</td>
-                    <td class="tbody-status">{{ item|getattr:"get_status_display" }}</td>
-                </tr>
+                    <td class="tbody-lid">{{ unit.id }}</td>
+                    <td class="tbody-delivery-type">{{ unit.get_delivery_type_display }}</td>
+                    <td class="tbody-material">{{ unit.material }}</td>
+                    <td class="tbody-weight">{{ unit.weight }} </td>
+                    <td class="tbody-status">{{ unit.get_status_display }}</td>
+                </tr>          
             {% endfor %}
-        <!-- <tr>
-            <td>{{ delivery.id }}</td>               
-            <td>{{ delivery.delivery_receipt }}</td>
-            <td>{{ delivery.total_weight }}</td>
-            <td>{{ delivery.created_at|date:"d.m.Y" }}</td>
-            <td class="note-column" title="{{ delivery.note }}"><p>{{ delivery.note }}</p></td>
-            <td class="suppler-icons">
-                <a href="{% url 'delivery_detail' pk=delivery.id %}" title="Detail">
-                    <img src="{% static 'icons/detail-icon.svg' %}">   
-                </a>
-                <a href="#" title="Bearbeiten"> 
-                    <img src="{% static 'icons/update-icon.svg' %}">
-                </a>
-            </td>
-        </tr> -->
         {% endfor %}
     </tbody>
 </table>
