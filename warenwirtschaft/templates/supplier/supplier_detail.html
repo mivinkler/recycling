@@ -7,22 +7,43 @@
 
 {% block content %}
 <section class="entity">
-    <div class="tform-title">Lieferant: {{ supplier.name }}</div>
+    <div class="tform-title"><span>Lieferant:</span> &nbsp;{{ supplier.name }}</div>
     <div class="entity-wrapper">
-        <div>
-            <!-- <div class="entity-row"><span>Lieferant:</span> {{ supplier.name }}</div> -->
-            <div class="entity-row"><span>Strasse:</span> {{ supplier.street }}</div>
-            <div class="entity-row"><span>Stadt:</span> {{ supplier.postal_code }} {{ supplier.city }}</div>
-            <div class="entity-row"><span>Telefon:</span> {{ supplier.phone }}</div>
-            <div class="entity-row"><span>Email:</span> {{ supplier.email }}</div>
+        <div class="entity-column-first">
+            <div class="entity-row">
+                <div class="entity-value">Strasse:</div>
+                <div class="entity-item">{{ supplier.street }}</div>
+            </div>
+            <div class="entity-row">
+                <div class="entity-value">Stadt:</div>
+                <div class="entity-item">{{ supplier.postal_code }} {{ supplier.city }}</div>
+            </div>
+            <div class="entity-row">
+                <div class="entity-value">Telefon:</div>
+                <div class="entity-item">{{ supplier.phone }}</div>
+            </div>
+            <div class="entity-row">
+                <div class="entity-value">Email:</div>
+                <div class="entity-item">{{ supplier.email }}</div>
+            </div>
         </div>
-        <div>
-            <div class="entity-row"><span>AVV-Nummer:</span> {{ supplier.avv_number }}</div>
-            <div class="entity-row"><span>Anmerkung:</span> {{ supplier.note }}</div>
-            <div class="entity-row"><span>Erstellt am:</span> {{ supplier.created_at|date:"d.m.Y" }}</div>
+        <div class="entity-column-second">
+            <div class="entity-row">
+                <div class="entity-value">AVV-Nummer:</div>
+                <div class="entity-item">{{ supplier.avv_number }}</div>
+            </div>
+            <div class="entity-row">
+                <div class="entity-value">Anmerkung:</div>
+                <div class="entity-item">{{ supplier.note }}</div>
+            </div>
+            <div class="entity-row">
+                <div class="entity-value">Erstellt am:</div>
+                <div class="entity-item">{{ supplier.created_at|date:"d.m.Y" }}</div>
+            </div>
         </div>
     </div>
 </section>
+
 
 
 <table class="selectable-table">

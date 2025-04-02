@@ -104,7 +104,6 @@ td {
   padding: 20px 0 17px 0;
   background-color: var(--color-gray-100);
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
-  position: relative;
 }
 
 .table-navi > div {
@@ -328,7 +327,7 @@ td {
   font-size: 1.3em;
   color: var(--color-hero);
   filter: brightness(75%);
-  margin-bottom: 16px;
+  margin-bottom: 24px;
 }
 
 .tform-row {
@@ -384,30 +383,44 @@ td {
 /* ====== Detail ====== */
 
 .entity {
-  padding: 24px;
-  background-color: var(--color-gray-100);
+  padding: 24px 24px 34px;
+  /* background-color: var(--color-gray-100); */
   border-bottom: 1px solid var(--color-gray-200);
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
 }
 
 .entity-wrapper {
   display: flex;
-  gap: 100px;
-  width: 100%;
+  gap: 50px;
 }
 
-.entity-wrapper:nth-child(1) {
-  min-width: 20%;
+.entity-column-first,
+.entity-column-second {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 12px;
 }
+
 .entity-row {
-  line-height: 26px;
-  max-width: 600px;
+  display: flex;
 }
 
-.entity-row span:nth-child(1) {
-  min-width: 100px;
+.entity-column-first .entity-value {
+  width: 120px;
   font-weight: bold;
 }
+
+.entity-column-second .entity-value {
+  width: 160px;
+  font-weight: bold;
+}
+
+.entity-item {
+  min-width: 300px;
+  max-width: 500px;
+}
+
 
 
 
