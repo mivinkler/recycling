@@ -3,7 +3,7 @@
 {% load static %}
 {% load sorting %}
 
-{% block title %}Lieferung-Einheiten{% endblock %}
+{% block title %}Lieferant: Detail{% endblock %}
 
 {% block content %}
 <section class="entity">
@@ -43,51 +43,49 @@
         </div>
     </div>
 </section>
+<section>
+    <table class="selectable-table">
+        <thead>
+            <tr class="thead-title">
+                <th class="tbody-id">ID</th>
+                <th class="tbody-delivery-receipt">Lieferschein</th>
+                <th class="tbody-data">Datum</th>
+                <th class="tbody-note">Anmerkung</th>
+                <th class="tbody-lid">Unit-ID</th>
+                <th class="tbody-delivery-type">Behälter</th>
+                <th class="tbody-material">Material</th>
+                <th class="tbody-weight">Gewicht</th>
+                <th class="tbody-status">Status</th>
+            </tr>
+        </thead>
 
-
-
-<table class="selectable-table">
-    <thead>
-        <tr class="thead-title">
-            <th class="tbody-id">ID</th>
-            <th class="tbody-delivery-receipt">Lieferschein</th>
-            <th class="tbody-data">Datum</th>
-            <th class="tbody-note">Anmerkung</th>
-            <th class="tbody-lid">Unit-ID</th>
-            <th class="tbody-delivery-type">Behälter</th>
-            <th class="tbody-material">Material</th>
-            <th class="tbody-weight">Gewicht</th>
-            <th class="tbody-status">Status</th>
-        </tr>
-    </thead>
-
-    <tbody class="table-content">
-        {% for delivery in deliveries %}
-            {% for unit in delivery.deliveryunits.all %}
-            <tr class="selectable-row" 
-                data-id="{{ delivery.id }}" 
-                data-url-detail="{% url 'delivery_detail' pk=delivery.id %}" 
-                data-url-update="{% url 'delivery_update' pk=delivery.id %}">
-                {% if forloop.first %}
-                    <td class="tbody-input-hidden">
-                        <input type="radio" value="{{ delivery.id }}">
-                    </td>
-                    <td class="tbody-id" name="id" rowspan="{{ delivery.deliveryunits.all|length }}">{{ delivery.id }}</td>
-                    <td class="tbody-delivery-receipt" rowspan="{{ delivery.deliveryunits.all|length }}">{{ delivery.delivery_receipt }}</td>
-                    <td class="tbody-data" rowspan="{{ delivery.deliveryunits.all|length }}">{{ delivery.created_at|date:"d.m.Y" }}</td>
-                    <td class="tbody-note" rowspan="{{ delivery.deliveryunits.all|length }}">{{ delivery.note }}</td>
-                {% endif %}
-                <td class="tbody-lid">{{ unit.id }}</td>
-                <td class="tbody-delivery-type">{{ unit.get_delivery_type_display }}</td>
-                <td class="tbody-material">{{ unit.material }}</td>
-                <td class="tbody-weight">{{ unit.weight }} </td>
-                <td class="tbody-status">{{ unit.get_status_display }}</td>
-            </tr>          
+        <tbody class="table-content">
+            {% for delivery in deliveries %}
+                {% for unit in delivery.deliveryunits.all %}
+                <tr class="selectable-row" 
+                    data-id="{{ delivery.id }}" 
+                    data-url-detail="{% url 'delivery_detail' pk=delivery.id %}" 
+                    data-url-update="{% url 'delivery_update' pk=delivery.id %}">
+                    {% if forloop.first %}
+                        <td class="tbody-input-hidden">
+                            <input type="radio" value="{{ delivery.id }}">
+                        </td>
+                        <td class="tbody-id" name="id" rowspan="{{ delivery.deliveryunits.all|length }}">{{ delivery.id }}</td>
+                        <td class="tbody-delivery-receipt" rowspan="{{ delivery.deliveryunits.all|length }}">{{ delivery.delivery_receipt }}</td>
+                        <td class="tbody-data" rowspan="{{ delivery.deliveryunits.all|length }}">{{ delivery.created_at|date:"d.m.Y" }}</td>
+                        <td class="tbody-note" rowspan="{{ delivery.deliveryunits.all|length }}">{{ delivery.note }}</td>
+                    {% endif %}
+                    <td class="tbody-lid">{{ unit.id }}</td>
+                    <td class="tbody-delivery-type">{{ unit.get_delivery_type_display }}</td>
+                    <td class="tbody-material">{{ unit.material }}</td>
+                    <td class="tbody-weight">{{ unit.weight }} </td>
+                    <td class="tbody-status">{{ unit.get_status_display }}</td>
+                </tr>          
+                {% endfor %}
             {% endfor %}
-        {% endfor %}
-    </tbody>
-</table>
-
+        </tbody>
+    </table>
+</section>
 {% endblock %}
 
 {% block extra_js %}

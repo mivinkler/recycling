@@ -1,34 +1,28 @@
 {% extends 'base.html' %}
 
-{% block title %}Update Supplier{% endblock %}
+{% block title %}Lieferant: update{% endblock %}
 
 {% block content %}
 
 
-<div class="title">Lieferant: update</div>
-
-<div class="form-wrapper">
-
-
+<div class="tform-form">
     <form method="post">
         {% csrf_token %}
-
-        <div class="form-supplier">
-            <div class="title">Lieferant: {{ supplier.name }}</div>
+        <div class="tform-title">Lieferant update: {{ supplier.name }}</div>
+        <div>
             <div>
                 {% for field in form %}
-                <div class="flex form-row-supplier">
+                <div class="tform-row">
                     <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
                     {{ field }} <!--input -->
                     {% if field.errors %}
-                    <div class="text-danger">
+                    <div class="tform-note">
                         {{ field.errors|striptags }}
                     </div>
                     {% endif %}
                 </div>
                 {% endfor %}
             </div>
-            
             <button type="submit" class="record-btn">Speichern</button>
         </div>
     </form>
