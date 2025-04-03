@@ -57,5 +57,6 @@ class DeliveryListView(ListView):
         context["page_obj"] = page_obj
         context["search_query"] = self.request.GET.get("search", "")
         context["sort_param"] = self.request.GET.get("sort", "")
+        context["selected_menu"] = "delivery_list"
 
         return context

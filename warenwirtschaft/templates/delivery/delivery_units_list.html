@@ -13,11 +13,11 @@
     <thead>
         <tr class="thead-title">
             <th class="tbody-id">ID</th>
-            <th class="tbody-lid">LID</th>
             <th class="tbody-name">Lieferant</th>
             <th class="tbody-delivery-receipt">Lieferschein</th>
             <th class="tbody-weight">Gesamtgewicht</th>
             <th class="tbody-note">Anmerkung</th>
+            <th class="tbody-lid">LID</th>
             <th class="tbody-delivery-type">Behälter</th>
             <th class="tbody-material">Material</th>
             <th class="tbody-weight">Gewicht</th>
@@ -30,19 +30,19 @@
         <!-- {% regroup page_obj by delivery_id as deliveries %} -->
         {% for delivery in deliveries %}
             {% for item in delivery.list %}
-            <tr class="selectable-row" data-id="{{ item.id }}" data-url-detail="{% url 'delivery_detail' pk=item.id %}" data-url-update="{% url 'delivery_update' pk=item.id %}">
+            <tr class="selectable-row" data-id="{{ delivery.id }}" data-url-detail="{% url 'delivery_detail' pk=item.id %}" data-url-update="{% url 'delivery_update' pk=item.id %}">
                 <td class="tbody-input-hidden">
                     <input type="radio" value="{{ item.id }}">
                 </td>
-                <td class="tbody-id">{{ item.id }}</td>
-                <td class="tbody-lid">{{ item.delivery_id }}</td>
                 {% if forloop.first %}
-                    <td rowspan="{{ delivery.list|length }}" class="tbody-name">{{ item.delivery.supplier.name }}</td>
-                    <td rowspan="{{ delivery.list|length }}" class="tbody-delivery-receipt">{{ item.delivery.delivery_receipt }}</td>
-                    <td rowspan="{{ delivery.list|length }}" class="tbody-weight">{{ item.delivery.total_weight }}</td>
-                    <td rowspan="{{ delivery.list|length }}" class="tbody-note" title="{{ item.note }}"><p>{{ item.note }}</p></td>
+                <td rowspan="{{ delivery.list|length }}" class="tbody-id">{{ item.delivery.supplier.id }}</td>
+                <td rowspan="{{ delivery.list|length }}" class="tbody-name">{{ item.delivery.supplier.name }}</td>
+                <td rowspan="{{ delivery.list|length }}" class="tbody-delivery-receipt">{{ item.delivery.delivery_receipt }}</td>
+                <td rowspan="{{ delivery.list|length }}" class="tbody-weight">{{ item.delivery.total_weight }}</td>
+                <td rowspan="{{ delivery.list|length }}" class="tbody-note" title="{{ item.note }}"><p>{{ item.note }}</p></td>
                 {% endif %}
-
+                
+                <td class="tbody-lid">{{ item.id }}</td>
                 <td class="tbody-delivery-type">{{ item|getattr:"get_delivery_type_display" }}</td>
                 <td class="tbody-material">{{ item.material }}</td>
                 <td class="tbody-weight">{{ item.weight }}</td>

@@ -40,4 +40,6 @@ class UnloadsListView(ListView):
 
         context["page_obj"] = page_obj
         context["search_query"] = self.request.GET.get("search", "")
+        context["selected_menu"] = "unload_list"
+
         return context

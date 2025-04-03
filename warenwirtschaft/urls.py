@@ -28,5 +28,5 @@ urlpatterns = [
     path('delivery/update/<int:pk>/', DeliveryUpdateView.as_view(), name='delivery_update'),
 
     path('unload/create/', UnloadCreateView.as_view(), name='unload_create'),
-    path('unload/list/', UnloadsListView.as_view(), name='unloads_list'),
+    path('unload/list/', UnloadsListView.as_view(), name='unload_list'),
 ]

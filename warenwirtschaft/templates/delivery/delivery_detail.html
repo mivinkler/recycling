@@ -8,37 +8,41 @@
 {% block title %}Lieferung-Einheiten{% endblock %}
 
 {% block content %}
-<div class="title">Lieferung: detail</div>
-<table class="detail-header">
-    <tr>
-        <th>Lieferant:</th>
-        <td>{{ delivery.supplier }}</td>
-    </tr>
-    <tr>
-        <th>Lieferung-ID:</th>
-        <td>{{ delivery.id }}</td>
-    </tr>
-    <tr>
-        <th>Gewicht:</th>
-        <td>{{ delivery.total_weight }}</td>
-    </tr>
-    <tr>
-        <th>Behälter:</th>
-        <td>{{ delivery.units }}</td>
-    </tr>
-    <tr>
-        <th>Lieferschein:</th>
-        <td>{{ delivery.delivery_receipt }}</td>
-    </tr>
-    <tr>
-        <th>Anmerkung:</th>
-        <td>{{ delivery.note }}</td>
-    </tr>
-    <tr>
-        <th>Datum:</th>
-        <td>{{ delivery.created_at|date:"d.m.Y" }}</td>
-    </tr>
-</table>
+<section class="entity">
+    <div class="tform-title"><span>Lieferung:</span> &nbsp;{{ delivery.name }}</div>
+    <div class="entity-wrapper">
+        <div class="entity-column-first">
+            <div class="entity-row">
+                <div class="entity-value">Lieferant</div>
+                <div class="entity-item">
+                    <p>{{ delivery.supplier.name }}</p>
+                    <p>{{ delivery.supplier.street }}</p>
+                    <p>{{ delivery.supplier.postal_code }} {{ delivery.supplier.city }}</p>
+                </div>
+            </div>
+            <div class="entity-row">
+                <div class="entity-value">Lieferung-ID:</div>
+                <div class="entity-item">{{ delivery.id }}</div>
+            </div>
+            <div class="entity-row">
+                <div class="entity-value">Lieferschein:</div>
+                <div class="entity-item">{{ delivery.delivery_receipt }}</div>
+            </div>
+        </div>
+
+        <div class="entity-column-second">
+            
+            <div class="entity-row">
+                <div class="entity-value">Anmerkung:</div>
+                <div class="entity-item">{{ delivery.note }}</div>
+            </div>
+            <div class="entity-row">
+                <div class="entity-value">Datum:</div>
+                <div class="entity-item">{{ delivery.created_at|date:"d.m.Y" }}</div>
+            </div>
+        <div>
+    </div>
+</section>
 
 <table class="selectable-table">
     <thead>

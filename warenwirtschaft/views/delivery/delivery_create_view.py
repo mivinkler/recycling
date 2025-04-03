@@ -46,7 +46,6 @@ class DeliveryCreateView(CreateView):
         context["materials"] = Material.objects.all()
         context["search_query"] = self.request.GET.get("search", "")
         context["active_fields"] = self.active_fields
-        context["selected_menu"] = "supplier_list"
 
         return context
 

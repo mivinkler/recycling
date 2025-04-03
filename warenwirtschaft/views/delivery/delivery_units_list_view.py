@@ -47,4 +47,5 @@ class DeliveryUnitsListView(ListView):
         context["sort_param"] = self.request.GET.get("sort", "")
         context["delivery_types"] = DeliveryUnit.DELIVERY_TYPE_CHOICES
         context["statuses"] = DeliveryUnit.STATUS_CHOICES
+        context["selected_menu"] = "delivery_units_list"
         return context
