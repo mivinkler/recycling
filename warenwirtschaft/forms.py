@@ -20,7 +20,7 @@ DeliveryUnitFormSet = inlineformset_factory(
     Delivery,
     DeliveryUnit,
     fields=['delivery_type', 'material', 'weight'],
-    extra=5,
+    extra=0,
     can_delete=True
 )
 
