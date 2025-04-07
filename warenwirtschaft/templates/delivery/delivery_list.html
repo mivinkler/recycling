@@ -12,15 +12,15 @@
 <table class="selectable-table">
     <thead>
         <tr class="thead-title">
-            <th class="tbody-id">ID</th>
-            <th class="tbody-name">Lieferant</th>
-            <th class="tbody-delivery-receipt">Lieferschein</th>
-            <th class="tbody-weight">Gesamtgewicht</th>
-            <th class="tbody-data">Datum</th>
-            <th class="tbody-delivery-type">Behälter</th>
-            <th class="tbody-material">Material</th>
-            <th class="tbody-weight">Gewicht</th>
-            <th class="tbody-status">Status</th>
+            <th class="table-id">ID</th>
+            <th class="table-name">Lieferant</th>
+            <th class="table-delivery-receipt">Lieferschein</th>
+            <th class="table-weight">Gesamtgewicht</th>
+            <th class="table-data">Datum</th>
+            <th class="table-delivery-type">Behälter</th>
+            <th class="table-material">Material</th>
+            <th class="table-weight">Gewicht</th>
+            <th class="table-status">Status</th>
         </tr>
     </thead>
     <tbody class="table-content">
@@ -32,7 +32,7 @@
                         <td rowspan="{{ delivery.deliveryunits.all|length }}">{{ delivery.supplier.name }}</td>
                         <td rowspan="{{ delivery.deliveryunits.all|length }}">{{ delivery.delivery_receipt }}</td>
                         <td rowspan="{{ delivery.deliveryunits.all|length }}">{{ delivery.total_weight }}</td>
-                        <td rowspan="{{ delivery.deliveryunits.all|length }}">{{ delivery.created_at|date:"d.m.Y" }}</td>
+                        <td rowspan="{{ delivery.deliveryunits.all|length }}">{{ delivery.created_at|date:'d.m.Y' }}</td>
                     {% endif %}
                     <td>{{ unit|getattr:"get_delivery_type_display" }}</td>
                     <td>{{ unit.material }}</td>

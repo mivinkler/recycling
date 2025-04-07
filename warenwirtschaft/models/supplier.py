@@ -20,4 +20,4 @@ class Supplier(models.Model):
         ]
 
     def __str__(self):
-        return f"{self.name}\n{self.street}\n{self.postal_code} {self.city}\nAVV: {self.avv_number}"
+        return f"{self.name} • {self.postal_code} {self.city}"

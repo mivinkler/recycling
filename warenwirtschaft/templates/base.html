@@ -4,10 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>{% block title %}Default Title{% endblock %}</title>
+
     <link rel="stylesheet" href="{% static 'css/left_menu.css' %}">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link rel="stylesheet" href="{% static 'css/table.css' %}">
+
+    <!-- TODO Schrift herunterladen vor dem Production -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 
     <link rel="icon" type="image/png" href="{% static 'icons/logo/favicon-96x96.png' %}" sizes="96x96">
     <link rel="icon" type="image/svg+xml" href="{% static 'icons/logo/favicon.svg' %}">
@@ -28,7 +33,7 @@
         <div class="top-menu">
             <div><a href="{% url 'suppliers_list' %}" class="{% if selected_menu == 'supplier_list' %} selected {% endif %}">Lieferanten</a></div>
             <div><a href="{% url 'delivery_units_list' %}" class="{% if selected_menu == 'delivery_units_list' %} selected {% endif %}">Eingang</a></div>
-            <div><a href="{% url 'unload_list' %}" class="{% if selected_menu == 'uload_list' %} selected {% endif %}">Leerung</a></div>
+            <div><a href="{% url 'unload_list' %}" class="{% if selected_menu == 'unload_list' %} selected {% endif %}">Leerung</a></div>
             <div><a href="#">Recycling</a></div>
             <div><a href="#">Versand</a></div>
         </div>

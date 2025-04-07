@@ -2,277 +2,84 @@
 
 {% load static %}
 
-{% block title %}Update Delivery{% endblock %}
+{% block title %}Lieferung ändern{% endblock %}
 
 {% block content %}
 
-<div class="title">Lieferung: update</div>
-
-<div class="entity">
-  <div class="tform-title"><span>Lieferant:</span> &nbsp;{{ delivery.supplier.name }}</div>
-  <div class="entity-wrapper">
-    <form method="post" action="{% url 'delivery_update' delivery.pk %}" id="eingang-form">
-    {% csrf_token %}
-    <section id="supplier">
-      <div class="flex">
-        <th for="supplier" class="flex-items">Lieferant:</label>
-        <td id="supplier" name="supplier" class="flex-items output">{{ delivery.supplier|linebreaksbr }}</td>
+<div class="tablecard">
+  <form method="post" action="{% url 'delivery_update' delivery.pk %}" id="eingang-form">
+  {% csrf_token %}
+    <section class="tablecard-topbox">
+      <h2>Lieferung ändern</h2>
+      {{ form.non_field_errors }}
+      <div class="tablecard-topbox-row">
+        <label for="{{ form.supplier.id_for_label }}">Lieferant:</label>
+        {{ form.supplier }}
       </div>
-      <div>
-        <details>
-          <summary>+ Lieferant wählen</summary>
-          <table class="table-content" style="position: absolute; background-color: #fff;">
-              {% for supplier in suppliers %}
-              <tr>
-                <td class="text-center">
-                  <input class="inputField" type="radio" name="supplier" value="{{ supplier.id }}" data-supplier="{{ supplier }}"></td>
-                <td class="text-center">{{ supplier.id }}</td>
-                <td>{{ supplier.avv_number }}</td>
-                <td>{{ supplier.name }}</td>
-                <td>{{ supplier.street }}</td>
-                <td>{{ supplier.postal_code }}</td>
-                <td>{{ supplier.city }}</td>
-              </tr>
-              {% endfor %}
-          </table>
-        </details>
+
+      <div class="tablecard-topbox-row">
+        <label for="{{ form.delivery_receipt.id_for_label }}">Lieferschein:</label>
+        {{ form.delivery_receipt }}
+      </div>
+
+      <div class="tablecard-topbox-row">
+        <label for="{{ form.note.id_for_label }}">Anmerkung:</label>
+        {{ form.note }}
       </div>
     </section>
 
-    <section id="delivery" class="flex">
-      <table class="detail-header">
-        <tr>
-          <th for="delivery_receipt" class="flex-items">Lieferschein:</th>
-          <td>
-            <input type="text" id="delivery_receipt" name="delivery_receipt" class="flex-items" value="{{ delivery.delivery_receipt }}">
-          </td>
-        </tr> 
+    <section class="tablecard-list">
+      <div class="tablecard-list-name">Ladungseinheiten:</div>
 
-        <tr>
-          <th for="total_weight" class="flex-items">Gesamtgewicht:</th>
-          <td>
-            <input type="text" id="total_weight" name="total_weight" class="flex-items" value="{{ delivery.total_weight }}">
-          </td>
-        </tr>
-        
-        <tr>
-          <th for="liefernummer" class="flex-items">Datum:</th>
-          <td>
-            <input type="text" id="liefernummer" name="liefernummer" class="flex-items" value="{{ delivery.created_at }}">
-          </td>
-        </tr>   
-      </table>
-    </section>
-  </div>
-</div>   
-        
-    
-  </div>
-      <div class="table-head">
-        <div class="table-head-title">Lieferungen</div>
-      </div>
-    </div>
-    <table class="table-box">
-      <thead>
-          <tr class="table-content-title">
-              <th style="width: 3.5%">&#8470;</th>
-              <th style="width: 10%">Gewicht</th>
-              <th style="width: 5%;">Status</th>
-              <th style="width: 8%;">Behälter</th>
-              <th style="width: 8%;">Material</th>
-              <th style="width: 30%">Anmerkung</th>
-              <th style="width: auto"></th> <!-- actions -->
+      <!-- Обязательно! -->
+
+      <table>
+        <thead>
+          <tr class="tablecard-list-header">
+            <th class="tablecard-list-id">&#8470;</th>
+            <th class="tablecard-list-weight">Gewicht</th>
+            <th>Behälter</th>
+            <th>Material</th>
+            <th>Entfernen</th>
           </tr>
-      </thead>
-      <tbody class="table-content">
-        {% for unit in delivery_units %}
-        <tr>
-            <td>
-              {{ unit.id }}
-            </td>               
-            <td>
-              <input type="text" id="weight" name="weight" class="flex-items" value="{{ unit.weight }}">
-            </td>
-            <td>
-              <select name="form-{{ forloop.counter0 }}-status">
-                {% for value, label in unit.STATUS_CHOICES %}
-                    <option value="{{ value }}" {% if unit.status == value %}selected{% endif %}>{{ label }}</option>
-                {% endfor %}
-            </select>
-            </td>
-            <td>
-              <select name="form-{{ forloop.counter0 }}-delivery_type">
-                  <option disabled>-- Bitte wählen --</option>
-                  {% for value, label in unit.DELIVERY_TYPE_CHOICES %}
-                      <option value="{{ value }}" {% if unit.delivery_type == value %}selected{% endif %}>{{ label }}</option>
-                  {% endfor %}
-              </select>
-            </td>
-            <td>
-              <select name="form-{{ forloop.counter0 }}-material">
-                  <option disabled>-- Bitte wählen --</option>
-                  {% for material in materials %}
-                      <option value="{{ material.id }}" {% if unit.material.id == material.id %}selected{% endif %}>
-                          {{ material.name }}
-                      </option>
-                  {% endfor %}
-              </select>
-          </td>
-          <td>
-            <input type="text" id="note" name="note" value="{{ unit.note }}"> 
-          </td>
-            <td class="suppler-icons">
-                <a href="{% url 'delivery_detail' pk=unit.id %}" title="Detail">
-                    <img src="{% static 'icons/detail-icon.svg' %}">   
-                </a>
-                <a href="#" title="Bearbeiten"> 
-                    <img src="{% static 'icons/update-icon.svg' %}">
-                </a>
-            </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    <table>
+        </thead>
+        <tbody class="tablecard-list-content">
+          {% for unit_form in formset %}
+            <tr>
+              <td class="tablecard-list-id">
+                {{ unit_form.id }}
+                {{ unit_form.instance.pk|default:"Neu" }}
+              </td>
+        
+              <td class="tablecard-list-weight">
+                {{ unit_form.weight }}
+                {{ unit_form.weight.errors }}
+              </td>
+        
+              <td>
+                {{ unit_form.delivery_type }}
+                {{ unit_form.delivery_type.errors }}
+              </td>
+        
+              <td>
+                {{ unit_form.material }}
+                {{ unit_form.material.errors }}
+              </td>
+        
+              <td>
+                {{ unit_form.DELETE }}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {{ formset.management_form }}
+    </section>
+
+    <div class="tablecard-btn">
+      <input type="submit" value="Speichern">
+    </div>
+  </form>
+</div>
 
 {% endblock %}
-
-
-
-
-
-
-
-
-
-
-
-
-
-  </tbody>
-    <div class="block" id="item-wrapper">
-      {% for item in delivery.deliveryunits.all %}
-      <div class="item">
-          <div>
-              <div class="form-item-title">Ladungseinheit <span class="item-number">{{ forloop.counter }}</span></div>
-          </div>
-
-          <div class="flex">
-              <label>Art:</label>
-              <select name="form-{{ forloop.counter0 }}-delivery_type">
-                  <option disabled>-- Bitte wählen --</option>
-                  {% for value, label in item.DELIVERY_TYPE_CHOICES %}
-                      <option value="{{ value }}" {% if item.delivery_type == value %}selected{% endif %}>{{ label }}</option>
-                  {% endfor %}
-              </select>
-          </div>
-
-          <div class="flex">
-              <label>Material:</label>
-              <select name="form-{{ forloop.counter0 }}-material">
-                  <option disabled>-- Bitte wählen --</option>
-                  {% for material in materials %}
-                      <option value="{{ material.id }}" {% if item.material.id == material.id %}selected{% endif %}>{{ material.name }}</option>
-                  {% endfor %}
-              </select>
-          </div>
-
-          <div class="flex">
-              <label for="weight-{{ forloop.counter0 }}" class="flex-items">Gewicht (kg):</label>
-              <input id="weight-{{ forloop.counter0 }}" name="form-{{ forloop.counter0 }}-weight" type="number" min="0" step="0.1" value="{{ item.weight }}">
-          </div>
-
-          <div class="flex">
-              <label>Status:</label>
-              <select name="form-{{ forloop.counter0 }}-status">
-                  {% for value, label in item.STATUS_CHOICES %}
-                      <option value="{{ value }}" {% if item.status == value %}selected{% endif %}>{{ label }}</option>
-                  {% endfor %}
-              </select>
-          </div>
-  
-          <div class="flex">
-              <label for="note-{{ forloop.counter0 }}" class="flex-items">Anmerkung:</label>
-              <input id="note-{{ forloop.counter0 }}" name="form-{{ forloop.counter0 }}-note" type="text" value="{{ item.note }}">
-          </div>
-      </div>
-      {% endfor %}
-    </table>
-
-  <div class="delivery-items">
-    <div class="flex">
-        <label for="item-counter" class="flex-items">Ladungseinheiten:</label>
-        <input type="number" id="item-counter" name="traeger_anzahl" value="{{ delivery.traeger_anzahl }}" min="1" max="10">
-    </div>
-  </div>
-    <button type="submit" class="record-btn">Aktualisieren</button>
-</form>
-
-
-
-
-
-<!-- <div class="form-wrapper">
-
-
-    <form method="post">
-        {% csrf_token %}
-
-        <div class="form-supplier">
-            <div class="title">Lieferung: {{ delivery.name }}</div>
-            <div>
-                {% for field in form %}
-                <div class="flex form-row-supplier">
-                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
-                    {{ field }}
-                    {% if field.errors %}
-                    <div class="text-danger">
-                        {{ field.errors|striptags }}
-                    </div>
-                    {% endif %}
-                </div>
-                {% endfor %}
-            </div>
-            
-            <button type="submit" class="record-btn">Speichern</button>
-        </div>
-    </form>
-</div> -->
-
-<!-- 
-<details>
-  <summary>+ Neuer Lieferant</summary>
-  <tr>
-    <th for="name">Name:</th>
-    <td>
-      <input type="text" id="name" name="name" value="{{ delivery.name }}">
-    </td>
-    <th for="street">Straße und Hausnummer:</th>
-    <td>
-      <input type="text" id="street" name="street" value="{{ delivery.street }}">
-    </td>
-    <th for="postal_code">PLZ:</th>
-    <td>
-      <input type="text" id="postal_code" name="postal_code" value="{{ delivery.postal_code }}">
-    </td>
-    <th for="country">Stadt:</th>
-    <td>
-      <input type="text" id="country" name="country" value="{{ delivery.country }}">
-    </td>
-    <th for="phone">Telefon:</th>
-    <td>
-      <input type="text" id="phone" name="phone" value="{{ delivery.phone }}">
-    </td>
-    <th for="email">Email:</th>
-    <td>
-      <input type="email" id="email" name="email" value="{{ delivery.email }}">
-    </td>
-    <th for="avv_number">AVV-Nummer:</th>
-    <td>
-      <input type="number" id="avv_number" name="avv_number" value="{{ delivery.avv_number }}">
-    </td>
-    <th for="note">Anmerkung:</th>
-    <td>
-      <input type="text" id="note" name="note" value="{{ delivery.note }}"> 
-    </td>
-  </tr>
-</details> -->

@@ -7,7 +7,6 @@
 {% block title %}Eingang Form{% endblock %}
 
 {% block content %}
-
 <div class="tform">
   <section class="tform-form">
     <form method="post" action="{% url 'delivery_create' %}" id="eingang-form">
@@ -23,8 +22,8 @@
           {% include 'components/new_supplier.html' %}
           
           <div class="tform-row">
-              <label for="liefernummer">Lieferscheinnummer:</label>
-              <input type="text" id="liefernummer" name="delivery_receipt">
+              <label for="delivery_receipt">Lieferschein:</label>
+              <input type="text" id="delivery_receipt" name="delivery_receipt">
           </div>
   
           <div class="tform-row">
@@ -81,31 +80,31 @@
     <table>
       <thead>
         <tr class="thead-title">
-          <th class="tbody-input"></th>
-          <th class="tbody-id">ID</th>
-          <th class="tbody-avv">AVV</th>
-          <th class="tbody-name">Name</th>
-          <th class="tbody-street">Adresse</th>
-          <th class="tbody-postal">PLZ</th>
-          <th class="tbody-city">Stadt</th>
-          <th class="tbody-note">Anmerkung</th>
+          <th class="table-input"></th>
+          <th class="table-id">ID</th>
+          <th class="table-avv">AVV</th>
+          <th class="table-name">Name</th>
+          <th class="table-street">Adresse</th>
+          <th class="table-postal">PLZ</th>
+          <th class="table-city">Stadt</th>
+          <th class="table-note">Anmerkung</th>
         </tr>
       </thead>
 
       <tbody class="table-content">
         {% for item in page_obj %}
         <tr class="selectable-row" data-id="{{ item.supplier.id }}" data-url-detail="{% url 'supplier_detail' pk=item.supplier.id %}" data-url-update="{% url 'supplier_update' pk=item.supplier.id %}">
-          <td class="tbody-input">
+          <td class="table-input">
             <input type="radio" name="selected_item" value="{{ item.supplier.id }}" 
                    class="inputField" id="radio-{{ item.supplier.id }}" data-value="{{ item.supplier.name }}">
           </td>
-          <td class="tbody-id-simple">{{ item.supplier.id }}</td>
-          <td class="tbody-avv">{{ item.supplier.avv_number }}</td>
-          <td class="tbody-name">{{ item.supplier.name }}</td>
-          <td class="tbody-street">{{ item.supplier.street }}</td>
-          <td class="tbody-postal">{{ item.supplier.postal_code }}</td>
-          <td class="tbody-city">{{ item.supplier.city }}</td>
-          <td class="tbody-note" title="{{ item.supplier.note }}"><p>{{ item.supplier.note }}</p></td>
+          <td class="table-id-simple">{{ item.supplier.id }}</td>
+          <td class="table-avv">{{ item.supplier.avv_number }}</td>
+          <td class="table-name">{{ item.supplier.name }}</td>
+          <td class="table-street">{{ item.supplier.street }}</td>
+          <td class="table-postal">{{ item.supplier.postal_code }}</td>
+          <td class="table-city">{{ item.supplier.city }}</td>
+          <td class="table-note" title="{{ item.supplier.note }}"><p>{{ item.supplier.note }}</p></td>
         </tr>
         {% endfor %}
       </tbody>
