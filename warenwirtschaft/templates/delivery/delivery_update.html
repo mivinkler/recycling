@@ -9,6 +9,7 @@
 <div class="tablecard">
   <form method="post" action="{% url 'delivery_update' delivery.pk %}" id="eingang-form">
   {% csrf_token %}
+  {{ formset.management_form }}
     <section class="tablecard-topbox">
       <h2>Lieferung ändern</h2>
       {{ form.non_field_errors }}
@@ -40,15 +41,17 @@
             <th class="tablecard-list-weight">Gewicht</th>
             <th>Behälter</th>
             <th>Material</th>
-            <th>Entfernen</th>
+            <th class="tablecard-list-delete">Löschen</th>
           </tr>
         </thead>
         <tbody class="tablecard-list-content">
+          {{ formset.non_form_errors }}
           {% for unit_form in formset %}
             <tr>
               <td class="tablecard-list-id">
+                {{ forloop.counter }}
                 {{ unit_form.id }}
-                {{ unit_form.instance.pk|default:"Neu" }}
+                <!-- {{ unit_form.instance.pk|default:"Neu" }} -->
               </td>
         
               <td class="tablecard-list-weight">
@@ -66,14 +69,25 @@
                 {{ unit_form.material.errors }}
               </td>
         
-              <td>
+              <td class="tablecard-list-delete">
                 {{ unit_form.DELETE }}
               </td>
             </tr>
           {% endfor %}
         </tbody>
       </table>
-      {{ formset.management_form }}
+
+      <button type="button" id="add-form-btn">➕ Zeile hinzufügen</button>
+      <template id="empty-form-template">
+        <tr>
+          {{ empty_form.id }}
+          <td class="tablecard-list-id">__index__</td>
+          <td class="tablecard-list-weight">{{ empty_form.weight }}</td>
+          <td>{{ empty_form.delivery_type }}</td>
+          <td>{{ empty_form.material }}</td>
+          <td class="tablecard-list-delete">{{ empty_form.DELETE }}</td>
+        </tr>
+      </template>
     </section>
 
     <div class="tablecard-btn">
@@ -82,4 +96,25 @@
   </form>
 </div>
 
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const addButton = document.getElementById('add-form-btn');
+    const tableBody = document.querySelector('.tablecard-list-content');
+    const template = document.getElementById('empty-form-template').innerHTML;
+    const totalFormsInput = document.getElementById('id_deliveryunit_set-TOTAL_FORMS');
+  
+    addButton.addEventListener('click', function () {
+      const formIndex = parseInt(totalFormsInput.value, 10);
+      const newRowHtml = template
+        .replace(/__prefix__/g, formIndex)
+        .replace(/__index__/g, formIndex + 1);
+  
+      tableBody.insertAdjacentHTML('beforeend', newRowHtml);
+      totalFormsInput.value = formIndex + 1;
+    });
+  });
+</script>
+
 {% endblock %}
+

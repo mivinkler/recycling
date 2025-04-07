@@ -11,13 +11,16 @@ class SupplierForm(forms.ModelForm):
 class DeliveryForm(forms.ModelForm):
     class Meta:
         model = Delivery
-        fields = ['supplier', 'delivery_receipt', 'note' ]
+        fields = ['supplier', 'delivery_receipt', 'note']
+        widgets = {
+            'note': forms.Textarea(attrs={'rows': 3}),
+        }
     
 DeliveryUnitFormSet = inlineformset_factory(
     Delivery,
     DeliveryUnit,
     fields=['delivery_type', 'material', 'weight'],
-    extra=1,
+    extra=5,
     can_delete=True
 )
 

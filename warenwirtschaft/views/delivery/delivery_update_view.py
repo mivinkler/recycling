@@ -18,16 +18,22 @@ class DeliveryUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
         if self.request.POST:
-            context['formset'] = DeliveryUnitFormSet(self.request.POST, instance=self.object)
+            formset = DeliveryUnitFormSet(self.request.POST, instance=self.object)
         else:
-            context['formset'] = DeliveryUnitFormSet(instance=self.object)
-        
+            formset = DeliveryUnitFormSet(instance=self.object)
+
+        formset.empty_form.prefix = f"{formset.prefix}-__prefix__"
+        context['formset'] = formset
+        context['empty_form'] = formset.empty_form
+
         context["materials"] = Material.objects.all()
         context["suppliers"] = Supplier.objects.all()
         context["statuses"] = DeliveryUnit.STATUS_CHOICES
         context["delivery_type"] = DeliveryUnit.DELIVERY_TYPE_CHOICES
         context["delivery_units"] = self.object.deliveryunits.all()
+
         return context
 
     def form_valid(self, form):

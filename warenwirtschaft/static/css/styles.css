@@ -19,6 +19,10 @@
   --color-hero: #217346;
 }
 
+body {
+  width: 100vw;
+}
+
 h2 {
   font-size: 1.3em;
   font-weight: bold;
