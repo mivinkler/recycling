@@ -411,17 +411,25 @@ td {
 }
 
 /* ============ Tablecard ============= */
-
 .tablecard {
   width: 640px;
-  height: min-content;
   margin: 20px auto;
   padding: 26px 20px;
   background-color: var(--color-gray-100);
   border: 1px solid var(--color-gray-300);
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+  height: min-content;
 }
 
+/* ----- Input & Focus/Active States ----- */
+.tablecard input:active, .tablecard input:focus,
+.tablecard select:active, .tablecard select:focus,
+.tablecard textarea:active, .tablecard textarea:focus {
+  outline: 2px solid var(--color-hero);
+  outline-offset: -1px;
+}
+
+/* ----- Tablecard Topbox ----- */
 .tablecard-topbox-row {
   display: flex;
   gap: 16px;
@@ -438,9 +446,9 @@ td {
 .tablecard-topbox-row select,
 .tablecard-topbox-row textarea {
   width: 75%;
-  border: 1px solid var(--color-gray-300);
-  min-height: 30px;
   padding-left: 6px;
+  min-height: 30px;
+  border: 1px solid var(--color-gray-400);
 }
 
 .tablecard-topbox-row textarea {
@@ -455,39 +463,33 @@ td {
   cursor: pointer;
 }
 
-/* ----- tablecard-list ----- */
-
+/* ----- Tablecard List ----- */
 .tablecard-list-name {
   margin: 20px 0 12px;
   font-weight: 500;
 }
 
-.tablecard-list-header th {
+.tablecard-list-header th,
+.tablecard-list-content td {
   height: 34px;
   border-color: var(--color-gray-400);
 }
 
 .tablecard-list-content td {
   padding: 0;
-  height: 34px;
   background-color: #fff;
-  border-color: var(--color-gray-400);
 }
 
 .tablecard-list-content input,
 .tablecard-list-content select {
-  width: 95%;
+  width: 96%;
   vertical-align: middle;
   border: 1px solid var(--color-gray-300);
-  padding: 4px 0px 2px 4px;
-  margin: 4px 0 4px 4px;
+  padding: 2px;
+  margin: 4px;
 }
 
-.tablecard-list-content input:focus,
-.tablecard-list-content select:focus {
-  border: 2px solid var(--color-hero);
-}
-
+/* ----- Tablecard List Column Widths ----- */
 .tablecard-list-id {
   width: 40px;
   text-align: center;
@@ -500,20 +502,48 @@ td {
 
 .tablecard-list-delete {
   width: 60px;
+  height: 10px;
+  text-align: center;
 }
 
-/* Pfeile im Eingabefeld <input type="number"> entfernen */
+.tablecard-list-delete input[type="checkbox"] {
+  -webkit-appearance: none; /* Chrome, Safari */
+  -moz-appearance: none;    /* Firefox */
+  appearance: none;         /* all */
+  width: 18px;
+  height: 18px;
+  border-radius: 3px;
+  position: relative;
+}
+
+.tablecard-list-delete input[type="checkbox"]:checked {
+  background-color: red;
+}
+
+.tablecard-list-delete input[type="checkbox"]:checked::before {
+  content: '\2715';
+  font-size: 8px;
+  font-weight: 900;
+  color: white;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
+/* ----- Input Number - Remove Arrows ----- */
 .tablecard-list-weight input[type="number"]::-webkit-outer-spin-button,
 .tablecard-list-weight input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .tablecard-list-weight input[type='number'],
 .tablecard-list-weight input[type="number"]:hover,
 .tablecard-list-weight input[type="number"]:focus {
-    appearance: none;
-    -moz-appearance: textfield;
+  appearance: none;
+  -moz-appearance: textfield;
 }
 
 .tablecard-list-weight input {
@@ -522,8 +552,34 @@ td {
   width: 90%;
 }
 
+/* ----- Add Row Button ----- */
+.tablecard-row-add {
+  width: 40px;
+  height: 20px;
+  margin-top: 4px;
+  background-color: var(--color-gray-100);
+  color: #555;
+  border: 1px solid var(--color-gray-600);
+  outline: 1px solid #fff;
+  outline-offset: -2px;
+  cursor: pointer;
+  border-radius: 3px;
+  font-weight: 900;
+  font-size: 16px;
+  line-height: 100%;
+}
+
+.tablecard-row-add:hover {
+  background-color: var(--color-gray-200);
+}
+
+.tablecard-row-add:active {
+  background-color: var(--color-gray-300);
+  color: var(--color-hero);
+}
+
+/* ----- Buttons ----- */
 .tablecard-btn {
-  margin-top: 14px;
   height: 30px;
   display: flex;
   justify-content: flex-end;
@@ -544,6 +600,11 @@ td {
 .tablecard-btn input:hover {
   background-color: var(--color-gray-200);
   cursor: pointer;
+}
+
+.tablecard-btn input:focus,
+.tablecard-list-delete input:focus {
+  outline: none;
 }
 
 .tablecard-btn input:active {
