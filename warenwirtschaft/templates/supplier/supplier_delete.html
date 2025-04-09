@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Lieferant löschen{% endblock %}
+
+{% block content %}
+
+<div class="tablecard">
+  <form method="post">
+    {% csrf_token %}
+
+    <div class="tablecard-topbox">
+      <h2>Lieferant löschen</h2>
+
+      <p>Bist du sicher, dass du den Lieferanten <strong>{{ supplier.name }}</strong> löschen möchtest?</p>
+
+    </div>
+
+    <div class="tablecard-btn">
+        <button type="submit" name="save">Löschen</button>
+        <a href="{% url 'suppliers_list' %}">Abbrechen</a>
+    </div>
+  </form>
+</div>
+
+{% endblock %}

@@ -1,9 +1,5 @@
 from django.views.generic.edit import UpdateView
-from warenwirtschaft.forms import DeliveryForm
 from warenwirtschaft.models.delivery import Delivery
-from warenwirtschaft.models.delivery_unit import DeliveryUnit
-from warenwirtschaft.models.material import Material
-from warenwirtschaft.models.supplier import Supplier
 from warenwirtschaft.forms import DeliveryForm, DeliveryUnitFormSet
 from django.urls import reverse_lazy
 from django.db import transaction
@@ -18,36 +14,17 @@ class DeliveryUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        if self.request.POST:
-            formset = DeliveryUnitFormSet(self.request.POST, instance=self.object)
-        else:
-            formset = DeliveryUnitFormSet(instance=self.object)
-
-        formset.empty_form.prefix = f"{formset.prefix}-__prefix__"
-        context['formset'] = formset
-        context['empty_form'] = formset.empty_form
-
-        context["materials"] = Material.objects.all()
-        context["suppliers"] = Supplier.objects.all()
-        context["statuses"] = DeliveryUnit.STATUS_CHOICES
-        context["delivery_type"] = DeliveryUnit.DELIVERY_TYPE_CHOICES
-        context["delivery_units"] = self.object.deliveryunits.all()
-
+        self.formset = DeliveryUnitFormSet(self.request.POST or None, instance=self.object)
+        context['formset'] = self.formset
+        context['empty_form'] = self.formset.empty_form
         return context
 
     def form_valid(self, form):
-        context = self.get_context_data()
-        formset = context['formset']
-        
-        if formset.is_valid():
+        self.get_context_data()  # Zur Initialisierung self.formset
+        if self.formset.is_valid():
             with transaction.atomic():
                 self.object = form.save()
-                formset.instance = self.object
-                formset.save()
+                self.formset.instance = self.object
+                self.formset.save()
             return super().form_valid(form)
-        else:
-            return self.form_invalid(form)
-
-    def form_invalid(self, form):
-        return super().form_invalid(form)
+        return self.form_invalid(form)

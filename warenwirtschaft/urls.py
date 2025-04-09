@@ -1,11 +1,10 @@
 from django.urls import path
 
-from django.views.generic import RedirectView
-
 from warenwirtschaft.views.supplier.supplier_list_view import SupplierListView
 from warenwirtschaft.views.supplier.supplier_update_view import SupplierUpdateView
 from warenwirtschaft.views.supplier.supplier_detail_view import SupplierDetailView
 from warenwirtschaft.views.supplier.supplier_create_view import SupplierCreateView
+from warenwirtschaft.views.supplier.supplier_delete_view import SupplierDeleteView
 
 from warenwirtschaft.views.delivery.delivery_list_view import DeliveryListView
 from warenwirtschaft.views.delivery.delivery_units_list_view import DeliveryUnitsListView
@@ -24,6 +23,7 @@ urlpatterns = [
     path('supplier/<int:pk>/', SupplierDetailView.as_view(), name='supplier_detail'),
     path('supplier/create/', SupplierCreateView.as_view(), name='supplier_create'),
     path('supplier/update/<int:pk>/', SupplierUpdateView.as_view(), name='supplier_update'),
+    path('supplier/delete/<int:pk>/', SupplierDeleteView.as_view(), name='supplier_delete'),
 
     path('delivery/list/', DeliveryListView.as_view(), name='delivery_list'),
     path('delivery/units/', DeliveryUnitsListView.as_view(), name='delivery_units_list'),

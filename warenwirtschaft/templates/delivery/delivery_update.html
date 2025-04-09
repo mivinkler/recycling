@@ -32,7 +32,6 @@
     <section class="tablecard-list">
       <div class="tablecard-list-name">Ladungseinheiten:</div>
 
-      <!-- Обязательно! -->
       {{ formset.management_form }}
       <table>
         <thead>
@@ -51,7 +50,6 @@
               <td class="tablecard-list-id">
                 {{ forloop.counter }}
                 {{ unit_form.id }}
-                <!-- {{ unit_form.instance.pk|default:"Neu" }} -->
               </td>
         
               <td class="tablecard-list-weight">
@@ -77,8 +75,10 @@
         </tbody>
         <template id="empty-form-template">
           <tr>
-            {{ empty_form.id }}
-            <td class="tablecard-list-id">__index__</td>
+            <td class="tablecard-list-id">
+              __index__
+              {{ empty_form.id }}
+            </td>
             <td class="tablecard-list-weight">{{ empty_form.weight }}</td>
             <td>{{ empty_form.delivery_type }}</td>
             <td>{{ empty_form.material }}</td>
@@ -92,11 +92,10 @@
     </section>
 
     <div class="tablecard-btn">
-      <input type="submit" value="Speichern">
+      <button type="submit" name="save">Speichern</button>
     </div>
   </form>
 </div>
-
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
@@ -106,7 +105,7 @@
     const totalFormsInput = document.getElementById('id_deliveryunits-TOTAL_FORMS');
   
     addButton.addEventListener('click', function () {
-      const formIndex = parseInt(totalFormsInput.value, 10);
+      const formIndex = +totalFormsInput.value
       const newRowHtml = template
         .replace(/__prefix__/g, formIndex)
         .replace(/__index__/g, formIndex + 1);

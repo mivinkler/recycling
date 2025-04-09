@@ -430,6 +430,12 @@ td {
 }
 
 /* ----- Tablecard Topbox ----- */
+
+.tablecard-topbox-title {
+  display: flex;
+  justify-content: space-between;
+}
+
 .tablecard-topbox-row {
   display: flex;
   gap: 16px;
@@ -464,6 +470,7 @@ td {
 }
 
 /* ----- Tablecard List ----- */
+
 .tablecard-list-name {
   margin: 20px 0 12px;
   font-weight: 500;
@@ -483,7 +490,6 @@ td {
 .tablecard-list-content input,
 .tablecard-list-content select {
   width: 96%;
-  vertical-align: middle;
   border: 1px solid var(--color-gray-300);
   padding: 2px;
   margin: 4px;
@@ -493,7 +499,6 @@ td {
 .tablecard-list-id {
   width: 40px;
   text-align: center;
-  vertical-align: middle;
 }
 
 .tablecard-list-weight {
@@ -501,30 +506,26 @@ td {
 }
 
 .tablecard-list-delete {
-  width: 60px;
-  height: 10px;
+  width: 64px;
   text-align: center;
 }
 
 .tablecard-list-delete input[type="checkbox"] {
+  appearance: none;
   -webkit-appearance: none; /* Chrome, Safari */
   -moz-appearance: none;    /* Firefox */
-  appearance: none;         /* all */
-  width: 18px;
-  height: 18px;
-  border-radius: 3px;
+  width: 15px;
+  height: 15px;
   position: relative;
-}
-
-.tablecard-list-delete input[type="checkbox"]:checked {
-  background-color: red;
+  border-radius: 3px;
+  border-color: var(--color-gray-500);
 }
 
 .tablecard-list-delete input[type="checkbox"]:checked::before {
-  content: '\2715';
-  font-size: 8px;
+  content: '\2716';
+  font-size: 11px;
   font-weight: 900;
-  color: white;
+  color: rgb(216, 21, 21);
   position: absolute;
   left: 50%;
   top: 50%;
@@ -532,7 +533,9 @@ td {
 }
 
 
+
 /* ----- Input Number - Remove Arrows ----- */
+
 .tablecard-list-weight input[type="number"]::-webkit-outer-spin-button,
 .tablecard-list-weight input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -553,13 +556,14 @@ td {
 }
 
 /* ----- Add Row Button ----- */
+
 .tablecard-row-add {
   width: 40px;
   height: 20px;
   margin-top: 4px;
-  background-color: var(--color-gray-100);
-  color: #555;
-  border: 1px solid var(--color-gray-600);
+  background-color: var(--color-gray-50);
+  color: var(--color-gray-700);
+  border: 1px solid var(--color-gray-500);
   outline: 1px solid #fff;
   outline-offset: -2px;
   cursor: pointer;
@@ -578,35 +582,43 @@ td {
   color: var(--color-hero);
 }
 
-/* ----- Buttons ----- */
+/* ----- Save Button ----- */
+
 .tablecard-btn {
   height: 30px;
   display: flex;
   justify-content: flex-end;
+  margin-top: 20px;
+  gap: 20px;
 }
 
-.tablecard-btn input {
+.tablecard-btn button,
+.tablecard-btn a {
   padding: 0 8px;
   color: var(--color-gray-800);
   font-weight: 500;
-  background-color: var(--color-gray-100);
+  background-color: var(--color-gray-50);
   border: 1px solid var(--color-gray-600);
   box-shadow: 0 1px 3px var(--color-gray-500);
   border-radius: 3px;
   outline: 1px solid #fff;
   outline-offset: -2px;
+  align-content: center;
 }
 
-.tablecard-btn input:hover {
+.tablecard-btn button:hover,
+.tablecard-btn a:hover {
   background-color: var(--color-gray-200);
   cursor: pointer;
 }
 
-.tablecard-btn input:focus,
-.tablecard-list-delete input:focus {
+.tablecard-btn button:focus,
+.tablecard-btn a:focus,
+.tablecard-list-delete button:focus {
   outline: none;
 }
 
-.tablecard-btn input:active {
+.tablecard-btn button:active
+.tablecard-btn a:active {
   box-shadow: none;
 }

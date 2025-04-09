@@ -1,31 +1,70 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}Lieferant: update{% endblock %}
+{% block title %}Lieferant bearbeiten{% endblock %}
 
 {% block content %}
 
+<div class="tablecard">
+  <form method="post">
+    {% csrf_token %}
 
-<div class="tform-form">
-    <form method="post">
-        {% csrf_token %}
-        <div class="tform-title">Lieferant update: {{ supplier.name }}</div>
-        <div>
-            <div>
-                {% for field in form %}
-                <div class="tform-row">
-                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
-                    {{ field }} <!--input -->
-                    {% if field.errors %}
-                    <div class="tform-note">
-                        {{ field.errors|striptags }}
-                    </div>
-                    {% endif %}
-                </div>
-                {% endfor %}
-            </div>
-            <button type="submit" class="record-btn">Speichern</button>
+    <section class="tablecard-topbox">
+        <div class="tablecard-topbox-title">
+            <h2>Lieferant bearbeiten</h2>
+            <a href="{% url 'supplier_delete' supplier.pk %}" class="delete-btn" title="Lieferant löschen">
+                <img src="{% static 'icons/delete-icon.svg' %}">
+            </a>
         </div>
-    </form>
+        
+        {{ form.non_field_errors }}
+
+        <div class="tablecard-topbox-row">
+            <label for="{{ form.name.id_for_label }}">Name:</label>
+            {{ form.name }}
+        </div>
+
+        <div class="tablecard-topbox-row">
+            <label for="{{ form.avv_number.id_for_label }}">AVV-Nummer:</label>
+            {{ form.avv_number }}
+        </div>
+
+        <div class="tablecard-topbox-row">
+            <label for="{{ form.street.id_for_label }}">Straße:</label>
+            {{ form.street }}
+        </div>
+
+        <div class="tablecard-topbox-row">
+            <label for="{{ form.postal_code.id_for_label }}">PLZ:</label>
+            {{ form.postal_code }}
+        </div>
+
+        <div class="tablecard-topbox-row">
+            <label for="{{ form.city.id_for_label }}">Ort:</label>
+            {{ form.city }}
+        </div>
+
+        <div class="tablecard-topbox-row">
+            <label for="{{ form.phone.id_for_label }}">Telefon:</label>
+            {{ form.phone }}
+        </div>
+
+        <div class="tablecard-topbox-row">
+            <label for="{{ form.email.id_for_label }}">E-Mail:</label>
+            {{ form.email }}
+        </div>
+
+        <div class="tablecard-topbox-row">
+            <label for="{{ form.note.id_for_label }}">Anmerkung:</label>
+            {{ form.note }}
+        </div>
+
+        <div class="tablecard-btn">
+            <button type="submit" name="save">Speichern</button>
+        </div>
+
+    </section>
+  </form>
 </div>
 
 {% endblock %}
