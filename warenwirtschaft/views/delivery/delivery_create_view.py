@@ -1,73 +1,33 @@
 from django.views.generic.edit import CreateView
-from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
-from warenwirtschaft.models import Delivery, Material, DeliveryUnit
+from warenwirtschaft.models import Delivery
 from warenwirtschaft.forms import DeliveryForm
-from warenwirtschaft.services.search_service import SearchService
-from warenwirtschaft.services.sorting_service import SortingService
-from warenwirtschaft.services.pagination_service import PaginationService
+from warenwirtschaft.forms import DeliveryUnitFormSet
+from django.db import transaction
 
 class DeliveryCreateView(CreateView):
     model = Delivery
-    template_name = "delivery/delivery_create.html"
+    template_name = 'delivery/delivery_create.html'
     form_class = DeliveryForm
-    paginate_by = 20
+    context_object_name = 'delivery'
     success_url = reverse_lazy('delivery_list')
-
-    active_fields = [
-        ("supplier__id", "ID"),
-        ("supplier__avv_number", "AVV-Nummer"),
-        ("supplier__name", "Name"),
-        ("supplier__street", "Straße"),
-        ("supplier__postal_code", "PLZ"),
-        ("supplier__city", "Stadt"),
-        ("supplier__phone", "Telefon"),
-        ("supplier__email", "Email"),
-        ("supplier__note", "Anmerkung"),
-    ]
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-
-        fields = [field[0] for field in self.active_fields]  # Wir nehmen nur die Schlüssel
-
-        queryset = SearchService(self.request, fields).apply_search(queryset)
-        queryset = SortingService(self.request, fields).apply_sorting(queryset)
-
-        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        paginator = PaginationService(self.request, self.paginate_by)
-        page_obj = paginator.get_paginated_queryset(self.get_queryset())
-
-        context["page_obj"] = page_obj
-        context["materials"] = Material.objects.all()
-        context["search_query"] = self.request.GET.get("search", "")
-        context["active_fields"] = self.active_fields
-
+        if self.request.POST:
+            context['formset'] = DeliveryUnitFormSet(self.request.POST)
+        else:
+            context['formset'] = DeliveryUnitFormSet()
+        context['empty_form'] = context['formset'].empty_form
         return context
 
-    def post(self, request, *args, **kwargs):
-        form = self.get_form()
-
-        # Delivery
-        delivery = form.save()
-
-        # DeliveryUnit
-        index = 0
-        while f"form-{index}-material" in request.POST:
-            delivery_type = request.POST.get(f"form-{index}-delivery_type")
-            material_id = request.POST.get(f"form-{index}-material")
-            weight = request.POST.get(f"form-{index}-weight", 0)
-
-            DeliveryUnit.objects.create(
-                delivery=delivery,
-                delivery_type=delivery_type,
-                material_id=material_id,
-                weight=weight
-            )
-            index += 1
-
-        return HttpResponseRedirect(self.success_url)
+    def form_valid(self, form):
+        context = self.get_context_data()
+        formset = context['formset']
+        if formset.is_valid():
+            with transaction.atomic():
+                self.object = form.save()
+                formset.instance = self.object
+                formset.save()
+            return super().form_valid(form)
+        return self.render_to_response(self.get_context_data(form=form))

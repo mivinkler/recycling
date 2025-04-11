@@ -1,26 +1,21 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Auslagerung erfassen{% endblock %}
+{% block title %}Auslagerung bearbeiten{% endblock %}
 
 {% block content %}
 <div class="tablecard-large">
-  <form method="post" action="{% url 'unload_create' %}" id="unload-form">
+  <form method="post" action="{% url 'unload_update' delivery_unit.pk %}" id="unload-form">
     {% csrf_token %}
 
     <section class="tablecard-topbox">
-      <h2>Leerung erfassen</h2>
+      <h2>Leerung bearbeiten</h2>
 
       <div class="tablecard-topbox-row">
-        <label for="delivery_unit">Liefereinheit:</label>
-        <select name="delivery_unit" required>
-            <option disabled selected>-- Bitte wählen --</option>
-            {% for unit in delivery_units %}
-              <option value="{{ unit.id }}">
-                #{{ unit.id }} | {{ unit.material.name }} | {{ unit.weight }} kg ({{ unit.delivery.supplier.name }})
-              </option>
-            {% endfor %}
-        </select>
+        <label>Liefereinheit:</label>
+        <div>
+          #{{ delivery_unit.id }} – {{ delivery_unit.material.name }} – {{ delivery_unit.weight }} kg ({{ delivery_unit.delivery.supplier.name }})
+        </div>
       </div>
     </section>
 
@@ -37,10 +32,10 @@
             <th class="tablecard-list-weight">Gewicht</th>
             <th>Zweck</th>
             <th class="tablecard-list-note">Anmerkung</th>
+            <th class="tablecard-list-delete">Löschen</th>
           </tr>
         </thead>
         <tbody class="tablecard-list-content">
-          {{ formset.non_form_errors }}
           {% for form in formset %}
             <tr>
               <td class="tablecard-list-id">{{ forloop.counter }}</td>
@@ -49,6 +44,7 @@
               <td class="tablecard-list-weight">{{ form.weight }}</td>
               <td>{{ form.purpose }}</td>
               <td class="tablecard-list-note">{{ form.note }}</td>
+              <td class="tablecard-list-delete">{{ form.DELETE }}</td>
             </tr>
           {% endfor %}
         </tbody>
@@ -60,6 +56,7 @@
             <td class="tablecard-list-weight">{{ empty_form.weight }}</td>
             <td>{{ empty_form.purpose }}</td>
             <td class="tablecard-list-note">{{ empty_form.note }}</td>
+            <td class="tablecard-list-delete">{{ empty_form.DELETE }}</td>
           </tr>
         </template>
       </table>

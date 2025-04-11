@@ -1,30 +1,41 @@
-from django.views.generic.edit import CreateView
-from warenwirtschaft.forms import UnloadForm
-from warenwirtschaft.models.material import Material
-from warenwirtschaft.models.unload import Unload
-from warenwirtschaft.models.delivery_unit import DeliveryUnit
-from warenwirtschaft.services.search_service import SearchService
-from warenwirtschaft.services.sorting_service import SortingService
-from warenwirtschaft.services.pagination_service import PaginationService
+from django.views.generic import View
+from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
+from django.db import transaction
+from warenwirtschaft.models import Unload, DeliveryUnit
+from warenwirtschaft.forms import UnloadFormSet
 
+class UnloadCreateView(View):
+    template_name = 'unload/unload_create.html'
+    success_url = reverse_lazy('unload_list')
 
-class UnloadCreateView(CreateView):
-    model = Unload
-    template_name = "unload/unload_create.html"
-    form_class = UnloadForm
-    paginate_by = 6
+    def get(self, request, *args, **kwargs):
+        formset = UnloadFormSet(queryset=Unload.objects.none())
+        delivery_units = DeliveryUnit.objects.filter()[:10] # oder .filter(status='activ')
+        return render(request, self.template_name, {
+            'formset': formset,
+            'empty_form': formset.empty_form,
+            'delivery_units': delivery_units,
+        })
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
+    def post(self, request, *args, **kwargs):
+        formset = UnloadFormSet(request.POST)
+        delivery_unit_id = request.POST.get('delivery_unit')
 
-        return queryset
+        if formset.is_valid() and delivery_unit_id:
+            with transaction.atomic():
+                delivery_unit = DeliveryUnit.objects.get(id=delivery_unit_id)
+                for form in formset:
+                    unload = form.save(commit=False)
+                    unload.delivery_unit = delivery_unit
+                    unload.supplier = delivery_unit.delivery.supplier
+                    unload.save()
+            return redirect(self.success_url)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        paginator = PaginationService(self.request, self.paginate_by)
-
-        context["delivery_units"] = paginator.get_paginated_queryset(DeliveryUnit.objects.all())
-        context["materials"] = Material.objects.only("id", "name")
-
-        return context
+        # Im Fehlerfall mit denselben Daten erneut zeigen
+        delivery_units = DeliveryUnit.objects.filter(status='eingelagert')
+        return render(request, self.template_name, {
+            'formset': formset,
+            'empty_form': formset.empty_form,
+            'delivery_units': delivery_units,
+        })

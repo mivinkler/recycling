@@ -411,8 +411,8 @@ td {
 }
 
 /* ============ Tablecard ============= */
-.tablecard {
-  width: 640px;
+.tablecard-small,
+.tablecard-large {
   margin: 20px auto;
   padding: 26px 20px;
   background-color: var(--color-gray-100);
@@ -420,6 +420,15 @@ td {
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
   height: min-content;
 }
+
+.tablecard-small {
+  width: 640px;
+}
+
+.tablecard-large {
+  width: 840px;
+}
+
 
 /* ----- Input & Focus/Active States ----- */
 .tablecard input:active, .tablecard input:focus,
@@ -476,6 +485,10 @@ td {
   font-weight: 500;
 }
 
+.tablecard-list-header {
+  background-color: var(--color-gray-200);
+}
+
 .tablecard-list-header th,
 .tablecard-list-content td {
   height: 34px;
@@ -488,11 +501,13 @@ td {
 }
 
 .tablecard-list-content input,
-.tablecard-list-content select {
+.tablecard-list-content select,
+.tablecard-list-content textarea {
   width: 96%;
-  border: 1px solid var(--color-gray-300);
+  border: 1px solid var(--color-gray-200);
+  background-color: var(--color-gray-50);
   padding: 2px;
-  margin: 4px;
+  margin: 2px 4px;
 }
 
 /* ----- Tablecard List Column Widths ----- */
@@ -503,6 +518,15 @@ td {
 
 .tablecard-list-weight {
   width: 80px;
+}
+
+.tablecard-list-note {
+  width: 200px;
+}
+
+.tablecard-list-note textarea {
+  height: 26px;
+  vertical-align: middle;
 }
 
 .tablecard-list-delete {

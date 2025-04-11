@@ -4,7 +4,7 @@ from warenwirtschaft.services.search_service import SearchService
 from warenwirtschaft.services.sorting_service import SortingService
 from warenwirtschaft.services.pagination_service import PaginationService
 
-class UnloadsListView(ListView):
+class UnloadListView(ListView):
     model = Unload
     template_name = "unload/unload_list.html"
     context_object_name = "unloads"

@@ -6,7 +6,7 @@
 
 {% block content %}
 
-<div class="tablecard">
+<div class="tablecard-small">
   <form method="post" action="{% url 'delivery_update' delivery.pk %}" id="eingang-form">
   {% csrf_token %}
 

@@ -1,126 +1,118 @@
 {% extends 'base.html' %}
-
 {% load static %}
-{% load pagination %}
-{% load sorting %}
 
 {% block title %}Eingang Form{% endblock %}
 
 {% block content %}
-<div class="tform">
-  <section class="tform-form">
-    <form method="post" action="{% url 'delivery_create' %}" id="eingang-form">
-      {% csrf_token %}
-      <div class="tform-title">Wareneingang</div>
-      <div class="tform-header">
-          <div class="tform-row">
-              <label for="selectable-input">Lieferant:</label>
-              <input type="text" id="select-input" title="Wählen Sie ein Element" readonly>
-              <input type="hidden" id="result-input" name="supplier" value="{{ form.supplier.value }}">
-          </div>
-  
-          {% include 'components/new_supplier.html' %}
-          
-          <div class="tform-row">
-              <label for="delivery_receipt">Lieferschein:</label>
-              <input type="text" id="delivery_receipt" name="delivery_receipt">
-          </div>
-  
-          <div class="tform-row">
-              <label for="note">Anmerkung:</label>
-              <div class="tform-note">
-                  <textarea id="note" name="note" rows="3"></textarea>
-              </div>
-          </div>
-  
-          <!-- counter -->
-          <div class="tform-row">
-              <label for="item-counter">Ladungseinheiten:</label>
-              <input type="number" id="item-counter" name="traeger_anzahl" class="tform-counter" value="1" min="1" max="10">
-          </div>
-      </div>
-  
-      <!-- Ladung -->
-      <div class="block" id="item-wrapper">
-          <div>
-              <div class="tform-row">
-                  <div></div>
-                  <div class="form-item-title">Ladungseinheit<span class="item-number"> 1</span></div>
-              </div>
-              <div class="tform-row">
-                  <label>Art:</label>
-                  <select name="form-0-delivery_type">
-                      <option selected disabled>-- Bitte wählen --</option>
-                      <option value="1">Container</option>
-                      <option value="2">Gitterbox</option>
-                      <option value="3">Palette</option>
-                      <option value="4">Ohne Behälter</option>
-                  </select>
-              </div>
-              <div class="tform-row">
-                  <label>Material:</label>
-                  <select name="form-0-material">
-                      <option selected disabled>-- Bitte wählen --</option>
-                      {% for material in materials %}
-                          <option value="{{ material.id }}">{{ material.name }}</option>
-                      {% endfor %}
-                  </select>
-              </div>
-              <div class="tform-row">
-                  <label for="num" class="flex-items">Gewicht (kg):</label>
-                  <input id="num" name="form-0-weight" type="number" min="0" step="0.1">
-              </div>
-          </div>
-      </div>
-      <button type="submit" class="record-btn">Speichern</button>
-    </form>
-  </section>
 
-  <section class="tform-list">
-    <table>
-      <thead>
-        <tr class="thead-title">
-          <th class="table-input"></th>
-          <th class="table-id">ID</th>
-          <th class="table-avv">AVV</th>
-          <th class="table-name">Name</th>
-          <th class="table-street">Adresse</th>
-          <th class="table-postal">PLZ</th>
-          <th class="table-city">Stadt</th>
-          <th class="table-note">Anmerkung</th>
-        </tr>
-      </thead>
+<div class="tablecard-small">
+  <form method="post" action="{% url 'delivery_create' %}" id="eingang-form">
+  {% csrf_token %}
 
-      <tbody class="table-content">
-        {% for item in page_obj %}
-        <tr class="selectable-row" data-id="{{ item.supplier.id }}" data-url-detail="{% url 'supplier_detail' pk=item.supplier.id %}" data-url-update="{% url 'supplier_update' pk=item.supplier.id %}">
-          <td class="table-input">
-            <input type="radio" name="selected_item" value="{{ item.supplier.id }}" 
-                   class="inputField" id="radio-{{ item.supplier.id }}" data-value="{{ item.supplier.name }}">
-          </td>
-          <td class="table-id-simple">{{ item.supplier.id }}</td>
-          <td class="table-avv">{{ item.supplier.avv_number }}</td>
-          <td class="table-name">{{ item.supplier.name }}</td>
-          <td class="table-street">{{ item.supplier.street }}</td>
-          <td class="table-postal">{{ item.supplier.postal_code }}</td>
-          <td class="table-city">{{ item.supplier.city }}</td>
-          <td class="table-note" title="{{ item.supplier.note }}"><p>{{ item.supplier.note }}</p></td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    {% paginate page_obj %}
-  </section>
+    <section class="tablecard-topbox">
+      <h2>Lieferung ändern</h2>
+      {{ form.non_field_errors }}
+
+      <div class="tablecard-topbox-row">
+        <label for="{{ form.supplier.id_for_label }}">Lieferant:</label>
+        {{ form.supplier }}
+      </div>
+
+      <div class="tablecard-topbox-row">
+        <label for="{{ form.delivery_receipt.id_for_label }}">Lieferschein:</label>
+        {{ form.delivery_receipt }}
+      </div>
+
+      <div class="tablecard-topbox-row">
+        <label for="{{ form.note.id_for_label }}">Anmerkung:</label>
+        {{ form.note }}
+      </div>
+    </section>
+
+    <section class="tablecard-list">
+      <div class="tablecard-list-name">Ladungseinheiten:</div>
+
+      {{ formset.management_form }}
+      <table>
+        <thead>
+          <tr class="tablecard-list-header">
+            <th class="tablecard-list-id">&#8470;</th>
+            <th class="tablecard-list-weight">Gewicht</th>
+            <th>Behälter</th>
+            <th>Material</th>
+            <th class="tablecard-list-delete">Löschen</th>
+          </tr>
+        </thead>
+        <tbody class="tablecard-list-content">
+          {{ formset.non_form_errors }}
+          {% for unit_form in formset %}
+            <tr>
+              <td class="tablecard-list-id">
+                {{ forloop.counter }}
+                {{ unit_form.id }}
+              </td>
+        
+              <td class="tablecard-list-weight">
+                {{ unit_form.weight }}
+                {{ unit_form.weight.errors }}
+              </td>
+        
+              <td>
+                {{ unit_form.delivery_type }}
+                {{ unit_form.delivery_type.errors }}
+              </td>
+        
+              <td>
+                {{ unit_form.material }}
+                {{ unit_form.material.errors }}
+              </td>
+        
+              <td class="tablecard-list-delete">
+                {{ unit_form.DELETE }}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+        <template id="empty-form-template">
+          <tr>
+            <td class="tablecard-list-id">
+              __index__
+              {{ empty_form.id }}
+            </td>
+            <td class="tablecard-list-weight">{{ empty_form.weight }}</td>
+            <td>{{ empty_form.delivery_type }}</td>
+            <td>{{ empty_form.material }}</td>
+            <td class="tablecard-list-delete">{{ empty_form.DELETE }}</td>
+          </tr>
+        </template>
+      </table>
+
+      <button class="tablecard-row-add" type="button" id="add-form-btn">+</button>
+    </section>
+
+    <div class="tablecard-btn">
+      <button type="submit" name="save">Speichern</button>
+    </div>
+  </form>
 </div>
 
-<script src="{% static 'js/block-visibility.js' %}"></script>
-<script src="{% static 'js/duplicate-item.js' %}"></script>
-<script src="{% static 'js/current-date.js' %}"></script>
-<script src="{% static 'js/row-counter.js' %}"></script>
-<script src="{% static 'js/selectable-row.js' %}"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const addButton = document.getElementById('add-form-btn');
+    const tableBody = document.querySelector('.tablecard-list-content');
+    const template = document.getElementById('empty-form-template').innerHTML;
+    const totalFormsInput = document.getElementById('id_deliveryunits-TOTAL_FORMS');
+  
+    addButton.addEventListener('click', function () {
+      const formIndex = +totalFormsInput.value
+      const newRowHtml = template
+        .replace(/__prefix__/g, formIndex)
+        .replace(/__index__/g, formIndex + 1);
+  
+      tableBody.insertAdjacentHTML('beforeend', newRowHtml);
+      totalFormsInput.value = formIndex + 1;
+    });
+  });
+</script>
+
 {% endblock %}
-
-
-    
-
-
