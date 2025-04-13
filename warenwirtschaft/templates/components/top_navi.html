@@ -1,18 +1,18 @@
 {% load static %}
 
-<div class="navi-icons">
+<div class="top-icons-wrapper">
     <div>
-        <div class="navi-icon">
+        <div class="top-icon">
             {% include 'components/left_navi.html' %}
             <img src="{% static 'icons/download-icon.svg' %}">
             <img src="{% static 'icons/print-icon.svg' %}">
 
         </div>
-        <p class="icons-title">Action</p>
+        <p class="top-icons-title">Action</p>
     </div>
 
     <div>
-        <div class="navi-icon">
+        <div class="top-icon">
             <a href="#" id="detail-link" title="Detail">
                 <img src="{% static 'icons/info-icon.svg' %}">
             </a>
@@ -20,19 +20,19 @@
                 <img src="{% static 'icons/edit-icon.svg' %}">
             </a>
         </div>
-        <p class="icons-title">Zeile</p>
+        <p class="top-icons-title">Zeile</p>
     </div>
 
     <div>
-        <div class="navi-icon">
-            <div class="navi-icon-js">
+        <div class="top-icon">
+            <div class="top-icon-js">
                 <div class="toggle-button">
                     <img src="{% static 'icons/search-icon.svg' %}">
                 </div>
-                <div class="icon-detail hidden-block" hidden>
+                <div class="top-icon-detail hidden-block" hidden>
                     <form class="icon-search" method="GET">
                         <input class="icon-search-input" type="text" name="search" placeholder="Suchen..." value="{{ search_query }}">
-                        <button class="icon-search-button" type="submit">🔍</button>
+                        <button class="icon-search-button" type="submit"><img src="{% static 'icons/lupe-icon.svg' %}"></button>
                     </form>
                 
                     <form class="icon-search-date" method="GET">
@@ -42,38 +42,40 @@
                 </div>
             </div>
             
-            <div class="navi-icon-js">
+            <div class="top-icon-js">
                 <div class="toggle-button">
                     <img src="{% static 'icons/sort-icon.svg' %}">
                 </div>
-                <div class="icon-detail hidden-block" hidden>
+                <div class="top-icon-detail hidden-block" hidden>
                     <div>
-                        {% for field, label in active_fields %}
-                        <div class="icon-sort">
-                            <span>{{ label }}</span>
-                            <div>
-                                <a href="?sort={{ field }}_asc">&#9650;</a>
-                                <a href="?sort={{ field }}_desc">&#9660;</a>
+                        {% for field, label, css_class in active_fields %}
+                            <div class="icon-sort">
+                                <span>
+                                    {{ label }}
+                                </span>
+                                <div>
+                                    <a href="?sort={{ field }}_asc"
+                                       class="{% if sort_param == field|add:'_asc' %}icon-active{% endif %}">▼</a>
+                                    <a href="?sort={{ field }}_desc"
+                                       class="{% if sort_param == field|add:'_desc' %}icon-active{% endif %}">▲</a>
+                                </div>
                             </div>
-                        </div>
                         {% endfor %}
                     </div>
                 </div>
             </div>
-
-            <div class="navi-icon-js">
-                <!-- % url request.resolver_match.url_name % -->
+            <div class="top-icon-js">
                 <a href="#" title="Reset">
                     <img src="{% static 'icons/reset-icon.svg' %}">
                 </a>
 
             </div>
         </div>
-        <p class="icons-title">Suchen</p>
+        <p class="top-icons-title">Suchen</p>
     </div>
 
     <div>
-        <div class="navi-icon">
+        <div class="top-icon">
             <a href="#">
                 <img src="{% static 'icons/statistic-icon.svg' %}">   
             </a>
@@ -81,11 +83,11 @@
                 <img src="{% static 'icons/diagram-icon.svg' %}">   
             </a>
         </div>
-        <p class="icons-title">Statistik</p>
+        <p class="top-icons-title">Statistik</p>
     </div>
 
     <div>
-        <div class="navi-icon">
+        <div class="top-icon">
             <a href="{% url 'supplier_create' %}" title="Lieferant">
                 <img src="{% static 'icons/supplier-icon.svg' %}">   
             </a>
@@ -102,6 +104,6 @@
                 <img src="{% static 'icons/shipping-icon.svg' %}">   
             </a>
         </div>
-        <p class="icons-title">Erstellen</p>
+        <p class="top-icons-title">Erstellen</p>
     </div>
 </div>

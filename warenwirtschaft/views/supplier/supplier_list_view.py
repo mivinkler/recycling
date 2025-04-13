@@ -12,15 +12,15 @@ class SupplierListView(ListView):
     paginate_by = 22
 
     active_fields = [
-        ("id", "ID"),
-        ("avv_number", "AVV-Nummer"),
-        ("name", "Name"),
-        ("street", "Straße"),
-        ("postal_code", "PLZ"),
-        ("city", "Stadt"),
-        ("phone", "Telefon"),
-        ("email", "Email"),
-        ("note", "Anmerkung"),
+        ("id", "ID", "table-id"),
+        ("avv_number", "AVV-Nummer", "table-avv"),
+        ("name", "Name", "table-name"),
+        ("street", "Straße", "table-street"),
+        ("postal_code", "PLZ", "table-postal"),
+        ("city", "Stadt", "table-city"),
+        ("phone", "Telefon", "table-phone"),
+        ("email", "Email", "table-email"),
+        ("note", "Anmerkung", "table-note"),
     ]
 
     def get_queryset(self):

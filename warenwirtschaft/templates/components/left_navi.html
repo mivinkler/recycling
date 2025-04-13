@@ -9,19 +9,19 @@
             <div class="left_menu_title">Lieferant</div>
             <ul class="left_menu_items">
                 <li><a href="{% url 'suppliers_list' %}">List</a></li>
-                <li><a href="{% url 'supplier_detail' pk=1%}">Detail</a></li>
+                <li><a href="{% url 'supplier_detail' pk=5%}">Detail</a></li>
                 <li><a href="{% url 'supplier_create' %}">Create</a></li>
-                <li><a href="{% url 'supplier_update' pk=1%}">Update</a></li>
+                <li><a href="{% url 'supplier_update' pk=5%}">Update</a></li>
+                <li><a href="{% url 'supplier_delete' pk=10%}">Delite</a></li>
             </ul>
         </div>
         <div>
             <div class="left_menu_title">Lieferung</div>
             <ul class="left_menu_items">
-                <li><a href="{% url 'delivery_list' %}">List</a></li>
-                <li><a href="{% url 'delivery_units_list' %}">List: Liefereinheiten</a></li>
-                <li><a href="{% url 'delivery_detail' pk=1%}">Detail</a></li>
+                <li><a href="{% url 'delivery_units_list' %}">List</a></li>
+                <li><a href="{% url 'delivery_detail' pk=5%}">Detail</a></li>
                 <li><a href="{% url 'delivery_create' %}">Create</a></li>
-                <li><a href="{% url 'delivery_update' pk=1%}">Update</a></li>
+                <li><a href="{% url 'delivery_update' pk=5%}">Update</a></li>
             </ul>
         </div>
         <div>
@@ -29,6 +29,8 @@
             <ul class="left_menu_items">
                 <li><a href="{% url 'unload_list' %}">List</a></li>
                 <li><a href="{% url 'unload_create' %}">Create</a></li>
+                <li><a href="#">Create</a></li>
+                <li><a href="#">Update</a></li>
             </ul>
         </div>
     </aside>

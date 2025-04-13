@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll(".navi-icon-js").forEach((iconDetail) => {
+    document.querySelectorAll(".top-icon-js").forEach((iconDetail) => {
         const toggleButton = iconDetail.querySelector(".toggle-button");
         const hiddenBlock = iconDetail.querySelector(".hidden-block");
 

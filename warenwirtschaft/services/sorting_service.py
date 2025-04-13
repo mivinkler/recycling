@@ -8,7 +8,10 @@ class SortingService:
             self.sort_fields[f"{field}_desc"] = f"-{field}"
 
     def apply_sorting(self, queryset):
-        sort_param = self.request.GET.get("sort", "id_asc")
-        sort_field = self.sort_fields.get(sort_param, "id")
+        sort_param = self.request.GET.get("sort", "")
+        sort_field = self.sort_fields.get(sort_param)
 
-        return queryset.order_by(sort_field)
+        if sort_field:
+            return queryset.order_by(sort_field)
+        # Sortierung nach Datum
+        return queryset.order_by("-created_at")

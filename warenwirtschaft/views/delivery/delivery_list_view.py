@@ -15,36 +15,24 @@ class DeliveryListView(ListView):
     paginate_by = 20
 
     active_fields = [
-        "id", 
-        "supplier__name", 
-        "units", 
-        "delivery_receipt", 
-        "total_weight", 
-        "created_at", 
-        "note", 
-        "delivery_units__id", 
-        "delivery_units__delivery_receipt",
-        "delivery_units__delivery_type", 
-        "delivery_units__material__name",
-        "delivery_units__weight", 
-        "delivery_units__status", 
-        "delivery_units__note",
-        ]
+        ("id", "LID"),
+        ("supplier__name", "Lieferant"),
+        ("delivery_receipt", "Lieferschein"),
+        ("created_at", "Datum"),
+        ("note", "Anmerkung"),
+        ("deliveryunits__delivery_type", "Behälter"),
+        ("deliveryunits__material__name", "Material"),
+        ("deliveryunits__weight", "Gewicht"),
+        ("deliveryunits__status", "Status"),
+    ]
     
     def get_queryset(self):
-        queryset = super().get_queryset().annotate(
-            first_unit_weight=Subquery(
-                DeliveryUnit.objects.filter(delivery=OuterRef("id"))
-                .order_by("id")
-                .values("weight")[:1]
-            )
-        ).prefetch_related("deliveryunits")
+        queryset = super().get_queryset().prefetch_related("deliveryunits")
 
-        search_service = SearchService(self.request, self.active_fields)
-        sorting_service = SortingService(self.request, self.active_fields)
+        fields = [field[0] for field in self.active_fields]  # Wir nehmen nur die Schlüssel
 
-        queryset = search_service.apply_search(queryset)
-        queryset = sorting_service.apply_sorting(queryset)
+        queryset = SearchService(self.request, fields).apply_search(queryset)
+        queryset = SortingService(self.request, fields).apply_sorting(queryset)
 
         return queryset
 
@@ -56,7 +44,7 @@ class DeliveryListView(ListView):
 
         context["page_obj"] = page_obj
         context["search_query"] = self.request.GET.get("search", "")
-        context["sort_param"] = self.request.GET.get("sort", "")
+        context["active_fields"] = self.active_fields
         context["selected_menu"] = "delivery_list"
 
         return context

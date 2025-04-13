@@ -4,10 +4,16 @@ table {
   border-collapse: collapse;
 }
 
+td, th {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 th {
+  font-weight: 500;
   border: 1px solid var(--color-gray-300);
   padding-bottom: 5px;
-  font-weight: 400;
 }
 
 td {
@@ -15,251 +21,40 @@ td {
   padding: 5px 10px;
 }
 
-/* ============ Utility CSS =============*/
+/* ============ Rows width =============*/
 
-.flex {
-  display: flex;
-  align-items: center;
-}
+.table-avv { width: 10%; }
+.table-city { width: 10%; }
+.table-data { width: 100px; text-align: center; }
+.table-delivery { width: 20%; }
+.table-delivery-receipt { width: 10%; }
+.table-delivery-type { width: 10%; }
+.table-delivery-unit { width: 10%; }
+.table-email { width: 20%; }
+.table-id {width: 3%; text-align: right; color: #000; background-color: var(--color-gray-100);}
+.table-id-simple { width: 3%; text-align: right; }
+.table-lid { width: 36px; text-align: right; }
+.table-material { width: 15%; }
+.table-name { width: 20%; }
+.table-note { width: 20%; }
+.table-phone { width: 120px; }
+.table- { width: 70px; }
+.table-purpose { width: 10%; }
+.table-status { width: 10%; }
+.table-street { width: 20%; }
+.table-weight { width: 10%; text-align: right; }
 
-.text-center {
-  text-align: center;
-}
-
-/* ============ table-header =============*/
-
-.table-header {
-  padding: 10px 22px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: #fff;
-  background-color: var(--color-hero);
-}
-
-.table-header-logo {
-  height: 30px;
-}
-
-.table-header-user {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.user-white-icon {
-  height: 20px;
-}
-
-/* ============ Top-menu =============*/
-
-.top-menu {
-  padding: 15px 5px 5px;
-  display: flex;
-  gap: 2px;
-  background-color: var(--color-gray-100);
-}
-
-.top-menu div {
-  min-width: 110px;
-  height: 20px;
-  text-align: center;
-  display: inline-block;
-}
-
-.top-menu a {
-  color: var(--color-gray-800);
-  font-size: 13px;
-  padding-bottom: 4px;
-  transition: border-color 0.2s ease-in-out;
-  font-weight: 500;
-}
-
-.top-menu a:hover {
-  border-bottom: 3px solid var(--color-hero);
-  font-weight: 600;
-}
-
-.top-menu .selected {
-  border-bottom: 3px solid var(--color-hero);
-  font-weight: 600;
-}
-
-/* ============ Navigation icons =============*/
-
-.navi-icons {
-  display: flex;
-  position: relative;
-  height: 96px;
-  padding: 20px 0 17px 0;
-  background-color: var(--color-gray-100);
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
-}
-
-.table-navi > div {
-  border-right: 1px solid var(--color-gray-300);
-}
-
-.navi-icons > div {
-  border-right: 1px solid var(--color-gray-300);
-}
-
-.navi-icon {
-  display: flex;
-  align-items: flex-start;
-  gap: 30px;
-  padding: 5px 24px;
-  height: 76%;
-}
-
-.icon-detail {
-  position: absolute;
-  padding: 8px;
-  border: 1px solid var(--color-gray-300);
-  background-color: #fff;
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
-}
-
-.icons-title {
-  color: var(--color-gray-800);
-  text-align: center;
-}
-
-/* ============ Navigation icon: Detail and Update ======*/
-
-.selectable-row {
-  transition: background-color 0.3s ease;
-}
-
-.selectable-row:hover {
-  background-color: #f0f0f0;
-  cursor: pointer;
-}
-
-.row-selected {
-  background-color: #d0e4f5 !important;
-}
-
-.navi-icon a.disabled {
-  pointer-events: none;
-  opacity: 0.5;
-}
-
-
-/* ============ Navigation icon: search =============*/
-
-.icon-search {
-  display: flex;
-  align-items: center;
-}
-
-.icon-search-input {
-  width: 100%;
-  height: 28px;
-  padding: 6px;
-  border: 1px solid var(--color-gray-500);
-  outline: none;
-}
-
-.icon-search-date {
-  display: flex;
-  justify-content: space-between;
-  gap: 6px;
-  margin-top: 12px;
-}
-
-.icon-search-date input {
-  border: 1px solid var(--color-gray-500);
-  color: var(--color-gray-900);
-  padding: 4px;
-  font-family: "Noto Sans", sans-serif;
-  font-size: 14px;
-  letter-spacing: 0.1px;
-}
-
-.icon-search-button {
-  width: 28px;
-  height: 28px;
-  background: var(--color-gray-500);
-  color: var(--color-gray-900);
-  border: 1px solid var(--color-gray-500);
-  border-left: none;
-  cursor: pointer;
-}
-
-/* ============ Navigation icon: sort =============*/
-
-.icon-sort {
-  display: flex;
-  justify-content: space-between;
-  line-height: 24px;
-  width: 150px;
-}
-
-.icon-sort a {
-  color: var(--color-gray-900);
-  font-size: 12px;  
-}
-
-.icon-sort a:hover {
-  color: var(--color-hero);
-  display: inline-block;
-  transform: scale(1.3);
-}
-
-/* ============ Table title =============*/
+/* ============ thead-title =============*/
 
 .thead-title {
   background-color: var(--color-gray-100);
   border-top: 10px solid var(--color-gray-100);
 }
 
-.thead-title-sort {
-  display: flex;
-  justify-content: space-between;
-  padding: 0 10px;
+.thead-title-arrow {
+  color: rgb(2, 141, 2);
+  margin-left: 10px;
 }
-
-/* ============ Table rows =============*/
-
-.table-title {
-  background-color: var(--color-gray-100);
-  height: 40px;
-}
-
-.table-input {
-  width: 5%;
-  background-color: var(--color-gray-100);
-  text-align: center;
-}
-.table-input-hidden {display: none;}
-.table-id {
-  width: 3%;
-  text-align: right;
-  color: #000;
-  background-color: var(--color-gray-100);
-  padding-right: 8px;
-}
-.table-id-simple {width: 3%; text-align: right; padding-right: 8px;}
-.table-avv {width: 10%;}
-.table-name {width: 20%;}
-.table-street {width: 20%;}
-.table-postal {width: 70px;}
-.table-city {width: 10%;}
-.table-phone {width: 120px;}
-.table-email {width: 20%;}
-.table-note {width: 20%;}
-.table-note p {white-space: nowrap; text-overflow: ellipsis; overflow: hidden;}
-.table-delivery-receipt {width: 10%;}
-.table-data {width: 100px; text-align: center;}
-.table-weight {width: 10%; text-align: right; padding-right: 8px;}
-.table-lid {width: 36px; text-align: right; padding-right: 8px;}
-.table-delivery-type {width: 10%;}
-.table-material {width: 15%;}
-.table-status {width: 10%;}
-.table-purpose {width: 10%;}
-.table-delivery {width: 20%;}
-.table-delivery-unit {width: 10%;}
 
 /* ====== Pagination ====== */
 
@@ -377,7 +172,6 @@ td {
 
 .entity {
   padding: 24px 24px 34px;
-  /* background-color: var(--color-gray-100); */
   border-bottom: 1px solid var(--color-gray-200);
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
 }
@@ -411,6 +205,7 @@ td {
 }
 
 /* ============ Tablecard ============= */
+
 .tablecard-small,
 .tablecard-large {
   margin: 20px auto;
@@ -429,8 +224,8 @@ td {
   width: 840px;
 }
 
-
 /* ----- Input & Focus/Active States ----- */
+
 .tablecard input:active, .tablecard input:focus,
 .tablecard select:active, .tablecard select:focus,
 .tablecard textarea:active, .tablecard textarea:focus {
@@ -511,6 +306,7 @@ td {
 }
 
 /* ----- Tablecard List Column Widths ----- */
+
 .tablecard-list-id {
   width: 40px;
   text-align: center;
@@ -555,8 +351,6 @@ td {
   top: 50%;
   transform: translate(-50%, -50%);
 }
-
-
 
 /* ----- Input Number - Remove Arrows ----- */
 
@@ -645,4 +439,30 @@ td {
 .tablecard-btn button:active
 .tablecard-btn a:active {
   box-shadow: none;
+}
+
+
+
+
+
+
+
+
+/* ----- js row-selected ------- */
+
+.visually-hidden {
+  display: none;
+}
+
+.selectable-row {
+  transition: background-color 0.3s ease;
+}
+
+.selectable-row:hover {
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
+.row-selected {
+  background-color: #d0e4f5 !important;
 }

@@ -1,9 +1,8 @@
 {% extends 'base.html' %}
-
 {% load static %}
-{% load pagination %}
-{% load sorting %}
+
 {% load custom_filters %}
+{% load pagination %}
 
 {% block title %}{{ _("Entladungen") }}{% endblock %}
 
@@ -26,24 +25,36 @@
         </tr>
     </thead>
     <tbody>
-        {% for item in page_obj %}
-        <tr class="selectable-row" data-id="{{ item.id }}" data-url-detail="{% url 'delivery_detail' pk=item.id %}" data-url-update="{% url 'delivery_update' pk=item.id %}">
-            <td class="table-input-hidden" hidden>
-                <input type="radio" value="{{ uload.id }}">
-            </td>
-            <td class="table-id">{{ item.id }}</td>
-            <td class="table-delivery-type">{{ item|getattr:"get_unload_type_display" }}</td>
-            <td class="table-material">{{ item.material }}</td>
-            <td class="table-weight">{{ item.weight }}</td>
-            <td class="table-data">{{ item.created_at|date:'d.m.Y' }}</td>
-            <td class="table-purpose">{{ item|getattr:"get_purpose_display" }}</td>
-            <td class="table-note" title="{{ item.note }}"><p>{{ item.note }}</p></td>
-            <td class="table-name" title="{{ item.supplier }}">{{ item.supplier.name }}</td>
-            <td class="table-delivery-unit">{{ item.delivery_unit }}</td>
-            <td class="table-material">{{ item.delivery_unit.material }}</td> 
-
-
-        </tr>
+        {% regroup page_obj by delivery_unit_id as delivery_units %}
+        {% for delivery_unit in delivery_units %}
+            {% for item in delivery_unit.list %}
+            <tr class="selectable-row" data-id="{{ delivery_unit.id }}" data-url-detail="{% url 'delivery_detail' pk=item.id %}" data-url-update="{% url 'delivery_update' pk=item.id %}">
+                <td hidden>
+                    <input type="radio" value="{{ item.id }}">
+                </td>
+                {% if forloop.first %}
+                <td rowspan="{{ delivery_unit.list|length }}" class="table-id">{{ item.delivery_unit.id }}</td>
+                <td rowspan="{{ delivery_unit.list|length }}" class="table-name">{{ item.delivery_unit.delivery.supplier.name }}</td>
+                <td rowspan="{{ delivery_unit.list|length }}" class="table-delivery_unit-receipt">{{ item.delivery_unit.delivery.delivery_receipt }}</td>
+                <td rowspan="{{ delivery_unit.list|length }}" class="table-weight">{{ item.delivery_unit.weight }}</td>
+                <td rowspan="{{ delivery_unit.list|length }}" class="table-note" title="{{ item.note }}">{{ item.delivery_unit.note }}</td>
+                {% endif %}
+                
+                <td hidden>
+                    <input type="radio" value="{{ uload.id }}">
+                </td>
+                <td class="table-id">{{ item.id }}</td>
+                <td class="table-delivery-type">{{ item|getattr:"get_unload_type_display" }}</td>
+                <td class="table-material">{{ item.material }}</td>
+                <td class="table-weight">{{ item.weight }}</td>
+                <td class="table-data">{{ item.created_at|date:'d.m.Y' }}</td>
+                <td class="table-purpose">{{ item|getattr:"get_purpose_display" }}</td>
+                <td class="table-note" title="{{ item.note }}">{{ item.note }}</td>
+                <td class="table-name" title="{{ item.supplier }}">{{ item.supplier.name }}</td>
+                <td class="table-delivery-unit">{{ item.delivery_unit }}</td>
+                <td class="table-material">{{ item.delivery_unit.material }}</td> 
+            </tr>
+            {% endfor %}
         {% endfor %}
     </tbody>
 </table>

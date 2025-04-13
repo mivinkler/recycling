@@ -1,9 +1,8 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% load custom_filters %}
 {% load pagination %}
-{% load sorting %}
-{% load static %}
 
 {% block title %}{{ _("Einheiten") }}{% endblock %}
 
@@ -11,45 +10,44 @@
 
 <table class="selectable-table">
     <thead>
-        <tr class="thead-title">
-            <th class="table-id">ID</th>
-            <th class="table-name">Lieferant</th>
-            <th class="table-delivery-receipt">Lieferschein</th>
-            <th class="table-weight">Gesamtgewicht</th>
-            <th class="table-note">Anmerkung</th>
-            <th class="table-lid">LID</th>
-            <th class="table-delivery-type">Behälter</th>
-            <th class="table-material">Material</th>
-            <th class="table-weight">Gewicht</th>
-            <th class="table-data">Datum</th>
-            <th class="table-status">Status</th>
-        </tr>
+        <!-- Active_fields in DeliveryUnitsListView müssen in der gleichen Reihenfolge sein -->
+        <thead>
+    <tr class="thead-title">
+        {% for field, label, css_class in active_fields %}
+            <th class="{{ css_class }}">
+                {% with asc=field|add:"_asc" desc=field|add:"_desc" %}
+                    {% if sort_param == asc %}
+                        <a href="?sort={{ asc }}">{{ label }}<span class="thead-title-arrow">🡇</span></a>
+                    {% elif sort_param == desc %}
+                        <a href="?sort={{ desc }}">{{ label }}<span class="thead-title-arrow">🡅</span></a>
+                    {% else %}
+                        <a href="?sort={{ asc }}">{{ label }}</a>
+                    {% endif %}
+                {% endwith %}
+            </th>
+        {% endfor %}
+    </tr>
+</thead>
     </thead>
 
     <tbody>
-        <!-- {% regroup page_obj by delivery_id as deliveries %} -->
-        {% for delivery in deliveries %}
-            {% for item in delivery.list %}
-            <tr class="selectable-row" data-id="{{ delivery.id }}" data-url-detail="{% url 'delivery_detail' pk=item.id %}" data-url-update="{% url 'delivery_update' pk=item.id %}">
-                <td class="table-input-hidden" hidden>
-                    <input type="radio" value="{{ item.id }}">
+        {% for deliveryunit in page_obj %}
+            <tr class="selectable-row" data-id="{{ deliveryunit.id }}" data-url-detail="{% url 'delivery_detail' pk=deliveryunit.delivery.id %}" data-url-update="{% url 'delivery_update' pk=deliveryunit.delivery.id %}">
+                <td hidden>
+                    <input type="radio" name="selected_supplier" value="{{ deliveryunit.id }}">
                 </td>
-                {% if forloop.first %}
-                <td rowspan="{{ delivery.list|length }}" class="table-id">{{ item.delivery.supplier.id }}</td>
-                <td rowspan="{{ delivery.list|length }}" class="table-name">{{ item.delivery.supplier.name }}</td>
-                <td rowspan="{{ delivery.list|length }}" class="table-delivery-receipt">{{ item.delivery.delivery_receipt }}</td>
-                <td rowspan="{{ delivery.list|length }}" class="table-weight">{{ item.delivery.total_weight }}</td>
-                <td rowspan="{{ delivery.list|length }}" class="table-note" title="{{ item.note }}"><p>{{ item.note }}</p></td>
-                {% endif %}
                 
-                <td class="table-lid">{{ item.id }}</td>
-                <td class="table-delivery-type">{{ item|getattr:"get_delivery_type_display" }}</td>
-                <td class="table-material">{{ item.material }}</td>
-                <td class="table-weight">{{ item.weight }}</td>
-                <td class="table-data">{{ item.created_at|date:'d.m.Y' }}</td>
-                <td class="table-status">{{ item|getattr:"get_status_display" }}</td>
+                <td class="table-id">{{ deliveryunit.delivery.id }}</td>
+                <td class="table-name">{{ deliveryunit.delivery.supplier.name }}</td>
+                <td class="table-delivery-receipt">{{ deliveryunit.delivery.delivery_receipt }}</td>
+                <td class="table-note" title="{{ deliveryunit.delivery.note }}">{{ deliveryunit.delivery.note }}</td>
+                
+                <td class="table-delivery-type">{{ deliveryunit.get_delivery_type_display }}</td>
+                <td class="table-material">{{ deliveryunit.material }}</td>
+                <td class="table-weight">{{ deliveryunit.weight }}</td>
+                <td class="table-data">{{ deliveryunit.created_at|date:'d.m.Y' }}</td>
+                <td class="table-status">{{ deliveryunit.get_status_display }}</td>
             </tr>
-            {% endfor %}
         {% endfor %}
     </tbody>
 </table>
@@ -60,6 +58,6 @@
 
 {% block extra_js %}
     <script src="{% static 'js/selectable-row.js' %}"></script>
-    <script src="{% static 'js/block_visibility.js' %}"></script>
+    <script src="{% static 'js/block-visibility.js' %}"></script> 
     <script src="{% static 'js/current-date.js' %}"></script>
 {% endblock %}

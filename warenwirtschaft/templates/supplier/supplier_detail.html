@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% load static %}
-{% load sorting %}
 
 {% block title %}Lieferant: Detail{% endblock %}
 
@@ -67,7 +66,7 @@
                     data-url-detail="{% url 'delivery_detail' pk=delivery.id %}" 
                     data-url-update="{% url 'delivery_update' pk=delivery.id %}">
                     {% if forloop.first %}
-                        <td class="table-input-hidden" hidden>
+                        <td hidden>
                             <input type="radio" value="{{ delivery.id }}">
                         </td>
                         <td class="table-id" name="id" rowspan="{{ delivery.deliveryunits.all|length }}">{{ delivery.id }}</td>

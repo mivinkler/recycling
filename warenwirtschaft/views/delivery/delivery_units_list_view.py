@@ -9,30 +9,26 @@ class DeliveryUnitsListView(ListView):
     model = DeliveryUnit
     template_name = "delivery/delivery_units_list.html"
     context_object_name = "delivery_units"
-    paginate_by = 22
+    paginate_by = 50
 
     active_fields = [
-        "id",
-        "delivery__supplier__name",
-        "delivery__id",
-        "delivery__total_weight",
-        "delivery__delivery_receipt",
-        "created_at",
-        "delivery_type",
-        "material__name",
-        "weight",
-        "status",
-        "note",
-        ]
+        ("delivery__id", "LID", "table-id"),
+        ("delivery__supplier__name", "Lieferant", "table-name"),
+        ("delivery__delivery_receipt", "Lieferschein", "table-delivery-receipt"),
+        ("note", "Anmerkung", "table-note"),
+        ("delivery_type", "Behälter", "table-delivery-type"),
+        ("material__name", "Material", "table-material"),
+        ("weight", "Gewicht", "table-weight"),
+        ("created_at", "Datum", "table-data"),
+        ("status", "Status", "table-status"),
+    ]
 
     def get_queryset(self):
-        queryset = super().get_queryset().select_related("delivery", "delivery__supplier", "material")
-
-        search_service = SearchService(self.request, self.active_fields)
-        sorting_service = SortingService(self.request, self.active_fields)
-
-        queryset = search_service.apply_search(queryset)
-        queryset = sorting_service.apply_sorting(queryset)
+        fields = [field[0] for field in self.active_fields]  # Wir nehmen nur die Schlüssel
+        queryset = DeliveryUnit.objects.select_related("delivery", "delivery__supplier", "material")
+        
+        queryset = SearchService(self.request, fields).apply_search(queryset)
+        queryset = SortingService(self.request, fields).apply_sorting(queryset)
 
         return queryset
 
@@ -43,9 +39,12 @@ class DeliveryUnitsListView(ListView):
         page_obj = paginator.get_paginated_queryset(self.get_queryset())
 
         context["page_obj"] = page_obj
+        context["active_fields"] = self.active_fields
         context["search_query"] = self.request.GET.get("search", "")
         context["sort_param"] = self.request.GET.get("sort", "")
+        context["selected_menu"] = "delivery_units_list"
+
         context["delivery_types"] = DeliveryUnit.DELIVERY_TYPE_CHOICES
         context["statuses"] = DeliveryUnit.STATUS_CHOICES
-        context["selected_menu"] = "delivery_units_list"
+
         return context
