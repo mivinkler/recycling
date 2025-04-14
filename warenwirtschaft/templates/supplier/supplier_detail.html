@@ -6,9 +6,13 @@
 
 {% block content %}
 <section class="entity">
-    <div class="tform-title"><span>Lieferant:</span> &nbsp;{{ supplier.name }}</div>
+    <!-- <h2><span>Lieferant:</span> &nbsp;{{ supplier.name }}</h2> -->
     <div class="entity-wrapper">
         <div class="entity-column-first">
+            <div class="entity-row">
+                <div class="entity-value">Lieferant:</div>
+                <h4 class="entity-item">{{ supplier.name }}</h4>
+            </div>
             <div class="entity-row">
                 <div class="entity-value">Strasse:</div>
                 <div class="entity-item">{{ supplier.street }}</div>
@@ -32,12 +36,12 @@
                 <div class="entity-item">{{ supplier.avv_number }}</div>
             </div>
             <div class="entity-row">
-                <div class="entity-value">Anmerkung:</div>
-                <div class="entity-item">{{ supplier.note }}</div>
-            </div>
-            <div class="entity-row">
                 <div class="entity-value">Erstellt am:</div>
                 <div class="entity-item">{{ supplier.created_at|date:'d.m.Y' }}</div>
+            </div>
+            <div class="entity-row">
+                <div class="entity-value">Anmerkung:</div>
+                <div class="entity-item">{{ supplier.note }}</div>
             </div>
         </div>
     </div>

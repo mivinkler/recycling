@@ -1,20 +1,25 @@
-from django.core.management.base import BaseCommand
-from warenwirtschaft.models import Supplier, Material, Delivery, DeliveryUnit
 import random
-from datetime import date, timedelta
+from django.core.management.base import BaseCommand
 from django_seed import Seed
+from django.utils import timezone
+from datetime import timedelta
+from random import randint
+from warenwirtschaft.models import Material, Supplier, Delivery, DeliveryUnit
 import re
 
 class Command(BaseCommand):
+    help = 'Populate the database with fake data'
 
     def handle(self, *args, **kwargs):
+        # Инициализация сеедера
         seed = Seed.seeder()
 
+        # Генерация материалов
         materials_data = [
             "Notebook", "PC", "Dockingstation", "Monitor", "Mini-PCs",
             "Kabel", "Gemischte Teile", "HDD", "SSD", "Prozessoren", 
             "Grafikkarten", "Festplatten", "Netzteile", "Laufwerke",
-            "Server", "Drucker", "Bildröhren", "CU-Abschirmkabel"
+            "Server", "Drucker", "Bildröhren", "CU-Abschirmkabel",
             "Beamer", "Fernseher", "DVD/CD", "Tablets", "Ladekabel und Adapter", 
             "Spülmaschine", "Kaffeemaschine", "Waschmaschine", 
             "Waschtrockner", "Kühlschränke", "Klimageräte",
@@ -27,7 +32,7 @@ class Command(BaseCommand):
         create_materials()
         self.stdout.write(self.style.SUCCESS("Materials have been created."))
 
-        # Lieferant
+        # Генерация поставщиков
         street_names = [
             "Hauptstraße", "Bahnhofstraße", "Dorfstraße", "Friedrichstraße", "Schillerstraße", "Goethestraße", 
             "Bismarckstraße", "Lindenstraße", "Poststraße", "Königstraße", "Karlstraße", "Wilhelmstraße", 
@@ -54,10 +59,10 @@ class Command(BaseCommand):
             "Starnberg", "Haar", "Puchheim", "Freising"
         ]
 
-        # Löschen der Tabelle supplier vor der Datengenerierung
+        # Очистка таблицы Supplier перед генерацией данных
         Supplier.objects.all().delete()
 
-        # Generierung von Lieferanten mit ID Prüfung
+        # Генерация поставщиков с проверкой ID
         for name in company_names:
             if not Supplier.objects.filter(name=name).exists():
                 seed.add_entity(Supplier, 1, {
@@ -73,25 +78,28 @@ class Command(BaseCommand):
         materials = Material.objects.all()
         suppliers = Supplier.objects.all()
 
+        # Генерация случайных дат за последние 5 лет
+        now = timezone.now()
+        five_years_ago = now - timedelta(days=5*365)
+
+        # Генерация сущностей Delivery с случайными датами за последние 5 лет
         seed.add_entity(Delivery, 1000, {
             'supplier': lambda x: random.choice(list(suppliers)) if suppliers.exists() else None,
-            'weight': lambda x: round(random.uniform(100, 1000), 2),
-            'note': lambda x: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."[:random.randint(100, 255)],
-            'delivery_receipt': lambda x: random.choice([None, f"Receipt-{random.randint(1000, 9999)}"]),
-            'created_at': lambda x: date.today() - timedelta(days=random.randint(0, 365)),
+            'note': lambda x: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."[:random.randint(100, 255)],
+            'delivery_receipt': lambda x: random.choice([None, f"Receipt-{random.randint(100000, 999999)}"]),
+            'created_at': lambda x: now - timedelta(days=random.randint(0, (now - five_years_ago).days)),
         })
 
         inserted_pks = seed.execute()
         self.stdout.write(self.style.SUCCESS(f'Successfully created {len(inserted_pks)} entries in Delivery.'))
 
-        # Delivery units
+        # Генерация единиц доставки
         deliveries = Delivery.objects.all()
+        delivery_units_data = []  # Определяем список перед использованием
 
-        # Datenerfassung für DeliveryUnits
-        delivery_units_data = []
         for delivery in deliveries:
-            num_units = delivery.units or random.randint(1, 5)
-            for _ in range(num_units):  # Erstellung von mehreren Datensätzen für jede Lieferung
+            num_units = random.randint(1, 5)  # Или используйте delivery.deliveryunits.count(), если хотите на основе существующих данных
+            for _ in range(num_units):
                 delivery_units_data.append({
                     'delivery_id': delivery.id,
                     'material_id': random.choice(materials).id,
@@ -99,10 +107,9 @@ class Command(BaseCommand):
                     'status': random.choice([1, 2, 3]),
                     'delivery_type': random.choice([1, 2, 3, 4]),
                     'note': "Lorem ipsum dolor sit amet, consectetur adipiscing elit."[:random.randint(100, 255)],
-                    'delivery_receipt': random.choice([None, f"Receipt-{random.randint(1000, 9999)}"]),
                 })
 
-        # Nach dem Sammelung von Daten werden diese zur Datenbank hinzugefügt
+        # Добавление единиц доставки в базу данных
         if delivery_units_data:
             DeliveryUnit.objects.bulk_create([DeliveryUnit(**data) for data in delivery_units_data])
             self.stdout.write(self.style.SUCCESS(f'Successfully created {len(delivery_units_data)} entries in DeliveryUnits.'))

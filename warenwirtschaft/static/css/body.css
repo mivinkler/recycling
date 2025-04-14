@@ -31,9 +31,9 @@ td {
 .table-delivery-type { width: 10%; }
 .table-delivery-unit { width: 10%; }
 .table-email { width: 20%; }
-.table-id {width: 3%; text-align: right; color: #000; background-color: var(--color-gray-100);}
-.table-id-simple { width: 3%; text-align: right; }
-.table-lid { width: 36px; text-align: right; }
+.table-id {width: 2%; text-align: right; padding-right: 6px; color: #000; background-color: var(--color-gray-150);}
+.table-id-simple { width: 3%; text-align: right; padding-right: 6px;}
+.table-lid { width: 36px; text-align: right; padding-right: 6px;}
 .table-material { width: 15%; }
 .table-name { width: 20%; }
 .table-note { width: 20%; }
@@ -42,13 +42,13 @@ td {
 .table-purpose { width: 10%; }
 .table-status { width: 10%; }
 .table-street { width: 20%; }
-.table-weight { width: 10%; text-align: right; }
+.table-weight { width: 10%; text-align: right; padding-right: 6px;}
 
 /* ============ thead-title =============*/
 
 .thead-title {
-  background-color: var(--color-gray-100);
-  border-top: 10px solid var(--color-gray-100);
+  background-color: var(--color-gray-150);
+  border-top: 10px solid var(--color-gray-150);
 }
 
 .thead-title-arrow {
@@ -89,7 +89,7 @@ td {
 
 /* ====== Create Table  ====== */
 
-.tform {
+/* .tform {
   display: flex;
   gap: 60px;
   justify-content:space-between;
@@ -167,11 +167,11 @@ td {
   border: none;
   border-radius: 4px;
 }
-
+*/
 /* ====== Detail ====== */
 
 .entity {
-  padding: 24px 24px 34px;
+  padding: 24px;
   border-bottom: 1px solid var(--color-gray-200);
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
 }
@@ -186,7 +186,7 @@ td {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 12px;
+  gap: 14px;
   width: inherit;
 }
 
@@ -194,14 +194,13 @@ td {
   display: flex;
 }
 
-.entity-column-first .entity-value {
+.entity-value {
   width: 100px;
-  font-weight: bold;
+  font-weight: 500;
 }
 
 .entity-column-second .entity-value {
   width: 140px;
-  font-weight: bold;
 }
 
 /* ============ Tablecard ============= */
@@ -440,13 +439,6 @@ td {
 .tablecard-btn a:active {
   box-shadow: none;
 }
-
-
-
-
-
-
-
 
 /* ----- js row-selected ------- */
 
