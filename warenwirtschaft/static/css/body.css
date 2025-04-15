@@ -4,21 +4,20 @@ table {
   border-collapse: collapse;
 }
 
-td, th {
+/* td, th {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
+} */
 
 th {
   font-weight: 500;
   border: 1px solid var(--color-gray-300);
-  padding-bottom: 5px;
+  /* padding-bottom: 5px; */
 }
 
 td {
   border: 1px solid var(--color-gray-200);
-  padding: 5px 10px;
 }
 
 /* ============ Rows width =============*/
@@ -108,7 +107,7 @@ td {
 }
 
 .entity td:first-child {
-  font-weight: 500;
+  font-weight: bold;
 }
 
 .entity-name {
@@ -209,7 +208,6 @@ td {
 }
 
 .tablecard-list-content td {
-  padding: 0;
   background-color: #fff;
 }
 
@@ -219,7 +217,6 @@ td {
   width: 96%;
   border: 1px solid var(--color-gray-200);
   background-color: var(--color-gray-50);
-  padding: 2px;
   margin: 2px 4px;
 }
 

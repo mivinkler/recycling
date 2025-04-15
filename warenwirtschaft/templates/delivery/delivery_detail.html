@@ -1,76 +1,72 @@
 {% extends 'base.html' %}
 
 {% load custom_filters %}
-{% load pagination %}
 {% load static %}
 
-{% block title %}Lieferung-Einheiten{% endblock %}
+{% block title %}Lieferung anzeigen{% endblock %}
 
 {% block content %}
-<section class="entity">
-    <div class="tform-title"><span>Lieferung:</span> &nbsp;{{ delivery.name }}</div>
-    <div class="entity-wrapper">
-        <div class="entity-column-first">
-            <div class="entity-row">
-                <div class="entity-value">Lieferant</div>
-                <div class="entity-item">
-                    <p>{{ delivery.supplier.name }}</p>
-                    <p>{{ delivery.supplier.street }}</p>
-                    <p>{{ delivery.supplier.postal_code }} {{ delivery.supplier.city }}</p>
-                </div>
-            </div>
-            <div class="entity-row">
-                <div class="entity-value">Lieferung-ID:</div>
-                <div class="entity-item">{{ delivery.id }}</div>
-            </div>
-            <div class="entity-row">
-                <div class="entity-value">Lieferschein:</div>
-                <div class="entity-item">{{ delivery.delivery_receipt }}</div>
-            </div>
-        </div>
+<div class="tablecard-small">
 
-        <div class="entity-column-second">
-            
-            <div class="entity-row">
-                <div class="entity-value">Anmerkung:</div>
-                <div class="entity-item">{{ delivery.note }}</div>
-            </div>
-            <div class="entity-row">
-                <div class="entity-value">Datum:</div>
-                <div class="entity-item">{{ delivery.created_at|date:'d.m.Y' }}</div>
-            </div>
-        <div>
+  <section class="tablecard-topbox">
+    <h2>Lieferung</h2>
+    <div class="tablecard-topbox-row">
+      <label>Lieferant:</label>
+      <div>{{ delivery.supplier.name }}</div>
     </div>
-</section>
 
-<table class="selectable-table">
-    <thead>
-        <tr class="thead-title">
-            <th class="table-id">ID</th>
-            <th class="table-delivery-type">Behälter</th>
-            <th class="table-material">Material</th>
-            <th class="table-weight">Gewicht</th>
-            <th class="table-status">Status</th>
-            <th class="table-note">Anmerkung</th>
+    <div class="tablecard-topbox-row">
+      <label>Adresse:</label>
+      <div>{{ delivery.supplier.street }}, {{ delivery.supplier.postal_code }} {{ delivery.supplier.city }}</div>
+    </div>
+
+    <div class="tablecard-topbox-row">
+      <label>Lieferschein:</label>
+      <div>{{ delivery.delivery_receipt }}</div>
+    </div>
+
+    <div class="tablecard-topbox-row">
+      <label>Lieferung-ID:</label>
+      <div>{{ delivery.id }}</div>
+    </div>
+
+    <div class="tablecard-topbox-row">
+      <label>Datum:</label>
+      <div>{{ delivery.created_at|date:"d.m.Y" }}</div>
+    </div>
+
+    <div class="tablecard-topbox-row">
+      <label>Anmerkung:</label>
+      <div>{{ delivery.note }}</div>
+    </div>
+  </section>
+
+  <section class="tablecard-list">
+    <div class="tablecard-list-name">Ladungseinheiten:</div>
+
+    <table>
+      <thead>
+        <tr class="tablecard-list-header">
+          <th class="tablecard-list-id">ID</th>
+          <th class="tablecard-list-weight">Gewicht</th>
+          <th>Behälter</th>
+          <th>Material</th>
+          <th>Status</th>
         </tr>
-    </thead>
-    
-    <tbody class="table-content">
+      </thead>
+      <tbody class="tablecard-list-content">
         {% for item in delivery_units %}
-        <tr class="selectable-row" data-id="{{ item.id }}" data-url-detail="{% url 'delivery_detail' pk=item.id %}" data-url-update="{% url 'delivery_update' pk=item.id %}">
-            <td class="table-id">{{ item.id }}</td>
-            <td class="table-delivery-type">{{ item.get_delivery_type_display }}</td>
-            <td class="table-material">{{ item.material.name|default:"-" }}</td>
-            <td class="table-weight">{{ item.weight|default:"-" }} kg</td>
-            <td class="table-status">{{ item.get_status_display }}</td>
-            <td class="table-note" title="{{ item.note }}">{{ item.note }}</td>
-        </tr>
+          <tr>
+            <td class="tablecard-list-id"><p>{{ item.id }}</p></td>
+            <td class="tablecard-list-weight"><p>{{ item.weight|default:"-" }} kg</p></td>
+            <td>{{ item.get_delivery_type_display }}</td>
+            <td><p>{{ item.material.name|default:"-" }}</p></td>
+            <td><p>{{ item.get_status_display }}</p></td>
+          </tr>
         {% endfor %}
-    </tbody>
-</table>
+      </tbody>
+    </table>
+  </section>
 
-{% endblock %}
-
-{% block extra_js %}
-    <script src="{% static 'js/selectable-row.js' %}"></script>
+</div>
 {% endblock %}
