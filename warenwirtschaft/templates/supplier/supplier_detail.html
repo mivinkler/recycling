@@ -5,46 +5,51 @@
 {% block title %}Lieferant: Detail{% endblock %}
 
 {% block content %}
-<section class="entity">
-    <!-- <h2><span>Lieferant:</span> &nbsp;{{ supplier.name }}</h2> -->
-    <div class="entity-wrapper">
-        <div class="entity-column-first">
-            <div class="entity-row">
-                <div class="entity-value">Lieferant:</div>
-                <h4 class="entity-item">{{ supplier.name }}</h4>
-            </div>
-            <div class="entity-row">
-                <div class="entity-value">Strasse:</div>
-                <div class="entity-item">{{ supplier.street }}</div>
-            </div>
-            <div class="entity-row">
-                <div class="entity-value">Stadt:</div>
-                <div class="entity-item">{{ supplier.postal_code }} {{ supplier.city }}</div>
-            </div>
-            <div class="entity-row">
-                <div class="entity-value">Telefon:</div>
-                <div class="entity-item">{{ supplier.phone }}</div>
-            </div>
-            <div class="entity-row">
-                <div class="entity-value">Email:</div>
-                <div class="entity-item">{{ supplier.email }}</div>
-            </div>
-        </div>
-        <div class="entity-column-second">
-            <div class="entity-row">
-                <div class="entity-value">AVV-Nummer:</div>
-                <div class="entity-item">{{ supplier.avv_number }}</div>
-            </div>
-            <div class="entity-row">
-                <div class="entity-value">Erstellt am:</div>
-                <div class="entity-item">{{ supplier.created_at|date:'d.m.Y' }}</div>
-            </div>
-            <div class="entity-row">
-                <div class="entity-value">Anmerkung:</div>
-                <div class="entity-item">{{ supplier.note }}</div>
-            </div>
-        </div>
-    </div>
+<section>
+    <table class="entity">
+        <tbody>
+            <tr>
+                <td>Lieferant:</td>
+                <td class="entity-name">{{ supplier.name }}</td>
+            </tr>
+            <tr>
+                <td>Adresse:</td>
+                <td>{{ supplier.street }},&nbsp;{{ supplier.postal_code }} {{ supplier.city }}</td>
+            </tr>
+            <tr>
+                <td>Telefon:</td>
+                <td>{{ supplier.phone }}</td>
+            </tr>
+        </tbody>
+        <tbody>
+            <tr>
+                <td>Email:</td>
+                <td>{{ supplier.email }}</td>
+            </tr>
+            <tr>
+                <td>AVV-Nummer:</td>
+                <td>{{ supplier.avv_number }}</td>
+            </tr>
+            <tr>
+                <td>Erstellt am:</td>
+                <td>{{ supplier.created_at|date:'d.m.Y' }}</td>
+            </tr>
+        </tbody>
+        <tbody>
+            <tr>
+                <td>Geliefert gesamt:</td>
+                <td>50.000kg</td>
+            </tr>
+            <tr>
+                <td>Durchschnitt pro Monat:</td>
+                <td>500kg</td>
+            </tr>
+            <tr>
+                <td>Anmerkung:</td>
+                <td class="entity-note">{{ supplier.note }}</td>
+            </tr>
+        </tbody>
+    </table>
 </section>
 <section>
     <table class="selectable-table">
