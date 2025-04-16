@@ -9,8 +9,8 @@
 {% block content %}
 
 <table class="selectable-table">
-    <thead>
-        <tr class="thead-title">
+    <thead class="table-head">
+        <tr class="table-title">
             <th class="table-id">&#8470;</th>
             <th class="table-name">Lieferant</th>
             <th class="table-delivery-receipt">Lieferschein</th>
@@ -22,10 +22,10 @@
             <th class="table-status">Status</th>
         </tr>
     </thead>
-    <tbody class="table-content">
+    <tbody class="table-body">
         {% for delivery in page_obj %}
             {% for unit in delivery.deliveryunits.all %}
-                <tr class="selectable-row" data-id="{{ delivery.id }}" data-url-detail="{% url 'delivery_detail' pk=delivery.id %}" data-url-update="{% url 'delivery_update' pk=delivery.id %}">
+                <tr class="js-select-row" data-id="{{ delivery.id }}" data-url-detail="{% url 'delivery_detail' pk=delivery.id %}" data-url-update="{% url 'delivery_update' pk=delivery.id %}">
                     <td hidden>
                         <input type="radio" name="selected_supplier" value="{{ delivery.id }}">
                     </td>

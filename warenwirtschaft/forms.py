@@ -12,7 +12,7 @@ class SupplierForm(forms.ModelForm):
         model = Supplier
         fields = ['name', 'avv_number', 'street', 'postal_code', 'city', 'phone', 'email', 'note']
         widgets = {
-            'note': forms.Textarea(attrs={'rows': 3}),
+            'note': forms.Textarea(attrs={'rows': 5}),
         }
 
 class DeliveryForm(forms.ModelForm):

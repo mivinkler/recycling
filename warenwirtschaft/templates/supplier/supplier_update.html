@@ -6,19 +6,18 @@
 {% block content %}
 
 <div class="tablecard-small">
-  <form method="post">
+  <form method="post" action="{% url 'supplier_update' supplier.pk %}" id="supplier-form">
     {% csrf_token %}
+    <div class="tablecard-topbox-title">
+        <h2>Lieferant bearbeiten</h2>
+        <a href="{% url 'supplier_delete' supplier.pk %}" class="tablecard-delete-btn" title="Lieferant löschen">
+            <img src="{% static 'icons/delete-icon.svg' %}">
+        </a>
+    </div>
 
-    <section class="tablecard-topbox">
-        <div class="tablecard-topbox-title">
-            <h2>Lieferant bearbeiten</h2>
-            <a href="{% url 'supplier_delete' supplier.pk %}" class="delete-btn" title="Lieferant löschen">
-                <img src="{% static 'icons/delete-icon.svg' %}">
-            </a>
-        </div>
-        
+    
+    <section>
         {{ form.non_field_errors }}
-
         <div class="tablecard-topbox-row">
             <label for="{{ form.name.id_for_label }}">Name:</label>
             {{ form.name }}
@@ -58,13 +57,23 @@
             <label for="{{ form.note.id_for_label }}">Anmerkung:</label>
             {{ form.note }}
         </div>
-
-        <div class="tablecard-btn">
-            <button type="submit" name="save">Speichern</button>
-        </div>
-
     </section>
+    <div class="tablecard-btn">
+        <button type="submit" name="save" class="btn">Speichern</button>
+    </div>
   </form>
 </div>
 
 {% endblock %}
+<script>
+function autoGrow(el) {
+    el.style.height = '5px';
+    el.style.height = el.scrollHeight + 'px';
+  }
+  
+  // Эту функцию следует привязать к событию 'input'
+  document.getElementById('textarea').addEventListener('input', function() {
+    autoGrow(this);
+  });
+
+</script>

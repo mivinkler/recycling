@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.selectable-row').forEach(row => {
+    document.querySelectorAll('.js-select-row').forEach(row => {
         row.addEventListener('click', function() {
             const radio = this.querySelector('.inputField');
             if (radio) {

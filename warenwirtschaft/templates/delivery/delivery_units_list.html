@@ -9,30 +9,28 @@
 {% block content %}
 
 <table class="selectable-table">
-    <thead>
-        <!-- Active_fields in DeliveryUnitsListView müssen in der gleichen Reihenfolge sein -->
-        <thead>
-    <tr class="thead-title">
-        {% for field, label, css_class in active_fields %}
-            <th class="{{ css_class }}">
-                {% with asc=field|add:"_asc" desc=field|add:"_desc" %}
-                    {% if sort_param == asc %}
-                        <a href="?sort={{ asc }}">{{ label }}<span class="thead-title-arrow">🡇</span></a>
-                    {% elif sort_param == desc %}
-                        <a href="?sort={{ desc }}">{{ label }}<span class="thead-title-arrow">🡅</span></a>
-                    {% else %}
-                        <a href="?sort={{ asc }}">{{ label }}</a>
-                    {% endif %}
-                {% endwith %}
-            </th>
-        {% endfor %}
-    </tr>
-</thead>
+    <!-- "Active_fields" in delivery_units_list.py müssen gleiche Reihenfolge haben -->
+    <thead class="table-head">
+        <tr class="table-title">
+            {% for field, label, css_class in active_fields %}
+                <th class="{{ css_class }}">
+                    {% with asc=field|add:"_asc" desc=field|add:"_desc" %}
+                        {% if sort_param == asc %}
+                            <a href="?sort={{ asc }}">{{ label }}<span class="table-head-arrow">🡇</span></a>
+                        {% elif sort_param == desc %}
+                            <a href="?sort={{ desc }}">{{ label }}<span class="table-head-arrow">🡅</span></a>
+                        {% else %}
+                            <a href="?sort={{ asc }}">{{ label }}</a>
+                        {% endif %}
+                    {% endwith %}
+                </th>
+            {% endfor %}
+        </tr>
     </thead>
 
-    <tbody>
+    <tbody class="table-body">
         {% for deliveryunit in page_obj %}
-            <tr class="selectable-row" data-id="{{ deliveryunit.id }}" data-url-detail="{% url 'delivery_detail' pk=deliveryunit.delivery.id %}" data-url-update="{% url 'delivery_update' pk=deliveryunit.delivery.id %}">
+            <tr class="js-select-row" data-id="{{ deliveryunit.id }}" data-url-detail="{% url 'delivery_detail' pk=deliveryunit.delivery.id %}" data-url-update="{% url 'delivery_update' pk=deliveryunit.delivery.id %}">
                 <td hidden>
                     <input type="radio" name="selected_supplier" value="{{ deliveryunit.id }}">
                 </td>

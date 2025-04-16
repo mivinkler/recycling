@@ -14,7 +14,7 @@
       <div class="tablecard-topbox-row">
         <label>Liefereinheit:</label>
         <div>
-          #{{ delivery_unit.id }} – {{ delivery_unit.material.name }} – {{ delivery_unit.weight }} kg ({{ delivery_unit.delivery.supplier.name }})
+          {{ delivery_unit.id }} – {{ delivery_unit.material.name }} – {{ delivery_unit.weight }} kg ({{ delivery_unit.delivery.supplier.name }})
         </div>
       </div>
     </section>
@@ -65,7 +65,7 @@
     </section>
 
     <div class="tablecard-btn">
-      <button type="submit" name="save">Speichern</button>
+      <button type="submit" name="save" class="btn">Speichern</button>
     </div>
   </form>
 </div>

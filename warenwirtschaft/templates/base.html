@@ -23,24 +23,24 @@
     
 </head>
 <body>
-        <div class="table-header">
-            <div>
-                ANDERWERK <span style="color: red; font-weight: bold; width: 100px;">❯</span>
-            </div>
-            <div class="table-header-user">
-                <div>Max Musterman</div>
-                <img class="user-white-icon" src="{% static 'icons/user-white-icon.svg' %}">
-            </div>
+    <header>
+        <div>
+            ANDERWERK <span style="color: red; font-weight: bold; width: 100px;">❯</span>
         </div>
-        <div class="top-menu">
-            <div><a href="{% url 'suppliers_list' %}" class="{% if selected_menu == 'supplier_list' %} selected {% endif %}">Lieferanten</a></div>
-            <div><a href="{% url 'delivery_units_list' %}" class="{% if selected_menu == 'delivery_units_list' %} selected {% endif %}">Eingang</a></div>
-            <div><a href="{% url 'unload_list' %}" class="{% if selected_menu == 'unload_list' %} selected {% endif %}">Leerung</a></div>
-            <div><a href="#">Recycling</a></div>
-            <div><a href="#">Versand</a></div>
+        <div class="header-user">
+            <div>Max Musterman</div>
+            <img class="user-white-icon" src="{% static 'icons/user-white-icon.svg' %}">
         </div>
-        
-        {% include 'components/top_navi.html' %}
+    </header>
+    <div class="top-menu">
+        <div><a href="{% url 'suppliers_list' %}" class="{% if selected_menu == 'supplier_list' %} selected {% endif %}">Lieferanten</a></div>
+        <div><a href="{% url 'delivery_units_list' %}" class="{% if selected_menu == 'delivery_units_list' %} selected {% endif %}">Eingang</a></div>
+        <div><a href="{% url 'unload_list' %}" class="{% if selected_menu == 'unload_list' %} selected {% endif %}">Leerung</a></div>
+        <div><a href="#">Recycling</a></div>
+        <div><a href="#">Versand</a></div>
+    </div>
+    
+    {% include 'components/top_navi.html' %}
 
     <main>
         {% block content %}{% endblock %}

@@ -1,26 +1,25 @@
-table {
-  width: 100%;
-  table-layout: fixed;
-  border-collapse: collapse;
+.table-head {
+  background-color: var(--color-gray-150);
+  border-top: 10px solid var(--color-gray-150);
 }
 
-/* td, th {
+.table-head th {
+  padding-bottom: 5px;
+}
+
+.table-head-arrow {
+  color: rgb(2, 141, 2);
+  margin-left: 10px;
+}
+
+.table-body td {
+  padding: 4px 6px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-} */
-
-th {
-  font-weight: 500;
-  border: 1px solid var(--color-gray-300);
-  /* padding-bottom: 5px; */
 }
 
-td {
-  border: 1px solid var(--color-gray-200);
-}
-
-/* ============ Rows width =============*/
+/* ============ Row width =============*/
 
 .table-avv { width: 10%; }
 .table-city { width: 10%; }
@@ -37,22 +36,256 @@ td {
 .table-name { width: 20%; }
 .table-note { width: 20%; }
 .table-phone { width: 120px; }
-.table- { width: 70px; }
+.table-postal { width: 70px; }
 .table-purpose { width: 10%; }
 .table-status { width: 10%; }
 .table-street { width: 20%; }
 .table-weight { width: 10%; text-align: right; padding-right: 6px;}
 
-/* ============ thead-title =============*/
+/* ============ Supplier info-table =============*/
 
-.thead-title {
-  background-color: var(--color-gray-150);
-  border-top: 10px solid var(--color-gray-150);
+.info-table {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  column-gap: 50px;
+  padding: 16px 22px 26px;
+  background-color: var(--color-gray-50);
+  border-bottom: 1px solid var(--color-gray-300);
 }
 
-.thead-title-arrow {
-  color: rgb(2, 141, 2);
-  margin-left: 10px;
+.info-table thead {
+  width: 100%;
+}
+
+.info-table th {
+  border: none;
+}
+
+.info-table td {
+  border: none;
+  vertical-align: super;
+  padding-top: 18px;
+}
+
+.info-table td:first-child {
+  font-weight: bold;
+  padding-right: 20px;
+}
+
+.info-table-note {
+  max-width: 640px;
+  white-space: wrap;
+}
+
+/* ============ Tablecard ============= */
+
+.tablecard-small,
+.tablecard-large {
+  margin: 30px auto;
+  padding: 30px;
+  background-color: var(--color-gray-100);
+  border: 1px solid var(--color-gray-300);
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+}
+
+.tablecard-small {
+  width: 640px;
+}
+
+.tablecard-large {
+  width: 840px;
+}
+
+/* ----- Tablecard Topbox ----- */
+
+.tablecard-topbox-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.tablecard-topbox-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.tablecard-topbox-row label {
+  width: 25%;
+  font-size: 13px;
+  font-weight: 500;
+  margin-top: 5px;
+}
+
+.tablecard-topbox-row input,
+.tablecard-topbox-row select,
+.tablecard-topbox-row textarea {
+  width: 75%;
+  padding-left: 6px;
+  min-height: 30px;
+  border: 1px solid var(--color-gray-400);
+}
+
+.tablecard-topbox-row textarea {
+  padding-top: 6px;
+  min-height: 60px;
+  resize: vertical;
+}
+
+/* ----- Tablecard List ----- */
+
+.tablecard-list-name {
+  margin: 12px 0;
+  font-weight: 500;
+}
+
+.tablecard-list-header {
+  background-color: var(--color-gray-200);
+}
+
+.tablecard-list-content {
+  background-color: #fff;
+}
+
+.tablecard-list-header th,
+.tablecard-list-content td {
+  height: 34px;
+  border-color: var(--color-gray-400);
+}
+
+.tablecard-list-content input,
+.tablecard-list-content select,
+.tablecard-list-content textarea {
+  width: 96%;
+  margin: 2px 4px;
+  border: 1px solid var(--color-gray-200);
+  background-color: var(--color-gray-50);
+}
+
+/* ----- Tablecard List Column Widths ----- */
+
+.tablecard-list-id {
+  width: 40px;
+  text-align: center;
+}
+
+.tablecard-list-weight {
+  width: 80px;
+}
+
+.tablecard-list-weight input {
+  text-align: right;
+  padding-right: 4px;
+  width: 90%;
+}
+
+.tablecard-list-note {
+  width: 200px;
+}
+
+.tablecard-list-delete {
+  width: 64px;
+  text-align: center;
+}
+
+.tablecard-list-delete input:focus {
+  outline: none;
+}
+
+.tablecard-list-delete input {
+  width: 15px;
+  height: 15px;
+  position: relative;
+  vertical-align: middle;
+  border-radius: 3px;
+  border-color: var(--color-gray-500);
+}
+
+.tablecard-list-delete input:checked::before {
+  content: '\2716'; 
+  position: absolute;
+  font-size: 11px;
+  font-weight: 900;
+  color: rgb(216, 21, 21);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* ============= Buttons ============ */
+
+.tablecard-delete-btn {
+  width: 14px;
+  height: 14px;
+  fill-rule: chocolate;
+}
+
+.btn,
+.tablecard-row-add {
+  background-color: var(--color-gray-50);
+  color: var(--color-gray-800);
+  border: 1px solid var(--color-gray-600);
+  border-radius: 3px;
+  outline: 1px solid #fff;
+  outline-offset: -2px;
+  cursor: pointer;
+}
+
+.tablecard-row-add {
+  padding: 0 14px;
+  margin-top: 4px;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.btn {
+  padding: 4px 8px;
+  font-weight: 500;
+  box-shadow: 0 1px 3px var(--color-gray-500);
+}
+
+.btn:hover
+.tablecard-row-add:hover {
+  background-color: var(--color-gray-200);
+}
+
+.tablecard-row-add:active {
+  background-color: var(--color-gray-300);
+}
+
+.tablecard-btn {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+}
+
+.btn:focus {
+  outline: none;
+}
+
+.btn:active {
+  box-shadow: none;
+}
+
+/* ============= JavaScript ============ */
+
+.visually-hidden {
+  display: none;
+}
+
+.js-select-row {
+  transition: background-color 0.3s ease;
+}
+
+.js-select-row:hover {
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
+.row-selected {
+  background-color: #d0e4f5 !important;
 }
 
 /* ====== Pagination ====== */
@@ -67,11 +300,10 @@ td {
 .pagination a, 
 .pagination span {
   padding: 5px 10px;
+  background-color: #f9f9f9;
+  color: var(--color-gray-800);
   border: 1px solid var(--color-gray-400);
   border-radius: 3px;
-  text-decoration: none;
-  color: var(--color-gray-800);
-  background-color: #f9f9f9;
   transition: background-color 0.3s, color 0.3s;
 }
 
@@ -84,293 +316,4 @@ td {
   background-color: var(--color-gray-600);
   border-color: var(--color-gray-600);
   color: white;
-}
-
-/* ====== Detail ====== */
-
-.entity {
-  display: flex;
-  gap: 50px;
-  align-items: flex-start;
-  padding: 22px;
-  background-color: var(--color-gray-50);
-  border-bottom: 1px solid var(--color-gray-300);
-}
-
-.entity tr {
-  height: 40px;
-}
-
-.entity td {
-  border: none;
-  vertical-align: super;
-}
-
-.entity td:first-child {
-  font-weight: bold;
-}
-
-.entity-name {
-  font-weight: bold;
-  color: var(--color-hero);
-  font-size: 14px;
-}
-
-.entity-note {
-  max-width: 640px;
-  white-space: wrap;
-}
-
-/* ============ Tablecard ============= */
-
-.tablecard-small,
-.tablecard-large {
-  margin: 20px auto;
-  padding: 26px 20px;
-  background-color: var(--color-gray-100);
-  border: 1px solid var(--color-gray-300);
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
-  height: min-content;
-}
-
-.tablecard-small {
-  width: 640px;
-}
-
-.tablecard-large {
-  width: 840px;
-}
-
-/* ----- Input & Focus/Active States ----- */
-
-.tablecard input:active, .tablecard input:focus,
-.tablecard select:active, .tablecard select:focus,
-.tablecard textarea:active, .tablecard textarea:focus {
-  outline: 2px solid var(--color-hero);
-  outline-offset: -1px;
-}
-
-/* ----- Tablecard Topbox ----- */
-
-.tablecard-topbox-title {
-  display: flex;
-  justify-content: space-between;
-}
-
-.tablecard-topbox-row {
-  display: flex;
-  gap: 16px;
-  margin-top: 12px;
-}
-
-.tablecard-topbox-row label {
-  width: 25%;
-  font-size: 13px;
-  font-weight: 500;
-}
-
-.tablecard-topbox-row input,
-.tablecard-topbox-row select,
-.tablecard-topbox-row textarea {
-  width: 75%;
-  padding-left: 6px;
-  min-height: 30px;
-  border: 1px solid var(--color-gray-400);
-}
-
-.tablecard-topbox-row textarea {
-  min-height: 60px;
-  resize: vertical;
-}
-
-.tablecard-topbox-button {
-  display: flex;
-  gap: 30px;
-  justify-content: flex-end;
-  cursor: pointer;
-}
-
-/* ----- Tablecard List ----- */
-
-.tablecard-list-name {
-  margin: 20px 0 12px;
-  font-weight: 500;
-}
-
-.tablecard-list-header {
-  background-color: var(--color-gray-200);
-}
-
-.tablecard-list-header th,
-.tablecard-list-content td {
-  height: 34px;
-  border-color: var(--color-gray-400);
-}
-
-.tablecard-list-content td {
-  background-color: #fff;
-}
-
-.tablecard-list-content input,
-.tablecard-list-content select,
-.tablecard-list-content textarea {
-  width: 96%;
-  border: 1px solid var(--color-gray-200);
-  background-color: var(--color-gray-50);
-  margin: 2px 4px;
-}
-
-/* ----- Tablecard List Column Widths ----- */
-
-.tablecard-list-id {
-  width: 40px;
-  text-align: center;
-}
-
-.tablecard-list-weight {
-  width: 80px;
-}
-
-.tablecard-list-note {
-  width: 200px;
-}
-
-.tablecard-list-note textarea {
-  height: 26px;
-  vertical-align: middle;
-}
-
-.tablecard-list-delete {
-  width: 64px;
-  text-align: center;
-}
-
-.tablecard-list-delete input[type="checkbox"] {
-  appearance: none;
-  -webkit-appearance: none; /* Chrome, Safari */
-  -moz-appearance: none;    /* Firefox */
-  width: 15px;
-  height: 15px;
-  position: relative;
-  border-radius: 3px;
-  border-color: var(--color-gray-500);
-}
-
-.tablecard-list-delete input[type="checkbox"]:checked::before {
-  content: '\2716';
-  font-size: 11px;
-  font-weight: 900;
-  color: rgb(216, 21, 21);
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-}
-
-/* ----- Input Number - Remove Arrows ----- */
-
-.tablecard-list-weight input[type="number"]::-webkit-outer-spin-button,
-.tablecard-list-weight input[type="number"]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-.tablecard-list-weight input[type='number'],
-.tablecard-list-weight input[type="number"]:hover,
-.tablecard-list-weight input[type="number"]:focus {
-  appearance: none;
-  -moz-appearance: textfield;
-}
-
-.tablecard-list-weight input {
-  text-align: right;
-  padding-right: 4px;
-  width: 90%;
-}
-
-/* ----- Add Row Button ----- */
-
-.tablecard-row-add {
-  width: 40px;
-  height: 20px;
-  margin-top: 4px;
-  background-color: var(--color-gray-50);
-  color: var(--color-gray-700);
-  border: 1px solid var(--color-gray-500);
-  outline: 1px solid #fff;
-  outline-offset: -2px;
-  cursor: pointer;
-  border-radius: 3px;
-  font-weight: 900;
-  font-size: 16px;
-  line-height: 100%;
-}
-
-.tablecard-row-add:hover {
-  background-color: var(--color-gray-200);
-}
-
-.tablecard-row-add:active {
-  background-color: var(--color-gray-300);
-  color: var(--color-hero);
-}
-
-/* ----- Save Button ----- */
-
-.tablecard-btn {
-  height: 30px;
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 20px;
-  gap: 20px;
-}
-
-.tablecard-btn button,
-.tablecard-btn a {
-  padding: 0 8px;
-  color: var(--color-gray-800);
-  font-weight: 500;
-  background-color: var(--color-gray-50);
-  border: 1px solid var(--color-gray-600);
-  box-shadow: 0 1px 3px var(--color-gray-500);
-  border-radius: 3px;
-  outline: 1px solid #fff;
-  outline-offset: -2px;
-  align-content: center;
-}
-
-.tablecard-btn button:hover,
-.tablecard-btn a:hover {
-  background-color: var(--color-gray-200);
-  cursor: pointer;
-}
-
-.tablecard-btn button:focus,
-.tablecard-btn a:focus,
-.tablecard-list-delete button:focus {
-  outline: none;
-}
-
-.tablecard-btn button:active
-.tablecard-btn a:active {
-  box-shadow: none;
-}
-
-/* ----- js row-selected ------- */
-
-.visually-hidden {
-  display: none;
-}
-
-.selectable-row {
-  transition: background-color 0.3s ease;
-}
-
-.selectable-row:hover {
-  background-color: #f0f0f0;
-  cursor: pointer;
-}
-
-.row-selected {
-  background-color: #d0e4f5 !important;
 }

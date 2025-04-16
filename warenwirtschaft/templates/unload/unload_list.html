@@ -10,7 +10,7 @@
 
 <table class="selectable-table">
     <thead>
-        <tr class="thead-title">
+        <tr class="table-title">
             <th class="table-id">&#8470;</th>
             <th class="table-delivery-type">Behälter</th>
             <th class="table-material">Material</th>
@@ -28,7 +28,7 @@
         {% regroup page_obj by delivery_unit_id as delivery_units %}
         {% for delivery_unit in delivery_units %}
             {% for item in delivery_unit.list %}
-            <tr class="selectable-row" data-id="{{ delivery_unit.id }}" data-url-detail="{% url 'delivery_detail' pk=item.id %}" data-url-update="{% url 'delivery_update' pk=item.id %}">
+            <tr class="js-select-row" data-id="{{ delivery_unit.id }}" data-url-detail="{% url 'delivery_detail' pk=item.id %}" data-url-update="{% url 'delivery_update' pk=item.id %}">
                 <td hidden>
                     <input type="radio" value="{{ item.id }}">
                 </td>

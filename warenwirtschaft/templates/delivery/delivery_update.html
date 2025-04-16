@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-
 {% load static %}
 
 {% block title %}Lieferung ändern{% endblock %}
@@ -8,10 +7,13 @@
 
 <div class="tablecard-small">
   <form method="post" action="{% url 'delivery_update' delivery.pk %}" id="eingang-form">
-  {% csrf_token %}
-
-    <section class="tablecard-topbox">
+    {% csrf_token %}
+    <div class="tablecard-topbox-title">
       <h2>Lieferung ändern</h2>
+    </div>
+
+
+    <section>
       {{ form.non_field_errors }}
       <div class="tablecard-topbox-row">
         <label for="{{ form.supplier.id_for_label }}">Lieferant:</label>
@@ -92,7 +94,7 @@
     </section>
 
     <div class="tablecard-btn">
-      <button type="submit" name="save">Speichern</button>
+      <button type="submit" name="save" class="btn">Speichern</button>
     </div>
   </form>
 </div>

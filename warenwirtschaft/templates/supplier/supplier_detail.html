@@ -1,16 +1,23 @@
 {% extends 'base.html' %}
 
 {% load static %}
+{% load custom_filters %}
+{% load pagination %}
 
 {% block title %}Lieferant: Detail{% endblock %}
 
 {% block content %}
 <section>
-    <table class="entity">
+    <table class="info-table">
+        <thead>
+            <tr>
+                <th><h2>Liederant: Details</h2></th>
+            </tr>
+        </thead>
         <tbody>
             <tr>
                 <td>Lieferant:</td>
-                <td class="entity-name">{{ supplier.name }}</td>
+                <td>{{ supplier.name }}</td>
             </tr>
             <tr>
                 <td>Adresse:</td>
@@ -42,15 +49,15 @@
             </tr>
             <tr>
                 <td>Anmerkung:</td>
-                <td class="entity-note">{{ supplier.note }}</td>
+                <td class="info-table-note">{{ supplier.note }}</td>
             </tr>
         </tbody>
     </table>
 </section>
 <section>
     <table class="selectable-table">
-        <thead>
-            <tr class="thead-title">
+        <thead class="table-head">
+            <tr class="table-title">
                 <th class="table-id">ID</th>
                 <th class="table-delivery-receipt">Lieferschein</th>
                 <th class="table-data">Datum</th>
@@ -63,38 +70,35 @@
             </tr>
         </thead>
 
-        <tbody class="table-content">
-            {% for delivery in deliveries %}
+        <tbody class="table-body">
+            {% for delivery in page_obj %}
                 {% for unit in delivery.deliveryunits.all %}
-                <tr class="selectable-row" 
-                    data-id="{{ delivery.id }}" 
-                    data-url-detail="{% url 'delivery_detail' pk=delivery.id %}" 
-                    data-url-update="{% url 'delivery_update' pk=delivery.id %}">
-                    {% if forloop.first %}
+                    <tr class="js-select-row" data-id="{{ delivery.id }}" data-url-detail="{% url 'delivery_detail' pk=delivery.id %}" data-url-update="{% url 'delivery_update' pk=delivery.id %}">
                         <td hidden>
-                            <input type="radio" value="{{ delivery.id }}">
+                            <input type="radio" name="selected_supplier" value="{{ delivery.id }}">
                         </td>
-                        <td class="table-id" name="id" rowspan="{{ delivery.deliveryunits.all|length }}">{{ delivery.id }}</td>
-                        <td class="table-delivery-receipt" rowspan="{{ delivery.deliveryunits.all|length }}">{{ delivery.delivery_receipt }}</td>
-                        <td class="table-data" rowspan="{{ delivery.deliveryunits.all|length }}">{{ delivery.created_at|date:'d.m.Y' }}</td>
-                        <td class="table-note" rowspan="{{ delivery.deliveryunits.all|length }}">{{ delivery.note }}</td>
-                    {% endif %}
-                    <td class="table-lid">{{ unit.id }}</td>
-                    <td class="table-delivery-type">{{ unit.get_delivery_type_display }}</td>
-                    <td class="table-material">{{ unit.material }}</td>
-                    <td class="table-weight">{{ unit.weight }} </td>
-                    <td class="table-status">{{ unit.get_status_display }}</td>
-                </tr>          
+                        <td class="table-id">{{ forloop.counter }}</td>
+                        <td class="table-name">{{ delivery.supplier.name }}</td>
+                        <td class="table-delivery-receipt">{{ delivery.delivery_receipt }}</td>
+                        <td class="table-id-simple">{{ delivery.id }}</td>
+                        <td class="table-data">{{ delivery.created_at|date:'d.m.Y' }}</td>
+                        <td class="table-delivery-type">{{ unit.get_delivery_type_display }}</td>
+                        <td class="table-material">{{ unit.material.name }}</td>
+                        <td class="table-weight">{{ unit.weight }}</td>
+                        <td class="table-status">{{ unit.get_status_display }}</td>
+                    </tr>
                 {% endfor %}
             {% endfor %}
         </tbody>
     </table>
 </section>
+
+{% paginate page_obj %}
+
 {% endblock %}
 
 {% block extra_js %}
     <script src="{% static 'js/selectable-row.js' %}"></script>
     <script src="{% static 'js/block-visibility.js' %}"></script>
     <script src="{% static 'js/current-date.js' %}"></script>
-    <script src="{% static 'js/row-hover.js' %}"></script>
 {% endblock %}

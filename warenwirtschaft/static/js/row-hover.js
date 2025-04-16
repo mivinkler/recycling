@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
-    document.querySelectorAll(".selectable-row").forEach(row => {
+    document.querySelectorAll(".js-select-row").forEach(row => {
         row.addEventListener("mouseover", function() {
             let deliveryId = this.getAttribute("data-id");
             document.querySelectorAll(`[data-id='${deliveryId}']`).forEach(el => {

@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
-{% load static %}
 
+{% load static %}
 {% load custom_filters %}
 {% load pagination %}
 
@@ -9,8 +9,8 @@
 {% block content %}
 
 <table class="selectable-table">
-    <thead>
-        <tr class="thead-title">
+    <thead class="table-head">
+        <tr class="table-title">
             <th class="table-id">ID</th>
             <th class="table-avv">AVV</th>
             <th class="table-name">Name</th>
@@ -22,9 +22,9 @@
             <th class="table-note">Anmerkung</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody class="table-body">
         {% for supplier in page_obj %}
-        <tr class="selectable-row" data-id="{{ supplier.id }}" data-url-detail="{% url 'supplier_detail' pk=supplier.id %}" data-url-update="{% url 'supplier_update' pk=supplier.id %}">
+        <tr class="js-select-row" data-id="{{ supplier.id }}" data-url-detail="{% url 'supplier_detail' pk=supplier.id %}" data-url-update="{% url 'supplier_update' pk=supplier.id %}">
             <td class="visually-hidden">
                 <input type="radio" name="selected_supplier" value="{{ supplier.id }}">
             </td>

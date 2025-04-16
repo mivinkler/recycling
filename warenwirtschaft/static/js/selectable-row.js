@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let detailLink = document.getElementById("detail-link");
     let editLink = document.getElementById("edit-link");
 
-    document.querySelectorAll(".selectable-row").forEach(row => {
+    document.querySelectorAll(".js-select-row").forEach(row => {
         row.addEventListener("click", function () {
             if (selectedRow) {
                 selectedRow.classList.remove("row-selected");

@@ -1,6 +1,4 @@
-/* ============ table-header =============*/
-
-.table-header {
+header {
     padding: 10px 22px;
     display: flex;
     justify-content: space-between;
@@ -9,7 +7,7 @@
     background-color: var(--color-hero);
 }
   
-.table-header-user {
+.header-user {
     display: flex;
     align-items: center;
     gap: 8px;

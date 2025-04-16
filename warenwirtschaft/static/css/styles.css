@@ -26,14 +26,48 @@ body {
   width: 100vw;
 }
 
+table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+th {
+  font-weight: 500;
+  border: 1px solid var(--color-gray-300);
+}
+
+td {
+  border: 1px solid var(--color-gray-200);
+}
+
 h2 {
   font-size: 1.3em;
   font-weight: bold;
   color: var(--color-hero);
-  margin-bottom: 30px;
 }
 
 a {
   text-decoration: none;
   color: inherit;
+}
+
+input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+
+input:active, input:focus,
+select:active, select:focus,
+textarea:active, textarea:focus {
+  outline: 2px solid var(--color-hero);
+  outline-offset: -1px;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
