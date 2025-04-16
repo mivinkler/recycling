@@ -75,7 +75,6 @@
 
 .info-table-note {
   max-width: 640px;
-  white-space: wrap;
 }
 
 /* ============ Tablecard ============= */
@@ -123,14 +122,12 @@
 .tablecard-topbox-row select,
 .tablecard-topbox-row textarea {
   width: 75%;
-  padding-left: 6px;
+  padding: 4px 6px;
   min-height: 30px;
   border: 1px solid var(--color-gray-400);
 }
 
 .tablecard-topbox-row textarea {
-  padding-top: 6px;
-  min-height: 60px;
   resize: vertical;
 }
 
@@ -219,7 +216,6 @@
 .tablecard-delete-btn {
   width: 14px;
   height: 14px;
-  fill-rule: chocolate;
 }
 
 .btn,
@@ -270,10 +266,6 @@
 }
 
 /* ============= JavaScript ============ */
-
-.visually-hidden {
-  display: none;
-}
 
 .js-select-row {
   transition: background-color 0.3s ease;

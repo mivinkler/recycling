@@ -25,7 +25,7 @@
     <tbody class="table-body">
         {% for supplier in page_obj %}
         <tr class="js-select-row" data-id="{{ supplier.id }}" data-url-detail="{% url 'supplier_detail' pk=supplier.id %}" data-url-update="{% url 'supplier_update' pk=supplier.id %}">
-            <td class="visually-hidden">
+            <td hidden>
                 <input type="radio" name="selected_supplier" value="{{ supplier.id }}">
             </td>
             <td class="table-id">{{ supplier.id }}</td>
