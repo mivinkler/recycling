@@ -15,7 +15,6 @@
         </a>
     </div>
 
-    
     <section>
         {{ form.non_field_errors }}
         <div class="tablecard-topbox-row">
@@ -65,15 +64,3 @@
 </div>
 
 {% endblock %}
-<script>
-function autoGrow(el) {
-    el.style.height = '5px';
-    el.style.height = el.scrollHeight + 'px';
-  }
-  
-  // Эту функцию следует привязать к событию 'input'
-  document.getElementById('textarea').addEventListener('input', function() {
-    autoGrow(this);
-  });
-
-</script>
