@@ -8,12 +8,12 @@
 <div class="tablecard-small">
   <form method="post" action="{% url 'delivery_update' delivery.pk %}" id="eingang-form">
     {% csrf_token %}
+
     <div class="tablecard-topbox-title">
       <h2>Lieferung ändern</h2>
     </div>
 
-
-    <section>
+    <section class="tablecard-topbox">
       {{ form.non_field_errors }}
       <div class="tablecard-topbox-row">
         <label for="{{ form.supplier.id_for_label }}">Lieferant:</label>
@@ -89,12 +89,11 @@
         </template>
       </table>
 
-      <button class="tablecard-row-add" type="button" id="add-form-btn">+</button>
-      
+      <button class="btn-row-add" type="button" id="add-form-btn">+</button>
     </section>
 
     <div class="tablecard-btn">
-      <button type="submit" name="save" class="btn">Speichern</button>
+      <button class="btn" type="submit" name="save">Speichern</button>
     </div>
   </form>
 </div>

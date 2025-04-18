@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Eingang Form{% endblock %}
+{% block title %}Lieferung erstellen{% endblock %}
 
 {% block content %}
 
@@ -9,8 +9,11 @@
   <form method="post" action="{% url 'delivery_create' %}" id="eingang-form">
   {% csrf_token %}
 
+    <div class="tablecard-topbox-title">
+      <h2>Lieferung erstellen</h2>
+    </div>
+
     <section class="tablecard-topbox">
-      <h2>Lieferung ändern</h2>
       {{ form.non_field_errors }}
 
       <div class="tablecard-topbox-row">
@@ -87,7 +90,7 @@
         </template>
       </table>
 
-      <button class="tablecard-row-add" type="button" id="add-form-btn">+</button>
+      <button class="btn-row-add" type="button" id="add-form-btn">+</button>
     </section>
 
     <div class="tablecard-btn">

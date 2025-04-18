@@ -98,11 +98,14 @@
 
 /* ----- Tablecard Topbox ----- */
 
+.tablecard-topbox {
+  margin: 40px auto 20px;
+}
+
 .tablecard-topbox-title {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 40px;
 }
 
 .tablecard-topbox-row {
@@ -116,6 +119,10 @@
   font-size: 13px;
   font-weight: 500;
   margin-top: 5px;
+}
+
+.tablecard-topbox-row div {
+  width: 75%;
 }
 
 .tablecard-topbox-row input,
@@ -218,19 +225,25 @@
   height: 14px;
 }
 
+.tablecard-btn {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+}
+
 .btn,
-.tablecard-row-add {
+.btn-row-add {
   background-color: var(--color-gray-50);
   color: var(--color-gray-800);
-  border: 1px solid var(--color-gray-600);
   border-radius: 3px;
+  border: 1px solid var(--color-gray-500);
   outline: 1px solid #fff;
   outline-offset: -2px;
   cursor: pointer;
 }
 
-.tablecard-row-add {
-  padding: 0 14px;
+.btn-row-add {
+  padding: 0 15px;
   margin-top: 4px;
   font-weight: bold;
   font-size: 16px;
@@ -242,23 +255,14 @@
   box-shadow: 0 1px 3px var(--color-gray-500);
 }
 
-.btn:hover
-.tablecard-row-add:hover {
+.btn:hover,
+.btn-row-add:hover {
   background-color: var(--color-gray-200);
 }
 
-.tablecard-row-add:active {
+.btn:active,
+.btn-row-add:active {
   background-color: var(--color-gray-300);
-}
-
-.tablecard-btn {
-  display: flex;
-  justify-content: flex-end;
-  gap: 20px;
-}
-
-.btn:focus {
-  outline: none;
 }
 
 .btn:active {

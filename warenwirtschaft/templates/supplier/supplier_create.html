@@ -8,8 +8,11 @@
   <form method="post">
     {% csrf_token %}
 
+    <div class="tablecard-topbox-title">
+      <h2>Lieferant erstellen</h2>
+    </div>
+
     <section class="tablecard-topbox">
-      <h2>Neuer Lieferant</h2>
       {{ form.non_field_errors }}
 
       <div class="tablecard-topbox-row">

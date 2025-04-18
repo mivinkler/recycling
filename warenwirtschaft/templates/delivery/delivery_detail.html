@@ -3,13 +3,16 @@
 {% load custom_filters %}
 {% load static %}
 
-{% block title %}Lieferung anzeigen{% endblock %}
+{% block title %}Lieferung detail{% endblock %}
 
 {% block content %}
 <div class="tablecard-small">
 
+  <div class="tablecard-topbox-title">
+    <h2>Lieferung detail</h2>
+  </div>
+
   <section class="tablecard-topbox">
-    <h2>Lieferung</h2>
     <div class="tablecard-topbox-row">
       <label>Lieferant:</label>
       <div>{{ delivery.supplier.name }}</div>
