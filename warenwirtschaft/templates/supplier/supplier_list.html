@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% load static %}
+{% load sort_tags %}
 {% load custom_filters %}
 {% load pagination %}
 
@@ -8,46 +9,52 @@
 
 {% block content %}
 
-<table class="selectable-table">
-    <thead class="table-head">
-        <tr class="table-title">
-            <th class="table-id">ID</th>
-            <th class="table-avv">AVV</th>
-            <th class="table-name">Name</th>
-            <th class="table-street">Adresse</th>
-            <th class="table-postal">PLZ</th>
-            <th class="table-city">Stadt</th>
-            <th class="table-phone">Telefon</th>
-            <th class="table-email">Email</th>
-            <th class="table-note">Anmerkung</th>
-        </tr>
-    </thead>
-    <tbody class="table-body">
-        {% for supplier in page_obj %}
-        <tr class="js-select-row" data-id="{{ supplier.id }}" data-url-detail="{% url 'supplier_detail' pk=supplier.id %}" data-url-update="{% url 'supplier_update' pk=supplier.id %}">
-            <td hidden>
-                <input type="radio" name="selected_supplier" value="{{ supplier.id }}">
-            </td>
-            <td class="table-id">{{ supplier.id }}</td>
-            <td class="table-avv">{{ supplier.avv_number }}</td>
-            <td class="table-name">{{ supplier.name }}</td>
-            <td class="table-street">{{ supplier.street }}</td>
-            <td class="table-postal">{{ supplier.postal_code }}</td>
-            <td class="table-city">{{ supplier.city }}</td>
-            <td class="table-phone">{{ supplier.phone }}</td>
-            <td class="table-email">{{ supplier.email }}</td>
-            <td class="table-note" title="{{ supplier.note }}">{{ supplier.note }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<div class="grid-table" data-type="supplier-list">
+  <div class="grid-header">{% sort_header "id" "ID" %}</div>
+  <div class="grid-header">{% sort_header "avv_number" "AVV" %}</div>
+  <div class="grid-header">{% sort_header "name" "Lieferant" %}</div>
+  <div class="grid-header">{% sort_header "street" "Straße" %}</div>
+  <div class="grid-header">{% sort_header "postal_code" "PLZ" %}</div>
+  <div class="grid-header">{% sort_header "city" "Stadt" %}</div>
+  <div class="grid-header">{% sort_header "phone" "Telefon"  %}</div>
+  <div class="grid-header">{% sort_header "email" "Email" %}</div>
+  <div class="grid-header">{% sort_header "created_at" "Datum" %}</div>
+  <div class="grid-header">{% sort_header "note" "Anmerkung" %}</div>
+  
+  {% for supplier in page_obj %}
+  <div class="grid-row js-select-row"
+    data-id="{{ supplier.id }}"
+    data-url-detail="{% url 'supplier_detail' pk=supplier.id %}"
+    data-url-update="{% url 'supplier_update' pk=supplier.id %}">
+    
+    <div>{{ supplier.id }}</div>
+    <div>{{ supplier.avv_number }}</div>
+    <div>{{ supplier.name }}</div>
+    <div>{{ supplier.street }}</div>
+    <div>{{ supplier.postal_code }}</div>
+    <div>{{ supplier.city }}</div>
+    <div>{{ supplier.phone }}</div>
+    <div>{{ supplier.email }}</div>
+    <div>{{ supplier.created_at|date:"d.m.Y" }}</div>
+    <div title="{{ supplier.note }}">{{ supplier.note }}</div>
+  </div>
+  {% endfor %}
+</div>
 
 {% paginate page_obj %}
 
 {% endblock %}
 
 {% block extra_js %}
-    <script src="{% static 'js/selectable-row.js' %}"></script>
-    <script src="{% static 'js/block-visibility.js' %}"></script>
-    <script src="{% static 'js/current-date.js' %}"></script>
+  <script src="{% static 'js/selectable-row.js' %}"></script>
+  <script src="{% static 'js/current-date.js' %}"></script>
+  <script>
+    document.addEventListener("click", function (event) {
+      document.querySelectorAll("details.top-icon-detail[open]").forEach(details => {
+        if (!details.contains(event.target)) {
+          details.removeAttribute("open");
+        }
+      });
+    });
+  </script>
 {% endblock %}

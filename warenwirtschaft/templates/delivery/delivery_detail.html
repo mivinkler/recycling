@@ -6,69 +6,62 @@
 {% block title %}Lieferung detail{% endblock %}
 
 {% block content %}
-<div class="tablecard-small">
+<div class="detail-card-small">
+  <h2>Lieferung detail</h2>
 
-  <div class="tablecard-topbox-title">
-    <h2>Lieferung detail</h2>
-  </div>
-
-  <section class="tablecard-topbox">
-    <div class="tablecard-topbox-row">
-      <label>Lieferant:</label>
+  <section class="detail-card-topbox">
+    <div class="detail-card-row">
+      <div>Lieferant:</div>
       <div>{{ delivery.supplier.name }}</div>
     </div>
 
-    <div class="tablecard-topbox-row">
-      <label>Adresse:</label>
+    <div class="detail-card-row">
+      <div>Adresse:</div>
       <div>{{ delivery.supplier.street }}, {{ delivery.supplier.postal_code }} {{ delivery.supplier.city }}</div>
     </div>
 
-    <div class="tablecard-topbox-row">
-      <label>Lieferschein:</label>
+    <div class="detail-card-row">
+      <div>Lieferschein:</div>
       <div>{{ delivery.delivery_receipt }}</div>
     </div>
 
-    <div class="tablecard-topbox-row">
-      <label>Lieferung-ID:</label>
+    <div class="detail-card-row">
+      <div>Lieferung-ID:</div>
       <div>{{ delivery.id }}</div>
     </div>
 
-    <div class="tablecard-topbox-row">
-      <label>Datum:</label>
+    <div class="detail-card-row">
+      <div>Datum:</div>
       <div>{{ delivery.created_at|date:"d.m.Y" }}</div>
     </div>
 
-    <div class="tablecard-topbox-row">
-      <label>Anmerkung:</label>
+    <div class="detail-card-row">
+      <div>Anmerkung:</div>
       <div>{{ delivery.note }}</div>
     </div>
   </section>
 
-  <section class="tablecard-list">
-    <div class="tablecard-list-name">Ladungseinheiten:</div>
+  <section>
+    <div class="grid-card-title">Ladungseinheiten:</div>
 
-    <table>
-      <thead>
-        <tr class="tablecard-list-header">
-          <th class="tablecard-list-id">ID</th>
-          <th class="tablecard-list-weight">Gewicht</th>
-          <th>Behälter</th>
-          <th>Material</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody class="tablecard-list-content">
-        {% for item in delivery_units %}
-          <tr>
-            <td class="tablecard-list-id"><p>{{ item.id }}</p></td>
-            <td class="tablecard-list-weight"><p>{{ item.weight|default:"-" }} kg</p></td>
-            <td>{{ item.get_delivery_type_display }}</td>
-            <td><p>{{ item.material.name|default:"-" }}</p></td>
-            <td><p>{{ item.get_status_display }}</p></td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+    <div class="grid-card" data-type="delivery-detail-deliveryunits">
+      <div class="grid-card-header">№</div>
+      <div class="grid-card-header">Gewicht</div>
+      <div class="grid-card-header">Behälter</div>
+      <div class="grid-card-header">Material</div>
+      <div class="grid-card-header">Status</div>
+    
+      {% for item in delivery_units %}
+        <div class="grid-card-row" data-type="delivery-detail-deliveryunits">
+          <div>{{ forloop.counter }}</div>
+          <div>{{ item.weight|default:"-" }}</div>
+          <div>{{ item.get_delivery_type_display }}</div>
+          <div>{{ item.material.name|default:"-" }}</div>
+          <div>{{ item.get_status_display }}</div>
+        </div>
+      {% endfor %}
+    </div>
+    
   </section>
 
 </div>

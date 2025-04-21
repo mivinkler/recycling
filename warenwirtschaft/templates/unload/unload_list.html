@@ -7,65 +7,55 @@
 {% block title %}{{ _("Entladungen") }}{% endblock %}
 
 {% block content %}
+<div class="grid-table" data-type="unload-list">
+    <div class="grid-header">№</div>
+    <div class="grid-header">Behälter</div>
+    <div class="grid-header">Material</div>
+    <div class="grid-header">Gewicht</div>
+    <div class="grid-header">Datum</div>
+    <div class="grid-header">Zweck</div>
+    <div class="grid-header">Anmerkung</div>
+    <div class="grid-header">Lieferant</div>
+    <div class="grid-header">Liefereinheit</div>
+    <div class="grid-header">Liefer-Material</div>
 
-<table class="selectable-table">
-    <thead>
-        <tr class="table-title">
-            <th class="table-id">&#8470;</th>
-            <th class="table-delivery-type">Behälter</th>
-            <th class="table-material">Material</th>
-            <th class="table-weight">Gewicht</th>
-            <th class="table-data" title="Datum">Datum</th>
-            <th class="table-purpose">Zweck</th>
-            <th class="table-note">Anmerkung</th>
-            <th class="table-name">Lieferant</th>
-            <th class="table-delivery-unit">Liefereinheit</th>
-            <th class="table-material" title="Liefereinheit-Material">Liefer-Material</th>
+    {% for item in page_obj %}
+        <div class="grid-row js-select-row"
+            data-id="{{ item.id }}"
+            data-url-detail="{% url 'delivery_detail' pk=item.id %}"
+            data-url-update="{% url 'delivery_update' pk=item.id %}">
 
-        </tr>
-    </thead>
-    <tbody>
-        {% regroup page_obj by delivery_unit_id as delivery_units %}
-        {% for delivery_unit in delivery_units %}
-            {% for item in delivery_unit.list %}
-            <tr class="js-select-row" data-id="{{ delivery_unit.id }}" data-url-detail="{% url 'delivery_detail' pk=item.id %}" data-url-update="{% url 'delivery_update' pk=item.id %}">
-                <td hidden>
-                    <input type="radio" value="{{ item.id }}">
-                </td>
-                {% if forloop.first %}
-                <td rowspan="{{ delivery_unit.list|length }}" class="table-id">{{ item.delivery_unit.id }}</td>
-                <td rowspan="{{ delivery_unit.list|length }}" class="table-name">{{ item.delivery_unit.delivery.supplier.name }}</td>
-                <td rowspan="{{ delivery_unit.list|length }}" class="table-delivery_unit-receipt">{{ item.delivery_unit.delivery.delivery_receipt }}</td>
-                <td rowspan="{{ delivery_unit.list|length }}" class="table-weight">{{ item.delivery_unit.weight }}</td>
-                <td rowspan="{{ delivery_unit.list|length }}" class="table-note" title="{{ item.note }}">{{ item.delivery_unit.note }}</td>
-                {% endif %}
-                
-                <td hidden>
-                    <input type="radio" value="{{ uload.id }}">
-                </td>
-                <td class="table-id">{{ item.id }}</td>
-                <td class="table-delivery-type">{{ item|getattr:"get_unload_type_display" }}</td>
-                <td class="table-material">{{ item.material }}</td>
-                <td class="table-weight">{{ item.weight }}</td>
-                <td class="table-data">{{ item.created_at|date:'d.m.Y' }}</td>
-                <td class="table-purpose">{{ item|getattr:"get_purpose_display" }}</td>
-                <td class="table-note" title="{{ item.note }}">{{ item.note }}</td>
-                <td class="table-name" title="{{ item.supplier }}">{{ item.supplier.name }}</td>
-                <td class="table-delivery-unit">{{ item.delivery_unit }}</td>
-                <td class="table-material">{{ item.delivery_unit.material }}</td> 
-            </tr>
-            {% endfor %}
-        {% endfor %}
-    </tbody>
-</table>
+            <div>{{ item.id }}</div>
+            <div>{{ item|getattr:"get_unload_type_display" }}</div>
+            <div>{{ item.material }}</div>
+            <div>{{ item.weight }}</div>
+            <div>{{ item.created_at|date:'d.m.Y' }}</div>
+            <div>{{ item|getattr:"get_purpose_display" }}</div>
+            <div title="{{ item.note }}">{{ item.note }}</div>
 
+            <div>{{ item.supplier.name }}</div>
+            <div>{{ item.delivery_unit }}</div>
+            <div>{{ item.delivery_unit.material }}</div>
+        </div>
+    {% endfor %}
+</div>
+
+  
 {% paginate page_obj %}
 
 {% endblock %}
 
 {% block extra_js %}
     <script src="{% static 'js/selectable-row.js' %}"></script>
-    <script src="{% static 'js/block-visibility.js' %}"></script>
     <script src="{% static 'js/current-date.js' %}"></script>
+    <script>
+        document.addEventListener("click", function (event) {
+          document.querySelectorAll("details.top-icon-detail[open]").forEach(details => {
+            if (!details.contains(event.target)) {
+              details.removeAttribute("open");
+            }
+          });
+        });
+      </script>
 {% endblock %}
 

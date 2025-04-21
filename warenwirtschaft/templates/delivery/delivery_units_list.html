@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% load static %}
+{% load sort_tags %}
 {% load custom_filters %}
 {% load pagination %}
 
@@ -8,47 +9,35 @@
 
 {% block content %}
 
-<table class="selectable-table">
-    <!-- "Active_fields" in delivery_units_list.py müssen gleiche Reihenfolge haben -->
-    <thead class="table-head">
-        <tr class="table-title">
-            {% for field, label, css_class in active_fields %}
-                <th class="{{ css_class }}">
-                    {% with asc=field|add:"_asc" desc=field|add:"_desc" %}
-                        {% if sort_param == asc %}
-                            <a href="?sort={{ asc }}">{{ label }}<span class="table-head-arrow">🡇</span></a>
-                        {% elif sort_param == desc %}
-                            <a href="?sort={{ desc }}">{{ label }}<span class="table-head-arrow">🡅</span></a>
-                        {% else %}
-                            <a href="?sort={{ asc }}">{{ label }}</a>
-                        {% endif %}
-                    {% endwith %}
-                </th>
-            {% endfor %}
-        </tr>
-    </thead>
+<div class="grid-table" data-type="deliveryunits-list">
+  <div class="grid-header">{% sort_header "delivery__id" "№" %}</div>
+  <div class="grid-header">{% sort_header "supplier__name" "Lieferant" %}</div>
+  <div class="grid-header">{% sort_header "delivery_receipt" "Lieferschein" %}</div>
+  <div class="grid-header">{% sort_header "delivery_type" "Behälter" %}</div>
+  <div class="grid-header">{% sort_header "material" "Material" %}</div>
+  <div class="grid-header">{% sort_header "weight" "Gewicht" %}</div>
+  <div class="grid-header">{% sort_header "created_at" "Datum" %}</div>
+  <div class="grid-header">{% sort_header "status" "Status" %}</div>
+  <div class="grid-header">{% sort_header "note" "Notiz" %}</div>
 
-    <tbody class="table-body">
-        {% for deliveryunit in page_obj %}
-            <tr class="js-select-row" data-id="{{ deliveryunit.id }}" data-url-detail="{% url 'delivery_detail' pk=deliveryunit.delivery.id %}" data-url-update="{% url 'delivery_update' pk=deliveryunit.delivery.id %}">
-                <td hidden>
-                    <input type="radio" name="selected_supplier" value="{{ deliveryunit.id }}">
-                </td>
-                
-                <td class="table-id">{{ deliveryunit.delivery.id }}</td>
-                <td class="table-name">{{ deliveryunit.delivery.supplier.name }}</td>
-                <td class="table-delivery-receipt">{{ deliveryunit.delivery.delivery_receipt }}</td>
-                <td class="table-note" title="{{ deliveryunit.delivery.note }}">{{ deliveryunit.delivery.note }}</td>
-                
-                <td class="table-delivery-type">{{ deliveryunit.get_delivery_type_display }}</td>
-                <td class="table-material">{{ deliveryunit.material }}</td>
-                <td class="table-weight">{{ deliveryunit.weight }}</td>
-                <td class="table-data">{{ deliveryunit.created_at|date:'d.m.Y' }}</td>
-                <td class="table-status">{{ deliveryunit.get_status_display }}</td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
+  {% for deliveryunit in page_obj %}
+    <div class="grid-row js-select-row"
+      data-id="{{ deliveryunit.id }}"
+      data-url-detail="{% url 'delivery_detail' pk=deliveryunit.delivery.id %}"
+      data-url-update="{% url 'delivery_update' pk=deliveryunit.delivery.id %}">
+    
+      <div>{{ deliveryunit.delivery.id }}</div>
+      <div>{{ deliveryunit.delivery.supplier.name }}</div>
+      <div>{{ deliveryunit.delivery.delivery_receipt }}</div>
+      <div>{{ deliveryunit.get_delivery_type_display }}</div>
+      <div>{{ deliveryunit.material }}</div>
+      <div>{{ deliveryunit.weight }}</div>
+      <div>{{ deliveryunit.created_at|date:'d.m.Y' }}</div>
+      <div>{{ deliveryunit.get_status_display }}</div>
+      <div title="{{ deliveryunit.delivery.note }}">{{ deliveryunit.delivery.note }}</div>
+    </div>
+  {% endfor %}
+</div>
 
 {% paginate page_obj %}
 
@@ -56,6 +45,14 @@
 
 {% block extra_js %}
     <script src="{% static 'js/selectable-row.js' %}"></script>
-    <script src="{% static 'js/block-visibility.js' %}"></script> 
     <script src="{% static 'js/current-date.js' %}"></script>
+    <script>
+      document.addEventListener("click", function (event) {
+        document.querySelectorAll("details.top-icon-detail[open]").forEach(details => {
+          if (!details.contains(event.target)) {
+            details.removeAttribute("open");
+          }
+        });
+      });
+    </script>
 {% endblock %}

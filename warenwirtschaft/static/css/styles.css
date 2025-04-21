@@ -22,10 +22,6 @@
   --color-hero: #217346;
 }
 
-body {
-  width: 100vw;
-}
-
 table {
   width: 100%;
   table-layout: fixed;

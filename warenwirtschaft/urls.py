@@ -6,7 +6,6 @@ from warenwirtschaft.views.supplier.supplier_detail_view import SupplierDetailVi
 from warenwirtschaft.views.supplier.supplier_create_view import SupplierCreateView
 from warenwirtschaft.views.supplier.supplier_delete_view import SupplierDeleteView
 
-from warenwirtschaft.views.delivery.delivery_list_view import DeliveryListView
 from warenwirtschaft.views.delivery.delivery_units_list_view import DeliveryUnitsListView
 from warenwirtschaft.views.delivery.delivery_detail_view import DeliveryDetailView
 from warenwirtschaft.views.delivery.delivery_create_view import DeliveryCreateView
@@ -26,7 +25,6 @@ urlpatterns = [
     path('supplier/update/<int:pk>/', SupplierUpdateView.as_view(), name='supplier_update'),
     path('supplier/delete/<int:pk>/', SupplierDeleteView.as_view(), name='supplier_delete'),
 
-    path('delivery/list/', DeliveryListView.as_view(), name='delivery_list'),
     path('delivery/units/', DeliveryUnitsListView.as_view(), name='delivery_units_list'),
     path('delivery/<int:pk>/', DeliveryDetailView.as_view(), name='delivery_detail'),
     path('delivery/create/', DeliveryCreateView.as_view(), name='delivery_create'),

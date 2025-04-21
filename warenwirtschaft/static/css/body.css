@@ -1,3 +1,211 @@
+/* ================= GRID column width ================= */
+
+.grid-table[data-type="supplier-list"] {
+  grid-template-columns:
+    auto        /* ID */
+    1fr         /* AVV*/
+    2fr         /* Name */
+    2fr         /* Adresse */
+    1fr         /* PLZ */
+    2fr         /* Stadt */
+    1fr         /* Telefon */
+    2fr         /* Email */
+    1fr         /* Datum */
+    4fr;        /* Anmerkung */
+}
+
+.grid-table[data-type="deliveryunits-list"] {
+  grid-template-columns: auto repeat(7, 1fr) 2fr;
+}
+
+.grid-table[data-type="unload-list"] {
+  grid-template-columns:
+    auto         /* № */
+    2fr          /* Behälter */
+    2fr          /* Material */
+    1fr          /* Gewicht */
+    1fr          /* Datum */
+    1fr          /* Zweck */
+    4fr          /* Anmerkung */
+    4fr          /* Lieferant */
+    2fr          /* Liefereinheit */
+    2fr;         /* Liefer-Material */
+}
+
+.grid-table[data-type="supplier-detail-deliveryunits"] {
+  grid-template-columns: auto repeat(8, 1fr);
+}
+
+.grid-card[data-type="delivery-detail-deliveryunits"] {
+  grid-template-columns: 32px repeat(4, 1fr);
+}
+
+/* ================= GRID ================= */
+
+.grid-table {
+  display: grid;
+  width: 100%;
+}
+
+.grid-header {
+  font-weight: 500;
+  background-color: var(--color-gray-150);
+  border-top: 7px solid var(--color-gray-150);
+  border-right: 1px solid var(--color-gray-300);
+  border-bottom: 1px solid var(--color-gray-300);
+  padding: 4px 6px;
+  text-align: center;
+}
+
+.grid-row {
+  display: contents; /* lässt die inneren <div> als Grid-Elemente erscheinen */
+}
+
+.grid-row > div:first-child {
+  background-color: var(--color-gray-150);
+  padding-left: 8px;
+}
+
+.grid-row > div {
+  border-right: 1px solid var(--color-gray-200);
+  border-bottom: 1px solid var(--color-gray-200);
+  padding: 4px 12px 4px 6px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.grid-row:hover > div {
+  background-color: var(--color-gray-300);
+}
+
+.grid-row:focus > div {
+  background-color: var(--color-gray-300);
+}
+
+.row-selected {
+  background-color: #d0e4f5 !important;
+}
+
+/* ============= grid top-icon ============ */
+
+.top-icon-detail summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.top-icon-detail summary::-webkit-details-marker {
+  display: none;
+}
+
+/* ============= JavaScript ============ */
+
+.js-select-row.row-selected > div {
+  background-color: #d0e4f5;
+}
+
+/* ============= Detail ============ */
+
+/* ---------Topbox -------- */
+
+.detail-card-small {
+  margin: 30px auto;
+  padding: 30px;
+  background-color: var(--color-gray-100);
+  border: 1px solid var(--color-gray-300);
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+}
+
+.detail-card-small {
+  width: 640px;
+}
+
+.detail-card-topbox {
+  margin: 20px 0;
+}
+
+.detail-card-topbox > div {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.detail-card-row div:first-child {
+  width: 25%;
+  font-weight: 500;
+  margin-top: 5px;
+}
+
+.detail-card-row div:last-child {
+  width: 75%;
+}
+
+.detail-card-row input,
+.detail-card-row select,
+.detail-card-row textarea {
+  width: 100%;
+  padding: 4px 6px;
+  min-height: 30px;
+  border: 1px solid var(--color-gray-400);
+}
+
+.detail-card-row textarea {
+  resize: vertical;
+}
+
+/* --------- grid-card ----------- */
+
+.grid-card-title {
+  font-weight: 500;
+}
+
+.grid-card {
+  display: grid;
+  margin-top: 10px;
+  gap: 1px;
+  background-color: var(--color-gray-300); /* gap-color */
+  border: 1px solid var(--color-gray-300);
+} 
+
+.grid-card-header {
+  background-color: var(--color-gray-200);
+  font-weight: 500;
+  padding: 4px 6px;
+  text-align: center;
+}
+
+.grid-card-row > div:first-child {
+  text-align: center;
+}
+
+.grid-card-row > div {
+  padding: 4px;
+  background-color: white;
+}
+
+.grid-card-row {
+  display: contents; /* lässt die inneren <div> als Grid-Elemente erscheinen */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .table-head {
   background-color: var(--color-gray-150);
   border-top: 10px solid var(--color-gray-150);
@@ -9,15 +217,17 @@
 
 .table-head-arrow {
   color: rgb(2, 141, 2);
-  margin-left: 10px;
+  margin-left: 6px;
+  font-size: 11px;
 }
 
 .table-body td {
-  padding: 4px 6px;
+  padding: 4px 4px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
 
 /* ============ Row width =============*/
 
@@ -54,14 +264,12 @@
   border-bottom: 1px solid var(--color-gray-300);
 }
 
-.info-table thead {
-  width: 100%;
+.info-table-title {
+  margin-left: 22px;
+  margin-top: 22px;
 }
 
-.info-table th {
-  border: none;
-}
-
+.info-table th,
 .info-table td {
   border: none;
   vertical-align: super;
@@ -267,21 +475,6 @@
 
 .btn:active {
   box-shadow: none;
-}
-
-/* ============= JavaScript ============ */
-
-.js-select-row {
-  transition: background-color 0.3s ease;
-}
-
-.js-select-row:hover {
-  background-color: #f0f0f0;
-  cursor: pointer;
-}
-
-.row-selected {
-  background-color: #d0e4f5 !important;
 }
 
 /* ====== Pagination ====== */

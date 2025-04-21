@@ -1,5 +1,4 @@
 from django.views.generic import ListView
-from django.db.models import Q
 from warenwirtschaft.models import Supplier
 from warenwirtschaft.services.search_service import SearchService
 from warenwirtschaft.services.sorting_service import SortingService
@@ -12,24 +11,27 @@ class SupplierListView(ListView):
     paginate_by = 22
 
     active_fields = [
-        ("id", "ID", "table-id"),
-        ("avv_number", "AVV-Nummer", "table-avv"),
-        ("name", "Name", "table-name"),
-        ("street", "Straße", "table-street"),
-        ("postal_code", "PLZ", "table-postal"),
-        ("city", "Stadt", "table-city"),
-        ("phone", "Telefon", "table-phone"),
-        ("email", "Email", "table-email"),
-        ("note", "Anmerkung", "table-note"),
+        ("id", "ID"),
+        ("avv_number", "AVV-Nummer"),
+        ("name", "Lieferant"),
+        ("street", "Straße"),
+        ("postal_code", "PLZ"),
+        ("city", "Stadt"),
+        ("phone", "Telefon"),
+        ("email", "Email"),
+        ("created_at", "Erstellt am"),
+        ("note", "Anmerkung"),
     ]
 
     def get_queryset(self):
         queryset = super().get_queryset()
 
-        fields = [field[0] for field in self.active_fields]  # Wir nehmen nur die Schlüssel
+        fields = [field[0] for field in self.active_fields]
+        search_service = SearchService(self.request, fields)
+        sorting_service = SortingService(self.request, fields)
 
-        queryset = SearchService(self.request, fields).apply_search(queryset)
-        queryset = SortingService(self.request, fields).apply_sorting(queryset)
+        queryset = search_service.apply_search(queryset)
+        queryset = sorting_service.apply_sorting(queryset)
 
         return queryset
 
@@ -40,8 +42,10 @@ class SupplierListView(ListView):
         page_obj = paginator.get_paginated_queryset(self.get_queryset())
 
         context["page_obj"] = page_obj
+        context["sort_param"] = self.request.GET.get("sort", "")
         context["search_query"] = self.request.GET.get("search", "")
         context["active_fields"] = self.active_fields
+
         context["selected_menu"] = "supplier_list"
 
         return context

@@ -1,27 +1,31 @@
 document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll(".top-icon-js").forEach((iconDetail) => {
-        const toggleButton = iconDetail.querySelector(".toggle-button");
-        const hiddenBlock = iconDetail.querySelector(".hidden-block");
-
-        toggleButton.addEventListener("click", function (event) {
-            // Alle anderen Blöcke werden geschlossen, wenn ein neuer Block aufgemacht wird
-            document.querySelectorAll(".hidden-block").forEach((block) => {
-                if (block !== hiddenBlock) {
-                    block.hidden = true;
-                }
-            });
-
-            // Prüft, ob der Block ausgeblendet ist
-            hiddenBlock.hidden = !hiddenBlock.hidden;
-            // "stopPropagation()" - verhindert, dass der Block schließt, wenn darauf klicken
-            event.stopPropagation();
+    document.querySelectorAll(".top-icon-js").forEach((iconBlock) => {
+      const toggleButton = iconBlock.querySelector(".toggle-button");
+      const sortPanel = iconBlock.querySelector(".top-icon-detail");
+  
+      if (!toggleButton || !sortPanel) return;
+  
+      toggleButton.addEventListener("click", function (event) {
+        // Закрыть все другие панели
+        document.querySelectorAll(".top-icon-detail").forEach((panel) => {
+          if (panel !== sortPanel) panel.setAttribute("hidden", "");
         });
-
-        // Schließen eines Blocks, wenn außerhalb ihm geklickt wird
-        document.addEventListener("click", function (event) {
-            if (!iconDetail.contains(event.target)) {
-                hiddenBlock.hidden = true;
-            }
-        });
+  
+        // Переключить текущую
+        if (sortPanel.hasAttribute("hidden")) {
+          sortPanel.removeAttribute("hidden");
+        } else {
+          sortPanel.setAttribute("hidden", "");
+        }
+  
+        event.stopPropagation();
+      });
+  
+      document.addEventListener("click", function (event) {
+        if (!iconBlock.contains(event.target)) {
+          sortPanel.setAttribute("hidden", "");
+        }
+      });
     });
-});
+  });
+  

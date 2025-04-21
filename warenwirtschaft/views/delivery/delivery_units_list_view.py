@@ -11,24 +11,24 @@ class DeliveryUnitsListView(ListView):
     context_object_name = "delivery_units"
     paginate_by = 50
 
-    active_fields = [
-        ("delivery__id", "LID", "table-id"),
-        ("delivery__supplier__name", "Lieferant", "table-name"),
-        ("delivery__delivery_receipt", "Lieferschein", "table-delivery-receipt"),
-        ("note", "Anmerkung", "table-note"),
-        ("delivery_type", "Behälter", "table-delivery-type"),
-        ("material__name", "Material", "table-material"),
-        ("weight", "Gewicht", "table-weight"),
-        ("created_at", "Datum", "table-data"),
-        ("status", "Status", "table-status"),
+    sortable_fields = [
+        ("delivery__id", "LID"),
+        ("delivery__supplier__name", "Lieferant"),
+        ("delivery__delivery_receipt", "Lieferschein"),
+        ("note", "Anmerkung"),
+        ("delivery_type", "Behälter"),
+        ("material__name", "Material"),
+        ("weight", "Gewicht"),
+        ("created_at", "Datum"),
+        ("status", "Status"),
     ]
 
     def get_queryset(self):
-        fields = [field[0] for field in self.active_fields]  # Wir nehmen nur die Schlüssel
+        sort_fields = [field[0] for field in self.sortable_fields]
         queryset = DeliveryUnit.objects.select_related("delivery", "delivery__supplier", "material")
-        
-        queryset = SearchService(self.request, fields).apply_search(queryset)
-        queryset = SortingService(self.request, fields).apply_sorting(queryset)
+
+        queryset = SearchService(self.request, sort_fields).apply_search(queryset)
+        queryset = SortingService(self.request, sort_fields).apply_sorting(queryset)
 
         return queryset
 
@@ -38,13 +38,14 @@ class DeliveryUnitsListView(ListView):
         paginator = PaginationService(self.request, self.paginate_by)
         page_obj = paginator.get_paginated_queryset(self.get_queryset())
 
-        context["page_obj"] = page_obj
-        context["active_fields"] = self.active_fields
-        context["search_query"] = self.request.GET.get("search", "")
-        context["sort_param"] = self.request.GET.get("sort", "")
-        context["selected_menu"] = "delivery_units_list"
-
-        context["delivery_types"] = DeliveryUnit.DELIVERY_TYPE_CHOICES
-        context["statuses"] = DeliveryUnit.STATUS_CHOICES
+        context.update({
+            "page_obj": page_obj,
+            "sort_param": self.request.GET.get("sort", ""),
+            "search_query": self.request.GET.get("search", ""),
+            "delivery_types": DeliveryUnit.DELIVERY_TYPE_CHOICES,
+            "statuses": DeliveryUnit.STATUS_CHOICES,
+            
+            "selected_menu": "delivery_units_list",
+        })
 
         return context

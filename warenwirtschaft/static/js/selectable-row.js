@@ -1,33 +1,33 @@
 document.addEventListener("DOMContentLoaded", function () {
-    let selectedRow = null;
-    let detailLink = document.getElementById("detail-link");
-    let editLink = document.getElementById("edit-link");
+    const rows = document.querySelectorAll(".js-select-row");
+    const detailLink = document.getElementById("detail-link");
+    const editLink = document.getElementById("edit-link");
 
-    document.querySelectorAll(".js-select-row").forEach(row => {
-        row.addEventListener("click", function () {
+    if (!detailLink || !editLink) return;
+
+    let selectedRow = null;
+
+    rows.forEach(row => {
+        row.addEventListener("click", () => {
+            // Vorherige Auswahl entfernen
             if (selectedRow) {
                 selectedRow.classList.remove("row-selected");
-                selectedRow.querySelector("input[type='radio']").checked = false;
             }
 
-            selectedRow = this;
+            // Neue Auswahl markieren
+            selectedRow = row;
             selectedRow.classList.add("row-selected");
 
-            let radio = selectedRow.querySelector("input[type='radio']");
-            if (radio) {
-                radio.checked = true;
-            }
+            // Links setzen
+            const { urlDetail, urlUpdate } = row.dataset;
 
-            let detailUrl = selectedRow.dataset.urlDetail;
-            let editUrl = selectedRow.dataset.urlUpdate;
-
-            if (!detailUrl || !editUrl) {
-                console.error("Fehler: Url");
+            if (!urlDetail || !urlUpdate) {
+                console.error("Fehler: URL fehlt");
                 return;
             }
 
-            detailLink.href = detailUrl;
-            editLink.href = editUrl;
+            detailLink.href = urlDetail;
+            editLink.href = urlUpdate;
 
             detailLink.classList.remove("disabled");
             editLink.classList.remove("disabled");

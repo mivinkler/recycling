@@ -70,11 +70,41 @@ header {
 }
 
 .top-icon-detail {
+    position: relative;
+    display: inline-block;
+}
+  
+.top-icon-detail summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: none;
+    padding: 0;
+}
+  
+.top-icon-detail summary::-webkit-details-marker {
+    display: none; /* Entfernt das Dreieck im Browser */
+}
+
+.top-icon-detail > div {
     position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 100;
+    min-width: 150px;
+    margin-top: 4px;
     padding: 8px;
     border: 1px solid var(--color-gray-300);
     background-color: #fff;
     box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+    display: none;
+}
+
+.top-icon-detail[open] > div {
+    display: block;
 }
   
 /* ============ Icon: search =============*/

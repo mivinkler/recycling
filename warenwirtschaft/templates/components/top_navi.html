@@ -1,109 +1,113 @@
 {% load static %}
 
 <div class="top-icons-wrapper">
-    <div>
-        <div class="top-icon">
-            {% include 'components/left_navi.html' %}
-            <img src="{% static 'icons/download-icon.svg' %}">
-            <img src="{% static 'icons/print-icon.svg' %}">
 
-        </div>
-        <p class="top-icons-title">Action</p>
+  <!-- Action -->
+  <div>
+    <div class="top-icon">
+      {% include 'components/left_navi.html' %}
+      <img src="{% static 'icons/download-icon.svg' %}">
+      <img src="{% static 'icons/print-icon.svg' %}">
     </div>
+    <p class="top-icons-title">Action</p>
+  </div>
 
-    <div>
-        <div class="top-icon">
-            <a href="#" id="detail-link" title="Detail">
-                <img src="{% static 'icons/info-icon.svg' %}">
-            </a>
-            <a href="#" id="edit-link" title="Bearbeiten">
-                <img src="{% static 'icons/edit-icon.svg' %}">
-            </a>
-        </div>
-        <p class="top-icons-title">Zeile</p>
+  <!-- Zeile -->
+  <div>
+    <div class="top-icon">
+      <a href="#" id="detail-link" title="Detail">
+        <img src="{% static 'icons/info-icon.svg' %}">
+      </a>
+      <a href="#" id="edit-link" title="Bearbeiten">
+        <img src="{% static 'icons/edit-icon.svg' %}">
+      </a>
     </div>
+    <p class="top-icons-title">Zeile</p>
+  </div>
 
-    <div>
-        <div class="top-icon">
-            <div class="top-icon-js">
-                <div class="toggle-button">
-                    <img src="{% static 'icons/search-icon.svg' %}">
-                </div>
-                <div class="top-icon-detail hidden-block" hidden>
-                    <form class="icon-search" method="GET">
-                        <input class="icon-search-input" type="text" name="search" placeholder="Suchen..." value="{{ search_query }}">
-                        <button class="icon-search-button" type="submit"><img src="{% static 'icons/lupe-icon.svg' %}"></button>
-                    </form>
-                
-                    <form class="icon-search-date" method="GET">
-                        <input type="date" id="dateStart">
-                        <input type="date" id="dateEnd">
-                    </form>
-                </div>
+  <!-- Suche -->
+  <div>
+    <div class="top-icon">
+      
+      <!-- Suchfeld -->
+      <details class="top-icon-detail">
+        <summary>
+          <img src="{% static 'icons/search-icon.svg' %}" alt="Suche">
+        </summary>
+        <div>
+          <form class="icon-search" method="GET">
+            <input class="icon-search-input" type="text" name="search" placeholder="Suchen..." value="{{ search_query }}">
+            <button class="icon-search-button" type="submit">
+              <img src="{% static 'icons/lupe-icon.svg' %}">
+            </button>
+          </form>
+          <form class="icon-search-date" method="GET">
+            <input type="date" id="dateStart">
+            <input type="date" id="dateEnd">
+          </form>
+        </div>
+      </details>
+
+      <!-- Sortieren -->
+      <details class="top-icon-detail">
+        <summary>
+          <img src="{% static 'icons/sort-icon.svg' %}" alt="Sortieren">
+        </summary>
+        <div>
+          {% for field, label in active_fields %}
+            <div class="icon-sort">
+              <span>{{ label }}</span>
+              <div>
+                <a href="?sort={{ field }}_asc"
+                   class="{% if sort_param == field|add:'_asc' %}icon-active{% endif %}">▼</a>
+                <a href="?sort={{ field }}_desc"
+                   class="{% if sort_param == field|add:'_desc' %}icon-active{% endif %}">▲</a>
+              </div>
             </div>
-            
-            <div class="top-icon-js">
-                <div class="toggle-button">
-                    <img src="{% static 'icons/sort-icon.svg' %}">
-                </div>
-                <div class="top-icon-detail hidden-block" hidden>
-                    <div>
-                        {% for field, label, css_class in active_fields %}
-                            <div class="icon-sort">
-                                <span>
-                                    {{ label }}
-                                </span>
-                                <div>
-                                    <a href="?sort={{ field }}_asc"
-                                       class="{% if sort_param == field|add:'_asc' %}icon-active{% endif %}">▼</a>
-                                    <a href="?sort={{ field }}_desc"
-                                       class="{% if sort_param == field|add:'_desc' %}icon-active{% endif %}">▲</a>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-            <div class="top-icon-js">
-                <a href="#" title="Reset">
-                    <img src="{% static 'icons/reset-icon.svg' %}">
-                </a>
-
-            </div>
+          {% endfor %}
         </div>
-        <p class="top-icons-title">Suchen</p>
-    </div>
+      </details>
 
-    <div>
-        <div class="top-icon">
-            <a href="#">
-                <img src="{% static 'icons/statistic-icon.svg' %}">   
-            </a>
-            <a href="#">
-                <img src="{% static 'icons/diagram-icon.svg' %}">   
-            </a>
-        </div>
-        <p class="top-icons-title">Statistik</p>
-    </div>
+      <!-- Reset -->
+      <div class="top-icon-js">
+        <a href="#" title="Reset">
+          <img src="{% static 'icons/reset-icon.svg' %}">
+        </a>
+      </div>
 
-    <div>
-        <div class="top-icon">
-            <a href="{% url 'supplier_create' %}" title="Lieferant">
-                <img src="{% static 'icons/supplier-icon.svg' %}">   
-            </a>
-            <a href="{% url 'delivery_create' %}" title="Lieferung">
-                <img src="{% static 'icons/container-icon.svg' %}">   
-            </a>
-            <a href="{% url 'unload_create' %}" title="Leerung">
-                <img src="{% static 'icons/forklift-icon.svg' %}">   
-            </a>
-            <a href="#" title="Recycling">
-                <img src="{% static 'icons/conveyor-icon.svg' %}">   
-            </a>
-            <a href="#" title="Versand">
-                <img src="{% static 'icons/shipping-icon.svg' %}">   
-            </a>
-        </div>
-        <p class="top-icons-title">Erstellen</p>
     </div>
+    <p class="top-icons-title">Suchen</p>
+  </div>
+
+  <!-- Statistik -->
+  <div>
+    <div class="top-icon">
+      <a href="#"><img src="{% static 'icons/statistic-icon.svg' %}"></a>
+      <a href="#"><img src="{% static 'icons/diagram-icon.svg' %}"></a>
+    </div>
+    <p class="top-icons-title">Statistik</p>
+  </div>
+
+  <!-- Erstellen -->
+  <div>
+    <div class="top-icon">
+      <a href="{% url 'supplier_create' %}" title="Lieferant">
+        <img src="{% static 'icons/supplier-icon.svg' %}">
+      </a>
+      <a href="{% url 'delivery_create' %}" title="Lieferung">
+        <img src="{% static 'icons/container-icon.svg' %}">
+      </a>
+      <a href="{% url 'unload_create' %}" title="Leerung">
+        <img src="{% static 'icons/forklift-icon.svg' %}">
+      </a>
+      <a href="#" title="Recycling">
+        <img src="{% static 'icons/conveyor-icon.svg' %}">
+      </a>
+      <a href="#" title="Versand">
+        <img src="{% static 'icons/shipping-icon.svg' %}">
+      </a>
+    </div>
+    <p class="top-icons-title">Erstellen</p>
+  </div>
+
 </div>

@@ -39,11 +39,10 @@
       <table>
         <thead>
           <tr class="tablecard-list-header">
-            <th class="tablecard-list-id">&#8470;</th>
+            <th class="tablecard-list-id">№</th>
             <th class="tablecard-list-weight">Gewicht</th>
             <th>Behälter</th>
             <th>Material</th>
-            <th class="tablecard-list-delete">Löschen</th>
           </tr>
         </thead>
         <tbody class="tablecard-list-content">
@@ -70,9 +69,6 @@
                 {{ unit_form.material.errors }}
               </td>
         
-              <td class="tablecard-list-delete">
-                {{ unit_form.DELETE }}
-              </td>
             </tr>
           {% endfor %}
         </tbody>
@@ -85,7 +81,6 @@
             <td class="tablecard-list-weight">{{ empty_form.weight }}</td>
             <td>{{ empty_form.delivery_type }}</td>
             <td>{{ empty_form.material }}</td>
-            <td class="tablecard-list-delete">{{ empty_form.DELETE }}</td>
           </tr>
         </template>
       </table>

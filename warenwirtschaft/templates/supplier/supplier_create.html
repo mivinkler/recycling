@@ -4,57 +4,54 @@
 
 {% block content %}
 
-<div class="tablecard-small">
+<div class="detail-card-small">
   <form method="post">
     {% csrf_token %}
 
-    <div class="tablecard-topbox-title">
-      <h2>Lieferant erstellen</h2>
-    </div>
+    <h2>Lieferant erstellen</h2>
 
-    <section class="tablecard-topbox">
+    <section class="detail-card-topbox">
       {{ form.non_field_errors }}
 
-      <div class="tablecard-topbox-row">
-        <label for="{{ form.name.id_for_label }}">Name:</label>
-        {{ form.name }}
+      <div class="detail-card-row">
+        <div>Name:</div>
+        <div>{{ form.name }}</div>
       </div>
 
-      <div class="tablecard-topbox-row">
-        <label for="{{ form.avv_number.id_for_label }}">AVV-Nummer:</label>
-        {{ form.avv_number }}
+      <div class="detail-card-row">
+        <div>AVV-Nummer:</div>
+        <div>{{ form.avv_number }}</div>
       </div>
 
-      <div class="tablecard-topbox-row">
-        <label for="{{ form.street.id_for_label }}">Straße:</label>
-        {{ form.street }}
+      <div class="detail-card-row">
+        <div>Straße:</div>
+        <div>{{ form.street }}</div>
       </div>
 
-      <div class="tablecard-topbox-row">
-        <label for="{{ form.postal_code.id_for_label }}">PLZ:</label>
-        {{ form.postal_code }}
+      <div class="detail-card-row">
+        <div>PLZ:</div>
+        <div>{{ form.postal_code }}</div>
       </div>
 
-      <div class="tablecard-topbox-row">
-        <label for="{{ form.city.id_for_label }}">Ort:</label>
-        {{ form.city }}
+      <div class="detail-card-row">
+        <div>Ort:</div>
+        <div>{{ form.city }}</div>
       </div>
 
-      <div class="tablecard-topbox-row">
-        <label for="{{ form.phone.id_for_label }}">Telefon:</label>
-        {{ form.phone }}
+      <div class="detail-card-row">
+        <div>Telefon:</div>
+        <div>{{ form.phone }}</div>
       </div>
 
-      <div class="tablecard-topbox-row">
-        <label for="{{ form.email.id_for_label }}">E-Mail:</label>
-        {{ form.email }}
+      <div class="detail-card-row">
+        <div>E-Mail:</div>
+        <div>{{ form.email }}</div>
       </div>
 
-      <div class="tablecard-topbox-row">
-        <label for="{{ form.note.id_for_label }}">Anmerkung:</label>
-        {{ form.note }}
+      <div class="detail-card-row">
+        <div>Anmerkung:</div>
+        <div>{{ form.note }}</div>
       </div>
-
     </section>
 
     <div class="tablecard-btn">
