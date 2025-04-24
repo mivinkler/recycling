@@ -6,12 +6,12 @@ document.addEventListener("DOMContentLoaded", function () {
       if (!toggleButton || !sortPanel) return;
   
       toggleButton.addEventListener("click", function (event) {
-        // Закрыть все другие панели
+
         document.querySelectorAll(".top-icon-detail").forEach((panel) => {
           if (panel !== sortPanel) panel.setAttribute("hidden", "");
         });
   
-        // Переключить текущую
+        
         if (sortPanel.hasAttribute("hidden")) {
           sortPanel.removeAttribute("hidden");
         } else {

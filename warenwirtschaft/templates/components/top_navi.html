@@ -6,19 +6,26 @@
   <div>
     <div class="top-icon">
       {% include 'components/left_navi.html' %}
-      <img src="{% static 'icons/download-icon.svg' %}">
-      <img src="{% static 'icons/print-icon.svg' %}">
+      <a href="#" id="detail-link" class="tooltip-wrapper">
+        <span class="tooltip-text">Download</span>
+        <img src="{% static 'icons/download-icon.svg' %}">
+      </a>
+      <a href="#" id="edit-link" class="tooltip-wrapper">
+        <span class="tooltip-text">Drucken</span>
+        <img src="{% static 'icons/print-icon.svg' %}">
+      </a>
     </div>
     <p class="top-icons-title">Action</p>
   </div>
-
   <!-- Zeile -->
   <div>
     <div class="top-icon">
-      <a href="#" id="detail-link" title="Detail">
+      <a href="#" id="detail-link" class="tooltip-wrapper">
+        <span class="tooltip-text">Detail</span>
         <img src="{% static 'icons/info-icon.svg' %}">
       </a>
-      <a href="#" id="edit-link" title="Bearbeiten">
+      <a href="#" id="edit-link" class="tooltip-wrapper">
+        <span class="tooltip-text">Bearbeiten</span>
         <img src="{% static 'icons/edit-icon.svg' %}">
       </a>
     </div>
@@ -31,8 +38,9 @@
       
       <!-- Suchfeld -->
       <details class="top-icon-detail">
-        <summary>
-          <img src="{% static 'icons/search-icon.svg' %}" alt="Suche">
+        <summary class="tooltip-wrapper">
+          <span class="tooltip-text">Suche</span>
+          <img src="{% static 'icons/search-icon.svg' %}">
         </summary>
         <div>
           <form class="icon-search" method="GET">
@@ -50,8 +58,9 @@
 
       <!-- Sortieren -->
       <details class="top-icon-detail">
-        <summary>
-          <img src="{% static 'icons/sort-icon.svg' %}" alt="Sortieren">
+        <summary class="tooltip-wrapper">
+          <span class="tooltip-text">Sortieren</span>
+          <img src="{% static 'icons/sort-icon.svg' %}">
         </summary>
         <div>
           {% for field, label in active_fields %}
@@ -69,11 +78,12 @@
       </details>
 
       <!-- Reset -->
-      <div class="top-icon-js">
-        <a href="#" title="Reset">
+
+        <a href="#" class="tooltip-wrapper top-icon-js">
+          <span class="tooltip-text">Reset</span>
           <img src="{% static 'icons/reset-icon.svg' %}">
         </a>
-      </div>
+      
 
     </div>
     <p class="top-icons-title">Suchen</p>
@@ -82,8 +92,14 @@
   <!-- Statistik -->
   <div>
     <div class="top-icon">
-      <a href="#"><img src="{% static 'icons/statistic-icon.svg' %}"></a>
-      <a href="#"><img src="{% static 'icons/diagram-icon.svg' %}"></a>
+      <a href="#" class="tooltip-wrapper">
+        <span class="tooltip-text">Statistik</span>
+        <img src="{% static 'icons/statistic-icon.svg' %}">
+      </a>
+      <a href="#" class="tooltip-wrapper">
+        <span class="tooltip-text">Statistik</span>
+        <img src="{% static 'icons/diagram-icon.svg' %}">
+      </a>
     </div>
     <p class="top-icons-title">Statistik</p>
   </div>
@@ -91,19 +107,24 @@
   <!-- Erstellen -->
   <div>
     <div class="top-icon">
-      <a href="{% url 'supplier_create' %}" title="Lieferant">
+      <a href="{% url 'supplier_create' %}" class="tooltip-wrapper">
+        <span class="tooltip-text">Lieferant</span>
         <img src="{% static 'icons/supplier-icon.svg' %}">
       </a>
-      <a href="{% url 'delivery_create' %}" title="Lieferung">
+      <a href="{% url 'delivery_create' %}" class="tooltip-wrapper">
+        <span class="tooltip-text">Lieferung</span>
         <img src="{% static 'icons/container-icon.svg' %}">
       </a>
-      <a href="{% url 'unload_create' %}" title="Leerung">
+      <a href="{% url 'unload_create' %}" class="tooltip-wrapper">
+        <span class="tooltip-text">Leerung</span>
         <img src="{% static 'icons/forklift-icon.svg' %}">
       </a>
-      <a href="#" title="Recycling">
+      <a href="#" class="tooltip-wrapper">
+        <span class="tooltip-text">Recycling</span>
         <img src="{% static 'icons/conveyor-icon.svg' %}">
       </a>
-      <a href="#" title="Versand">
+      <a href="#" class="tooltip-wrapper">
+        <span class="tooltip-text">Versand</span>
         <img src="{% static 'icons/shipping-icon.svg' %}">
       </a>
     </div>
