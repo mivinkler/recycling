@@ -4,87 +4,96 @@
 {% block title %}Auslagerung bearbeiten{% endblock %}
 
 {% block content %}
-<div class="tablecard-large">
-  <form method="post" action="{% url 'unload_update' delivery_unit.pk %}" id="unload-form">
-    {% csrf_token %}
 
-    <section class="tablecard-topbox">
-      <h2>Leerung bearbeiten</h2>
+<form method="post" action="{% url 'unload_update' delivery_unit.pk %}" id="unload-form">
+  {% csrf_token %}
 
-      <div class="tablecard-topbox-row">
-        <label>Liefereinheit:</label>
-        <div>
-          {{ delivery_unit.id }} – {{ delivery_unit.material.name }} – {{ delivery_unit.weight }} kg ({{ delivery_unit.delivery.supplier.name }})
+  <div class="tablecard-large">
+    <h2>Leerung bearbeiten</h2>
+    <section>
+      <div class="grid-card-title">Liefereinheit:</div>
+      {{ formset.management_form }}
+
+      <div class="grid-card" data-type="delivery-detail-deliveryunits">
+        <div class="grid-card-header">ID</div>
+        <div class="grid-card-header">Lieferant</div>
+        <div class="grid-card-header">Gewicht</div>
+        <div class="grid-card-header">Material</div>
+        <div class="grid-card-header">Status</div>
+        <div class="grid-card-row">
+          <div>{{ delivery_unit.id }}</div>
+          <div>{{ delivery_unit.delivery.supplier.name }}</div>
+          <div>{{ delivery_unit.weight }}</div>
+          <div>{{ delivery_unit.material.name }}</div>
+          <div>{{ delivery_unit.get_status_display }}</div>
         </div>
+    </section>
+
+    
+    <section>
+      <div class="grid-card-title">Fraktionen:</div>
+      {{ formset.management_form }}
+
+      <div class="grid-card" id="js-grid-card" data-type="unload-update">
+        <div class="grid-card-header">№</div>
+        <div class="grid-card-header">Behälter</div>
+        <div class="grid-card-header">Material</div>
+        <div class="grid-card-header">Gewicht</div>
+        <div class="grid-card-header">Zweck</div>
+        <div class="grid-card-header">Anmerkung</div>
+        <div class="grid-card-header">
+          <img class="grid-delete-icon" title="Löschen" src="/static/icons/delete-icon.svg">
+        </div>
+
+       {% for form in formset %}
+          <div class="grid-card-row">
+            <div>{{ forloop.counter }}{{ form.id }}</div>
+            <div>{{ form.unload_type.as_widget }}</div>
+            <div>{{ form.material.as_widget }}</div>
+            <div>{{ form.weight.as_widget }}</div>
+            <div>{{ form.purpose.as_widget }}</div>
+            <div>{{ form.note.as_widget }}</div>
+            <div class="tablecard-list-delete">{{ form.DELETE.as_widget }}</div>
+          </div>
+        {% endfor %}
+        <template id="js-form-template">
+          <div class="grid-card-row">
+            <div>__number__</div>
+            <div>{{ empty_form.unload_type.as_widget }}</div>
+            <div>{{ empty_form.material.as_widget }}</div>
+            <div>{{ empty_form.weight.as_widget }}</div>
+            <div>{{ empty_form.purpose.as_widget }}</div>
+            <div>{{ empty_form.note.as_widget }}</div>
+            <div class="tablecard-list-delete">{{ empty_form.DELETE.as_widget }}</div>
+          </div>
+        </template>
       </div>
     </section>
 
-    <section class="tablecard-list">
-      <div class="tablecard-list-name">Fraktionen:</div>
-
-      {{ formset.management_form }}
-      <table>
-        <thead>
-          <tr class="tablecard-list-header">
-            <th class="tablecard-list-id">&#8470;</th>
-            <th>Behälter</th>
-            <th>Material</th>
-            <th class="tablecard-list-weight">Gewicht</th>
-            <th>Zweck</th>
-            <th class="tablecard-list-note">Anmerkung</th>
-            <th class="tablecard-list-delete">Löschen</th>
-          </tr>
-        </thead>
-        <tbody class="tablecard-list-content">
-          {% for form in formset %}
-            <tr>
-              <td class="tablecard-list-id">{{ forloop.counter }}</td>
-              <td>{{ form.unload_type }}</td>
-              <td>{{ form.material }}</td>
-              <td class="tablecard-list-weight">{{ form.weight }}</td>
-              <td>{{ form.purpose }}</td>
-              <td class="tablecard-list-note">{{ form.note }}</td>
-              <td class="tablecard-list-delete">{{ form.DELETE }}</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-        <template id="empty-form-template">
-          <tr>
-            <td class="tablecard-list-id">__index__</td>
-            <td>{{ empty_form.unload_type }}</td>
-            <td>{{ empty_form.material }}</td>
-            <td class="tablecard-list-weight">{{ empty_form.weight }}</td>
-            <td>{{ empty_form.purpose }}</td>
-            <td class="tablecard-list-note">{{ empty_form.note }}</td>
-            <td class="tablecard-list-delete">{{ empty_form.DELETE }}</td>
-          </tr>
-        </template>
-      </table>
-
-      <button class="btn-row-add" type="button" id="add-form-btn">+</button>
-    </section>
+    <button class="btn-row-add" type="button" id="btn-row-add">+</button>
 
     <div class="tablecard-btn">
       <button type="submit" name="save" class="btn">Speichern</button>
     </div>
-  </form>
-</div>
+  </div>
+</form>
+
 
 <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const addButton = document.getElementById('add-form-btn');
-    const tableBody = document.querySelector('.tablecard-list-content');
-    const template = document.getElementById('empty-form-template').innerHTML;
-    const totalFormsInput = document.querySelector('[name="form-TOTAL_FORMS"]');
-
-    addButton.addEventListener('click', function () {
-      const formIndex = +totalFormsInput.value;
-      const newRowHtml = template
-        .replace(/__prefix__/g, formIndex)
-        .replace(/__index__/g, formIndex + 1);
-
-      tableBody.insertAdjacentHTML('beforeend', newRowHtml);
-      totalFormsInput.value = formIndex + 1;
+  document.addEventListener('DOMContentLoaded', () => {
+    const addButton = document.getElementById('btn-row-add');
+    const container = document.getElementById('js-grid-card');
+    const template = document.getElementById('js-form-template');
+    const totalForms = document.querySelector('input[name$="TOTAL_FORMS"]');
+  
+    addButton.addEventListener('click', () => {
+      const formIndex = parseInt(totalForms.value, 10);
+      let html = template.innerHTML
+        .replaceAll('__prefix__', formIndex)
+        .replaceAll('__number__', formIndex + 1);
+  
+      container.insertAdjacentHTML('beforeend', html);
+      totalForms.value = formIndex + 1;
     });
   });
 </script>

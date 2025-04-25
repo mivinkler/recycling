@@ -5,9 +5,8 @@
 
 {% block content %}
 
-
-  <form method="post" action="{% url 'delivery_create' %}" id="eingang-form">
-  {% csrf_token %}
+<form method="post" action="{% url 'delivery_create' %}" id="eingang-form">
+{% csrf_token %}
   <div class="detail-card-small">
     <h2>Lieferung erstellen</h2>
 
@@ -30,10 +29,10 @@
       </div>
     </section>
 
-    <section class="tablecard-list">
+    <section>
       <div class="grid-card-title">Ladungseinheiten:</div>
-
       {{ formset.management_form }}
+
       <div class="grid-card" data-type="delivery-create-deliveryunits">
         <div class="grid-card-header">№</div>
         <div class="grid-card-header">Gewicht</div>
@@ -43,7 +42,7 @@
         {{ formset.non_form_errors }}
         {% for item_form in formset %}
           <div class="grid-card-row" data-type="delivery-create-deliveryunits">
-            <div>{{ forloop.counter }}{{ unit_form.id }}</div>
+            <div>{{ forloop.counter }}</div>
             <div>{{ item_form.weight }}</div>
             <div>{{ item_form.delivery_type }}</div>
             <div>{{ item_form.material }}</div>
@@ -52,24 +51,23 @@
         
         <template id="empty-form-template">
           <div class="grid-card-row" data-type="delivery-create-deliveryunits">
-            <div>
-              __index__
-              {{ empty_form.id }}
-            </div>
-            <div >{{ empty_form.weight }}</div>
+            <div> __index__</div>
+            <div>{{ empty_form.weight }}</div>
             <div>{{ empty_form.delivery_type }}</div>
             <div>{{ empty_form.material }}</div>
           </div>
         </template>
-      </table>
+        
+      </div>
     </section>
+
     <button class="btn-row-add" type="button" id="add-form-btn">+</button>
 
     <div class="tablecard-btn">
       <button type="submit" name="save" class="btn">Speichern</button>
     </div>
-  </form>
-</div>
+  </div>
+</form>
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {

@@ -37,9 +37,11 @@ class UnloadForm(forms.ModelForm):
         widgets = {
             'note': forms.Textarea(attrs={'rows': 3}),
         }
-UnloadFormSet = modelformset_factory(
-    Unload,
+UnloadFormSet = inlineformset_factory(
+    parent_model=DeliveryUnit,
+    model=Unload,
     form=UnloadForm,
+    fields=["unload_type", "material", "weight", "purpose", "note"],
     extra=1,
-    can_delete=True
+    can_delete=True,
 )

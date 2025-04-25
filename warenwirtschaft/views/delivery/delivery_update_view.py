@@ -1,8 +1,8 @@
 from django.views.generic.edit import UpdateView
 from warenwirtschaft.models.delivery import Delivery
+from django.db import transaction
 from warenwirtschaft.forms import DeliveryForm, DeliveryUnitFormSet
 from django.urls import reverse_lazy
-from django.db import transaction
 
 
 class DeliveryUpdateView(UpdateView):
