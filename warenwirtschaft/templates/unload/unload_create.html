@@ -7,11 +7,11 @@
 
 <form method="post" action="{% url 'unload_create' %}" id="unload-form">
   {% csrf_token %}
-  <div class="tablecard-large">
+  <div class="itemcard-large">
     <h2>Leerung erstellen</h2>
 
-    <section class="detail-card-topbox">
-      <div class="detail-card-row">
+    <section class="itemcard-topbox ">
+      <div class="itemcard-row">
         <div>Liefereinheit:</div>
         <div>
           <select name="delivery_unit" required>
@@ -64,7 +64,7 @@
 
     <button class="btn-row-add" type="button" id="btn-row-add">+</button>
 
-    <div class="tablecard-btn">
+    <div class="button-wrapper">
       <button type="submit" name="save" class="btn">Speichern</button>
     </div>
   </div>

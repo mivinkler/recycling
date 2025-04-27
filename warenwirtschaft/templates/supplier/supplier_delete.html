@@ -5,18 +5,17 @@
 
 {% block content %}
 
-<div class="tablecard-small">
+<div class="itemcard-small">
   <form method="post">
     {% csrf_token %}
 
-    <div class="tablecard-topbox">
-      <h2>Lieferant löschen</h2>
-
+    <h2>Lieferant löschen</h2>
+    
+    <div class="itemcard-topbox ">
       <p>Bist du sicher, dass du den Lieferanten <strong>{{ supplier.name }}</strong> löschen möchtest?</p>
-
     </div>
 
-    <div class="tablecard-btn">
+    <div class="button-wrapper">
         <button  type="submit" name="save" class="btn">Löschen</button>
         <a href="{% url 'suppliers_list' %}" class="btn">Abbrechen</a>
     </div>

@@ -7,41 +7,41 @@
 
 <form method="post" action="{% url 'delivery_create' %}" id="eingang-form">
 {% csrf_token %}
-  <div class="detail-card-small">
+  <div class="itemcard-small">
     <h2>Lieferung erstellen</h2>
 
-    <section class="detail-card-topbox">
+    <section class="itemcard-topbox ">
       {{ form.non_field_errors }}
 
-      <div class="detail-card-row">
+      <div class="itemcard-row">
         <div>Lieferant:</div>
         <div>{{ form.supplier }}</div>
       </div>
 
-      <div class="detail-card-row">
+      <div class="itemcard-row">
         <div>Lieferschein:</div>
         <div>{{ form.delivery_receipt }}</div>
       </div>
 
-      <div class="detail-card-row">
+      <div class="itemcard-row">
         <div>Anmerkung:</div>
         <div>{{ form.note }}</div>
       </div>
     </section>
 
-    <section>
-      <div class="grid-card-title">Ladungseinheiten:</div>
+    <section class="itemcard-table">
+      <div class="itemcard-table-title">Ladungseinheiten:</div>
       {{ formset.management_form }}
 
-      <div class="grid-card" data-type="delivery-create-deliveryunits">
-        <div class="grid-card-header">№</div>
-        <div class="grid-card-header">Gewicht</div>
-        <div class="grid-card-header">Behälter</div>
-        <div class="grid-card-header">Material</div>
+      <div class="table" data-type="delivery-create-deliveryunits">
+        <div class="table-header">№</div>
+        <div class="table-header">Gewicht</div>
+        <div class="table-header">Behälter</div>
+        <div class="table-header">Material</div>
 
         {{ formset.non_form_errors }}
         {% for item_form in formset %}
-          <div class="grid-card-row" data-type="delivery-create-deliveryunits">
+          <div class="table-row">
             <div>{{ forloop.counter }}</div>
             <div>{{ item_form.weight }}</div>
             <div>{{ item_form.delivery_type }}</div>
@@ -50,7 +50,7 @@
         {% endfor %}
         
         <template id="empty-form-template">
-          <div class="grid-card-row" data-type="delivery-create-deliveryunits">
+          <div class="table-row">
             <div> __index__</div>
             <div>{{ empty_form.weight }}</div>
             <div>{{ empty_form.delivery_type }}</div>
@@ -63,7 +63,7 @@
 
     <button class="btn-row-add" type="button" id="add-form-btn">+</button>
 
-    <div class="tablecard-btn">
+    <div class="button-wrapper">
       <button type="submit" name="save" class="btn">Speichern</button>
     </div>
   </div>
@@ -72,7 +72,7 @@
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const addButton = document.getElementById('add-form-btn');
-    const tableBody = document.querySelector('.grid-card-row');
+    const tableBody = document.querySelector('.table-row');
     const template = document.getElementById('empty-form-template').innerHTML;
     const totalFormsInput = document.getElementById('id_deliveryunits-TOTAL_FORMS');
   

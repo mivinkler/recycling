@@ -6,53 +6,53 @@
 {% block title %}Lieferung detail{% endblock %}
 
 {% block content %}
-<div class="detail-card-small">
+<div class="itemcard-small">
   <h2>Lieferung detail</h2>
 
-  <section class="detail-card-topbox">
-    <div class="detail-card-row">
+  <section class="itemcard-topbox">
+    <div class="itemcard-row">
       <div>Lieferant:</div>
       <div>{{ delivery.supplier.name }}</div>
     </div>
 
-    <div class="detail-card-row">
+    <div class="itemcard-row">
       <div>Adresse:</div>
       <div>{{ delivery.supplier.street }}, {{ delivery.supplier.postal_code }} {{ delivery.supplier.city }}</div>
     </div>
 
-    <div class="detail-card-row">
+    <div class="itemcard-row">
       <div>Lieferschein:</div>
       <div>{{ delivery.delivery_receipt }}</div>
     </div>
 
-    <div class="detail-card-row">
+    <div class="itemcard-row">
       <div>Lieferung-ID:</div>
       <div>{{ delivery.id }}</div>
     </div>
 
-    <div class="detail-card-row">
+    <div class="itemcard-row">
       <div>Datum:</div>
       <div>{{ delivery.created_at|date:"d.m.Y" }}</div>
     </div>
 
-    <div class="detail-card-row">
+    <div class="itemcard-row">
       <div>Anmerkung:</div>
       <div>{{ delivery.note }}</div>
     </div>
   </section>
 
-  <section>
-    <div class="grid-card-title">Ladungseinheiten:</div>
+  <section class="itemcard-table">
+    <div class="itemcard-table-title">Ladungseinheiten:</div>
 
-    <div class="grid-card" data-type="delivery-detail-deliveryunits">
-      <div class="grid-card-header">№</div>
-      <div class="grid-card-header">Gewicht</div>
-      <div class="grid-card-header">Behälter</div>
-      <div class="grid-card-header">Material</div>
-      <div class="grid-card-header">Status</div>
+    <div class="table" data-type="delivery-detail-deliveryunits">
+      <div class="table-header">№</div>
+      <div class="table-header">Gewicht</div>
+      <div class="table-header">Behälter</div>
+      <div class="table-header">Material</div>
+      <div class="table-header">Status</div>
     
       {% for item in delivery_units %}
-        <div class="grid-card-row" data-type="delivery-detail-deliveryunits">
+        <div class="table-row">
           <div>{{ forloop.counter }}</div>
           <div>{{ item.weight|default:"-" }}</div>
           <div>{{ item.get_delivery_type_display }}</div>

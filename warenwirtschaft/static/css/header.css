@@ -106,6 +106,21 @@ header {
     display: block;
 }
 
+/* ============= Detail Summary ============ */
+
+.top-icon-detail summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .top-icon-detail summary::-webkit-details-marker {
+    display: none;
+  }
+  
+
 /*  ============ tooltip  ============ */
 
   .tooltip-wrapper {

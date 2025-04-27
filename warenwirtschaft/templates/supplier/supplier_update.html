@@ -5,61 +5,63 @@
 
 {% block content %}
 
-<div class="tablecard-small">
+<div class="itemcard-small">
   <form method="post" action="{% url 'supplier_update' supplier.pk %}" id="supplier-form">
     {% csrf_token %}
-    <div class="tablecard-topbox-title">
+
+    <div class="itemcard-title-box">
         <h2>Lieferant bearbeiten</h2>
-        <a href="{% url 'supplier_delete' supplier.pk %}" class="tablecard-delete-btn" title="Lieferant löschen">
+        <a href="{% url 'supplier_delete' supplier.pk %}" class="delete-btn" title="Lieferant löschen">
             <img src="{% static 'icons/delete-icon.svg' %}">
         </a>
     </div>
 
-    <section class="tablecard-topbox">
+    <section class="itemcard-topbox ">
         {{ form.non_field_errors }}
-        <div class="tablecard-topbox-row">
-            <label for="{{ form.name.id_for_label }}">Name:</label>
-            {{ form.name }}
+        <div class="itemcard-row">
+            <div>Name:</div>
+            <div>{{ form.name }}</div>
         </div>
 
-        <div class="tablecard-topbox-row">
-            <label for="{{ form.avv_number.id_for_label }}">AVV-Nummer:</label>
-            {{ form.avv_number }}
+        <div class="itemcard-row">
+            <div>AVV-Nummer:</div>
+            <div>{{ form.avv_number }}</div>
         </div>
 
-        <div class="tablecard-topbox-row">
-            <label for="{{ form.street.id_for_label }}">Straße:</label>
-            {{ form.street }}
+        <div class="itemcard-row">
+            <div>Straße:</div>
+            <div>{{ form.street }}</div>
         </div>
 
-        <div class="tablecard-topbox-row">
-            <label for="{{ form.postal_code.id_for_label }}">PLZ:</label>
-            {{ form.postal_code }}
+        <div class="itemcard-row">
+            <div>PLZ:</div>
+            <div>{{ form.postal_code }}</div>
         </div>
 
-        <div class="tablecard-topbox-row">
-            <label for="{{ form.city.id_for_label }}">Ort:</label>
-            {{ form.city }}
+        <div class="itemcard-row">
+            <div>Ort:</div>
+            <div>{{ form.city }}</div>
         </div>
 
-        <div class="tablecard-topbox-row">
-            <label for="{{ form.phone.id_for_label }}">Telefon:</label>
-            {{ form.phone }}
+        <div class="itemcard-row">
+            <div>Telefon:</div>
+            <div>{{ form.phone }}</div>
         </div>
 
-        <div class="tablecard-topbox-row">
-            <label for="{{ form.email.id_for_label }}">E-Mail:</label>
-            {{ form.email }}
+        <div class="itemcard-row">
+            <div>E-Mail:</div>
+            <div>{{ form.email }}</div>
         </div>
 
-        <div class="tablecard-topbox-row">
-            <label for="{{ form.note.id_for_label }}">Anmerkung:</label>
-            {{ form.note }}
+        <div class="itemcard-row">
+            <div>Anmerkung:</div>
+            <div>{{ form.note }}</div>
         </div>
     </section>
-    <div class="tablecard-btn">
+
+    <div class="button-wrapper">
         <button type="submit" name="save" class="btn">Speichern</button>
-    </div>
+      </div>
   </form>
 </div>
 

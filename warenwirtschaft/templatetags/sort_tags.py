@@ -12,9 +12,9 @@ def sort_header(context, field_name, label):
     desc = f"{field_name}_desc"
 
     if current_sort == asc:
-        arrow = '<span class="table-head-arrow">▼</span>'
+        arrow = '<span class="table-header-arrow">▼</span>'
     elif current_sort == desc:
-        arrow = '<span class="table-head-arrow">▲</span>'
+        arrow = '<span class="table-header-arrow">▲</span>'
     else:
         arrow = ''
 

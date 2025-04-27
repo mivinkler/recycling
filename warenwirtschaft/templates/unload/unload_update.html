@@ -8,25 +8,23 @@
 <form method="post" action="{% url 'unload_update' delivery_unit.pk %}" id="unload-form">
   {% csrf_token %}
 
-  <div class="tablecard-large">
+  <div class="itemcard-large">
     <h2>Leerung bearbeiten</h2>
     <section>
-      <div class="grid-card-title">Liefereinheit:</div>
-      {{ formset.management_form }}
-
-      <div class="grid-card" data-type="delivery-detail-deliveryunits">
-        <div class="grid-card-header">ID</div>
-        <div class="grid-card-header">Lieferant</div>
-        <div class="grid-card-header">Gewicht</div>
-        <div class="grid-card-header">Material</div>
-        <div class="grid-card-header">Status</div>
-        <div class="grid-card-row">
-          <div>{{ delivery_unit.id }}</div>
-          <div>{{ delivery_unit.delivery.supplier.name }}</div>
-          <div>{{ delivery_unit.weight }}</div>
-          <div>{{ delivery_unit.material.name }}</div>
-          <div>{{ delivery_unit.get_status_display }}</div>
+      <div class="itemcard-topbox ">
+        <div class="itemcard-row">
+          <div>Kunde:</div>
+          <div>{{ delivery_unit.delivery.supplier.name }}</div>     
         </div>
+        <div class="itemcard-row">
+          <div>Lieferungsdatum:</div>
+          <div>{{ delivery_unit.delivery.created_at|date:"d.m.Y" }}</div>     
+        </div>
+        <div class="itemcard-row">
+          <div>Liefereinheit:</div>
+          <div>{{ delivery_unit.get_delivery_type_display }} · {{ delivery_unit.weight }} kg · {{ delivery_unit.material.name }}</div>     
+        </div>
+      </div>
     </section>
 
     
@@ -53,7 +51,7 @@
             <div>{{ form.weight.as_widget }}</div>
             <div>{{ form.purpose.as_widget }}</div>
             <div>{{ form.note.as_widget }}</div>
-            <div class="tablecard-list-delete">{{ form.DELETE.as_widget }}</div>
+            <div class="card-row-delete">{{ form.DELETE.as_widget }}</div>
           </div>
         {% endfor %}
         <template id="js-form-template">
@@ -64,7 +62,7 @@
             <div>{{ empty_form.weight.as_widget }}</div>
             <div>{{ empty_form.purpose.as_widget }}</div>
             <div>{{ empty_form.note.as_widget }}</div>
-            <div class="tablecard-list-delete">{{ empty_form.DELETE.as_widget }}</div>
+            <div class="card-row-delete">{{ empty_form.DELETE.as_widget }}</div>
           </div>
         </template>
       </div>
@@ -72,7 +70,7 @@
 
     <button class="btn-row-add" type="button" id="btn-row-add">+</button>
 
-    <div class="tablecard-btn">
+    <div class="button-wrapper">
       <button type="submit" name="save" class="btn">Speichern</button>
     </div>
   </div>

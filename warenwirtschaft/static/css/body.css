@@ -1,69 +1,49 @@
-/* ================= GRID column width ================= */
+/* ================ Grid Row ================== */
 
-.grid-table[data-type="supplier-list"] {
-  grid-template-columns:
-    auto        /* ID */
-    1fr         /* AVV*/
-    2fr         /* Name */
-    2fr         /* Adresse */
-    1fr         /* PLZ */
-    2fr         /* Stadt */
-    1fr         /* Telefon */
-    2fr         /* Email */
-    1fr         /* Datum */
-    4fr;        /* Anmerkung */
+.table[data-type="supplier-list"] {
+  grid-template-columns: auto 1fr 2fr 2fr 1fr 2fr 1fr 2fr 1fr 4fr;
 }
 
-.grid-table[data-type="deliveryunits-list"] {
+.table[data-type="unload-list"] {
+  grid-template-columns: auto 2fr 2fr repeat(3, 1fr) 4fr 4fr 2fr 2fr;
+}
+
+.table[data-type="deliveryunits-list"] {
   grid-template-columns: auto repeat(7, 1fr) 2fr;
 }
 
-.grid-table[data-type="unload-list"] {
-  grid-template-columns:
-    auto         /* № */
-    2fr          /* Behälter */
-    2fr          /* Material */
-    1fr          /* Gewicht */
-    1fr          /* Datum */
-    1fr          /* Zweck */
-    4fr          /* Anmerkung */
-    4fr          /* Lieferant */
-    2fr          /* Liefereinheit */
-    2fr;         /* Liefer-Material */
-}
-
-.grid-table[data-type="supplier-detail-deliveryunits"] {
+.table[data-type="supplier-detail-deliveryunits"] {
   grid-template-columns: auto repeat(8, 1fr);
 }
 
-.grid-card[data-type="delivery-detail-deliveryunits"] {
-  grid-template-columns: 32px repeat(4, 1fr);
+.table[data-type="delivery-detail-deliveryunits"] {
+  grid-template-columns: auto repeat(4, 1fr);
 }
 
-.grid-card[data-type="delivery-create-deliveryunits"] {
-  grid-template-columns: 32px repeat(3, 1fr);
+.table[data-type="delivery-create-deliveryunits"] {
+  grid-template-columns: auto repeat(3, 1fr);
 }
 
 .grid-card[data-type="delivery-update-deliveryunits"] {
-  grid-template-columns: 32px repeat(3, 3fr) 1fr;
+  grid-template-columns: auto repeat(3, 3fr) 1fr;
 }
 
 .grid-card[data-type="unload-create"] {
-  grid-template-columns: 32px repeat(4, 1fr) 2fr;
+  grid-template-columns: auto repeat(4, 1fr) 2fr;
 }
 
 .grid-card[data-type="unload-update"] {
-  grid-template-columns: 32px repeat(4, 1fr) 2fr auto;
+  grid-template-columns: auto repeat(4, 1fr) 2fr auto;
 }
 
-/* ================= GRID ================= */
+/* ================ table ================== */
 
-.grid-table {
+.table {
   display: grid;
   width: 100%;
 }
 
-.grid-header {
+.table-header {
   font-weight: 500;
   background-color: var(--color-gray-100);
   border-top: 7px solid var(--color-gray-100);
@@ -73,16 +53,22 @@
   text-align: center;
 }
 
-.grid-row {
+.table-header-arrow {
+  color: rgb(2, 141, 2);
+  margin-left: 6px;
+  font-size: 11px;
+}
+
+.table-row {
   display: contents; /* lässt die inneren <div> als Grid-Elemente erscheinen */
 }
 
-.grid-row > div:first-child {
+.table-row > div:first-child {
   background-color: var(--color-gray-100);
   padding-left: 8px;
 }
 
-.grid-row > div {
+.table-row > div {
   border-right: 1px solid var(--color-gray-200);
   border-bottom: 1px solid var(--color-gray-200);
   padding: 4px 12px 4px 6px;
@@ -92,43 +78,22 @@
   cursor: pointer;
 }
 
-.grid-row:hover > div {
+.table-row:hover > div {
   background-color: var(--color-gray-300);
 }
 
-.grid-row:focus > div {
+.table-row:focus > div {
   background-color: var(--color-gray-300);
 }
-
-.row-selected {
-  background-color: #d0e4f5 !important;
-}
-
-/* ============= grid top-icon ============ */
-
-.top-icon-detail summary {
-  list-style: none;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.top-icon-detail summary::-webkit-details-marker {
-  display: none;
-}
-
-/* ============= JavaScript ============ */
 
 .js-select-row.row-selected > div {
   background-color: #d0e4f5;
 }
 
-/* ============= Detail ============ */
+/* ============ itemcard ============= */
 
-/* ---------Topbox -------- */
-
-.detail-card-small {
+.itemcard-small,
+.itemcard-large {
   margin: 30px auto;
   padding: 30px;
   background-color: var(--color-gray-100);
@@ -136,47 +101,74 @@
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
 }
 
-.detail-card-small {
+.itemcard-small {
   width: 640px;
 }
 
-.detail-card-topbox {
+.itemcard-large {
+  width: 840px;
+}
+
+.itemcard-topbox  {
   margin: 20px 0;
 }
 
-.detail-card-topbox > div {
+.itemcard-topbox > div {
   display: flex;
   align-items: center;
   gap: 16px;
   margin-bottom: 12px;
 }
 
-.detail-card-row div:first-child {
+.itemcard-title-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.itemcard-row div:first-child {
   width: 25%;
   font-weight: 500;
 }
 
-.detail-card-row div:last-child {
+.itemcard-row div:last-child {
   width: 75%;
 }
 
-.detail-card-row input,
-.detail-card-row select,
-.detail-card-row textarea {
+.itemcard-row input,
+.itemcard-row select,
+.itemcard-row textarea {
   width: 100%;
   min-height: 30px;
   border: 1px solid var(--color-gray-400);
 }
 
-.detail-card-row textarea {
+.itemcard-row textarea {
   resize: vertical;
+}
+
+.itemcard-table .table {
+  border-top: 1px solid var(--color-gray-300);
+  border-left: 1px solid var(--color-gray-300);
+  margin-top: 8px;
+}
+
+.itemcard-table .table-row > div {
+  background-color: #fff;
+  padding: 4px;
+}
+
+.itemcard-table .table-header {
+  background-color: var(--color-gray-200);
+  border-top: none;
+}
+
+.itemcard-table-title {
+  font-weight: 500;
 }
 
 /* --------- grid-card ----------- */
 
-.grid-card-title {
-  font-weight: 500;
-}
 
 .grid-card {
   display: grid;
@@ -215,222 +207,54 @@
   display: contents; /* lässt die inneren <div> als Grid-Elemente erscheinen */
 }
 
+/* ============ info-table NEU ============= */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.table-head {
-  background-color: var(--color-gray-100);
-  border-top: 10px solid var(--color-gray-100);
-}
-
-.table-head th {
-  padding-bottom: 5px;
-}
-
-.table-head-arrow {
-  color: rgb(2, 141, 2);
-  margin-left: 6px;
-  font-size: 11px;
-}
-
-.table-body td {
-  padding: 4px 4px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-
-/* ============ Row width =============*/
-
-.table-avv { width: 10%; }
-.table-city { width: 10%; }
-.table-data { width: 100px; text-align: center; }
-.table-delivery { width: 20%; }
-.table-delivery-receipt { width: 10%; }
-.table-delivery-type { width: 10%; }
-.table-delivery-unit { width: 10%; }
-.table-email { width: 20%; }
-.table-id {width: 2%; text-align: right; padding-right: 6px; color: #000; background-color: var(--color-gray-100);}
-.table-id-simple { width: 3%; text-align: right; padding-right: 6px;}
-.table-lid { width: 36px; text-align: right; padding-right: 6px;}
-.table-material { width: 15%; }
-.table-name { width: 20%; }
-.table-note { width: 20%; }
-.table-phone { width: 120px; }
-.table-postal { width: 70px; }
-.table-purpose { width: 10%; }
-.table-status { width: 10%; }
-.table-street { width: 20%; }
-.table-weight { width: 10%; text-align: right; padding-right: 6px;}
-
-/* ============ Supplier info-table =============*/
-
-.info-table {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  column-gap: 50px;
-  padding: 16px 22px 26px;
+.info-table-wrapper {
   background-color: var(--color-gray-50);
+  padding: 16px 22px 26px;
   border-bottom: 1px solid var(--color-gray-300);
 }
 
-.info-table-title {
-  margin-left: 22px;
-  margin-top: 22px;
+.info-table {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  column-gap: 100px;
+  row-gap: 16px;
+  width: 100vw;
+  margin-top: 16px;
+  height: 118px;
 }
 
-.info-table th,
-.info-table td {
-  border: none;
-  vertical-align: super;
-  padding-top: 18px;
+.info-table-row {
+  display: flex;
+  justify-content: start;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
-.info-table td:first-child {
+.info-table-row div:first-child {
   font-weight: bold;
-  padding-right: 20px;
+  width: 100px;
 }
 
-.info-table-note {
+.info-table-row div:last-child {
   max-width: 640px;
 }
 
-/* ============ Tablecard ============= */
+/* ============= card-row-delete ============= */
 
-.tablecard-small,
-.tablecard-large {
-  margin: 30px auto;
-  padding: 30px;
-  background-color: var(--color-gray-100);
-  border: 1px solid var(--color-gray-300);
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
-}
-
-.tablecard-small {
-  width: 640px;
-}
-
-.tablecard-large {
-  width: 840px;
-}
-
-/* ----- Tablecard Topbox ----- */
-
-.tablecard-topbox {
-  margin: 40px auto 20px;
-}
-
-.tablecard-topbox-title {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.tablecard-topbox-row {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 12px;
-}
-
-.tablecard-topbox-row label {
-  width: 25%;
-  font-size: 13px;
-  font-weight: 500;
-  margin-top: 5px;
-}
-
-.tablecard-topbox-row div {
-  width: 75%;
-}
-
-.tablecard-topbox-row input,
-.tablecard-topbox-row select,
-.tablecard-topbox-row textarea {
-  width: 75%;
-  padding: 4px 6px;
-  min-height: 30px;
-  border: 1px solid var(--color-gray-400);
-}
-
-.tablecard-topbox-row textarea {
-  resize: vertical;
-}
-
-/* ----- Tablecard List ----- */
-
-.tablecard-list-name {
-  margin: 12px 0;
-  font-weight: 500;
-}
-
-.tablecard-list-header {
-  background-color: var(--color-gray-200);
-}
-
-.tablecard-list-content {
-  background-color: #fff;
-}
-
-.tablecard-list-header th,
-.tablecard-list-content td {
-  height: 34px;
-  border-color: var(--color-gray-400);
-}
-
-.tablecard-list-content input,
-.tablecard-list-content select,
-.tablecard-list-content textarea {
-  width: 96%;
-  margin: 2px 4px;
-  border: 1px solid var(--color-gray-200);
-  background-color: var(--color-gray-50);
-}
-
-/* ----- Tablecard List Column Widths ----- */
-
-.tablecard-list-id {
-  width: 40px;
-  text-align: center;
-}
-
-.tablecard-list-weight {
-  width: 80px;
-}
-
-.tablecard-list-weight input {
-  text-align: right;
-  padding-right: 4px;
-  width: 90%;
-}
-
-.tablecard-list-note {
-  width: 200px;
-}
-
-.tablecard-list-delete {
+.card-row-delete {
   width: 64px;
   text-align: center;
 }
 
-.tablecard-list-delete input:focus {
+.card-row-delete input:focus {
   outline: none;
 }
 
-.tablecard-list-delete input {
+.card-row-delete input {
   width: 15px;
   height: 15px;
   position: relative;
@@ -438,7 +262,7 @@
   border-color: var(--color-gray-500);
 }
 
-.tablecard-list-delete input:checked::before {
+.card-row-delete input:checked::before {
   content: '\2716'; 
   position: absolute;
   font-size: 11px;
@@ -451,12 +275,12 @@
 
 /* ============= Buttons ============ */
 
-.tablecard-delete-btn {
+.delete-btn {
   width: 14px;
   height: 14px;
 }
 
-.tablecard-btn {
+.button-wrapper {
   display: flex;
   justify-content: flex-end;
   gap: 20px;

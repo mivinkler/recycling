@@ -9,20 +9,20 @@
 
 {% block content %}
 
-<div class="grid-table" data-type="supplier-list">
-  <div class="grid-header">{% sort_header "id" "ID" %}</div>
-  <div class="grid-header">{% sort_header "avv_number" "AVV" %}</div>
-  <div class="grid-header">{% sort_header "name" "Lieferant" %}</div>
-  <div class="grid-header">{% sort_header "street" "Straße" %}</div>
-  <div class="grid-header">{% sort_header "postal_code" "PLZ" %}</div>
-  <div class="grid-header">{% sort_header "city" "Stadt" %}</div>
-  <div class="grid-header">{% sort_header "phone" "Telefon"  %}</div>
-  <div class="grid-header">{% sort_header "email" "Email" %}</div>
-  <div class="grid-header">{% sort_header "created_at" "Datum" %}</div>
-  <div class="grid-header">{% sort_header "note" "Anmerkung" %}</div>
+<div class="table" data-type="supplier-list">
+  <div class="table-header">{% sort_header "id" "ID" %}</div>
+  <div class="table-header">{% sort_header "avv_number" "AVV" %}</div>
+  <div class="table-header">{% sort_header "name" "Lieferant" %}</div>
+  <div class="table-header">{% sort_header "street" "Straße" %}</div>
+  <div class="table-header">{% sort_header "postal_code" "PLZ" %}</div>
+  <div class="table-header">{% sort_header "city" "Stadt" %}</div>
+  <div class="table-header">{% sort_header "phone" "Telefon"  %}</div>
+  <div class="table-header">{% sort_header "email" "Email" %}</div>
+  <div class="table-header">{% sort_header "created_at" "Datum" %}</div>
+  <div class="table-header">{% sort_header "note" "Anmerkung" %}</div>
   
   {% for supplier in page_obj %}
-  <div class="grid-row js-select-row"
+  <div class="table-row js-select-row"
     data-id="{{ supplier.id }}"
     data-url-detail="{% url 'supplier_detail' pk=supplier.id %}"
     data-url-update="{% url 'supplier_update' pk=supplier.id %}">
