@@ -22,6 +22,7 @@ class DeliveryForm(forms.ModelForm):
         widgets = {
             'note': forms.Textarea(attrs={'rows': 3}),
         }
+        
 DeliveryUnitFormSet = inlineformset_factory(
     Delivery,
     DeliveryUnit,
@@ -34,9 +35,7 @@ class UnloadForm(forms.ModelForm):
     class Meta:
         model = Unload
         exclude = ['delivery_unit', 'supplier']
-        widgets = {
-            'note': forms.Textarea(attrs={'rows': 3}),
-        }
+
 UnloadFormSet = inlineformset_factory(
     parent_model=DeliveryUnit,
     model=Unload,

@@ -27,7 +27,7 @@
     data-url-detail="{% url 'supplier_detail' pk=supplier.id %}"
     data-url-update="{% url 'supplier_update' pk=supplier.id %}">
     
-    <div>{{ supplier.id }}</div>
+    <div class="table-row__id-gray">{{ supplier.id }}</div>
     <div>{{ supplier.avv_number }}</div>
     <div>{{ supplier.name }}</div>
     <div>{{ supplier.street }}</div>

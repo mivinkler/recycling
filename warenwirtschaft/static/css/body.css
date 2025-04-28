@@ -24,15 +24,15 @@
   grid-template-columns: auto repeat(3, 1fr);
 }
 
-.grid-card[data-type="delivery-update-deliveryunits"] {
+.table[data-type="delivery-update-deliveryunits"] {
   grid-template-columns: auto repeat(3, 3fr) 1fr;
 }
 
-.grid-card[data-type="unload-create"] {
+.table[data-type="unload-create"] {
   grid-template-columns: auto repeat(4, 1fr) 2fr;
 }
 
-.grid-card[data-type="unload-update"] {
+.table[data-type="unload-update"] {
   grid-template-columns: auto repeat(4, 1fr) 2fr auto;
 }
 
@@ -63,15 +63,19 @@
   display: contents; /* lässt die inneren <div> als Grid-Elemente erscheinen */
 }
 
-.table-row > div:first-child {
+.table-row__id-gray {
   background-color: var(--color-gray-100);
-  padding-left: 8px;
+}
+
+.table-row > div:first-child {
+  text-align: center;
+  min-width: 32px;
 }
 
 .table-row > div {
   border-right: 1px solid var(--color-gray-200);
   border-bottom: 1px solid var(--color-gray-200);
-  padding: 4px 12px 4px 6px;
+  padding: 4px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -155,7 +159,6 @@
 
 .itemcard-table .table-row > div {
   background-color: #fff;
-  padding: 4px;
 }
 
 .itemcard-table .table-header {
@@ -183,12 +186,6 @@
   font-weight: 500;
   padding: 4px 6px;
   text-align: center;
-}
-
-.grid-card-header .grid-delete-icon {
-  height: 14px;
-  width: 14px;
-  background-color: var(--color-gray-300);
 }
 
 .grid-card-row > div:first-child {
@@ -243,18 +240,18 @@
   max-width: 640px;
 }
 
-/* ============= card-row-delete ============= */
+/* ============= itemcard-row-delete ============= */
 
-.card-row-delete {
+.itemcard-row-delete {
   width: 64px;
   text-align: center;
 }
 
-.card-row-delete input:focus {
+.itemcard-row-delete input:focus {
   outline: none;
 }
 
-.card-row-delete input {
+.itemcard-row-delete input {
   width: 15px;
   height: 15px;
   position: relative;
@@ -262,7 +259,7 @@
   border-color: var(--color-gray-500);
 }
 
-.card-row-delete input:checked::before {
+.itemcard-row-delete input:checked::before {
   content: '\2716'; 
   position: absolute;
   font-size: 11px;

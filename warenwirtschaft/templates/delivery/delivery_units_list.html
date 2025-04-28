@@ -26,7 +26,7 @@
       data-url-detail="{% url 'delivery_detail' pk=deliveryunit.delivery.id %}"
       data-url-update="{% url 'delivery_update' pk=deliveryunit.delivery.id %}">
     
-      <div>{{ deliveryunit.delivery.id }}</div>
+      <div class="table-row__id-gray">{{ deliveryunit.delivery.id }}</div>
       <div>{{ deliveryunit.delivery.supplier.name }}</div>
       <div>{{ deliveryunit.delivery.delivery_receipt }}</div>
       <div>{{ deliveryunit.get_delivery_type_display }}</div>

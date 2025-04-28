@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Auslagerung bearbeiten{% endblock %}
+{% block title %}Leerung bearbeiten{% endblock %}
 
 {% block content %}
 
@@ -9,66 +9,72 @@
   {% csrf_token %}
 
   <div class="itemcard-large">
+
     <h2>Leerung bearbeiten</h2>
-    <section>
-      <div class="itemcard-topbox ">
-        <div class="itemcard-row">
-          <div>Kunde:</div>
-          <div>{{ delivery_unit.delivery.supplier.name }}</div>     
-        </div>
-        <div class="itemcard-row">
-          <div>Lieferungsdatum:</div>
-          <div>{{ delivery_unit.delivery.created_at|date:"d.m.Y" }}</div>     
-        </div>
-        <div class="itemcard-row">
-          <div>Liefereinheit:</div>
-          <div>{{ delivery_unit.get_delivery_type_display }} · {{ delivery_unit.weight }} kg · {{ delivery_unit.material.name }}</div>     
-        </div>
+
+    <section class="itemcard-topbox">
+      <div class="itemcard-row">
+        <div>Kunde:</div>
+        <div>{{ delivery_unit.delivery.supplier.name }}</div>     
+      </div>
+      <div class="itemcard-row">
+        <div>Lieferungsdatum:</div>
+        <div>{{ delivery_unit.delivery.created_at|date:"d.m.Y" }}</div>     
+      </div>
+      <div class="itemcard-row">
+        <div>Liefereinheit:</div>
+        <div>{{ delivery_unit.get_delivery_type_display }} · {{ delivery_unit.weight }} kg · {{ delivery_unit.material.name }}</div>     
       </div>
     </section>
 
     
-    <section>
-      <div class="grid-card-title">Fraktionen:</div>
+    <section class="itemcard-table">
+      <div class="itemcard-table-title">Fraktionen:</div>
       {{ formset.management_form }}
 
-      <div class="grid-card" id="js-grid-card" data-type="unload-update">
-        <div class="grid-card-header">№</div>
-        <div class="grid-card-header">Behälter</div>
-        <div class="grid-card-header">Material</div>
-        <div class="grid-card-header">Gewicht</div>
-        <div class="grid-card-header">Zweck</div>
-        <div class="grid-card-header">Anmerkung</div>
-        <div class="grid-card-header">
+      <div class="table" data-type="unload-update">
+        <div class="table-header">№</div>
+        <div class="table-header">Behälter</div>
+        <div class="table-header">Material</div>
+        <div class="table-header">Gewicht</div>
+        <div class="table-header">Zweck</div>
+        <div class="table-header">Anmerkung</div>
+        <div class="table-header">
           <img class="grid-delete-icon" title="Löschen" src="/static/icons/delete-icon.svg">
         </div>
 
-       {% for form in formset %}
-          <div class="grid-card-row">
-            <div>{{ forloop.counter }}{{ form.id }}</div>
-            <div>{{ form.unload_type.as_widget }}</div>
-            <div>{{ form.material.as_widget }}</div>
-            <div>{{ form.weight.as_widget }}</div>
-            <div>{{ form.purpose.as_widget }}</div>
-            <div>{{ form.note.as_widget }}</div>
-            <div class="card-row-delete">{{ form.DELETE.as_widget }}</div>
-          </div>
-        {% endfor %}
-        <template id="js-form-template">
-          <div class="grid-card-row">
-            <div>__number__</div>
+        <div class="table-rows">
+          {% for form in formset %}
+            <div class="table-row" data-type="unload-update">
+              <div>{{ forloop.counter }}{{ form.id }}</div>
+              <div>{{ form.unload_type.as_widget }}</div>
+              <div>{{ form.material.as_widget }}</div>
+              <div>{{ form.weight.as_widget }}</div>
+              <div>{{ form.purpose.as_widget }}</div>
+              <div>{{ form.note.as_widget }}</div>
+              <div class="itemcard-row-delete">{{ form.DELETE.as_widget }}</div>
+            </div>
+          {% endfor %}
+        </div>
+        
+        <template id="table-row-template">
+          <div class="table-row">
+            <div>
+              __index__
+              {{ empty_form.id }}
+            </div>
             <div>{{ empty_form.unload_type.as_widget }}</div>
             <div>{{ empty_form.material.as_widget }}</div>
             <div>{{ empty_form.weight.as_widget }}</div>
             <div>{{ empty_form.purpose.as_widget }}</div>
             <div>{{ empty_form.note.as_widget }}</div>
-            <div class="card-row-delete">{{ empty_form.DELETE.as_widget }}</div>
+            <div class="itemcard-row-delete">{{ empty_form.DELETE.as_widget }}</div>
           </div>
         </template>
       </div>
     </section>
 
-    <button class="btn-row-add" type="button" id="btn-row-add">+</button>
+    <button class="btn-row-add" type="button" id="add-form-btn">+</button>
 
     <div class="button-wrapper">
       <button type="submit" name="save" class="btn">Speichern</button>
@@ -76,23 +82,32 @@
   </div>
 </form>
 
-
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const addButton = document.getElementById('btn-row-add');
-    const container = document.getElementById('js-grid-card');
-    const template = document.getElementById('js-form-template');
-    const totalForms = document.querySelector('input[name$="TOTAL_FORMS"]');
+  document.addEventListener('DOMContentLoaded', function () {
+    const addButton = document.getElementById('add-form-btn');
+    const table = document.querySelector('.table');
+    const template = document.getElementById('table-row-template');
+    const totalFormsInput = document.getElementById('id_unload-TOTAL_FORMS');
   
-    addButton.addEventListener('click', () => {
-      const formIndex = parseInt(totalForms.value, 10);
-      let html = template.innerHTML
-        .replaceAll('__prefix__', formIndex)
-        .replaceAll('__number__', formIndex + 1);
-  
-      container.insertAdjacentHTML('beforeend', html);
-      totalForms.value = formIndex + 1;
+    addButton.addEventListener('click', function () {
+      const formIndex = +totalFormsInput.value;
+
+      // Клонируем контент шаблона
+      const clone = template.content.cloneNode(true);
+      const newRow = clone.querySelector('.table-row');
+
+      newRow.innerHTML = newRow.innerHTML
+        .replace(/__prefix__/g, formIndex)
+        .replace(/__index__/g, formIndex + 1);
+
+      // ВСТАВИТЬ ПЕРЕД КОНЦОМ СПИСКА СТРОК
+      table.appendChild(newRow);
+
+      totalFormsInput.value = formIndex + 1;
     });
   });
 </script>
+
+
+
 {% endblock %}

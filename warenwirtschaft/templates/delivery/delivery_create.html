@@ -42,14 +42,14 @@
         {{ formset.non_form_errors }}
         {% for item_form in formset %}
           <div class="table-row">
-            <div>{{ forloop.counter }}</div>
+            <div class="text-center">{{ forloop.counter }}</div>
             <div>{{ item_form.weight }}</div>
             <div>{{ item_form.delivery_type }}</div>
             <div>{{ item_form.material }}</div>
           </div>
         {% endfor %}
         
-        <template id="empty-form-template">
+        <template id="table-row-template">
           <div class="table-row">
             <div> __index__</div>
             <div>{{ empty_form.weight }}</div>
@@ -72,8 +72,8 @@
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const addButton = document.getElementById('add-form-btn');
-    const tableBody = document.querySelector('.table-row');
-    const template = document.getElementById('empty-form-template').innerHTML;
+    const tableBody = document.querySelector('.table');
+    const template = document.getElementById('table-row-template').innerHTML;
     const totalFormsInput = document.getElementById('id_deliveryunits-TOTAL_FORMS');
   
     addButton.addEventListener('click', function () {
