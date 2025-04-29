@@ -60,7 +60,7 @@
 }
 
 .table-row {
-  display: contents; /* lässt die inneren <div> als Grid-Elemente erscheinen */
+  display: contents;
 }
 
 .table-row__id-gray {
@@ -168,40 +168,6 @@
 
 .itemcard-table-title {
   font-weight: 500;
-}
-
-/* --------- grid-card ----------- */
-
-
-.grid-card {
-  display: grid;
-  gap: 1px;
-  margin-top: 10px;
-  background-color: var(--color-gray-300); /* gap-color */
-  border: 1px solid var(--color-gray-300);
-} 
-
-.grid-card-header {
-  background-color: var(--color-gray-200);
-  font-weight: 500;
-  padding: 4px 6px;
-  text-align: center;
-}
-
-.grid-card-row > div:first-child {
-  text-align: center;
-  align-content: center;
-}
-
-.grid-card-row > div {
-  padding: 2px;
-  background-color: white;
-  height: 28px;
-  align-content: center;
-}
-
-.grid-card-row {
-  display: contents; /* lässt die inneren <div> als Grid-Elemente erscheinen */
 }
 
 /* ============ info-table NEU ============= */

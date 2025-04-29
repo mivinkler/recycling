@@ -42,7 +42,7 @@
         {{ formset.non_form_errors }}
         {% for item_form in formset %}
           <div class="table-row">
-            <div class="text-center">{{ forloop.counter }}</div>
+            <div>{{ forloop.counter }}</div>
             <div>{{ item_form.weight }}</div>
             <div>{{ item_form.delivery_type }}</div>
             <div>{{ item_form.material }}</div>

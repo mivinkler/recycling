@@ -1,41 +1,34 @@
-from django.views.generic import View
-from django.shortcuts import render, redirect
+from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
 from django.db import transaction
 from warenwirtschaft.models import Unload, DeliveryUnit
 from warenwirtschaft.forms import UnloadFormSet
+from warenwirtschaft.forms import UnloadForm
 
-class UnloadCreateView(View):
+class UnloadCreateView(CreateView):
+    model = Unload
     template_name = 'unload/unload_create.html'
+    form_class = UnloadForm
+    context_object_name = 'unload'
     success_url = reverse_lazy('unload_list')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.POST:
+            context['formset'] = UnloadFormSet(self.request.POST)
+        else:
+            context['formset'] = UnloadFormSet()
+        context['formset'].empty_form.prefix = 'unload-__prefix__'
+        context['empty_form'] = context['formset'].empty_form
+        return context
 
-    def get(self, request, *args, **kwargs):
-        formset = UnloadFormSet(queryset=Unload.objects.none())
-        delivery_units = DeliveryUnit.objects.filter()[:10] # oder .filter(status='activ')
-        return render(request, self.template_name, {
-            'formset': formset,
-            'empty_form': formset.empty_form,
-            'delivery_units': delivery_units,
-        })
-
-    def post(self, request, *args, **kwargs):
-        formset = UnloadFormSet(request.POST)
-        delivery_unit_id = request.POST.get('delivery_unit')
-
-        if formset.is_valid() and delivery_unit_id:
+    def form_valid(self, form):
+        context = self.get_context_data()
+        formset = context['formset']
+        if formset.is_valid():
             with transaction.atomic():
-                delivery_unit = DeliveryUnit.objects.get(id=delivery_unit_id)
-                for form in formset:
-                    unload = form.save(commit=False)
-                    unload.delivery_unit = delivery_unit
-                    unload.supplier = delivery_unit.delivery.supplier
-                    unload.save()
-            return redirect(self.success_url)
-
-        # Im Fehlerfall mit denselben Daten erneut zeigen
-        delivery_units = DeliveryUnit.objects.filter(status='activ')
-        return render(request, self.template_name, {
-            'formset': formset,
-            'empty_form': formset.empty_form,
-            'delivery_units': delivery_units,
-        })
+                self.object = form.save()
+                formset.instance = self.object
+                formset.save()
+            return super().form_valid(form)
+        return self.render_to_response(self.get_context_data(form=form))

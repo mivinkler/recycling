@@ -43,7 +43,7 @@
           <img class="grid-delete-icon" title="Löschen" src="/static/icons/delete-icon.svg">
         </div>
 
-        <div class="table-rows">
+        <div class="table" data-type="unload-update">
           {% for form in formset %}
             <div class="table-row" data-type="unload-update">
               <div>{{ forloop.counter }}{{ form.id }}</div>
@@ -100,7 +100,6 @@
         .replace(/__prefix__/g, formIndex)
         .replace(/__index__/g, formIndex + 1);
 
-      // ВСТАВИТЬ ПЕРЕД КОНЦОМ СПИСКА СТРОК
       table.appendChild(newRow);
 
       totalFormsInput.value = formIndex + 1;

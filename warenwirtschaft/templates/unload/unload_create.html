@@ -11,35 +11,29 @@
     <h2>Leerung erstellen</h2>
 
     <section class="itemcard-topbox ">
+      {{ form.non_field_errors }}
+
       <div class="itemcard-row">
         <div>Liefereinheit:</div>
-        <div>
-          <select name="delivery_unit" required>
-              <option disabled selected>-- Bitte wählen --</option>
-              {% for unit in delivery_units %}
-                <option value="{{ unit.id }}">
-                  #{{ unit.id }} | {{ unit.material.name }} | {{ unit.weight }} kg ({{ unit.delivery.supplier.name }})
-                </option>
-              {% endfor %}
-          </select>
-        </div>
+        <div>{{ form.unload }}</div>
       </div>
     </section>
 
-    <section>
-      <div class="grid-card-title">Fraktionen:</div>
+    <section class="itemcard-table">
+      <div class="itemcard-table-title">Fraktionen:</div>
       {{ formset.management_form }}
 
-      <div class="grid-card" data-type="unload-create">
-        <div class="grid-card-header">№</div>
-        <div class="grid-card-header">Behälter</div>
-        <div class="grid-card-header">Material</div>
-        <div class="grid-card-header">Gewicht</div>
-        <div class="grid-card-header">Zweck</div>
-        <div class="grid-card-header">Anmerkung</div>
+      <div class="table" data-type="unload-create">
+        <div class="table-header">№</div>
+        <div class="table-header">Behälter</div>
+        <div class="table-header">Material</div>
+        <div class="table-header">Gewicht</div>
+        <div class="table-header">Zweck</div>
+        <div class="table-header">Anmerkung</div>
       
+        {{ formset.non_form_errors }}
         {% for form in formset %}
-          <div class="grid-card-row">
+          <div class="table-row"  data-type="delivery-update-deliveryunits">
             <div>{{ forloop.counter }}</div>
             <div>{{ form.unload_type }}</div>
             <div>{{ form.material }}</div>
@@ -49,20 +43,20 @@
           </div>
         {% endfor %}
       
-        <template id="js-form-template">
-          <div class="grid-card-row">
-            <div>__number__</div>
-            <div>{{ empty_form.unload_type.as_widget }}</div>
-            <div>{{ empty_form.material.as_widget }}</div>
-            <div>{{ empty_form.weight.as_widget }}</div>
-            <div>{{ empty_form.purpose.as_widget }}</div>
-            <div>{{ empty_form.note.as_widget }}</div>
+        <template id="table-row-template">
+          <div class="table-row">
+            <div> __index__</div>
+            <div>{{ empty_form.unload_type }}</div>
+            <div>{{ empty_form.material }}</div>
+            <div>{{ empty_form.weight }}</div>
+            <div>{{ empty_form.purpose }}</div>
+            <div>{{ empty_form.note }}</div>
           </div>
         </template>
       </div>
     </section>
 
-    <button class="btn-row-add" type="button" id="btn-row-add">+</button>
+    <button class="btn-row-add" type="button" id="add-form-btn">+</button>
 
     <div class="button-wrapper">
       <button type="submit" name="save" class="btn">Speichern</button>
@@ -75,7 +69,7 @@
     const addButton = document.getElementById('add-form-btn');
     const tableBody = document.querySelector('.table');
     const template = document.getElementById('table-row-template').innerHTML;
-    const totalFormsInput = document.getElementById('id_deliveryunits-TOTAL_FORMS');
+    const totalFormsInput = document.getElementById('id_unload_delivery_unit-TOTAL_FORMS');
   
     addButton.addEventListener('click', function () {
       const formIndex = +totalFormsInput.value
@@ -87,7 +81,9 @@
       totalFormsInput.value = formIndex + 1;
     });
   });
-</script>
+  </script>
+  
+  
   
 
 {% endblock %}

@@ -36,7 +36,7 @@ class UnloadUpdateView(View):
 
     def render_formset(self, request, delivery_unit, formset):
         return render(request, self.template_name, {
-            "delivery_unit": delivery_unit,
             "formset": formset,
             "empty_form": formset.empty_form,
+            "delivery_unit": delivery_unit,
         })
