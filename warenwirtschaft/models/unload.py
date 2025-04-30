@@ -7,13 +7,15 @@ class Unload(models.Model):
     UNLOAD_TYPE_CHOICES = [
         (1, "Gitterbox"),
         (2, "Palette"),
-        (3, "Ohne Behälter"),
+        (3, "Container"),
+        (4, "Ohne Behälter"),
     ]
 
     PURPOSE_CHOICES = [
-        (1, "Zerlegung"),
-        (2, "Reparatur"),
-        (3, "Entsorgung"),
+        (1, "Behandlung"),
+        (1, "Abholung"),
+        (2, "Entsorgung: Batterien"),
+        (2, "Entsorgung: Schadstoffe"),
     ]
 
     delivery_unit = models.ForeignKey(DeliveryUnit, on_delete=models.CASCADE, related_name="unload_delivery_unit")

@@ -28,4 +28,4 @@ class DeliveryUnit(models.Model):
     deleted_at = models.DateTimeField(null=True, blank=True, default=None)
 
     def __str__(self):
-        return f"{self.get_delivery_type_display()} - {self.weight} kg"
+        return f"{self.delivery.supplier.name}: {self.get_delivery_type_display()} - {self.material} - {self.weight} kg"

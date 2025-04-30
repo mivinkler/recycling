@@ -34,12 +34,11 @@ DeliveryUnitFormSet = inlineformset_factory(
 class UnloadForm(forms.ModelForm):
     class Meta:
         model = Unload
-        exclude = ['delivery_unit', 'supplier']
+        fields = ['delivery_unit', 'supplier']
 
 UnloadFormSet = inlineformset_factory(
-    parent_model=DeliveryUnit,
-    model=Unload,
-    form=UnloadForm,
+    DeliveryUnit,
+    Unload,
     fields=["unload_type", "material", "weight", "purpose", "note"],
     extra=1,
     can_delete=True,

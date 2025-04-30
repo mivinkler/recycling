@@ -18,7 +18,6 @@ class UnloadCreateView(CreateView):
             context['formset'] = UnloadFormSet(self.request.POST)
         else:
             context['formset'] = UnloadFormSet()
-        context['formset'].empty_form.prefix = 'unload-__prefix__'
         context['empty_form'] = context['formset'].empty_form
         return context
 
