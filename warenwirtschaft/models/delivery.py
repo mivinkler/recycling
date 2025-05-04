@@ -1,5 +1,5 @@
 from django.db import models
-from .supplier import Supplier
+from warenwirtschaft.models.supplier import Supplier
 
 class Delivery(models.Model):
     supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, related_name='deliveries')

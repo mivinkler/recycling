@@ -28,6 +28,10 @@
   grid-template-columns: auto repeat(3, 3fr) 1fr;
 }
 
+.table[data-type="unload-list"] {
+  grid-template-columns: auto 2fr 4fr auto auto repeat(5, 2fr) 4fr;
+}
+
 .table[data-type="unload-create"] {
   grid-template-columns: auto repeat(4, 1fr) 2fr;
 }
@@ -106,11 +110,11 @@
 }
 
 .itemcard-small {
-  width: 640px;
+  max-width: 640px;
 }
 
 .itemcard-large {
-  width: 840px;
+  max-width: 840px;
 }
 
 .itemcard-topbox  {

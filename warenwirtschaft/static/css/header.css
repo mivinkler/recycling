@@ -1,5 +1,5 @@
 header {
-    padding: 10px 22px;
+    padding: 5px 22px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -17,7 +17,7 @@ header {
   
 .top-menu {
     display: flex;
-    padding: 15px 5px 5px;
+    padding: 10px 5px 5px;
     background-color: var(--color-gray-100);
 }
   
@@ -37,7 +37,6 @@ header {
 .top-menu a:hover, 
 .top-menu .selected {
     border-bottom: 3px solid var(--color-hero);
-    font-weight: 600;
 }
   
 /* ============ Icons =============*/
@@ -46,19 +45,22 @@ header {
     display: flex;
     position: relative;
     height: 96px;
-    padding: 20px 0 17px 0;
+    padding: 24px 0 15px 0;
     background-color: var(--color-gray-100);
     box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
 }
   
 .top-icons-wrapper > div {
     border-right: 1px solid var(--color-gray-300);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 4px;
 }
 
 .top-icons-title {
     color: var(--color-gray-800);
     text-align: center;
-    margin-top: 12px;
 }
   
 .top-icon {

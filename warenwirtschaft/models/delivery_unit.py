@@ -1,12 +1,11 @@
 from django.db import models
-from .delivery import Delivery
-from .material import Material
+from warenwirtschaft.models.delivery import Delivery
+from warenwirtschaft.models.material import Material
 
 class DeliveryUnit(models.Model):
     STATUS_CHOICES = [
-        (1, "Eingang"),
-        (2, "Zerlegung"),
-        (3, "Erledigt"),
+        (1, "Aktiv"),
+        (2, "Erledigt"),
     ]
 
     DELIVERY_TYPE_CHOICES = [
@@ -16,7 +15,6 @@ class DeliveryUnit(models.Model):
         (4, "Ohne Behälter"),
     ]
 
-    # TODO related_name anwenden
     delivery = models.ForeignKey(Delivery, on_delete=models.CASCADE, related_name='deliveryunits')
     material = models.ForeignKey(Material, on_delete=models.CASCADE, null=True, blank=True, related_name='material')
     weight = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
@@ -28,4 +26,4 @@ class DeliveryUnit(models.Model):
     deleted_at = models.DateTimeField(null=True, blank=True, default=None)
 
     def __str__(self):
-        return f"{self.delivery.supplier.name}: {self.get_delivery_type_display()} - {self.material} - {self.weight} kg"
+        return f"{self.get_delivery_type_display()} - {self.material} - {self.weight} kg"

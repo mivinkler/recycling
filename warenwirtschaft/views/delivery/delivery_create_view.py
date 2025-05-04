@@ -1,14 +1,14 @@
 from django.views.generic.edit import CreateView
-from django.urls import reverse_lazy
-from warenwirtschaft.models import Delivery
+from warenwirtschaft.models.delivery import Delivery
 from warenwirtschaft.forms import DeliveryForm
 from warenwirtschaft.forms import DeliveryUnitFormSet
 from django.db import transaction
+from django.urls import reverse_lazy
 
 class DeliveryCreateView(CreateView):
     model = Delivery
-    template_name = 'delivery/delivery_create.html'
     form_class = DeliveryForm
+    template_name = 'delivery/delivery_create.html'
     context_object_name = 'delivery'
     success_url = reverse_lazy('delivery_units_list')
 

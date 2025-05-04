@@ -9,15 +9,17 @@
 {% block content %}
 <div class="table" data-type="unload-list">
     <div class="table-header">№</div>
-    <div class="table-header">Behälter</div>
-    <div class="table-header">Material</div>
-    <div class="table-header">Gewicht</div>
-    <div class="table-header">Datum</div>
-    <div class="table-header">Zweck</div>
-    <div class="table-header">Anmerkung</div>
     <div class="table-header">Lieferant</div>
     <div class="table-header">Liefereinheit</div>
-    <div class="table-header">Liefer-Material</div>
+    <div class="table-header">LD</div>
+    <div class="table-header">LED</div>
+    <div class="table-header">Fraktion</div>
+    <div class="table-header">Material</div>
+    <div class="table-header">Gewicht</div>
+    <div class="table-header">Zweck</div>
+    <div class="table-header">Datum</div>
+
+    <div class="table-header">Anmerkung</div>
 
     {% for item in page_obj %}
         <div class="table-row js-select-row"
@@ -25,17 +27,17 @@
             data-url-detail="{% url 'delivery_detail' pk=item.id %}"
             data-url-update="{% url 'delivery_update' pk=item.id %}">
 
-            <div class="table-row__id-gray">{{ item.id }}</div>
+            <div class="table-row__id-gray">{{ forloop.counter }}</div>
+            <div>{{ item.delivery_unit.delivery.supplier.name }}</div>
+            <div>{{ item.delivery_unit }}</div>
+            <div>{{ item.delivery_unit.delivery.id }}</div>
+            <div>{{ item.delivery_unit.id }}</div>
             <div>{{ item|getattr:"get_unload_type_display" }}</div>
             <div>{{ item.material }}</div>
             <div>{{ item.weight }}</div>
-            <div>{{ item.created_at|date:'d.m.Y' }}</div>
             <div>{{ item|getattr:"get_purpose_display" }}</div>
+            <div>{{ item.created_at|date:'d.m.Y' }}</div>
             <div title="{{ item.note }}">{{ item.note }}</div>
-
-            <div>{{ item.supplier.name }}</div>
-            <div>{{ item.delivery_unit }}</div>
-            <div>{{ item.delivery_unit.material }}</div>
         </div>
     {% endfor %}
 </div>

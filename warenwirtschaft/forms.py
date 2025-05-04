@@ -1,6 +1,7 @@
 from django import forms
 from django.forms import inlineformset_factory
 from django.forms import modelformset_factory
+from django.forms import formset_factory
 from warenwirtschaft.models import Supplier
 from warenwirtschaft.models import Delivery
 from warenwirtschaft.models import DeliveryUnit
@@ -31,15 +32,21 @@ DeliveryUnitFormSet = inlineformset_factory(
     can_delete=True
 )
 
+class UnloadDeliveryUnitForm(forms.Form):
+    delivery_unit = forms.ModelChoiceField(
+        queryset=DeliveryUnit.objects.filter(status=1),
+        label="Liefereinheit"
+    )
+
 class UnloadForm(forms.ModelForm):
     class Meta:
         model = Unload
-        fields = ['delivery_unit', 'supplier']
+        fields = ['unload_type', 'material', 'weight', 'purpose', 'note']
 
 UnloadFormSet = inlineformset_factory(
-    DeliveryUnit,
-    Unload,
+    parent_model=DeliveryUnit,
+    model=Unload,
     fields=["unload_type", "material", "weight", "purpose", "note"],
     extra=1,
-    can_delete=True,
+    can_delete=True
 )

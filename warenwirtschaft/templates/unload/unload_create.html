@@ -7,10 +7,12 @@
 
 <form method="post" action="{% url 'unload_create' %}" id="unload-form">
   {% csrf_token %}
+
   <div class="itemcard-large">
     <h2>Leerung erstellen</h2>
 
     <section class="itemcard-topbox ">
+      {{ form.delivery_unit.errors }}
       {{ form.non_field_errors }}
 
       <div class="itemcard-row">
@@ -31,9 +33,8 @@
         <div class="table-header">Zweck</div>
         <div class="table-header">Anmerkung</div>
       
-        {{ formset.non_form_errors }}
         {% for form in formset %}
-          <div class="table-row"  data-type="delivery-update-deliveryunits">
+          <div class="table-row" data-type="delivery-update-deliveryunits">
             <div>{{ forloop.counter }}</div>
             <div>{{ form.unload_type }}</div>
             <div>{{ form.material }}</div>
@@ -69,19 +70,19 @@
     const addButton = document.getElementById('add-form-btn');
     const tableBody = document.querySelector('.table');
     const template = document.getElementById('table-row-template').innerHTML;
-    const totalFormsInput = document.getElementById('id_unload_delivery_unit-TOTAL_FORMS');
+    const totalFormsInput = document.getElementById('id_unload-TOTAL_FORMS');
   
     addButton.addEventListener('click', function () {
-      const formIndex = +totalFormsInput.value
+      const formIndex = +totalFormsInput.value;
       const newRowHtml = template
         .replace(/__prefix__/g, formIndex)
         .replace(/__index__/g, formIndex + 1);
-  
+
       tableBody.insertAdjacentHTML('beforeend', newRowHtml);
       totalFormsInput.value = formIndex + 1;
     });
   });
-  </script>
+</script>
   
   
   
