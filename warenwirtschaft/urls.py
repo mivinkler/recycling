@@ -32,5 +32,5 @@ urlpatterns = [
 
     path('unload/list/', UnloadListView.as_view(), name='unload_list'),
     path('unload/create/', UnloadCreateView.as_view(), name='unload_create'),
-    path('unload/update/<int:unload_id>/', UnloadUpdateView.as_view(), name='unload_update'),
+    path('unload/update/<int:pk>/', UnloadUpdateView.as_view(), name='unload_update'),
 ]
