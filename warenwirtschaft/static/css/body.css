@@ -79,7 +79,7 @@
 .table-row > div {
   border-right: 1px solid var(--color-gray-200);
   border-bottom: 1px solid var(--color-gray-200);
-  padding: 4px;
+  padding: 2px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -143,13 +143,7 @@
   width: 75%;
 }
 
-.itemcard-row input,
-.itemcard-row select,
-.itemcard-row textarea {
-  width: 100%;
-  min-height: 30px;
-  border: 1px solid var(--color-gray-400);
-}
+
 
 .itemcard-row textarea {
   resize: vertical;

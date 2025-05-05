@@ -5,7 +5,7 @@
 
 {% block content %}
 
-<form method="post" id="unload-form">
+<form method="post" action="" id="unload-form">
   {% csrf_token %}
 
   <div class="itemcard-large">
@@ -14,7 +14,7 @@
     <section class="itemcard-topbox">
       <div class="itemcard-row">
         <div>Liefereinheit:</div>
-        <div>{{ delivery_unit }}</div>  {# выводим как текст #}
+        <div>{{ delivery_unit }}</div>
       </div>
     </section>
 
@@ -39,7 +39,7 @@
             <div>{{ form.weight }}</div>
             <div>{{ form.purpose }}</div>
             <div>{{ form.note }}</div>
-            <div>{{ form.DELETE }}</div>
+            <div class="itemcard-row-delete">{{ form.DELETE }}</div>
           </div>
         {% endfor %}
 
@@ -51,7 +51,7 @@
             <div>{{ empty_form.weight }}</div>
             <div>{{ empty_form.purpose }}</div>
             <div>{{ empty_form.note }}</div>
-            <div><input type="checkbox" name="unload-__prefix__-DELETE" id="id_unload-__prefix__-DELETE"></div>
+            <div class="itemcard-row-delete">{{ empty_form.DELETE }}</div>
           </div>
         </template>
       </div>

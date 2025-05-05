@@ -11,9 +11,9 @@ class UnloadUpdateView(FormView):
     success_url = '/warenwirtschaft/unload/list/'
 
     def get_delivery_unit(self):
-        unload_id = self.kwargs['unload_id']
-        unload = get_object_or_404(Unload, pk=unload_id)
-        return unload.delivery_unit  # важно: получаем delivery_unit через unload
+        pk = self.kwargs['pk']
+        unload = get_object_or_404(Unload, pk=pk)
+        return unload.delivery_unit  # wichtig: delivery_unit über unload erhalten
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

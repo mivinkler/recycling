@@ -17,8 +17,14 @@ class UnloadCreateView(FormView):
 
     def form_valid(self, form):
         formset = UnloadFormSet(self.request.POST, prefix='unload')
-        delivery_unit = form.cleaned_data['delivery_unit'] # vollständige Modellobjekt – für Sicherheit.
+        delivery_unit = form.cleaned_data['delivery_unit']
+
         with transaction.atomic():
             for f in formset.cleaned_data:
-                Unload.objects.create(delivery_unit=delivery_unit, **{k: v for k, v in f.items() if k != 'DELETE'})
+                if not f.get('DELETE'):
+                    Unload.objects.create(
+                        delivery_unit=delivery_unit,
+                        **{k: v for k, v in f.items() if k not in ['DELETE', 'delivery_unit']}
+                    )
+
         return redirect(self.success_url)

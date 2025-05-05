@@ -36,3 +36,6 @@ class Unload(models.Model):
 
     def __str__(self):
         return f"unload: {self.delivery_unit} - {self.weight} kg - Type: {self.get_unload_type_display()} - Purpose: {self.get_purpose_display()}"
+
+
+    # TODO deleted_at = models.DateTimeField(null=True, blank=True, default=None)
