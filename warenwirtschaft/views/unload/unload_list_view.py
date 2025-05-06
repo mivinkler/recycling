@@ -23,23 +23,20 @@ class UnloadListView(ListView):
     ]
 
     def get_queryset(self):
-        queryset = super().get_queryset().select_related("delivery_unit", "material")
+        if not hasattr(self, '_queryset'):
+            queryset = super().get_queryset().select_related("delivery_unit", "material")
+            search_service = SearchService(self.request, self.active_fields)
+            sorting_service = SortingService(self.request, self.active_fields)
 
-        search_service = SearchService(self.request, self.active_fields)
-        sorting_service = SortingService(self.request, self.active_fields)
+            queryset = search_service.apply_search(queryset)
+            queryset = sorting_service.apply_sorting(queryset)
 
-        queryset = search_service.apply_search(queryset)
-        queryset = sorting_service.apply_sorting(queryset)
-
-        return queryset
+            self._queryset = queryset
+        return self._queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        paginator = PaginationService(self.request, self.paginate_by)
-        page_obj = paginator.get_paginated_queryset(self.get_queryset())
-
-        context["page_obj"] = page_obj
         context["search_query"] = self.request.GET.get("search", "")
         context["delivery_types"] = DeliveryUnit.DELIVERY_TYPE_CHOICES
         context["statuses"] = DeliveryUnit.STATUS_CHOICES

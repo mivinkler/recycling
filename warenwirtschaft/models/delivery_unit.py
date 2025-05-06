@@ -26,4 +26,4 @@ class DeliveryUnit(models.Model):
     deleted_at = models.DateTimeField(null=True, blank=True, default=None)
 
     def __str__(self):
-        return f"Lid: {self.id} - Kunde: {self.delivery.supplier.name} - Lieferung: id-{self.id} {self.get_delivery_type_display()} - {self.material} - {self.weight} kg"
+        return f"Kunde: {self.delivery.supplier.name} - Lid: {self.id} - {self.get_delivery_type_display()} - {self.material} - {self.weight} kg"

@@ -5,9 +5,9 @@
 
 {% block content %}
 
-<form method="post" action="{% url 'unload_update' delivery_unit.pk %}">
+<form method="post" action="{% url 'deliveryunit_update' delivery_unit.pk %}">
   {% csrf_token %}
-
+  {{ formset.management_form }}
   <div class="itemcard-large">
     <h2>Leerung bearbeiten</h2>
 
@@ -20,7 +20,6 @@
 
     <section class="itemcard-table">
       <div class="itemcard-table-title">Fraktionen:</div>
-      {{ formset.management_form }}
 
       <div class="table" data-type="unload-update">
         <div class="table-header">№</div>
@@ -31,7 +30,6 @@
         <div class="table-header">Anmerkung</div>
         <div class="table-header">Löschen</div>
 
-        {{ formset.non_form_errors }}
         {% for form in formset %}
           {{ form.id }}
           <div class="table-row" data-type="unload-update">
@@ -59,6 +57,19 @@
         </template>
       </div>
     </section>
+
+    {% if form.errors %}
+      <ul class="errorlist">
+        {% for field in form %}
+          {% for error in field.errors %}
+            <li>{{ field.label }}: {{ error }}</li>
+          {% endfor %}
+        {% endfor %}
+        {% for error in form.non_field_errors %}
+          <li>{{ error }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
 
     <button class="btn-row-add" type="button" id="add-form-btn">+</button>
 

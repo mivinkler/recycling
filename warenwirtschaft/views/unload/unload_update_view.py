@@ -1,36 +1,29 @@
-from django.views.generic.edit import FormView
-from django.shortcuts import get_object_or_404, redirect
-from warenwirtschaft.models import DeliveryUnit
-from warenwirtschaft.forms import UnloadDeliveryUnitForm, UnloadFormSet
+from django.views.generic.edit import UpdateView
 from django.db import transaction
-from warenwirtschaft.models.unload import Unload
+from django.urls import reverse_lazy
 
-class UnloadUpdateView(FormView):
-    form_class = UnloadDeliveryUnitForm
-    template_name = 'unload/unload_update.html'
-    success_url = '/warenwirtschaft/unload/list/'
+from warenwirtschaft.models.delivery_unit import DeliveryUnit
+from warenwirtschaft.forms import UnloadFormSet
 
-    def get_delivery_unit(self):
-        pk = self.kwargs['pk']
-        unload = get_object_or_404(Unload, pk=pk)
-        return unload.delivery_unit  # wichtig: delivery_unit über unload erhalten
+
+class UnloadUpdateView(UpdateView):
+    model = DeliveryUnit
+    template_name = 'unload/delivery_unit_update.html'
+    context_object_name = 'delivery_unit'
+    fields = []
+    success_url = reverse_lazy('unload_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        delivery_unit = self.get_delivery_unit()
-        formset = UnloadFormSet(self.request.POST or None, instance=delivery_unit, prefix='unload')
-        context.update({
-            'formset': formset,
-            'empty_form': formset.empty_form,
-            'delivery_unit': delivery_unit,
-        })
+        self.formset = UnloadFormSet(self.request.POST or None, instance=self.object, prefix='unload')
+        context['formset'] = self.formset
+        context['empty_form'] = self.formset.empty_form
         return context
 
     def form_valid(self, form):
-        delivery_unit = self.get_delivery_unit()
-        formset = UnloadFormSet(self.request.POST, instance=delivery_unit, prefix='unload')
-        if formset.is_valid():
+        self.get_context_data()
+        if self.formset.is_valid():
             with transaction.atomic():
-                formset.save()
-            return redirect(self.success_url)
-        return self.render_to_response(self.get_context_data())
+                self.formset.save()
+            return super().form_valid(form)
+        return self.form_invalid(form)

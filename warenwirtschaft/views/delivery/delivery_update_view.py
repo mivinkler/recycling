@@ -1,15 +1,15 @@
 from django.views.generic.edit import UpdateView
-from warenwirtschaft.models.delivery import Delivery
-from warenwirtschaft.forms import DeliveryForm
-from warenwirtschaft.forms import DeliveryUnitFormSet
 from django.db import transaction
 from django.urls import reverse_lazy
 
+from warenwirtschaft.models.delivery import Delivery
+from warenwirtschaft.forms import DeliveryForm
+from warenwirtschaft.forms import DeliveryUnitFormSet
 
 class DeliveryUpdateView(UpdateView):
     model = Delivery
-    template_name = 'delivery/delivery_update.html'
     form_class = DeliveryForm
+    template_name = 'delivery/delivery_update.html'
     context_object_name = 'delivery'
     success_url = reverse_lazy('delivery_list')
 
@@ -21,7 +21,7 @@ class DeliveryUpdateView(UpdateView):
         return context
 
     def form_valid(self, form):
-        self.get_context_data()  # Zur Initialisierung self.formset
+        self.get_context_data()
         if self.formset.is_valid():
             with transaction.atomic():
                 self.object = form.save()

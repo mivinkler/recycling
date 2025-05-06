@@ -1,11 +1,10 @@
 from django.views.generic.edit import FormView
 from django.shortcuts import redirect
 from django.db import transaction
-from warenwirtschaft.forms import UnloadDeliveryUnitForm, UnloadFormSet
+from warenwirtschaft.forms import UnloadFormSet
 from warenwirtschaft.models import Unload
 
 class UnloadCreateView(FormView):
-    form_class = UnloadDeliveryUnitForm
     template_name = 'unload/unload_create.html'
     success_url = '/warenwirtschaft/unload/list/'
 

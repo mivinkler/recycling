@@ -25,7 +25,7 @@
         <div class="table-row js-select-row"
             data-id="{{ item.id }}"
             data-url-detail="#"
-            data-url-update="{% url 'unload_update' pk=item.id %}">
+            data-url-update="{% url 'deliveryunit_update' pk=item.delivery_unit.id %}">
 
             <div class="table-row__id-gray">{{ forloop.counter }}</div>
             <div>{{ item.delivery_unit.delivery.supplier.name }}</div>

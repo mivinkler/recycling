@@ -25,28 +25,22 @@ class DeliveryForm(forms.ModelForm):
         }
         
 DeliveryUnitFormSet = inlineformset_factory(
-    Delivery,
-    DeliveryUnit,
+    parent_model=Delivery,
+    model=DeliveryUnit,
     fields=['delivery_type', 'material', 'weight'],
     extra=1,
     can_delete=True
 )
 
-class UnloadDeliveryUnitForm(forms.Form):
-    delivery_unit = forms.ModelChoiceField(
-        queryset=DeliveryUnit.objects.filter(status=1),
-        label="Liefereinheit"
-    )
-
-class UnloadForm(forms.ModelForm):
+class DeliveryUnitForm(forms.ModelForm):
     class Meta:
-        model = Unload
-        fields = ['unload_type', 'material', 'weight', 'purpose', 'note']
+        model = DeliveryUnit
+        fields = ['delivery_type', 'material', 'weight']
 
 UnloadFormSet = inlineformset_factory(
     parent_model=DeliveryUnit,
     model=Unload,
-    fields=["unload_type", "material", "weight", "purpose", "note"],
+    fields=["id", "unload_type", "material", "weight", "purpose", "note"],
     extra=1,
     can_delete=True
 )
