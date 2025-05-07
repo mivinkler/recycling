@@ -34,7 +34,7 @@
         <div class="table-header">Anmerkung</div>
       
         {% for form in formset %}
-          <div class="table-row" data-type="delivery-update-deliveryunits">
+          <div class="table-row" data-type="unload-create">
             <div>{{ forloop.counter }}</div>
             <div>{{ form.unload_type }}</div>
             <div>{{ form.material }}</div>
@@ -70,8 +70,9 @@
     const addButton = document.getElementById('add-form-btn');
     const tableBody = document.querySelector('.table');
     const template = document.getElementById('table-row-template').innerHTML;
-    const totalFormsInput = document.getElementById('id_unload-TOTAL_FORMS');
-  
+    const totalFormsInput = document.querySelector('input[name$="-TOTAL_FORMS"]');
+    const prefix = totalFormsInput.name.replace('-TOTAL_FORMS', '');
+
     addButton.addEventListener('click', function () {
       const formIndex = +totalFormsInput.value;
       const newRowHtml = template
@@ -82,6 +83,7 @@
       totalFormsInput.value = formIndex + 1;
     });
   });
+
 </script>
   
 {% endblock %}

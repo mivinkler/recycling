@@ -2,23 +2,23 @@ from django.views.generic.edit import UpdateView
 from django.db import transaction
 from django.urls import reverse_lazy
 
-from warenwirtschaft.models.delivery_unit import DeliveryUnit
-from warenwirtschaft.forms import UnloadFormSet
+from warenwirtschaft.models.unload import Unload
+from warenwirtschaft.forms import RecyclingFormSet
 
 
-class UnloadUpdateView(UpdateView):
-    model = DeliveryUnit
-    template_name = 'unload/unload_update.html'
-    context_object_name = 'delivery_unit'
+class RecyclingUpdateView(UpdateView):
+    model = Unload
+    template_name = 'recycling/recycling_update.html'
+    context_object_name = 'unload'
     fields = []
-    success_url = reverse_lazy('unload_list')
+    success_url = reverse_lazy('recycling_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         if self.request.method == 'POST':
-            self.formset = UnloadFormSet(self.request.POST, instance=self.object, prefix='unload')
+            self.formset = RecyclingFormSet(self.request.POST, instance=self.object, prefix='recycling')
         else:
-            self.formset = UnloadFormSet(instance=self.object, prefix='unload')
+            self.formset = RecyclingFormSet(instance=self.object, prefix='recycling')
         context['formset'] = self.formset
         context['empty_form'] = self.formset.empty_form
         return context

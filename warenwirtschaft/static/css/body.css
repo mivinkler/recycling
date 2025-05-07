@@ -29,7 +29,7 @@
 }
 
 .table[data-type="unload-list"] {
-  grid-template-columns: auto 2fr 4fr auto auto repeat(5, 2fr) 4fr;
+  grid-template-columns:  repeat(3, auto) 2fr 3fr repeat(6, 1fr) 4fr;
 }
 
 .table[data-type="unload-create"] {
@@ -37,6 +37,18 @@
 }
 
 .table[data-type="unload-update"] {
+  grid-template-columns: auto repeat(4, 1fr) 2fr auto;
+}
+
+.table[data-type="recycling-list"] {
+  grid-template-columns: auto repeat(7, 1fr) 2fr;
+}
+
+.table[data-type="recycling-create"] {
+  grid-template-columns: auto repeat(4, 1fr) 2fr;
+}
+
+.table[data-type="recycling-update"] {
   grid-template-columns: auto repeat(4, 1fr) 2fr auto;
 }
 
@@ -207,8 +219,8 @@
 /* ============= itemcard-row-delete ============= */
 
 .itemcard-row-delete {
-  width: 64px;
   text-align: center;
+  align-content: center;
 }
 
 .itemcard-row-delete input:focus {
@@ -216,6 +228,7 @@
 }
 
 .itemcard-row-delete input {
+  min-height: 0;
   width: 15px;
   height: 15px;
   position: relative;

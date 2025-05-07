@@ -6,8 +6,10 @@ from warenwirtschaft.models import Supplier
 from warenwirtschaft.models import Delivery
 from warenwirtschaft.models import DeliveryUnit
 from warenwirtschaft.models import Unload
+from warenwirtschaft.models import Recycling
 
 
+# Supplier
 class SupplierForm(forms.ModelForm):
     class Meta:
         model = Supplier
@@ -16,6 +18,8 @@ class SupplierForm(forms.ModelForm):
             'note': forms.Textarea(attrs={'rows': 5}),
         }
 
+
+# Delivery
 class DeliveryForm(forms.ModelForm):
     class Meta:
         model = Delivery
@@ -32,15 +36,32 @@ DeliveryUnitFormSet = inlineformset_factory(
     can_delete=True
 )
 
-class DeliveryUnitForm(forms.ModelForm):
-    class Meta:
-        model = DeliveryUnit
-        fields = ['delivery_type', 'material', 'weight']
+
+# Unload
+class DeliveryUnitForm(forms.Form):
+    delivery_unit = forms.ModelChoiceField(
+        queryset=DeliveryUnit.objects.filter(status=1),
+        label="Liefereinheit"
+    )
 
 UnloadFormSet = inlineformset_factory(
     parent_model=DeliveryUnit,
     model=Unload,
     fields=["id", "unload_type", "material", "weight", "purpose", "note"],
+    extra=1,
+    can_delete=True
+)
+
+# Recycling
+class UnloadForm(forms.Form):
+    unload = forms.ModelChoiceField(
+        queryset=Unload.objects.filter(status=1),
+    )
+
+RecyclingFormSet = inlineformset_factory(
+    parent_model=Unload,
+    model=Recycling,
+    fields=["id", "box_type", "material", "weight", "target", "note"],
     extra=1,
     can_delete=True
 )

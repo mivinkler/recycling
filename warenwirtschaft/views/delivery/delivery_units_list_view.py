@@ -44,7 +44,6 @@ class DeliveryUnitsListView(ListView):
             "search_query": self.request.GET.get("search", ""),
             "delivery_types": DeliveryUnit.DELIVERY_TYPE_CHOICES,
             "statuses": DeliveryUnit.STATUS_CHOICES,
-            
             "selected_menu": "delivery_units_list",
         })
 

@@ -1,15 +1,15 @@
-document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.js-select-row').forEach(row => {
-        row.addEventListener('click', function() {
-            const radio = this.querySelector('.inputField');
-            if (radio) {
-                // Activate radio input
-                radio.checked = true;
+// document.addEventListener('DOMContentLoaded', function () {
+//     document.querySelectorAll('.js-select-row').forEach(row => {
+//         row.addEventListener('click', function() {
+//             const radio = this.querySelector('.inputField');
+//             if (radio) {
+//                 // Activate radio input
+//                 radio.checked = true;
                 
-                // Duplicate input row
-                document.getElementById('select-input').value = radio.dataset.value;
-                document.getElementById('result-input').value = radio.value;
-            }
-        });
-    });
-});
+//                 // Duplicate input row
+//                 document.getElementById('select-input').value = radio.dataset.value;
+//                 document.getElementById('result-input').value = radio.value;
+//             }
+//         });
+//     });
+// });

@@ -15,6 +15,10 @@ from warenwirtschaft.views.unload.unload_list_view import UnloadListView
 from warenwirtschaft.views.unload.unload_create_view import UnloadCreateView
 from warenwirtschaft.views.unload.unload_update_view import UnloadUpdateView
 
+from warenwirtschaft.views.recycling.recycling_list_view import RecyclingListView
+from warenwirtschaft.views.recycling.recycling_create_view import RecyclingCreateView
+from warenwirtschaft.views.recycling.recycling_update_view import RecyclingUpdateView
+
 
 urlpatterns = [
     path('', SupplierListView.as_view(), name='home'),
@@ -30,8 +34,11 @@ urlpatterns = [
     path('delivery/create/', DeliveryCreateView.as_view(), name='delivery_create'),
     path('delivery/update/<int:pk>/', DeliveryUpdateView.as_view(), name='delivery_update'),
 
-
     path('unload/list/', UnloadListView.as_view(), name='unload_list'),
     path('unload/create/', UnloadCreateView.as_view(), name='unload_create'),
-    path('unload/deliveryunit/update/<int:pk>/', UnloadUpdateView.as_view(), name='deliveryunit_update'),
+    path('unload/update/<int:pk>/', UnloadUpdateView.as_view(), name='unload_update'),
+
+    path('recycling/list/', RecyclingListView.as_view(), name='recycling_list'),
+    path('recycling/create/', RecyclingCreateView.as_view(), name='recycling_create'),
+    path('recycling/update/<int:pk>/', RecyclingUpdateView.as_view(), name='recycling_update'),
 ]
