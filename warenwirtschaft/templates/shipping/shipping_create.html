@@ -1,57 +1,60 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Umladung erfassen{% endblock %}
+{% block title %}Lieferung erstellen{% endblock %}
 
 {% block content %}
 
-<form method="post" action="{% url 'unload_create' %}" id="unload-form">
-  {% csrf_token %}
-
-  <div class="itemcard-large">
-    <h2>Umladung erstellen</h2>
+<form method="post" action="{% url 'delivery_create' %}" id="eingang-form">
+{% csrf_token %}
+  <div class="itemcard-small">
+    <h2>Lieferung erstellen</h2>
 
     <section class="itemcard-topbox ">
-      {{ form.delivery_unit.errors }}
       {{ form.non_field_errors }}
 
       <div class="itemcard-row">
-        <div>Liefereinheit:</div>
-        <div>{{ form.delivery_unit }}</div>
+        <div>Lieferant:</div>
+        <div>{{ form.supplier }}</div>
+      </div>
+
+      <div class="itemcard-row">
+        <div>Lieferschein:</div>
+        <div>{{ form.delivery_receipt }}</div>
+      </div>
+
+      <div class="itemcard-row">
+        <div>Anmerkung:</div>
+        <div>{{ form.note }}</div>
       </div>
     </section>
 
     <section class="itemcard-table">
-      <div class="itemcard-table-title">Fraktionen:</div>
+      <div class="itemcard-table-title">Ladungseinheiten:</div>
       {{ formset.management_form }}
 
-      <div class="table" data-type="unload-create">
+      <div class="table" data-type="delivery-create-deliveryunits">
         <div class="table-header">№</div>
+        <div class="table-header">Gewicht</div>
         <div class="table-header">Behälter</div>
         <div class="table-header">Material</div>
-        <div class="table-header">Gewicht</div>
-        <div class="table-header">Zweck</div>
-        <div class="table-header">Anmerkung</div>
-      
-        {% for form in formset %}
-          <div class="table-row" data-type="unload-create">
+
+        {{ formset.non_form_errors }}
+        {% for item_form in formset %}
+          <div class="table-row">
             <div>{{ forloop.counter }}</div>
-            <div>{{ form.unload_type }}</div>
-            <div>{{ form.material }}</div>
-            <div>{{ form.weight }}</div>
-            <div>{{ form.purpose }}</div>
-            <div>{{ form.note }}</div>
+            <div>{{ item_form.weight }}</div>
+            <div>{{ item_form.delivery_type }}</div>
+            <div>{{ item_form.material }}</div>
           </div>
         {% endfor %}
-      
+        
         <template id="table-row-template">
           <div class="table-row">
             <div> __index__</div>
-            <div>{{ empty_form.unload_type }}</div>
-            <div>{{ empty_form.material }}</div>
             <div>{{ empty_form.weight }}</div>
-            <div>{{ empty_form.purpose }}</div>
-            <div>{{ empty_form.note }}</div>
+            <div>{{ empty_form.delivery_type }}</div>
+            <div>{{ empty_form.material }}</div>
           </div>
         </template>
       </div>
@@ -70,20 +73,18 @@
     const addButton = document.getElementById('add-form-btn');
     const tableBody = document.querySelector('.table');
     const template = document.getElementById('table-row-template').innerHTML;
-    const totalFormsInput = document.querySelector('input[name$="-TOTAL_FORMS"]');
-    const prefix = totalFormsInput.name.replace('-TOTAL_FORMS', '');
-
+    const totalFormsInput = document.getElementById('id_deliveryunits-TOTAL_FORMS');
+  
     addButton.addEventListener('click', function () {
-      const formIndex = +totalFormsInput.value;
+      const formIndex = +totalFormsInput.value
       const newRowHtml = template
         .replace(/__prefix__/g, formIndex)
         .replace(/__index__/g, formIndex + 1);
-
+  
       tableBody.insertAdjacentHTML('beforeend', newRowHtml);
       totalFormsInput.value = formIndex + 1;
     });
   });
-
 </script>
-  
+
 {% endblock %}

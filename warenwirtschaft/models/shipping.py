@@ -1,8 +1,8 @@
 from django.db import models
-from warenwirtschaft.models.supplier import Supplier
+from warenwirtschaft.models.customer import Customer
 
-class Delivery(models.Model):
-    supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, related_name='delivery_supplier')
+class Shipping(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='shipping_for_customer')
     delivery_receipt = models.CharField(max_length=50, null=True, blank=True)
     note = models.CharField(max_length=255, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

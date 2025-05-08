@@ -1,6 +1,6 @@
 from django.views.generic import DetailView
-from warenwirtschaft.models import Delivery
-from warenwirtschaft.models import DeliveryUnit
+from warenwirtschaft.models.delivery import Delivery
+from warenwirtschaft.models.delivery_unit import DeliveryUnit
 
 class DeliveryDetailView(DetailView):
     model = Delivery
@@ -8,7 +8,7 @@ class DeliveryDetailView(DetailView):
     context_object_name = "delivery"
 
     def get_queryset(self):
-        return super().get_queryset().prefetch_related("deliveryunits", "deliveryunits__material")
+        return super().get_queryset().prefetch_related("units_for_delivery", "material_for_delivery_units")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

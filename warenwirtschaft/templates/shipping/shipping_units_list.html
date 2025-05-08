@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load sort_tags %}
+{% load custom_filters %}
+{% load pagination %}
+
+{% block title %}Lieferungen: units{% endblock %}
+
+{% block content %}
+
+<div class="table" data-type="deliveryunits-list">
+  <div class="table-header">{% sort_header "delivery__id" "№" %}</div>
+  <div class="table-header">{% sort_header "supplier__name" "Lieferant" %}</div>
+  <div class="table-header">{% sort_header "delivery_receipt" "Lieferschein" %}</div>
+  <div class="table-header">{% sort_header "delivery_type" "Behälter" %}</div>
+  <div class="table-header">{% sort_header "material" "Material" %}</div>
+  <div class="table-header">{% sort_header "weight" "Gewicht" %}</div>
+  <div class="table-header">{% sort_header "created_at" "Datum" %}</div>
+  <div class="table-header">{% sort_header "status" "Status" %}</div>
+  <div class="table-header">{% sort_header "note" "Notiz" %}</div>
+
+  {% for deliveryunit in page_obj %}
+    <div class="table-row js-select-row"
+      data-id="{{ deliveryunit.id }}"
+      data-url-detail="{% url 'delivery_detail' pk=deliveryunit.delivery.id %}"
+      data-url-update="{% url 'delivery_update' pk=deliveryunit.delivery.id %}">
+    
+      <div class="table-row__id-gray">{{ deliveryunit.delivery.id }}</div>
+      <div>{{ deliveryunit.delivery.supplier.name }}</div>
+      <div>{{ deliveryunit.delivery.delivery_receipt }}</div>
+      <div>{{ deliveryunit.get_delivery_type_display }}</div>
+      <div>{{ deliveryunit.material }}</div>
+      <div>{{ deliveryunit.weight }}</div>
+      <div>{{ deliveryunit.created_at|date:'d.m.Y' }}</div>
+      <div>{{ deliveryunit.get_status_display }}</div>
+      <div title="{{ deliveryunit.delivery.note }}">{{ deliveryunit.delivery.note }}</div>
+    </div>
+  {% endfor %}
+</div>
+
+{% paginate page_obj %}
+
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'js/selectable-row.js' %}"></script>
+    <script src="{% static 'js/current-date.js' %}"></script>
+    <script>
+      document.addEventListener("click", function (event) {
+        document.querySelectorAll("details.top-icon-detail[open]").forEach(details => {
+          if (!details.contains(event.target)) {
+            details.removeAttribute("open");
+          }
+        });
+      });
+    </script>
+{% endblock %}

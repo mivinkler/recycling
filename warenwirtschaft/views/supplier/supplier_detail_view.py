@@ -1,5 +1,6 @@
 from django.views.generic.detail import DetailView
-from warenwirtschaft.models import Supplier, DeliveryUnit
+from warenwirtschaft.models.supplier import Supplier
+from warenwirtschaft.models.delivery_unit import DeliveryUnit
 from warenwirtschaft.services.search_service import SearchService
 from warenwirtschaft.services.sorting_service import SortingService
 from warenwirtschaft.services.pagination_service import PaginationService
@@ -26,12 +27,11 @@ class SupplierDetailView(DetailView):
         sort_fields = [field[0] for field in self.sortable_fields]
         supplier = self.get_object()
 
-        queryset = DeliveryUnit.objects.select_related(
-            "delivery", "delivery__supplier", "material"
-        ).filter(delivery__supplier=supplier)
+        queryset = DeliveryUnit.objects.select_related("units_for_delivery", "units_for_delivery__supplier", "material_for_delivery_units").filter(delivery__supplier=supplier)
 
         queryset = SearchService(self.request, sort_fields).apply_search(queryset)
         queryset = SortingService(self.request, sort_fields).apply_sorting(queryset)
+
         return queryset
 
     def get_context_data(self, **kwargs):

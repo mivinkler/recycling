@@ -1,13 +1,14 @@
 from django import forms
 from django.forms import inlineformset_factory
-from django.forms import modelformset_factory
-from django.forms import formset_factory
-from warenwirtschaft.models import Supplier
-from warenwirtschaft.models import Delivery
-from warenwirtschaft.models import DeliveryUnit
-from warenwirtschaft.models import Unload
-from warenwirtschaft.models import Recycling
 
+from warenwirtschaft.models.supplier import Supplier
+from warenwirtschaft.models.delivery import Delivery
+from warenwirtschaft.models.delivery_unit import DeliveryUnit
+from warenwirtschaft.models.unload import Unload
+from warenwirtschaft.models.recycling import Recycling
+from warenwirtschaft.models.shipping import Shipping
+from warenwirtschaft.models.shipping_unit import ShippingUnit
+from warenwirtschaft.models.customer import Customer
 
 # Supplier
 class SupplierForm(forms.ModelForm):
@@ -65,3 +66,30 @@ RecyclingFormSet = inlineformset_factory(
     extra=1,
     can_delete=True
 )
+
+# Shipping
+class ShippingForm(forms.ModelForm):
+    class Meta:
+        model = Shipping
+        fields = ['customer', 'delivery_receipt', 'note']
+        widgets = {
+            'note': forms.Textarea(attrs={'rows': 3}),
+        }
+        
+ShippingUnitFormSet = inlineformset_factory(
+    parent_model=Shipping,
+    model=ShippingUnit,
+    fields=['box_type', 'material', 'weight'],
+    extra=1,
+    can_delete=True
+)
+
+
+# Customer
+class CustomerForm(forms.ModelForm):
+    class Meta:
+        model = Customer
+        fields = ['name', 'certificate', 'transport', 'street', 'postal_code', 'city', 'phone', 'email', 'note']
+        widgets = {
+            'note': forms.Textarea(attrs={'rows': 5}),
+        }

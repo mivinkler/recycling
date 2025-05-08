@@ -1,22 +1,23 @@
 from django.views.generic import ListView
-from warenwirtschaft.models.delivery_unit import DeliveryUnit
 from warenwirtschaft.services.search_service import SearchService
 from warenwirtschaft.services.sorting_service import SortingService
 from warenwirtschaft.services.pagination_service import PaginationService
 
+from warenwirtschaft.models.shipping_unit import ShippingUnit
 
-class DeliveryUnitsListView(ListView):
-    model = DeliveryUnit
-    template_name = "delivery/delivery_units_list.html"
-    context_object_name = "delivery_units"
+
+class ShippingUnitsListView(ListView):
+    model = ShippingUnit
+    template_name = "shipping/shipping_units_list.html"
+    context_object_name = "shipping_units"
     paginate_by = 50
 
     sortable_fields = [
-        ("delivery__id", "LID"),
-        ("delivery__supplier__name", "Kunde"),
-        ("delivery__delivery_receipt", "Lieferschein"),
+        ("shipping__id", "LID"),
+        ("shipping__customer__name", "Abholer"),
+        ("shipping__delivery_receipt", "Begleitschein"),
         ("note", "Anmerkung"),
-        ("delivery_type", "Behälter"),
+        ("box_type", "Behälter"),
         ("material__name", "Material"),
         ("weight", "Gewicht"),
         ("created_at", "Datum"),
@@ -25,7 +26,7 @@ class DeliveryUnitsListView(ListView):
 
     def get_queryset(self):
         sort_fields = [field[0] for field in self.sortable_fields]
-        queryset = DeliveryUnit.objects.select_related("units_for_delivery", "units_for_delivery__supplier", "material_for_delivery_units")
+        queryset = ShippingUnit.objects.select_related("units_for_shipping", "units_for_shipping__customer", "material_for_shipping_units")
 
         queryset = SearchService(self.request, sort_fields).apply_search(queryset)
         queryset = SortingService(self.request, sort_fields).apply_sorting(queryset)
@@ -42,9 +43,9 @@ class DeliveryUnitsListView(ListView):
             "page_obj": page_obj,
             "sort_param": self.request.GET.get("sort", ""),
             "search_query": self.request.GET.get("search", ""),
-            "delivery_types": DeliveryUnit.BOX_TYPE_CHOICES,
-            "statuses": DeliveryUnit.STATUS_CHOICES,
-            "selected_menu": "delivery_units_list",
+            "box_types": ShippingUnit.BOX_TYPE_CHOICES,
+            "statuses": ShippingUnit.STATUS_CHOICES,
+            "selected_menu": "shipping_units_list",
         })
 
         return context

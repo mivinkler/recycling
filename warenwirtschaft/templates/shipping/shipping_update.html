@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Lieferung ändern{% endblock %}
+
+{% block content %}
+
+<form method="post" action="{% url 'delivery_update' delivery.pk %}" id="eingang-form">
+  {% csrf_token %}
+  
+  <div class="itemcard-small">
+
+    <h2>Lieferung ändern</h2>
+
+    <section class="itemcard-topbox ">
+      {{ form.non_field_errors }}
+
+      <div class="itemcard-row">
+        <div>Lieferant:</div>
+        <div>{{ form.supplier }}</div>
+      </div>
+
+      <div class="itemcard-row">
+        <div>Lieferschein:</div>
+        <div>{{ form.delivery_receipt }}</div>
+      </div>
+
+      <div class="itemcard-row">
+        <div>Anmerkung:</div>
+        <div>{{ form.note }}</div>
+      </div>
+    </section>
+
+    <section class="itemcard-table">
+      <div class="itemcard-table-title">Ladungseinheiten:</div>
+      {{ formset.management_form }}
+
+      <div class="table" data-type="delivery-update-deliveryunits">
+        <div class="table-header">№</div>
+        <div class="table-header">Gewicht</div>
+        <div class="table-header">Behälter</div>
+        <div class="table-header">Material</div>
+        <div class="table-header">
+            <img class="itemcard-delete-icon" title="Löschen" src="/static/icons/delete-icon.svg">
+        </div>
+
+        {{ formset.non_form_errors }}
+        {% for form in formset %}
+        <div class="table-row" data-type="delivery-update-deliveryunits">
+          <div>{{ forloop.counter }}{{ form.id }}</div>
+          <div>{{ form.weight }}</div>
+          <div>{{ form.delivery_type }}</div>
+          <div>{{ form.material }}</div>
+          <div class="itemcard-row-delete">{{ form.DELETE }}</div>
+        </div>
+        {% endfor %}
+        
+        <template id="table-row-template">
+          <div class="table-row">
+            <div>
+              __index__
+              {{ empty_form.id }}
+            </div>
+            <div >{{ empty_form.weight }}</div>
+            <div>{{ empty_form.delivery_type }}</div>
+            <div>{{ empty_form.material }}</div>
+            <div class="itemcard-row-delete">{{ empty_form.DELETE }}</div>
+          </div>
+        </template>
+      </div>
+    </section>
+    <button class="btn-row-add" type="button" id="add-form-btn">+</button>
+
+    <div class="button-wrapper">
+      <button type="submit" name="save" class="btn">Speichern</button>
+    </div>
+  </div>
+</form>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const addButton = document.getElementById('add-form-btn');
+    const tableBody = document.querySelector('.table');
+    const template = document.getElementById('table-row-template').innerHTML;
+    const totalFormsInput = document.getElementById('id_deliveryunits-TOTAL_FORMS');
+  
+    addButton.addEventListener('click', function () {
+      const formIndex = +totalFormsInput.value
+      const newRowHtml = template
+        .replace(/__prefix__/g, formIndex)
+        .replace(/__index__/g, formIndex + 1);
+  
+      tableBody.insertAdjacentHTML('beforeend', newRowHtml);
+      totalFormsInput.value = formIndex + 1;
+    });
+  });
+</script>
+
+{% endblock %}
+

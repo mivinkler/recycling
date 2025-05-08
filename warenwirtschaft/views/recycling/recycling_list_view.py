@@ -5,6 +5,8 @@ from warenwirtschaft.services.search_service import SearchService
 from warenwirtschaft.services.sorting_service import SortingService
 from warenwirtschaft.services.pagination_service import PaginationService
 
+# TODO Pagination
+
 class RecyclingListView(ListView):
     model = Recycling
     template_name = "recycling/recycling_list.html"
@@ -23,7 +25,7 @@ class RecyclingListView(ListView):
 
     def get_queryset(self):
         if not hasattr(self, '_queryset'):
-            queryset = super().get_queryset().select_related("unload", "material")
+            queryset = super().get_queryset().select_related("recycling_for_unload", "material_for_recycling")
             search_service = SearchService(self.request, self.active_fields)
             sorting_service = SortingService(self.request, self.active_fields)
 
