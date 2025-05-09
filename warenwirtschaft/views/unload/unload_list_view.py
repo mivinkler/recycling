@@ -15,10 +15,10 @@ class UnloadListView(ListView):
         "id",
         "supplier__name",
         "delivery_unit",
-        "unload_type",
+        "box_type",
         "material",
         "weight",
-        "purpose",
+        "target",
         "note",
     ]
 
@@ -37,7 +37,7 @@ class UnloadListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["search_query"] = self.request.GET.get("search", "")
-        context["unload_type"] = Unload.UNLOAD_TYPE_CHOICES
+        context["box_type"] = Unload.BOX_TYPE_CHOICES
         context["status"] = Unload.STATUS_CHOICES
         context["selected_menu"] = "unload_list"
 

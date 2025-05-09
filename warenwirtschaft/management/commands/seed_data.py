@@ -89,7 +89,7 @@ class Command(BaseCommand):
                     material=random.choice(materials),
                     weight=round(random.uniform(100, 500), 2),
                     status=random.choice([1, 2]),
-                    delivery_type=random.choice([1, 2, 3, 4]),
+                    box_type=random.choice([1, 2, 3, 4]),
                     note="Lorem ipsum dolor sit amet, consectetur adipiscing elit."[:random.randint(20, 255)],
                 ))
 
@@ -102,10 +102,10 @@ class Command(BaseCommand):
             for _ in range(random.randint(1, 3)):  # 1–3 Unload für einen Delivery_unit
                 unloads.append(Unload(
                     delivery_unit=unit,
-                    unload_type=random.choice([1, 2, 3, 4]),
+                    box_type=random.choice([1, 2, 3, 4]),
                     material=random.choice(materials),
                     weight=round(random.uniform(10, 100), 2),
-                    purpose=random.choice([1, 2, 3]),
+                    target=random.choice([1, 2, 3]),
                     status=random.choice([1, 2]),
                     note="Lorem ipsum dolor sit amet, consectetur adipiscing elit."[:random.randint(20, 255)],
                 ))

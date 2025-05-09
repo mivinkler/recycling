@@ -77,9 +77,9 @@ class Migration(migrations.Migration):
             name='Unload',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('unload_type', models.PositiveSmallIntegerField(choices=[(1, 'Gitterbox'), (2, 'Palette'), (3, 'Container'), (4, 'Ohne Behälter')])),
+                ('box_type', models.PositiveSmallIntegerField(choices=[(1, 'Gitterbox'), (2, 'Palette'), (3, 'Container'), (4, 'Ohne Behälter')])),
                 ('weight', models.DecimalField(blank=True, decimal_places=2, max_digits=10, null=True)),
-                ('purpose', models.PositiveSmallIntegerField(choices=[(1, 'Behandlung'), (2, 'Abholung'), (3, 'Entsorgung')])),
+                ('target', models.PositiveSmallIntegerField(choices=[(1, 'Behandlung'), (2, 'Abholung'), (3, 'Entsorgung')])),
                 ('status', models.PositiveSmallIntegerField(choices=[(1, 'Aktiv'), (2, 'Erledigt')], default=1)),
                 ('note', models.CharField(blank=True, max_length=255, null=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),

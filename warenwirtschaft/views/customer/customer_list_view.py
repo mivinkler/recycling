@@ -2,17 +2,16 @@ from django.views.generic import ListView
 from warenwirtschaft.services.search_service import SearchService
 from warenwirtschaft.services.sorting_service import SortingService
 from warenwirtschaft.services.pagination_service import PaginationService
-from warenwirtschaft.models.supplier import Supplier
+from warenwirtschaft.models.customer import Customer
 
-class SupplierListView(ListView):
-    model = Supplier
-    template_name = "supplier/supplier_list.html"
-    context_object_name = "suppliers"
+class CustomerListView(ListView):
+    model = Customer
+    template_name = "customer/customer_list.html"
+    context_object_name = "customers"
     paginate_by = 22
 
     active_fields = [
         ("id", "ID"),
-        ("avv_number", "AVV-Nummer"),
         ("name", "Kunde"),
         ("street", "Straße"),
         ("postal_code", "PLZ"),
@@ -46,7 +45,7 @@ class SupplierListView(ListView):
         context["search_query"] = self.request.GET.get("search", "")
         context["active_fields"] = self.active_fields
 
-        context["selected_menu"] = "supplier_list"
+        context["selected_menu"] = "customer_list"
 
         return context
 

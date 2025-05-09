@@ -13,7 +13,7 @@
   <div class="table-header">{% sort_header "delivery__id" "№" %}</div>
   <div class="table-header">{% sort_header "supplier__name" "Lieferant" %}</div>
   <div class="table-header">{% sort_header "delivery_receipt" "Lieferschein" %}</div>
-  <div class="table-header">{% sort_header "delivery_type" "Behälter" %}</div>
+  <div class="table-header">{% sort_header "box_type" "Behälter" %}</div>
   <div class="table-header">{% sort_header "material" "Material" %}</div>
   <div class="table-header">{% sort_header "weight" "Gewicht" %}</div>
   <div class="table-header">{% sort_header "created_at" "Datum" %}</div>
@@ -29,7 +29,7 @@
       <div class="table-row__id-gray">{{ deliveryunit.delivery.id }}</div>
       <div>{{ deliveryunit.delivery.supplier.name }}</div>
       <div>{{ deliveryunit.delivery.delivery_receipt }}</div>
-      <div>{{ deliveryunit.get_delivery_type_display }}</div>
+      <div>{{ deliveryunit.get_box_type_display }}</div>
       <div>{{ deliveryunit.material }}</div>
       <div>{{ deliveryunit.weight }}</div>
       <div>{{ deliveryunit.created_at|date:'d.m.Y' }}</div>

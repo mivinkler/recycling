@@ -33,7 +33,7 @@
         </div>
     </header>
     <div class="top-menu">
-        <div><a href="{% url 'suppliers_list' %}" class="{% if selected_menu == 'supplier_list' %} selected {% endif %}">Kunden</a></div>
+        <div><a href="{% url 'supplier_list' %}" class="{% if selected_menu == 'supplier_list' %} selected {% endif %}">Kunden</a></div>
         <div><a href="{% url 'delivery_units_list' %}" class="{% if selected_menu == 'delivery_units_list' %} selected {% endif %}">Eingang</a></div>
         <div><a href="{% url 'unload_list' %}" class="{% if selected_menu == 'unload_list' %} selected {% endif %}">Umladung</a></div>
         <div><a href="{% url 'recycling_list' %}" class="{% if selected_menu == 'recycling_list' %} selected {% endif %}">Recycling</a></div>

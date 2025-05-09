@@ -32,7 +32,7 @@ class DeliveryForm(forms.ModelForm):
 DeliveryUnitFormSet = inlineformset_factory(
     parent_model=Delivery,
     model=DeliveryUnit,
-    fields=['delivery_type', 'material', 'weight'],
+    fields=['box_type', 'material', 'weight'],
     extra=1,
     can_delete=True
 )
@@ -48,7 +48,7 @@ class DeliveryUnitForm(forms.Form):
 UnloadFormSet = inlineformset_factory(
     parent_model=DeliveryUnit,
     model=Unload,
-    fields=["id", "unload_type", "material", "weight", "purpose", "note"],
+    fields=["id", "box_type", "material", "weight", "target", "note"],
     extra=1,
     can_delete=True
 )
@@ -71,7 +71,7 @@ RecyclingFormSet = inlineformset_factory(
 class ShippingForm(forms.ModelForm):
     class Meta:
         model = Shipping
-        fields = ['customer', 'delivery_receipt', 'note']
+        fields = ['customer', 'certificate', 'transport', 'note']
         widgets = {
             'note': forms.Textarea(attrs={'rows': 3}),
         }
@@ -89,7 +89,7 @@ ShippingUnitFormSet = inlineformset_factory(
 class CustomerForm(forms.ModelForm):
     class Meta:
         model = Customer
-        fields = ['name', 'certificate', 'transport', 'street', 'postal_code', 'city', 'phone', 'email', 'note']
+        fields = ['name', 'street', 'postal_code', 'city', 'phone', 'email', 'note']
         widgets = {
             'note': forms.Textarea(attrs={'rows': 5}),
         }

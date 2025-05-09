@@ -3,11 +3,6 @@ from warenwirtschaft.models.shipping import Shipping
 from warenwirtschaft.models.material import Material
 
 class ShippingUnit(models.Model):
-    STATUS_CHOICES = [
-        (1, "Aktiv"),
-        (2, "Erledigt"),
-    ]
-
     BOX_TYPE_CHOICES = [
         (1, "Container"),
         (2, "Gitterbox"),
@@ -18,7 +13,6 @@ class ShippingUnit(models.Model):
     shipping = models.ForeignKey(Shipping, on_delete=models.CASCADE, related_name='units_for_shipping')
     material = models.ForeignKey(Material, on_delete=models.CASCADE, null=True, blank=True, related_name='material_for_shipping_units')
     weight = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-    status = models.PositiveSmallIntegerField(choices=STATUS_CHOICES, default=1)
     box_type = models.PositiveSmallIntegerField(choices=BOX_TYPE_CHOICES)
     note = models.CharField(max_length=255, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

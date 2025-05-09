@@ -32,10 +32,10 @@
             <div>{{ item.delivery_unit.id }}</div>
             <div>{{ item.delivery_unit.delivery.supplier.name }}</div>
             <div>{{ item.delivery_unit }}</div>
-            <div>{{ item|getattr:"get_unload_type_display" }}</div>
+            <div>{{ item|getattr:"get_box_type_display" }}</div>
             <div>{{ item.material }}</div>
             <div>{{ item.weight }}</div>
-            <div>{{ item|getattr:"get_purpose_display" }}</div>
+            <div>{{ item|getattr:"get_target_display" }}</div>
             <div>{{ item.created_at|date:'d.m.Y' }}</div>
             <div>{{ item|getattr:"get_status_display" }}</div>
             <div title="{{ item.note }}">{{ item.note }}</div>

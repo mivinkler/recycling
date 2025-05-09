@@ -6,6 +6,12 @@ from warenwirtschaft.views.supplier.supplier_detail_view import SupplierDetailVi
 from warenwirtschaft.views.supplier.supplier_create_view import SupplierCreateView
 from warenwirtschaft.views.supplier.supplier_delete_view import SupplierDeleteView
 
+from warenwirtschaft.views.customer.customer_list_view import CustomerListView
+from warenwirtschaft.views.customer.customer_update_view import CustomerUpdateView
+from warenwirtschaft.views.customer.customer_detail_view import CustomerDetailView
+from warenwirtschaft.views.customer.customer_create_view import CustomerCreateView
+from warenwirtschaft.views.customer.customer_delete_view import CustomerDeleteView
+
 from warenwirtschaft.views.delivery.delivery_units_list_view import DeliveryUnitsListView
 from warenwirtschaft.views.delivery.delivery_detail_view import DeliveryDetailView
 from warenwirtschaft.views.delivery.delivery_create_view import DeliveryCreateView
@@ -23,11 +29,17 @@ from warenwirtschaft.views.recycling.recycling_update_view import RecyclingUpdat
 urlpatterns = [
     path('', SupplierListView.as_view(), name='home'),
 
-    path('supplier/list/', SupplierListView.as_view(), name='suppliers_list'),
+    path('supplier/list/', SupplierListView.as_view(), name='supplier_list'),
     path('supplier/<int:pk>/', SupplierDetailView.as_view(), name='supplier_detail'),
     path('supplier/create/', SupplierCreateView.as_view(), name='supplier_create'),
     path('supplier/update/<int:pk>/', SupplierUpdateView.as_view(), name='supplier_update'),
     path('supplier/delete/<int:pk>/', SupplierDeleteView.as_view(), name='supplier_delete'),
+
+    path('customer/list/', CustomerListView.as_view(), name='customer_list'),
+    path('customer/<int:pk>/', CustomerDetailView.as_view(), name='customer_detail'),
+    path('customer/create/', CustomerCreateView.as_view(), name='customer_create'),
+    path('customer/update/<int:pk>/', CustomerUpdateView.as_view(), name='customer_update'),
+    path('customer/delete/<int:pk>/', CustomerDeleteView.as_view(), name='customer_delete'),
 
     path('delivery/units/', DeliveryUnitsListView.as_view(), name='delivery_units_list'),
     path('delivery/<int:pk>/', DeliveryDetailView.as_view(), name='delivery_detail'),

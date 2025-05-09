@@ -12,9 +12,8 @@ class Recycling(models.Model):
     ]
 
     TARGET_CHOICES = [
-        (1, "Behandlung"),
-        (2, "Abholung"),
-        (3, "Entsorgung"),
+        (3, "Abholung"),
+        (4, "Entsorgung"),
     ]
 
     STATUS_CHOICES = [

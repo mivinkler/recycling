@@ -16,7 +16,7 @@ class DeliveryUnitsListView(ListView):
         ("delivery__supplier__name", "Kunde"),
         ("delivery__delivery_receipt", "Lieferschein"),
         ("note", "Anmerkung"),
-        ("delivery_type", "Behälter"),
+        ("box_type", "Behälter"),
         ("material__name", "Material"),
         ("weight", "Gewicht"),
         ("created_at", "Datum"),
@@ -42,7 +42,7 @@ class DeliveryUnitsListView(ListView):
             "page_obj": page_obj,
             "sort_param": self.request.GET.get("sort", ""),
             "search_query": self.request.GET.get("search", ""),
-            "delivery_types": DeliveryUnit.BOX_TYPE_CHOICES,
+            "box_types": DeliveryUnit.BOX_TYPE_CHOICES,
             "statuses": DeliveryUnit.STATUS_CHOICES,
             "selected_menu": "delivery_units_list",
         })

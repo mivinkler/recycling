@@ -1,10 +1,10 @@
 from django.views.generic.edit import CreateView
-from warenwirtschaft.models import Supplier
-from warenwirtschaft.forms import SupplierForm
 from django.urls import reverse_lazy
+from warenwirtschaft.forms import SupplierForm
+from warenwirtschaft.models.supplier import Supplier
 
 class SupplierCreateView(CreateView):
     model = Supplier
     template_name = 'supplier/supplier_create.html'
     form_class = SupplierForm
-    success_url = reverse_lazy('suppliers_list')
+    success_url = reverse_lazy('supplier_list')

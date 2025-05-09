@@ -16,7 +16,7 @@ class DeliveryDetailView(DetailView):
         context["delivery_units"] = self.object.deliveryunits.all()
         context["search_query"] = self.request.GET.get("search", "")
         context["sort_param"] = self.request.GET.get("sort", "")
-        context["delivery_type"] = DeliveryUnit.DELIVERY_TYPE_CHOICES
+        context["box_type"] = DeliveryUnit.BOX_TYPE_CHOICES
         context["statuses"] = DeliveryUnit.STATUS_CHOICES
         
         return context
