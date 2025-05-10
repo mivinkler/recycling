@@ -5,7 +5,7 @@ from warenwirtschaft.forms import ShippingUnitFormSet
 from django.db import transaction
 from django.urls import reverse_lazy
 
-class DeliveryCreateView(CreateView):
+class ShippingCreateView(CreateView):
     model = Shipping
     form_class = ShippingForm
     template_name = 'shipping/shipping_create.html'

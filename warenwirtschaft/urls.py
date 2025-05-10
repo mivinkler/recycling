@@ -25,24 +25,29 @@ from warenwirtschaft.views.recycling.recycling_list_view import RecyclingListVie
 from warenwirtschaft.views.recycling.recycling_create_view import RecyclingCreateView
 from warenwirtschaft.views.recycling.recycling_update_view import RecyclingUpdateView
 
+from warenwirtschaft.views.shipping.shipping_units_list_view import ShippingUnitsListView
+from warenwirtschaft.views.shipping.shipping_detail_view import ShippingDetailView
+from warenwirtschaft.views.shipping.shipping_create_view import ShippingCreateView
+from warenwirtschaft.views.shipping.shipping_update_view import ShippingUpdateView
+
 
 urlpatterns = [
     path('', SupplierListView.as_view(), name='home'),
 
     path('supplier/list/', SupplierListView.as_view(), name='supplier_list'),
-    path('supplier/<int:pk>/', SupplierDetailView.as_view(), name='supplier_detail'),
+    path('supplier/detail/<int:pk>/', SupplierDetailView.as_view(), name='supplier_detail'),
     path('supplier/create/', SupplierCreateView.as_view(), name='supplier_create'),
     path('supplier/update/<int:pk>/', SupplierUpdateView.as_view(), name='supplier_update'),
     path('supplier/delete/<int:pk>/', SupplierDeleteView.as_view(), name='supplier_delete'),
 
     path('customer/list/', CustomerListView.as_view(), name='customer_list'),
-    path('customer/<int:pk>/', CustomerDetailView.as_view(), name='customer_detail'),
+    path('customer/detail/<int:pk>/', CustomerDetailView.as_view(), name='customer_detail'),
     path('customer/create/', CustomerCreateView.as_view(), name='customer_create'),
     path('customer/update/<int:pk>/', CustomerUpdateView.as_view(), name='customer_update'),
     path('customer/delete/<int:pk>/', CustomerDeleteView.as_view(), name='customer_delete'),
 
     path('delivery/units/', DeliveryUnitsListView.as_view(), name='delivery_units_list'),
-    path('delivery/<int:pk>/', DeliveryDetailView.as_view(), name='delivery_detail'),
+    path('delivery/detail/<int:pk>/', DeliveryDetailView.as_view(), name='delivery_detail'),
     path('delivery/create/', DeliveryCreateView.as_view(), name='delivery_create'),
     path('delivery/update/<int:pk>/', DeliveryUpdateView.as_view(), name='delivery_update'),
 
@@ -53,4 +58,9 @@ urlpatterns = [
     path('recycling/list/', RecyclingListView.as_view(), name='recycling_list'),
     path('recycling/create/', RecyclingCreateView.as_view(), name='recycling_create'),
     path('recycling/update/<int:pk>/', RecyclingUpdateView.as_view(), name='recycling_update'),
+
+    path('shipping/list/', ShippingUnitsListView.as_view(), name='shipping_units_list'),
+    path('shipping/detail/<int:pk>/', ShippingDetailView.as_view(), name='delshipping_detail'),
+    path('shipping/create/', ShippingCreateView.as_view(), name='shipping_create'),
+    path('shipping/update/<int:pk>/', ShippingUpdateView.as_view(), name='shipping_update'),
 ]

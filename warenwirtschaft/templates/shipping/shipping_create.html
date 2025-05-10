@@ -1,26 +1,31 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Lieferung erstellen{% endblock %}
+{% block title %}Abholung erstellen{% endblock %}
 
 {% block content %}
 
-<form method="post" action="{% url 'delivery_create' %}" id="eingang-form">
+<form method="post" action="{% url 'shipping_create' %}" id="eingang-form">
 {% csrf_token %}
   <div class="itemcard-small">
-    <h2>Lieferung erstellen</h2>
+    <h2>Abholung erstellen</h2>
 
     <section class="itemcard-topbox ">
       {{ form.non_field_errors }}
 
       <div class="itemcard-row">
-        <div>Lieferant:</div>
-        <div>{{ form.supplier }}</div>
+        <div>Abholer:</div>
+        <div>{{ form.customer }}</div>
       </div>
 
       <div class="itemcard-row">
-        <div>Lieferschein:</div>
-        <div>{{ form.delivery_receipt }}</div>
+        <div>Begleit-/Übernahmeschein:</div>
+        <div>{{ form.certificate }}</div>
+      </div>
+
+      <div class="itemcard-row">
+        <div>Transport:</div>
+        <div>{{ form.transport }}</div>
       </div>
 
       <div class="itemcard-row">
@@ -30,14 +35,15 @@
     </section>
 
     <section class="itemcard-table">
-      <div class="itemcard-table-title">Ladungseinheiten:</div>
+      <div class="itemcard-table-title">Abholung-Einheiten:</div>
       {{ formset.management_form }}
 
-      <div class="table" data-type="delivery-create-deliveryunits">
+      <div class="table" data-type="shipping-create-deliveryunits">
         <div class="table-header">№</div>
         <div class="table-header">Gewicht</div>
         <div class="table-header">Behälter</div>
         <div class="table-header">Material</div>
+        <div class="table-header">Anmerkung</div>
 
         {{ formset.non_form_errors }}
         {% for item_form in formset %}
@@ -46,12 +52,14 @@
             <div>{{ item_form.weight }}</div>
             <div>{{ item_form.box_type }}</div>
             <div>{{ item_form.material }}</div>
+            <div>{{ item_form.note }}</div>
           </div>
         {% endfor %}
         
         <template id="table-row-template">
           <div class="table-row">
-            <div> __index__</div>
+            {{ empty_form.id }}
+            <div>__index__</div>
             <div>{{ empty_form.weight }}</div>
             <div>{{ empty_form.box_type }}</div>
             <div>{{ empty_form.material }}</div>

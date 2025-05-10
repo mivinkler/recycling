@@ -25,7 +25,7 @@ class RecyclingListView(ListView):
 
     def get_queryset(self):
         if not hasattr(self, '_queryset'):
-            queryset = super().get_queryset().select_related("recycling_for_unload", "material_for_recycling")
+            queryset = super().get_queryset().select_related("unload", "material")
             search_service = SearchService(self.request, self.active_fields)
             sorting_service = SortingService(self.request, self.active_fields)
 

@@ -25,7 +25,7 @@ class DeliveryUnitsListView(ListView):
 
     def get_queryset(self):
         sort_fields = [field[0] for field in self.sortable_fields]
-        queryset = DeliveryUnit.objects.select_related("units_for_delivery", "units_for_delivery__supplier", "material_for_delivery_units")
+        queryset = DeliveryUnit.objects.select_related("delivery", "delivery__supplier", "material")
 
         queryset = SearchService(self.request, sort_fields).apply_search(queryset)
         queryset = SortingService(self.request, sort_fields).apply_sorting(queryset)

@@ -9,32 +9,30 @@
 
 {% block content %}
 
-<div class="table" data-type="deliveryunits-list">
-  <div class="table-header">{% sort_header "delivery__id" "№" %}</div>
-  <div class="table-header">{% sort_header "supplier__name" "Lieferant" %}</div>
-  <div class="table-header">{% sort_header "delivery_receipt" "Lieferschein" %}</div>
+<div class="table" data-type="shippingunits-list">
+  <div class="table-header">{% sort_header "shipping__id" "№" %}</div>
+  <div class="table-header">{% sort_header "customer__name" "Abholer" %}</div>
+  <div class="table-header">{% sort_header "certificate" "Begleit-/Übernahmeschein:" %}</div>
   <div class="table-header">{% sort_header "box_type" "Behälter" %}</div>
   <div class="table-header">{% sort_header "material" "Material" %}</div>
   <div class="table-header">{% sort_header "weight" "Gewicht" %}</div>
   <div class="table-header">{% sort_header "created_at" "Datum" %}</div>
-  <div class="table-header">{% sort_header "status" "Status" %}</div>
   <div class="table-header">{% sort_header "note" "Notiz" %}</div>
 
-  {% for deliveryunit in page_obj %}
+  {% for shippingunit in page_obj %}
     <div class="table-row js-select-row"
-      data-id="{{ deliveryunit.id }}"
-      data-url-detail="{% url 'delivery_detail' pk=deliveryunit.delivery.id %}"
-      data-url-update="{% url 'delivery_update' pk=deliveryunit.delivery.id %}">
+      data-id="{{ shippingunit.id }}"
+      data-url-detail="{% url 'shipping_detail' pk=shippingunit.shipping.id %}"
+      data-url-update="{% url 'shipping_update' pk=shippingunit.shipping.id %}">
     
-      <div class="table-row__id-gray">{{ deliveryunit.delivery.id }}</div>
-      <div>{{ deliveryunit.delivery.supplier.name }}</div>
-      <div>{{ deliveryunit.delivery.delivery_receipt }}</div>
+      <div class="table-row__id-gray">{{ shippingunit.shipping.id }}</div>
+      <div>{{ deliveryunit.shipping.customer.name }}</div>
+      <div>{{ deliveryunit.shipping.certificate }}</div>
       <div>{{ deliveryunit.get_box_type_display }}</div>
       <div>{{ deliveryunit.material }}</div>
       <div>{{ deliveryunit.weight }}</div>
       <div>{{ deliveryunit.created_at|date:'d.m.Y' }}</div>
-      <div>{{ deliveryunit.get_status_display }}</div>
-      <div title="{{ deliveryunit.delivery.note }}">{{ deliveryunit.delivery.note }}</div>
+      <div title="{{ deliveryunit.shipping.note }}">{{ deliveryunit.shipping.note }}</div>
     </div>
   {% endfor %}
 </div>

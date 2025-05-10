@@ -27,7 +27,7 @@ class SupplierDetailView(DetailView):
         sort_fields = [field[0] for field in self.sortable_fields]
         supplier = self.get_object()
 
-        queryset = DeliveryUnit.objects.select_related("units_for_delivery", "units_for_delivery__supplier", "material_for_delivery_units").filter(delivery__supplier=supplier)
+        queryset = DeliveryUnit.objects.select_related("delivery", "delivery__supplier", "material").filter(delivery__supplier=supplier)
 
         queryset = SearchService(self.request, sort_fields).apply_search(queryset)
         queryset = SortingService(self.request, sort_fields).apply_sorting(queryset)

@@ -26,7 +26,7 @@ class ShippingUnitsListView(ListView):
 
     def get_queryset(self):
         sort_fields = [field[0] for field in self.sortable_fields]
-        queryset = ShippingUnit.objects.select_related("units_for_shipping", "units_for_shipping__customer", "material_for_shipping_units")
+        queryset = ShippingUnit.objects.select_related("shipping", "shipping__customer", "material")
 
         queryset = SearchService(self.request, sort_fields).apply_search(queryset)
         queryset = SortingService(self.request, sort_fields).apply_sorting(queryset)
@@ -44,7 +44,6 @@ class ShippingUnitsListView(ListView):
             "sort_param": self.request.GET.get("sort", ""),
             "search_query": self.request.GET.get("search", ""),
             "box_types": ShippingUnit.BOX_TYPE_CHOICES,
-            "statuses": ShippingUnit.STATUS_CHOICES,
             "selected_menu": "shipping_units_list",
         })
 

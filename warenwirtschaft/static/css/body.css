@@ -4,16 +4,12 @@
   grid-template-columns: auto 1fr 2fr 2fr 1fr 2fr 1fr 2fr 1fr 4fr;
 }
 
-.table[data-type="unload-list"] {
-  grid-template-columns: auto 2fr 2fr repeat(3, 1fr) 4fr 4fr 2fr 2fr;
+.table[data-type="supplier-detail-deliveryunits"] {
+  grid-template-columns: auto repeat(8, 1fr);
 }
 
 .table[data-type="deliveryunits-list"] {
   grid-template-columns: auto repeat(7, 1fr) 2fr;
-}
-
-.table[data-type="supplier-detail-deliveryunits"] {
-  grid-template-columns: auto repeat(8, 1fr);
 }
 
 .table[data-type="delivery-detail-deliveryunits"] {
@@ -21,11 +17,11 @@
 }
 
 .table[data-type="delivery-create-deliveryunits"] {
-  grid-template-columns: auto repeat(3, 1fr);
+  grid-template-columns: auto repeat(4, 1fr);
 }
 
 .table[data-type="delivery-update-deliveryunits"] {
-  grid-template-columns: auto repeat(3, 3fr) 1fr;
+  grid-template-columns: auto repeat(4, 3fr) 1fr;
 }
 
 .table[data-type="unload-list"] {
@@ -50,6 +46,22 @@
 
 .table[data-type="recycling-update"] {
   grid-template-columns: auto repeat(4, 1fr) 2fr auto;
+}
+
+.table[data-type="shippingunits-list"] {
+  grid-template-columns: auto repeat(6, 1fr) 2fr;
+}
+
+.table[data-type="shipping-detail-shippingunits"] {
+  grid-template-columns: auto repeat(5, 1fr);
+}
+
+.table[data-type="shipping-create-shippingunits"] {
+  grid-template-columns: auto repeat(5, 1fr);
+}
+
+.table[data-type="shipping-update-shippingunits"] {
+  grid-template-columns: auto repeat(5, 1fr) auto;
 }
 
 /* ================ table ================== */

@@ -32,7 +32,7 @@ class DeliveryForm(forms.ModelForm):
 DeliveryUnitFormSet = inlineformset_factory(
     parent_model=Delivery,
     model=DeliveryUnit,
-    fields=['box_type', 'material', 'weight'],
+    fields=['box_type', 'material', 'weight', 'note'],
     extra=1,
     can_delete=True
 )

@@ -32,16 +32,16 @@
         <div class="table-header">Löschen</div>
 
         {{ formset.non_form_errors }}
-        {% for form in formset %}
-          {{ form.id }}
+        {% for item_form in formset %}
+          {{ item_form.id }}
           <div class="table-row" data-type="recycling-update">
             <div>{{ forloop.counter }}</div>
-            <div>{{ form.box_type }}</div>
-            <div>{{ form.weight }}</div>
-            <div>{{ form.material }}</div>
-            <div>{{ form.target }}</div>
-            <div>{{ form.note }}</div>
-            <div class="itemcard-row-delete">{{ form.DELETE }}</div>
+            <div>{{ item_form.box_type }}</div>
+            <div>{{ item_form.weight }}</div>
+            <div>{{ item_form.material }}</div>
+            <div>{{ item_form.target }}</div>
+            <div>{{ item_form.note }}</div>
+            <div class="itemcard-row-delete">{{ item_form.DELETE }}</div>
           </div>
         {% endfor %}
 

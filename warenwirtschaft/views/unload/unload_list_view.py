@@ -24,7 +24,7 @@ class UnloadListView(ListView):
 
     def get_queryset(self):
         if not hasattr(self, '_queryset'):
-            queryset = super().get_queryset().select_related("unload_for_delivery_unit", "material_for_delivery_unit")
+            queryset = super().get_queryset().select_related("delivery_unit", "material")
             search_service = SearchService(self.request, self.active_fields)
             sorting_service = SortingService(self.request, self.active_fields)
 

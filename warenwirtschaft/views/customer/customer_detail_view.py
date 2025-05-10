@@ -29,7 +29,7 @@ class CustomerDetailView(DetailView):
         sort_fields = [field[0] for field in self.sortable_fields]
         customer = self.get_object()
 
-        queryset = ShippingUnit.objects.select_related("units_for_shipping", "units_for_shipping__customer", "material_for_shipping_units").filter(shipping__customer=customer)
+        queryset = ShippingUnit.objects.select_related("shipping", "shipping__customer", "material").filter(shipping__customer=customer)
 
         queryset = SearchService(self.request, sort_fields).apply_search(queryset)
         queryset = SortingService(self.request, sort_fields).apply_sorting(queryset)
