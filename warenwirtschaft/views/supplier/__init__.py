@@ -1,0 +1,5 @@
+from .supplier_list_view import SupplierListView
+from .supplier_update_view import SupplierUpdateView
+from .supplier_detail_view import SupplierDetailView
+from .supplier_create_view import SupplierCreateView
+from .supplier_delete_view import SupplierDeleteView

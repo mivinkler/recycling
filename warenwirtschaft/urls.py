@@ -1,34 +1,11 @@
 from django.urls import path
 
-from warenwirtschaft.views.supplier.supplier_list_view import SupplierListView
-from warenwirtschaft.views.supplier.supplier_update_view import SupplierUpdateView
-from warenwirtschaft.views.supplier.supplier_detail_view import SupplierDetailView
-from warenwirtschaft.views.supplier.supplier_create_view import SupplierCreateView
-from warenwirtschaft.views.supplier.supplier_delete_view import SupplierDeleteView
-
-from warenwirtschaft.views.customer.customer_list_view import CustomerListView
-from warenwirtschaft.views.customer.customer_update_view import CustomerUpdateView
-from warenwirtschaft.views.customer.customer_detail_view import CustomerDetailView
-from warenwirtschaft.views.customer.customer_create_view import CustomerCreateView
-from warenwirtschaft.views.customer.customer_delete_view import CustomerDeleteView
-
-from warenwirtschaft.views.delivery.delivery_units_list_view import DeliveryUnitsListView
-from warenwirtschaft.views.delivery.delivery_detail_view import DeliveryDetailView
-from warenwirtschaft.views.delivery.delivery_create_view import DeliveryCreateView
-from warenwirtschaft.views.delivery.delivery_update_view import DeliveryUpdateView
-
-from warenwirtschaft.views.unload.unload_list_view import UnloadListView
-from warenwirtschaft.views.unload.unload_create_view import UnloadCreateView
-from warenwirtschaft.views.unload.unload_update_view import UnloadUpdateView
-
-from warenwirtschaft.views.recycling.recycling_list_view import RecyclingListView
-from warenwirtschaft.views.recycling.recycling_create_view import RecyclingCreateView
-from warenwirtschaft.views.recycling.recycling_update_view import RecyclingUpdateView
-
-from warenwirtschaft.views.shipping.shipping_units_list_view import ShippingUnitsListView
-from warenwirtschaft.views.shipping.shipping_detail_view import ShippingDetailView
-from warenwirtschaft.views.shipping.shipping_create_view import ShippingCreateView
-from warenwirtschaft.views.shipping.shipping_update_view import ShippingUpdateView
+from warenwirtschaft.views.supplier import SupplierListView, SupplierUpdateView, SupplierDetailView, SupplierCreateView,SupplierDeleteView
+from warenwirtschaft.views.customer import CustomerListView, CustomerUpdateView, CustomerDetailView, CustomerCreateView, CustomerDeleteView
+from warenwirtschaft.views.delivery import DeliveryUnitsListView, DeliveryDetailView, DeliveryCreateView, DeliveryUpdateView
+from warenwirtschaft.views.unload import UnloadListView, UnloadCreateView, UnloadUpdateView
+from warenwirtschaft.views.recycling import RecyclingListView, RecyclingCreateView, RecyclingUpdateView
+from warenwirtschaft.views.shipping import ShippingUnitsListView, ShippingDetailView, ShippingCreateView, ShippingUpdateView
 
 
 urlpatterns = [
@@ -60,7 +37,7 @@ urlpatterns = [
     path('recycling/update/<int:pk>/', RecyclingUpdateView.as_view(), name='recycling_update'),
 
     path('shipping/list/', ShippingUnitsListView.as_view(), name='shipping_units_list'),
-    path('shipping/detail/<int:pk>/', ShippingDetailView.as_view(), name='delshipping_detail'),
+    path('shipping/detail/<int:pk>/', ShippingDetailView.as_view(), name='shipping_detail'),
     path('shipping/create/', ShippingCreateView.as_view(), name='shipping_create'),
     path('shipping/update/<int:pk>/', ShippingUpdateView.as_view(), name='shipping_update'),
 ]

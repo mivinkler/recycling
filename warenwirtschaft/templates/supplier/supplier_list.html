@@ -47,14 +47,6 @@
 
 {% block extra_js %}
   <script src="{% static 'js/selectable-row.js' %}"></script>
-  <script src="{% static 'js/current-date.js' %}"></script>
-  {% comment %} <script>
-    document.addEventListener("click", function (event) {
-      document.querySelectorAll("details.top-icon-detail[open]").forEach(details => {
-        if (!details.contains(event.target)) {
-          details.removeAttribute("open");
-        }
-      });
-    });
-  </script> {% endcomment %}
+
+
 {% endblock %}

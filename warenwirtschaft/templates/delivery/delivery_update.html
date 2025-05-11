@@ -79,24 +79,9 @@
   </div>
 </form>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const addButton = document.getElementById('add-form-btn');
-    const tableBody = document.querySelector('.table');
-    const template = document.getElementById('table-row-template').innerHTML;
-    const totalFormsInput = document.getElementById('id_deliveryunits-TOTAL_FORMS');
-  
-    addButton.addEventListener('click', function () {
-      const formIndex = +totalFormsInput.value
-      const newRowHtml = template
-        .replace(/__prefix__/g, formIndex)
-        .replace(/__index__/g, formIndex + 1);
-  
-      tableBody.insertAdjacentHTML('beforeend', newRowHtml);
-      totalFormsInput.value = formIndex + 1;
-    });
-  });
-</script>
+{% endblock %}
 
+{% block extra_js %}
+  <script src="{% static 'js/add-table-row.js' %}"></script>
 {% endblock %}
 

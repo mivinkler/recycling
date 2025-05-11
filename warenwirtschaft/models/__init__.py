@@ -4,3 +4,6 @@ from .delivery import Delivery
 from .delivery_unit import DeliveryUnit
 from .unload import Unload
 from .recycling import Recycling
+from .shipping import Shipping
+from .shipping_unit import ShippingUnit
+from .customer import Customer

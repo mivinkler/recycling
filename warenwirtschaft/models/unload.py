@@ -25,6 +25,7 @@ class Unload(models.Model):
     delivery_unit = models.ForeignKey(DeliveryUnit, on_delete=models.CASCADE, related_name="unload_for_delivery_unit")
     box_type = models.PositiveSmallIntegerField(choices=BOX_TYPE_CHOICES)
     material = models.ForeignKey(Material, on_delete=models.CASCADE, null=True, blank=True, related_name="material_for_delivery_unit")
+    material_other = models.CharField(max_length=50, null=True, blank=True)
     weight = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     target = models.PositiveSmallIntegerField(choices=TARGET_CHOICES)
     status = models.PositiveSmallIntegerField(choices=STATUS_CHOICES, default=1)

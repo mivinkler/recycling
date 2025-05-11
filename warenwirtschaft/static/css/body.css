@@ -17,7 +17,7 @@
 }
 
 .table[data-type="delivery-create-deliveryunits"] {
-  grid-template-columns: auto repeat(4, 1fr);
+  grid-template-columns: auto repeat(5, 1fr);
 }
 
 .table[data-type="delivery-update-deliveryunits"] {

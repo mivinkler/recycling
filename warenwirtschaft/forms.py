@@ -32,7 +32,7 @@ class DeliveryForm(forms.ModelForm):
 DeliveryUnitFormSet = inlineformset_factory(
     parent_model=Delivery,
     model=DeliveryUnit,
-    fields=['box_type', 'material', 'weight', 'note'],
+    fields=['box_type', 'material', 'target', 'material_other', 'weight', 'note'],
     extra=1,
     can_delete=True
 )
@@ -48,7 +48,7 @@ class DeliveryUnitForm(forms.Form):
 UnloadFormSet = inlineformset_factory(
     parent_model=DeliveryUnit,
     model=Unload,
-    fields=["id", "box_type", "material", "weight", "target", "note"],
+    fields=['id', 'box_type', 'material', 'weight', 'target', 'note'],
     extra=1,
     can_delete=True
 )

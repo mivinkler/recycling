@@ -8,33 +8,33 @@
 
 {% block content %}
 <div class="table" data-type="recycling-list">
-    <div class="table-header">№</div>
-    <div class="table-header">Umladung</div>
-    <div class="table-header">Behälter</div>
-    <div class="table-header">Gewicht</div>
-    <div class="table-header">Zweck</div>
-    <div class="table-header">Status</div>
-    <div class="table-header">Material</div>
-    <div class="table-header">Datum</div>
-    <div class="table-header">Anmerkung</div>
+  <div class="table-header">№</div>
+  <div class="table-header">Umladung</div>
+  <div class="table-header">Behälter</div>
+  <div class="table-header">Gewicht</div>
+  <div class="table-header">Zweck</div>
+  <div class="table-header">Status</div>
+  <div class="table-header">Material</div>
+  <div class="table-header">Datum</div>
+  <div class="table-header">Anmerkung</div>
 
-    {% for item in page_obj %}
-        <div class="table-row js-select-row"
-            data-id="{{ item.id }}"
-            data-url-detail="#"
-            data-url-update="{% url 'recycling_update' pk=item.unload.id %}">
+  {% for item in page_obj %}
+    <div class="table-row js-select-row"
+      data-id="{{ item.id }}"
+      data-url-detail="#"
+      data-url-update="{% url 'recycling_update' pk=item.unload.id %}">
 
-            <div class="table-row__id-gray">{{ forloop.counter }}</div>
-            <div>{{ item.unload }}</div>
-            <div>{{ item|getattr:"get_box_type_display" }}</div>
-            <div>{{ item.weight }}</div>
-            <div>{{ item|getattr:"get_target_display" }}</div>
-            <div>{{ item|getattr:"get_status_display" }}</div>
-            <div>{{ item.material }}</div>
-            <div>{{ item.created_at|date:'d.m.Y' }}</div>
-            <div title="{{ item.note }}">{{ item.note }}</div>
-        </div>
-    {% endfor %}
+      <div class="table-row__id-gray">{{ forloop.counter }}</div>
+      <div>{{ item.unload }}</div>
+      <div>{{ item|getattr:"get_box_type_display" }}</div>
+      <div>{{ item.weight }}</div>
+      <div>{{ item|getattr:"get_target_display" }}</div>
+      <div>{{ item|getattr:"get_status_display" }}</div>
+      <div>{{ item.material }}</div>
+      <div>{{ item.created_at|date:'d.m.Y' }}</div>
+      <div title="{{ item.note }}">{{ item.note }}</div>
+    </div>
+  {% endfor %}
 </div>
 
 {% paginate page_obj %}
@@ -43,15 +43,5 @@
 
 {% block extra_js %}
   <script src="{% static 'js/selectable-row.js' %}"></script>
-  <script src="{% static 'js/current-date.js' %}"></script>
-  <script>
-    document.addEventListener("click", function (event) {
-      document.querySelectorAll("details.top-icon-detail[open]").forEach(details => {
-        if (!details.contains(event.target)) {
-          details.removeAttribute("open");
-        }
-      });
-    });
-  </script>
 {% endblock %}
 

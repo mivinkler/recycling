@@ -12,6 +12,7 @@ class ShippingUnit(models.Model):
 
     shipping = models.ForeignKey(Shipping, on_delete=models.CASCADE, related_name='units_for_shipping')
     material = models.ForeignKey(Material, on_delete=models.CASCADE, null=True, blank=True, related_name='material_for_shipping_units')
+    material_other = models.CharField(max_length=50, null=True, blank=True)
     weight = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     box_type = models.PositiveSmallIntegerField(choices=BOX_TYPE_CHOICES)
     note = models.CharField(max_length=255, null=True, blank=True)
