@@ -16,7 +16,7 @@ class DeliveryUnit(models.Model):
     ]
 
     TARGET_CHOICES = [
-        (2, "Umladung"),
+        (1, "Umladung"),
         (2, "Recycling"),
         (3, "Abholung"),
         (4, "Entsorgung"),

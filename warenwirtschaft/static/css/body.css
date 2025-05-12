@@ -57,7 +57,7 @@
 }
 
 .table[data-type="shipping-create-shippingunits"] {
-  grid-template-columns: auto repeat(5, 1fr);
+  grid-template-columns: auto repeat(4, 1fr);
 }
 
 .table[data-type="shipping-update-shippingunits"] {

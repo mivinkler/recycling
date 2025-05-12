@@ -39,7 +39,7 @@ class CustomerDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        deliveryunits = self.get_deliveryunits_queryset()
+        shippingunits = self.get_deliveryunits_queryset()
         page_obj = PaginationService(self.request, self.paginate_by).get_paginated_queryset(shippingunits)
 
         context.update({

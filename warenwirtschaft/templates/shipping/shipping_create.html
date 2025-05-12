@@ -38,7 +38,7 @@
       <div class="itemcard-table-title">Abholung-Einheiten:</div>
       {{ formset.management_form }}
 
-      <div class="table" data-type="shipping-create-deliveryunits">
+      <div class="table" data-type="shipping-create-shippingunits">
         <div class="table-header">№</div>
         <div class="table-header">Gewicht</div>
         <div class="table-header">Behälter</div>
@@ -48,6 +48,7 @@
         {{ formset.non_form_errors }}
         {% for item_form in formset %}
           <div class="table-row">
+            {{ item_form.id }}
             <div>{{ forloop.counter }}</div>
             <div>{{ item_form.weight }}</div>
             <div>{{ item_form.box_type }}</div>
@@ -63,6 +64,7 @@
             <div>{{ empty_form.weight }}</div>
             <div>{{ empty_form.box_type }}</div>
             <div>{{ empty_form.material }}</div>
+            <div>{{ empty_form.note }}</div>
           </div>
         </template>
       </div>

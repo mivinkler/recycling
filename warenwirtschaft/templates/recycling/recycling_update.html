@@ -33,8 +33,8 @@
 
         {{ formset.non_form_errors }}
         {% for item_form in formset %}
-          {{ item_form.id }}
-          <div class="table-row" data-type="recycling-update">
+        <div class="table-row" data-type="recycling-update">
+            {{ item_form.id }}
             <div>{{ forloop.counter }}</div>
             <div>{{ item_form.box_type }}</div>
             <div>{{ item_form.weight }}</div>

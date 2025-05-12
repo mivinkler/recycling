@@ -109,6 +109,10 @@
         <span class="tooltip-text">Lieferant</span>
         <img src="{% static 'icons/supplier-icon.svg' %}">
       </a>
+      <a href="{% url 'customer_create' %}" class="tooltip-wrapper">
+        <span class="tooltip-text">Abholer</span>
+        <img src="{% static 'icons/supplier-icon.svg' %}">
+      </a>
       <a href="{% url 'delivery_create' %}" class="tooltip-wrapper">
         <span class="tooltip-text">Lieferung</span>
         <img src="{% static 'icons/container-icon.svg' %}">
@@ -121,7 +125,7 @@
         <span class="tooltip-text">Recycling</span>
         <img src="{% static 'icons/recycle-icon.svg' %}">
       </a>
-      <a href="#" class="tooltip-wrapper">
+      <a href="{% url 'shipping_create' %}" class="tooltip-wrapper">
         <span class="tooltip-text">Versand</span>
         <img src="{% static 'icons/shipping-icon.svg' %}">
       </a>

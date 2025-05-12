@@ -10,7 +10,7 @@ class DeliveryCreateView(CreateView):
     form_class = DeliveryForm
     template_name = 'delivery/delivery_create.html'
     context_object_name = 'delivery'
-    success_url = reverse_lazy('delivery_units_list')
+    success_url = reverse_lazy('delivery_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

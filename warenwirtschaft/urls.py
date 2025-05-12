@@ -23,7 +23,7 @@ urlpatterns = [
     path('customer/update/<int:pk>/', CustomerUpdateView.as_view(), name='customer_update'),
     path('customer/delete/<int:pk>/', CustomerDeleteView.as_view(), name='customer_delete'),
 
-    path('delivery/units/', DeliveryUnitsListView.as_view(), name='delivery_units_list'),
+    path('delivery/units/', DeliveryUnitsListView.as_view(), name='delivery_list'),
     path('delivery/detail/<int:pk>/', DeliveryDetailView.as_view(), name='delivery_detail'),
     path('delivery/create/', DeliveryCreateView.as_view(), name='delivery_create'),
     path('delivery/update/<int:pk>/', DeliveryUpdateView.as_view(), name='delivery_update'),
@@ -36,7 +36,7 @@ urlpatterns = [
     path('recycling/create/', RecyclingCreateView.as_view(), name='recycling_create'),
     path('recycling/update/<int:pk>/', RecyclingUpdateView.as_view(), name='recycling_update'),
 
-    path('shipping/list/', ShippingUnitsListView.as_view(), name='shipping_units_list'),
+    path('shipping/list/', ShippingUnitsListView.as_view(), name='shipping_list'),
     path('shipping/detail/<int:pk>/', ShippingDetailView.as_view(), name='shipping_detail'),
     path('shipping/create/', ShippingCreateView.as_view(), name='shipping_create'),
     path('shipping/update/<int:pk>/', ShippingUpdateView.as_view(), name='shipping_update'),

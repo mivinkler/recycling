@@ -34,7 +34,7 @@
       <div>{{ deliveryunit.weight }}</div>
       <div>{{ deliveryunit.created_at|date:'d.m.Y' }}</div>
       <div>{{ deliveryunit.get_status_display }}</div>
-      <div title="{{ deliveryunit.delivery.note }}">{{ deliveryunit.delivery.note }}</div>
+      <div title="{{ deliveryunit.note }}">{{ deliveryunit.note }}</div>
     </div>
   {% endfor %}
 </div>

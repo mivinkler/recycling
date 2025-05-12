@@ -26,13 +26,13 @@
       data-url-update="{% url 'shipping_update' pk=shippingunit.shipping.id %}">
     
       <div class="table-row__id-gray">{{ shippingunit.shipping.id }}</div>
-      <div>{{ deliveryunit.shipping.customer.name }}</div>
-      <div>{{ deliveryunit.shipping.certificate }}</div>
-      <div>{{ deliveryunit.get_box_type_display }}</div>
-      <div>{{ deliveryunit.material }}</div>
-      <div>{{ deliveryunit.weight }}</div>
-      <div>{{ deliveryunit.created_at|date:'d.m.Y' }}</div>
-      <div title="{{ deliveryunit.shipping.note }}">{{ deliveryunit.shipping.note }}</div>
+      <div>{{ shippingunit.shipping.customer.name }}</div>
+      <div>{{ shippingunit.shipping.certificate }}</div>
+      <div>{{ shippingunit.get_box_type_display }}</div>
+      <div>{{ shippingunit.material }}</div>
+      <div>{{ shippingunit.weight }}</div>
+      <div>{{ shippingunit.created_at|date:'d.m.Y' }}</div>
+      <div title="{{ shippingunit.note }}">{{ shippingunit.note }}</div>
     </div>
   {% endfor %}
 </div>
