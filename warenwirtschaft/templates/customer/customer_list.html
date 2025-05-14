@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load sort_tags %}
+{% load custom_filters %}
+{% load pagination %}
+
+{% block title %}Abholer{% endblock %}
+
+{% block content %}
+
+<div class="table" data-type="supplier-list">
+  <div class="table-header">{% sort_header "id" "ID" %}</div>
+  <div class="table-header">{% sort_header "avv_number" "AVV" %}</div>
+  <div class="table-header">{% sort_header "name" "Abholer" %}</div>
+  <div class="table-header">{% sort_header "street" "Straße" %}</div>
+  <div class="table-header">{% sort_header "postal_code" "PLZ" %}</div>
+  <div class="table-header">{% sort_header "city" "Stadt" %}</div>
+  <div class="table-header">{% sort_header "phone" "Telefon"  %}</div>
+  <div class="table-header">{% sort_header "email" "Email" %}</div>
+  <div class="table-header">{% sort_header "created_at" "Datum" %}</div>
+  <div class="table-header">{% sort_header "note" "Anmerkung" %}</div>
+  
+  {% for customer in page_obj %}
+  <div class="table-row js-select-row"
+    data-id="{{ customer.id }}"
+    data-url-detail="{% url 'customer_detail' pk=customer.id %}"
+    data-url-update="{% url 'customer_update' pk=customer.id %}">
+    
+    <div class="table-row__id-gray">{{ customer.id }}</div>
+    <div>{{ customer.avv_number }}</div>
+    <div>{{ customer.name }}</div>
+    <div>{{ customer.street }}</div>
+    <div>{{ customer.postal_code }}</div>
+    <div>{{ customer.city }}</div>
+    <div>{{ customer.phone }}</div>
+    <div>{{ customer.email }}</div>
+    <div>{{ customer.created_at|date:"d.m.Y" }}</div>
+    <div title="{{ customer.note }}">{{ customer.note }}</div>
+  </div>
+  {% endfor %}
+</div>
+
+{% paginate page_obj %}
+
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'js/selectable-row.js' %}"></script>
+
+
+{% endblock %}

@@ -1,9 +1,10 @@
 from django.views.generic.detail import DetailView
-from warenwirtschaft.models.supplier import Supplier
-from warenwirtschaft.models.delivery_unit import DeliveryUnit
 from warenwirtschaft.services.search_service import SearchService
 from warenwirtschaft.services.sorting_service import SortingService
 from warenwirtschaft.services.pagination_service import PaginationService
+
+from warenwirtschaft.models.supplier import Supplier
+from warenwirtschaft.models.delivery_unit import DeliveryUnit
 
 
 class SupplierDetailView(DetailView):

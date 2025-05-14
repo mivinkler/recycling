@@ -8,7 +8,7 @@ from warenwirtschaft.models.shipping_unit import ShippingUnit
 
 class ShippingUnitsListView(ListView):
     model = ShippingUnit
-    template_name = "shipping/shipping_list.html"
+    template_name = "shipping/shipping_units_list.html"
     context_object_name = "shipping_units"
     paginate_by = 50
 

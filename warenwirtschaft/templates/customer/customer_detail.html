@@ -4,45 +4,45 @@
 {% load custom_filters %}
 {% load pagination %}
 
-{% block title %}Lieferant: Detail{% endblock %}
+{% block title %}Abholer: Detail{% endblock %}
 
 {% block content %}
 <section class="info-table-wrapper">
-    <h2 class="info-table-title">Lieferant: Details</h2>
+    <h2 class="info-table-title">Abholer: Details</h2>
     <div class="info-table">
         <div class="info-table-row">
-            <div>Lieferant:</div>
-            <div>{{ supplier.name }}</div>
+            <div>Abholer:</div>
+            <div>{{ customer.name }}</div>
         </div>
         <div class="info-table-row">
             <div>Adresse:</div>
-            <div>{{ supplier.street }},&nbsp;{{ supplier.postal_code }} {{ supplier.city }}</div>
+            <div>{{ customer.street }},&nbsp;{{ customer.postal_code }} {{ customer.city }}</div>
         </div>
         <div class="info-table-row">
             <div>Telefon:</div>
-            <div>{{ supplier.phone }}</div>
+            <div>{{ customer.phone }}</div>
         </div>
         <div class="info-table-row">
             <div>Email:</div>
-            <div>{{ supplier.email }}</div>
+            <div>{{ customer.email }}</div>
         </div>
         <div class="info-table-row">
             <div>AVV-Nummer:</div>
-            <div>{{ supplier.avv_number }}</div>
+            <div>{{ customer.avv_number }}</div>
         </div>
         <div class="info-table-row">
             <div>Erstellt am:</div>
-            <div>{{ supplier.created_at|date:'d.m.Y' }}</div>
+            <div>{{ customer.created_at|date:'d.m.Y' }}</div>
         </div>
         <div class="info-table-row">
             <div>Anmerkung:</div>
-            <div>{{ supplier.note }}</div>
+            <div>{{ customer.note }}</div>
         </div>
     </div>
 </section>
 
 <section>
-    <div class="table" data-type="supplier-detail-deliveryunits">
+    <div class="table" data-type="customer-detail-deliveryunits">
         <div class="table-header">ID</div>
         <div class="table-header">Lieferschein</div>
         <div class="table-header">Datum</div>
