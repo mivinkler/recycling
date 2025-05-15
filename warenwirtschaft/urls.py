@@ -2,10 +2,10 @@ from django.urls import path
 
 from warenwirtschaft.views.supplier import SupplierListView, SupplierUpdateView, SupplierDetailView, SupplierCreateView,SupplierDeleteView
 from warenwirtschaft.views.customer import CustomerListView, CustomerUpdateView, CustomerDetailView, CustomerCreateView, CustomerDeleteView
-from warenwirtschaft.views.delivery import DeliveryUnitsListView, DeliveryDetailView, DeliveryCreateView, DeliveryUpdateView
-from warenwirtschaft.views.unload import UnloadListView, UnloadCreateView, UnloadUpdateView
-from warenwirtschaft.views.recycling import RecyclingListView, RecyclingCreateView, RecyclingUpdateView
-from warenwirtschaft.views.shipping import ShippingUnitsListView, ShippingDetailView, ShippingCreateView, ShippingUpdateView
+from warenwirtschaft.views.delivery import DeliveryUnitsListView, DeliveryDetailView, DeliveryCreateView, DeliveryUpdateView, DeliveryDeleteView
+from warenwirtschaft.views.unload import UnloadListView, UnloadCreateView, UnloadUpdateView, UnloadDeleteView
+from warenwirtschaft.views.recycling import RecyclingListView, RecyclingCreateView, RecyclingUpdateView, RecyclingDeleteView, RecyclingDetailView
+from warenwirtschaft.views.shipping import ShippingUnitsListView, ShippingDetailView, ShippingCreateView, ShippingUpdateView, ShippingDeleteView
 
 
 urlpatterns = [
@@ -27,17 +27,22 @@ urlpatterns = [
     path('delivery/detail/<int:pk>/', DeliveryDetailView.as_view(), name='delivery_detail'),
     path('delivery/create/', DeliveryCreateView.as_view(), name='delivery_create'),
     path('delivery/update/<int:pk>/', DeliveryUpdateView.as_view(), name='delivery_update'),
+    path('delivery/delete/<int:pk>/', DeliveryDeleteView.as_view(), name='delivery_delete'),
 
     path('unload/list/', UnloadListView.as_view(), name='unload_list'),
     path('unload/create/', UnloadCreateView.as_view(), name='unload_create'),
     path('unload/update/<int:pk>/', UnloadUpdateView.as_view(), name='unload_update'),
+    path('unload/delete/<int:pk>/', UnloadDeleteView.as_view(), name='unload_delete'),
 
     path('recycling/list/', RecyclingListView.as_view(), name='recycling_list'),
     path('recycling/create/', RecyclingCreateView.as_view(), name='recycling_create'),
     path('recycling/update/<int:pk>/', RecyclingUpdateView.as_view(), name='recycling_update'),
+    path('recycling/delete/<int:pk>/', RecyclingDeleteView.as_view(), name='recycling_delete'),
+    path('recycling/detail/<int:pk>/', RecyclingDetailView.as_view(), name='recycling_detail'),
 
     path('shipping/list/', ShippingUnitsListView.as_view(), name='shipping_list'),
     path('shipping/detail/<int:pk>/', ShippingDetailView.as_view(), name='shipping_detail'),
     path('shipping/create/', ShippingCreateView.as_view(), name='shipping_create'),
     path('shipping/update/<int:pk>/', ShippingUpdateView.as_view(), name='shipping_update'),
+    path('shipping/delete/<int:pk>/', ShippingDeleteView.as_view(), name='shipping_delete'),
 ]
