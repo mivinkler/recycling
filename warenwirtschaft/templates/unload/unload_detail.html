@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Leerung Detail{% endblock %}
+
+{% block content %}
+<div class="itemcard-large">
+  <h2>Leerung Detail</h2>
+
+  <section class="itemcard-topbox">
+    <div class="itemcard-row">
+      <div>Liefereinheit:</div>
+      <div>{{ delivery_unit }}</div>
+    </div>
+  </section>
+
+  <section class="itemcard-table">
+    <div class="itemcard-table-title">Fraktionen:</div>
+
+    <div class="table" data-type="unload-detail">
+      <div class="table-header">№</div>
+      <div class="table-header">Behälter</div>
+      <div class="table-header">Material</div>
+      <div class="table-header">Gewicht</div>
+      <div class="table-header">Status</div>
+      <div class="table-header">Zweck</div>
+      <div class="table-header">Anmerkung</div>
+
+      {% for unload in unloads %}
+        <div class="table-row" data-type="unload-detail">
+          <div>{{ forloop.counter }}</div>
+          <div>{{ unload.get_box_type_display }}</div>
+          <div>{{ unload.material }}</div>
+          <div>{{ unload.weight }}</div>
+          <div>{{ unload.get_status_display }}</div>
+          <div>{{ unload.get_target_display }}</div>
+          <div>{{ unload.note }}</div>
+        </div>
+      {% empty %}
+        <div class="table-row">
+          <div colspan="6">Keine Daten vorhanden.</div>
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+</div>
+{% endblock %}

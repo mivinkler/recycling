@@ -3,7 +3,7 @@ from django.urls import path
 from warenwirtschaft.views.supplier import SupplierListView, SupplierUpdateView, SupplierDetailView, SupplierCreateView,SupplierDeleteView
 from warenwirtschaft.views.customer import CustomerListView, CustomerUpdateView, CustomerDetailView, CustomerCreateView, CustomerDeleteView
 from warenwirtschaft.views.delivery import DeliveryUnitsListView, DeliveryDetailView, DeliveryCreateView, DeliveryUpdateView, DeliveryDeleteView
-from warenwirtschaft.views.unload import UnloadListView, UnloadCreateView, UnloadUpdateView, UnloadDeleteView
+from warenwirtschaft.views.unload import UnloadListView, UnloadCreateView, UnloadUpdateView, UnloadDeleteView, UnloadDetailView
 from warenwirtschaft.views.recycling import RecyclingListView, RecyclingCreateView, RecyclingUpdateView, RecyclingDeleteView, RecyclingDetailView
 from warenwirtschaft.views.shipping import ShippingUnitsListView, ShippingDetailView, ShippingCreateView, ShippingUpdateView, ShippingDeleteView
 
@@ -33,6 +33,7 @@ urlpatterns = [
     path('unload/create/', UnloadCreateView.as_view(), name='unload_create'),
     path('unload/update/<int:pk>/', UnloadUpdateView.as_view(), name='unload_update'),
     path('unload/delete/<int:pk>/', UnloadDeleteView.as_view(), name='unload_delete'),
+    path('unload/detail/<int:pk>/', UnloadDetailView.as_view(), name='unload_detail'),
 
     path('recycling/list/', RecyclingListView.as_view(), name='recycling_list'),
     path('recycling/create/', RecyclingCreateView.as_view(), name='recycling_create'),

@@ -36,6 +36,10 @@
   grid-template-columns: auto repeat(4, 1fr) 2fr auto;
 }
 
+.table[data-type="unload-detail"] {
+  grid-template-columns: auto repeat(5, 1fr) 2fr;
+}
+
 .table[data-type="recycling-list"] {
   grid-template-columns: auto repeat(7, 1fr) 2fr;
 }
