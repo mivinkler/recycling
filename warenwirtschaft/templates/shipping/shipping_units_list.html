@@ -19,20 +19,20 @@
   <div class="table-header">{% sort_header "created_at" "Datum" %}</div>
   <div class="table-header">{% sort_header "note" "Notiz" %}</div>
 
-  {% for shippingunit in page_obj %}
+  {% for item in page_obj %}
     <div class="table-row js-select-row"
-      data-id="{{ shippingunit.id }}"
-      data-url-detail="{% url 'shipping_detail' pk=shippingunit.shipping.id %}"
-      data-url-update="{% url 'shipping_update' pk=shippingunit.shipping.id %}">
+      data-id="{{ item.id }}"
+      data-url-detail="{% url 'shipping_detail' pk=item.shipping.id %}"
+      data-url-update="{% url 'shipping_update' pk=item.shipping.id %}">
     
-      <div class="table-row__id-gray">{{ shippingunit.shipping.id }}</div>
-      <div>{{ shippingunit.shipping.customer.name }}</div>
-      <div>{{ shippingunit.shipping.certificate }}</div>
-      <div>{{ shippingunit.get_box_type_display }}</div>
-      <div>{{ shippingunit.material }}</div>
-      <div>{{ shippingunit.weight }}</div>
-      <div>{{ shippingunit.created_at|date:'d.m.Y' }}</div>
-      <div title="{{ shippingunit.note }}">{{ shippingunit.note }}</div>
+      <div class="table-row__id-gray">{{ item.shipping.id }}</div>
+      <div>{{ item.shipping.customer.name }}</div>
+      <div>{{ item.shipping.certificate }}</div>
+      <div>{{ item.get_box_type_display }}</div>
+      <div>{{ item.material }}</div>
+      <div>{{ item.weight }}</div>
+      <div>{{ item.created_at|date:'d.m.Y' }}</div>
+      <div title="{{ item.note }}">{{ item.note }}</div>
     </div>
   {% endfor %}
 </div>

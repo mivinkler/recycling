@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Recycling löschen{% endblock %}
+
+{% block content %}
+
+<div class="itemcard-small">
+  <form method="post">
+    {% csrf_token %}
+
+    <h2>Recycling löschen</h2>
+    
+    <div class="itemcard-topbox ">
+      <p>Sind Sie sicher, dass der Recycling <strong>"{{ unload }}"</strong> gelöscht wird?</p>
+    </div>
+
+    <div class="button-wrapper">
+        <button  type="submit" name="save" class="btn">Löschen</button>
+        <a href="{% url 'recycling_list' %}" class="btn">Abbrechen</a>
+    </div>
+  </form>
+</div>
+
+{% endblock %}

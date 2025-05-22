@@ -52,12 +52,16 @@
   grid-template-columns: auto repeat(4, 1fr) 2fr auto;
 }
 
+.table[data-type="recycling-detail"] {
+  grid-template-columns: auto repeat(4, 1fr) 2fr auto;
+}
+
 .table[data-type="shippingunits-list"] {
   grid-template-columns: auto repeat(6, 1fr) 2fr;
 }
 
 .table[data-type="shipping-detail-shippingunits"] {
-  grid-template-columns: auto repeat(5, 1fr);
+  grid-template-columns: auto repeat(3, 1fr) auto;
 }
 
 .table[data-type="shipping-create-shippingunits"] {

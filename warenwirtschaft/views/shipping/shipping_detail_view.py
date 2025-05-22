@@ -8,16 +8,14 @@ class ShippingDetailView(DetailView):
     context_object_name = "shipping"
 
     def get_queryset(self):
-        return super().get_queryset().prefetch_related("shipping", "material")
+        return super().get_queryset().prefetch_related("units_for_shipping", "units_for_shipping__material")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context["shipping_units"] = self.object.shippingunits.all()
+        context["shipping_units"] = self.object.units_for_shipping.all()
         context["search_query"] = self.request.GET.get("search", "")
         context["sort_param"] = self.request.GET.get("sort", "")
         context["box_type"] = ShippingUnit.BOX_TYPE_CHOICES
-        context["statuses"] = ShippingUnit.STATUS_CHOICES
         
         return context
-

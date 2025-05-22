@@ -5,12 +5,15 @@
 
 {% block content %}
 
-<form method="post" action="{% url 'shipping_update' shipping.pk %}" id="eingang-form">
+<form class="itemcard-small" method="post" action="{% url 'shipping_update' shipping.pk %}" id="eingang-form">
   {% csrf_token %}
   
-  <div class="itemcard-small">
-
+  <div class="itemcard-title-box">
     <h2>Abholung ändern</h2>
+    <a href="{% url 'shipping_delete' shipping.pk %}" class="delete-btn" title="Lieferung löschen">
+      <img src="{% static 'icons/delete-icon.svg' %}">
+    </a>
+  </div>
 
     <section class="itemcard-topbox ">
       {{ form.non_field_errors }}
@@ -81,7 +84,6 @@
     <div class="button-wrapper">
       <button type="submit" name="save" class="btn">Speichern</button>
     </div>
-  </div>
 </form>
 
 {% endblock %}

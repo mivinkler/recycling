@@ -1,6 +1,6 @@
 from django.views.generic.edit import DeleteView
 from django.urls import reverse_lazy
-from warenwirtschaft.models.shipping import Shipping
+from warenwirtschaft.models import Shipping
 
 class ShippingDeleteView(DeleteView):
     model = Shipping

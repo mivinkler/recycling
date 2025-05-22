@@ -1,6 +1,5 @@
 from django.views.generic import DetailView
-from warenwirtschaft.models.delivery_unit import DeliveryUnit
-from warenwirtschaft.models.unload import Unload  # импорт модели Unload
+from warenwirtschaft.models import DeliveryUnit, Unload
 
 class UnloadDetailView(DetailView):
     model = DeliveryUnit
@@ -9,6 +8,5 @@ class UnloadDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # expliziter ORM-Zugriff auf die Unload-Einträge dieser Liefereinheit
         context['unloads'] = Unload.objects.filter(delivery_unit=self.object)
         return context

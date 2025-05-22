@@ -5,12 +5,15 @@
 
 {% block content %}
 
-<form method="post" action="{% url 'recycling_update' unload.pk %}">
+<form class="itemcard-large" method="post" action="{% url 'recycling_update' unload.pk %}">
   {% csrf_token %}
 
-  <div class="itemcard-large">
+  <div class="itemcard-title-box">
     <h2>Recycling bearbeiten</h2>
-
+    <a href="{% url 'recycling_delete' unload.pk %}" class="delete-btn" title="Recycling löschen">
+        <img src="{% static 'icons/delete-icon.svg' %}">
+    </a>
+  </div>
     <section class="itemcard-topbox">
       <div class="itemcard-row">
         <div>Umladung-Einheit:</div>
@@ -65,7 +68,6 @@
     <div class="button-wrapper">
       <button type="submit" name="save" class="btn">Speichern</button>
     </div>
-  </div>
 </form>
 
 {% endblock %}

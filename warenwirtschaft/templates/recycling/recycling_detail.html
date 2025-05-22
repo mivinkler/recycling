@@ -27,42 +27,22 @@
         <div class="table-header">Zweck</div>
         <div class="table-header">Anmerkung</div>
 
-        {% for recycling in recyclings %}
+        {% for recycling in recycling_units %}
         <div class="table-row" data-type="recycling-detail">
             <div>{{ forloop.counter }}</div>
             <div>{{ recycling.get_box_type_display }}</div>
+            <div>{{ recycling.material }}</div>
             <div>{{ recycling.weight }}</div>
             <div>{{ recycling.get_status_display }}</div>
             <div>{{ recycling.get_target_display }}</div>
             <div>{{ recycling.note }}</div>
           </div>
+        {% empty %}
+        <div class="table-row">
+          <div colspan="6">Keine Daten vorhanden.</div>
+        </div>
         {% endfor %}
-
-        <template id="table-row-template">
-          <div class="table-row">
-            {{ empty_form.id }}
-            <div>__index__</div>
-            <div>{{ empty_form.box_type }}</div>
-            <div>{{ empty_form.weight }}</div>
-            <div>{{ empty_form.material }}</div>
-            <div>{{ empty_form.target }}</div>
-            <div>{{ empty_form.note }}</div>
-            <div class="itemcard-row-delete">{{ empty_form.DELETE }}</div>
-          </div>
-        </template>
       </div>
     </section>
-
-    <button class="btn-row-add" type="button" id="add-form-btn">+</button>
-
-    <div class="button-wrapper">
-      <button type="submit" name="save" class="btn">Speichern</button>
-    </div>
   </div>
-</form>
-
-{% endblock %}
-
-{% block extra_js %}
-  <script src="{% static 'js/add-table-row.js' %}"></script>
 {% endblock %}
