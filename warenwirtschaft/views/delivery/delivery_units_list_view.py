@@ -11,24 +11,27 @@ class DeliveryUnitsListView(ListView):
     context_object_name = "delivery_units"
     paginate_by = 50
 
-    sortable_fields = [
+    active_fields = [
         ("delivery__id", "LID"),
         ("delivery__supplier__name", "Kunde"),
         ("delivery__delivery_receipt", "Lieferschein"),
-        ("note", "Anmerkung"),
         ("box_type", "Behälter"),
         ("material__name", "Material"),
         ("weight", "Gewicht"),
         ("created_at", "Datum"),
         ("status", "Status"),
+        ("note", "Anmerkung"),
     ]
 
     def get_queryset(self):
-        sort_fields = [field[0] for field in self.sortable_fields]
-        queryset = DeliveryUnit.objects.select_related("delivery", "delivery__supplier", "material")
+        queryset = super().get_queryset()
 
-        queryset = SearchService(self.request, sort_fields).apply_search(queryset)
-        queryset = SortingService(self.request, sort_fields).apply_sorting(queryset)
+        fields = [field[0] for field in self.active_fields]
+        search_service = SearchService(self.request, fields)
+        sorting_service = SortingService(self.request, fields)
+
+        queryset = search_service.apply_search(queryset)
+        queryset = sorting_service.apply_sorting(queryset)
 
         return queryset
 
@@ -38,13 +41,11 @@ class DeliveryUnitsListView(ListView):
         paginator = PaginationService(self.request, self.paginate_by)
         page_obj = paginator.get_paginated_queryset(self.get_queryset())
 
-        context.update({
-            "page_obj": page_obj,
-            "sort_param": self.request.GET.get("sort", ""),
-            "search_query": self.request.GET.get("search", ""),
-            "box_types": DeliveryUnit.BOX_TYPE_CHOICES,
-            "statuses": DeliveryUnit.STATUS_CHOICES,
-            "selected_menu": "delivery_units_list",
-        })
+        context["page_obj"] = page_obj
+        context["active_fields"] = self.active_fields
+        context["search_query"] = self.request.GET.get("search", "")
+        context["box_types"] = DeliveryUnit.BOX_TYPE_CHOICES
+        context["statuses"] = DeliveryUnit.STATUS_CHOICES
+        context["selected_menu"] = "delivery_units_list"
 
         return context
