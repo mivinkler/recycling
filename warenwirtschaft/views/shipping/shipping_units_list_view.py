@@ -2,7 +2,6 @@ from django.views.generic import ListView
 from warenwirtschaft.services.search_service import SearchService
 from warenwirtschaft.services.sorting_service import SortingService
 from warenwirtschaft.services.pagination_service import PaginationService
-
 from warenwirtschaft.models.shipping_unit import ShippingUnit
 
 
@@ -12,7 +11,7 @@ class ShippingUnitsListView(ListView):
     context_object_name = "shipping_units"
     paginate_by = 50
 
-    sortable_fields = [
+    active_fields = [
         ("shipping__id", "LID"),
         ("shipping__customer__name", "Abholer"),
         ("shipping__delivery_receipt", "Begleitschein"),
@@ -25,11 +24,14 @@ class ShippingUnitsListView(ListView):
     ]
 
     def get_queryset(self):
-        sort_fields = [field[0] for field in self.sortable_fields]
-        queryset = ShippingUnit.objects.select_related("shipping", "shipping__customer", "material")
+        queryset = super().get_queryset()
 
-        queryset = SearchService(self.request, sort_fields).apply_search(queryset)
-        queryset = SortingService(self.request, sort_fields).apply_sorting(queryset)
+        fields = [field[0] for field in self.active_fields]
+        search_service = SearchService(self.request, fields)
+        sorting_service = SortingService(self.request, fields)
+
+        queryset = search_service.apply_search(queryset)
+        queryset = sorting_service.apply_sorting(queryset)
 
         return queryset
 
@@ -39,12 +41,10 @@ class ShippingUnitsListView(ListView):
         paginator = PaginationService(self.request, self.paginate_by)
         page_obj = paginator.get_paginated_queryset(self.get_queryset())
 
-        context.update({
-            "page_obj": page_obj,
-            "sort_param": self.request.GET.get("sort", ""),
-            "search_query": self.request.GET.get("search", ""),
-            "box_types": ShippingUnit.BOX_TYPE_CHOICES,
-            "selected_menu": "shipping_list",
-        })
+        context["page_obj"] = page_obj
+        context["active_fields"] = self.active_fields
+        context["search_query"] = self.request.GET.get("search", ""),
+        context["box_types"] = ShippingUnit.BOX_TYPE_CHOICES,
+        context["selected_menu"] = "shipping_list"
 
         return context

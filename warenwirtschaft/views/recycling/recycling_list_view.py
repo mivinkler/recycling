@@ -1,11 +1,8 @@
 from django.views.generic import ListView
 from warenwirtschaft.models.recycling import Recycling
-from warenwirtschaft.models.unload import Unload
 from warenwirtschaft.services.search_service import SearchService
 from warenwirtschaft.services.sorting_service import SortingService
 from warenwirtschaft.services.pagination_service import PaginationService
-
-# TODO Pagination
 
 class RecyclingListView(ListView):
     model = Recycling
@@ -14,29 +11,37 @@ class RecyclingListView(ListView):
     paginate_by = 22
 
     active_fields = [
-        "id",
-        "unload",
-        "box_type",
-        "weight",
-        "target",
-        "material",
-        "note",
+        ("id", "ID"),
+        ("box_type", "Behälter"),
+        ("weight", "Gewicht"),
+        ("target", "Zweck"),
+        ("status", "Status"),
+        ("material__name", "Material"),
+        ("created_at", "Datum"),
+        ("note", "Anmerkung"),
     ]
 
     def get_queryset(self):
-        if not hasattr(self, '_queryset'):
-            queryset = super().get_queryset().select_related("unload", "material")
-            search_service = SearchService(self.request, self.active_fields)
-            sorting_service = SortingService(self.request, self.active_fields)
+        queryset = super().get_queryset()
 
-            queryset = search_service.apply_search(queryset)
-            queryset = sorting_service.apply_sorting(queryset)
+        fields = [field[0] for field in self.active_fields]
+        search_service = SearchService(self.request, fields)
+        sorting_service = SortingService(self.request, fields)
 
-            self._queryset = queryset
-        return self._queryset
+        queryset = search_service.apply_search(queryset)
+        queryset = sorting_service.apply_sorting(queryset)
+
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
+        paginator = PaginationService(self.request, self.paginate_by)
+        page_obj = paginator.get_paginated_queryset(self.get_queryset())
+        context["page_obj"] = page_obj
+
+
+        context["active_fields"] = self.active_fields
         context["search_query"] = self.request.GET.get("search", "")
         context["box_type"] = Recycling.BOX_TYPE_CHOICES
         context["status"] = Recycling.STATUS_CHOICES

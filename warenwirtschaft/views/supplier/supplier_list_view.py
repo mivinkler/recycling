@@ -19,7 +19,7 @@ class SupplierListView(ListView):
         ("city", "Stadt"),
         ("phone", "Telefon"),
         ("email", "Email"),
-        ("created_at", "Erstellt am"),
+        ("created_at", "Datum"),
         ("note", "Anmerkung"),
     ]
 
@@ -42,10 +42,10 @@ class SupplierListView(ListView):
         page_obj = paginator.get_paginated_queryset(self.get_queryset())
 
         context["page_obj"] = page_obj
-        context["sort_param"] = self.request.GET.get("sort", "")
-        context["search_query"] = self.request.GET.get("search", "")
-        context["active_fields"] = self.active_fields
 
+        context["active_fields"] = self.active_fields
+        context["search_query"] = self.request.GET.get("search", "")
+        context["sort_param"] = self.request.GET.get("sort", "")
         context["selected_menu"] = "supplier_list"
 
         return context
