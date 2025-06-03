@@ -79,7 +79,7 @@ class ShippingForm(forms.ModelForm):
 ShippingUnitFormSet = inlineformset_factory(
     parent_model=Shipping,
     model=ShippingUnit,
-    fields=['box_type', 'material', 'weight', 'note'],
+    fields=['box_type', 'material', 'weight', 'status', 'note'],
     extra=1,
     can_delete=True
 )

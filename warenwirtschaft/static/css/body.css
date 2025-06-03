@@ -57,7 +57,7 @@
 }
 
 .table[data-type="shippingunits-list"] {
-  grid-template-columns: auto repeat(6, 1fr) 2fr;
+  grid-template-columns: auto repeat(7, 1fr) 2fr;
 }
 
 .table[data-type="shipping-detail-shippingunits"] {
@@ -69,7 +69,7 @@
 }
 
 .table[data-type="shipping-update-shippingunits"] {
-  grid-template-columns: auto repeat(5, 1fr) auto;
+  grid-template-columns: auto repeat(4, 1fr) auto;
 }
 
 .table[data-type="customer-detail__shippingunits"] {
@@ -318,6 +318,16 @@
 
 .btn:active {
   box-shadow: none;
+}
+
+.search-datum {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.search-datum > input {
+  width: 48%;
 }
 
 /* ====== Pagination ====== */

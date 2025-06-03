@@ -43,15 +43,26 @@
           <img src="{% static 'icons/search-icon.svg' %}">
         </summary>
         <div>
-          <form class="icon-search" method="GET">
-            <input class="icon-search-input" type="text" name="search" placeholder="Suchen..." value="{{ search_query }}">
-            <button class="icon-search-button" type="submit">
-              <img src="{% static 'icons/lupe-icon.svg' %}">
-            </button>
-          </form>
-          <form class="icon-search-date" method="GET">
-            <input type="date" id="dateStart">
-            <input type="date" id="dateEnd">
+          <form method="GET" class="icon-search">
+            <input class="icon-search-input" type="text" name="search" placeholder="Suchen..." value="{{ filters.search }}">
+
+            <!-- Даты -->
+            <div class="search-datum">
+              <input type="date" name="date_start" value="{{ filters.date_start }}">
+              <input type="date" name="date_end" value="{{ filters.date_end }}">
+            </div>
+
+            <!-- Статус: Aktiv / Erledigt -->
+            <div class="search-status">
+              <div>Status</div>
+              <select name="status_filter">
+                <option value="">Alle</option>
+                <option value="aktiv" {% if filters.status_filter == "aktiv" %}selected{% endif %}>Aktiv</option>
+                <option value="erledigt" {% if filters.status_filter == "erledigt" %}selected{% endif %}>Erledigt</option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn">Suchen</button>
           </form>
         </div>
       </details>

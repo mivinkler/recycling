@@ -14,7 +14,7 @@ class ShippingUnitsListView(ListView):
     active_fields = [
         ("shipping__id", "LID"),
         ("shipping__customer__name", "Abholer"),
-        ("shipping__delivery_receipt", "Begleitschein"),
+        ("shipping__certificate", "Begleitschein"),
         ("note", "Anmerkung"),
         ("box_type", "Behälter"),
         ("material__name", "Material"),
@@ -27,7 +27,13 @@ class ShippingUnitsListView(ListView):
         queryset = super().get_queryset()
 
         fields = [field[0] for field in self.active_fields]
-        search_service = SearchService(self.request, fields)
+
+        choices_fields = {
+            "box_type": ShippingUnit.BOX_TYPE_CHOICES,
+            "status": ShippingUnit.STATUS_CHOICES,
+        }
+
+        search_service = SearchService(self.request, fields, choices_fields)
         sorting_service = SortingService(self.request, fields)
 
         queryset = search_service.apply_search(queryset)

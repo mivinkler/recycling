@@ -25,7 +25,14 @@ class RecyclingListView(ListView):
         queryset = super().get_queryset()
 
         fields = [field[0] for field in self.active_fields]
-        search_service = SearchService(self.request, fields)
+
+        choices_fields = {
+            "box_type": Recycling.BOX_TYPE_CHOICES,
+            "status": Recycling.STATUS_CHOICES,
+            "target": Recycling.TARGET_CHOICES,
+        }
+
+        search_service = SearchService(self.request, fields, choices_fields)
         sorting_service = SortingService(self.request, fields)
 
         queryset = search_service.apply_search(queryset)

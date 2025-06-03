@@ -1,4 +1,5 @@
 from django.views.generic import ListView
+from django.utils.dateparse import parse_date
 from warenwirtschaft.models.delivery_unit import DeliveryUnit
 from warenwirtschaft.services.search_service import SearchService
 from warenwirtschaft.services.sorting_service import SortingService
@@ -27,13 +28,36 @@ class DeliveryUnitsListView(ListView):
         queryset = super().get_queryset()
 
         fields = [field[0] for field in self.active_fields]
-        search_service = SearchService(self.request, fields)
+
+        choices_fields = {
+            "box_type": DeliveryUnit.BOX_TYPE_CHOICES,
+            "status": DeliveryUnit.STATUS_CHOICES,
+        }
+
+        search_service = SearchService(self.request, fields, choices_fields)
         sorting_service = SortingService(self.request, fields)
 
         queryset = search_service.apply_search(queryset)
+
+        # ⬇️ Добавляем фильтрацию по дате
+        date_start = self.request.GET.get("date_start")
+        date_end = self.request.GET.get("date_end")
+        if date_start:
+            queryset = queryset.filter(created_at__date__gte=parse_date(date_start))
+        if date_end:
+            queryset = queryset.filter(created_at__date__lte=parse_date(date_end))
+
+        # ⬇️ Фильтрация по статусу (например, статус "aktiv" = 0, "erledigt" = 1)
+        status_filter = self.request.GET.get("status_filter")
+        if status_filter == "aktiv":
+            queryset = queryset.filter(status=1)
+        elif status_filter == "erledigt":
+            queryset = queryset.filter(status=2)
+
         queryset = sorting_service.apply_sorting(queryset)
 
         return queryset
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -47,5 +71,12 @@ class DeliveryUnitsListView(ListView):
         context["box_types"] = DeliveryUnit.BOX_TYPE_CHOICES
         context["statuses"] = DeliveryUnit.STATUS_CHOICES
         context["selected_menu"] = "delivery_units_list"
+
+        context["filters"] = {
+            "search": self.request.GET.get("search", ""),
+            "date_start": self.request.GET.get("date_start", "")[:10],
+            "date_end": self.request.GET.get("date_end", "")[:10],
+            "status_filter": self.request.GET.get("status_filter", ""),
+        }
 
         return context

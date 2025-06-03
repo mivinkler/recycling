@@ -28,15 +28,14 @@ class UnloadListView(ListView):
         queryset = super().get_queryset()
 
         fields = [field[0] for field in self.active_fields]
-        search_service = SearchService(
-            self.request,
-            search_fields=fields,
-            choices_fields={
-                "box_type": Unload.BOX_TYPE_CHOICES,
-                "status": Unload.STATUS_CHOICES,
-                "target": Unload.TARGET_CHOICES,
-            }
-        )
+        
+        choices_fields={
+            "box_type": Unload.BOX_TYPE_CHOICES,
+            "status": Unload.STATUS_CHOICES,
+            "target": Unload.TARGET_CHOICES,
+        }
+
+        search_service = SearchService(self.request, fields, choices_fields)
         sorting_service = SortingService(self.request, fields)
 
         queryset = search_service.apply_search(queryset)
