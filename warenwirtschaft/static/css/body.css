@@ -320,7 +320,7 @@
   box-shadow: none;
 }
 
-.search-datum {
+/* .search-datum {
   display: flex;
   justify-content: space-between;
   gap: 6px;
@@ -328,7 +328,7 @@
 
 .search-datum > input {
   width: 48%;
-}
+} */
 
 /* ====== Pagination ====== */
 

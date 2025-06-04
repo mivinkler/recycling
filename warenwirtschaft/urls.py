@@ -1,4 +1,6 @@
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 
 from warenwirtschaft.views.supplier import SupplierListView, SupplierUpdateView, SupplierDetailView, SupplierCreateView,SupplierDeleteView
 from warenwirtschaft.views.customer import CustomerListView, CustomerUpdateView, CustomerDetailView, CustomerCreateView, CustomerDeleteView
@@ -47,3 +49,7 @@ urlpatterns = [
     path('shipping/update/<int:pk>/', ShippingUpdateView.as_view(), name='shipping_update'),
     path('shipping/delete/<int:pk>/', ShippingDeleteView.as_view(), name='shipping_delete'),
 ]
+
+# Macht Medien-Dateien im Entwicklungsmodus zugänglich
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

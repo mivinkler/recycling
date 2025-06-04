@@ -37,7 +37,7 @@
     <div class="top-icon">
       
       <!-- Suchfeld -->
-      <details class="top-icon-detail">
+      <details class="top-icon-detail" open>
         <summary class="tooltip-wrapper">
           <span class="tooltip-text">Suche</span>
           <img src="{% static 'icons/search-icon.svg' %}">
@@ -47,13 +47,13 @@
             <input class="icon-search-input" type="text" name="search" placeholder="Suchen..." value="{{ filters.search }}">
 
             <!-- Даты -->
-            <div class="search-datum">
+            <div class="flex-items-between">
               <input type="date" name="date_start" value="{{ filters.date_start }}">
               <input type="date" name="date_end" value="{{ filters.date_end }}">
             </div>
 
             <!-- Статус: Aktiv / Erledigt -->
-            <div class="search-status">
+            <div class="flex-items-between">
               <div>Status</div>
               <select name="status_filter">
                 <option value="">Alle</option>

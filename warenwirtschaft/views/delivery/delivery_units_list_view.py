@@ -26,7 +26,6 @@ class DeliveryUnitsListView(ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-
         fields = [field[0] for field in self.active_fields]
 
         choices_fields = {
@@ -38,22 +37,6 @@ class DeliveryUnitsListView(ListView):
         sorting_service = SortingService(self.request, fields)
 
         queryset = search_service.apply_search(queryset)
-
-        # ⬇️ Добавляем фильтрацию по дате
-        date_start = self.request.GET.get("date_start")
-        date_end = self.request.GET.get("date_end")
-        if date_start:
-            queryset = queryset.filter(created_at__date__gte=parse_date(date_start))
-        if date_end:
-            queryset = queryset.filter(created_at__date__lte=parse_date(date_end))
-
-        # ⬇️ Фильтрация по статусу (например, статус "aktiv" = 0, "erledigt" = 1)
-        status_filter = self.request.GET.get("status_filter")
-        if status_filter == "aktiv":
-            queryset = queryset.filter(status=1)
-        elif status_filter == "erledigt":
-            queryset = queryset.filter(status=2)
-
         queryset = sorting_service.apply_sorting(queryset)
 
         return queryset
