@@ -7,3 +7,4 @@ from .recycling import Recycling
 from .shipping import Shipping
 from .shipping_unit import ShippingUnit
 from .customer import Customer
+from .reusable_barcode import ReusableBarcode

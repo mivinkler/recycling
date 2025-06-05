@@ -9,6 +9,9 @@ from warenwirtschaft.views.unload import UnloadListView, UnloadCreateView, Unloa
 from warenwirtschaft.views.recycling import RecyclingListView, RecyclingCreateView, RecyclingUpdateView, RecyclingDeleteView, RecyclingDetailView
 from warenwirtschaft.views.shipping import ShippingUnitsListView, ShippingDetailView, ShippingCreateView, ShippingUpdateView, ShippingDeleteView
 
+from warenwirtschaft.views.barcode.reusablebarcode_create_view import ReusableBarcodeCreateView
+from warenwirtschaft.views.barcode.reusablebarcode_list_view import ReusableBarcodeListView
+
 
 urlpatterns = [
     path('', SupplierListView.as_view(), name='home'),
@@ -48,6 +51,9 @@ urlpatterns = [
     path('shipping/create/', ShippingCreateView.as_view(), name='shipping_create'),
     path('shipping/update/<int:pk>/', ShippingUpdateView.as_view(), name='shipping_update'),
     path('shipping/delete/<int:pk>/', ShippingDeleteView.as_view(), name='shipping_delete'),
+
+    path('reusable-barcodes/create/', ReusableBarcodeCreateView.as_view(), name='reusable_barcode_create'),
+    path('reusable-barcodes/', ReusableBarcodeListView.as_view(), name='reusable_barcode_list'),
 ]
 
 # Macht Medien-Dateien im Entwicklungsmodus zugänglich

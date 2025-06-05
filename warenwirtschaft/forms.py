@@ -1,6 +1,8 @@
 from django import forms
 from django.forms import inlineformset_factory
 
+from warenwirtschaft.models.reusable_barcode import ReusableBarcode
+
 from warenwirtschaft.models.supplier import Supplier
 from warenwirtschaft.models.delivery import Delivery
 from warenwirtschaft.models.delivery_unit import DeliveryUnit
@@ -93,3 +95,9 @@ class CustomerForm(forms.ModelForm):
         widgets = {
             'note': forms.Textarea(attrs={'rows': 5}),
         }
+
+# Barcode
+class ReusableBarcodeForm(forms.ModelForm):
+    class Meta:
+        model = ReusableBarcode
+        fields = ['box_type', 'material', 'target']

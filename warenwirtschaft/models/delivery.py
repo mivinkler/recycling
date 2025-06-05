@@ -19,9 +19,6 @@ class Delivery(models.Model):
     barcode_image = models.ImageField(upload_to='barcodes/', blank=True, null=True)
 
     def generate_barcode(self):
-        """
-        Generiert einen eindeutigen Barcode-Wert und speichert das Bild als PNG.
-        """
         code = str(uuid.uuid4()).replace("-", "")[:12]
         self.barcode = code
 
