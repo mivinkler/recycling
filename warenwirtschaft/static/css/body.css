@@ -76,6 +76,10 @@
   grid-template-columns: repeat(3, auto) repeat(5, 1fr) auto 2fr;
 }
 
+.table[data-type="barcode-list"] {
+  grid-template-columns: auto repeat(6, 1fr);
+}
+
 /* ================ table ================== */
 
 .table {

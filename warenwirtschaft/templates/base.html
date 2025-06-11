@@ -33,6 +33,7 @@
         </div>
     </header>
     <div class="top-menu">
+        <div><a href="{% url 'reusable_barcode_list' %}">Barcode</a></div>
         <div><a href="{% url 'supplier_list' %}" class="{% if selected_menu == 'supplier_list' %} selected {% endif %}">Kunden</a></div>
         <div><a href="{% url 'customer_list' %}" class="{% if selected_menu == 'customer_list' %} selected {% endif %}">Abholer</a></div>
         <div><a href="{% url 'delivery_list' %}" class="{% if selected_menu == 'delivery_list' %} selected {% endif %}">Eingang</a></div>

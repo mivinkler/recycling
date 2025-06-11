@@ -11,11 +11,10 @@ from warenwirtschaft.views.shipping import ShippingUnitsListView, ShippingDetail
 
 from warenwirtschaft.views.barcode.reusablebarcode_create_view import ReusableBarcodeCreateView
 from warenwirtschaft.views.barcode.reusablebarcode_list_view import ReusableBarcodeListView
+from warenwirtschaft.views.barcode.reuseblebarcode_detail_view import ReusableBarcodeDetailView
 
 
 urlpatterns = [
-    path('', SupplierListView.as_view(), name='home'),
-
     path('supplier/list/', SupplierListView.as_view(), name='supplier_list'),
     path('supplier/detail/<int:pk>/', SupplierDetailView.as_view(), name='supplier_detail'),
     path('supplier/create/', SupplierCreateView.as_view(), name='supplier_create'),
@@ -53,9 +52,6 @@ urlpatterns = [
     path('shipping/delete/<int:pk>/', ShippingDeleteView.as_view(), name='shipping_delete'),
 
     path('reusable-barcodes/create/', ReusableBarcodeCreateView.as_view(), name='reusable_barcode_create'),
-    path('reusable-barcodes/', ReusableBarcodeListView.as_view(), name='reusable_barcode_list'),
+    path('reusable-barcodes/list', ReusableBarcodeListView.as_view(), name='reusable_barcode_list'),
+    path('reusable-barcodes/detail/<int:pk>/', ReusableBarcodeDetailView.as_view(), name='reusable_barcode_detail'),
 ]
-
-# Macht Medien-Dateien im Entwicklungsmodus zugänglich
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

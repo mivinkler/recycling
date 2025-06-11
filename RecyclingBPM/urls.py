@@ -17,7 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from warenwirtschaft.views.delivery.delivery_units_list_view import DeliveryUnitsListView
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('warenwirtschaft/', include("warenwirtschaft.urls")),
+    # path('', DeliveryUnitsListView.as_view(), name='home'),
 ]

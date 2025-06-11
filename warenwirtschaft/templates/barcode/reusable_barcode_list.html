@@ -1,48 +1,43 @@
 {% extends 'base.html' %}
 
-{% block title %}Behälter-Barcodes{% endblock %}
+{% load static %}
+{% load sort_tags %}
+{% load custom_filters %}
+{% load pagination %}
+
+{% block title %}Barcode{% endblock %}
 
 {% block content %}
-<h2>Liste der permanenten Behälter-Barcodes</h2>
+<div class="table" data-type="barcode-list">
+  <div class="table-header">{% sort_header "id" "ID" %}</div>
+  <div class="table-header">{% sort_header "barcode" "Barcode" %}</div>
+  <div class="table-header">{% sort_header "typ" "Behälter" %}</div>
+  <div class="table-header">{% sort_header "material" "Material" %}</div>
+  <div class="table-header">{% sort_header "datum" "Datum" %}</div>
+  <div class="table-header">Ansehen</div>
+  <div class="table-header">Drucken</div>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>Barcode</th>
-      <th>Typ</th>
-      <th>Notiz</th>
-      <th>Erstellt am</th>
-      <th>Ansehen</th>
-      <th>Drucken</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for barcode in barcodes %}
-      <tr>
-        <td>{{ forloop.counter }}</td>
-        <td>{{ barcode.code }}</td>
-        <td>{{ barcode.get_box_type_display }}</td>
-        <td>{{ barcode.note }}</td>
-        <td>{{ barcode.created_at|date:"d.m.Y H:i" }}</td>
-        <td>
-          <a href="{% url 'reusable_barcode_detail' barcode.pk %}" class="btn btn-sm">Ansehen</a>
-        </td>
-        <td>
-          {% if barcode.barcode_image %}
-            <a href="{{ barcode.barcode_image.url }}" target="_blank" class="btn btn-sm">🖨️</a>
-          {% else %}
-            <span style="color: #888;">–</span>
-          {% endif %}
-        </td>
-      </tr>
-    {% empty %}
-      <tr>
-        <td colspan="7">Keine Barcodes vorhanden.</td>
-      </tr>
-    {% endfor %}
-  </tbody>
-</table>
+  {% for barcode in barcodes %}
+  <div class="table-row js-select-row"
+    data-type="barcode-list"
+    data-id="{{ barcode.id }}"
+    {% comment %} data-url-detail="{% url 'barcode_detail' pk=barcode.id %}" {% endcomment %}
+    {% comment %} data-url-update="{% url 'barcode_update' pk=barcode.id %}"> {% endcomment %}
 
-<a href="{% url 'reusable_barcode_create' %}" class="btn">Neuen Barcode hinzufügen</a>
+    <div class="table-row__id-gray">{{ barcode.id }}</div>
+    <div>{{ barcode.code }}</div>
+    <div>{{ barcode.get_box_type_display }}</div>
+    <div>{{ barcode.material }}</div>
+    <div>{{ barcode.created_at|date:"d.m.Y H:i" }}</div>
+    <div>
+      noch keine
+      {% comment %} <a href="{% url 'reusable_barcode_detail' barcode.pk %}" class="btn btn-sm">Ansehen</a> {% endcomment %}
+    </div>
+    <div class="btn btn-sm"><a href="{{ barcode.barcode_image.url }}" target="_blank">🖨️</a></div>
+  {% endfor %}
+</div>
+
+
+{% comment %} {% paginate page_obj %} {% endcomment %}
+{% comment %} <a href="{% url 'reusable_barcode_create' %}" class="btn">Neuen Barcode hinzufügen</a> {% endcomment %}
 {% endblock %}
