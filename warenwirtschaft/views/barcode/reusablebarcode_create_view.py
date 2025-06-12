@@ -13,8 +13,8 @@ import uuid
 class ReusableBarcodeCreateView(CreateView):
     model = ReusableBarcode
     form_class = ReusableBarcodeForm
-    template_name = 'barcode/reusable_barcode_list.html'
-    success_url = reverse_lazy('reusable_barcode_list')
+    template_name = 'barcode/reusable_barcode_create.html'
+    success_url = reverse_lazy('reusable_barcode_create')
 
     def form_valid(self, form):
         self.object = form.save(commit=False)

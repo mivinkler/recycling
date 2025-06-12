@@ -1,12 +1,39 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Neuer Container-Code{% endblock %}
 
 {% block content %}
-  <h2>Neuen Behälter-Barcode erstellen</h2>
+
+
   <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Speichern</button>
+
+    <div class="itemcard-small">
+      <h2>Neuen Behälter-Barcode erstellen</h2>
+
+      <section class="itemcard-topbox ">
+        {{ form.non_field_errors }}
+
+        <div class="itemcard-row">
+          <div>Behälter:</div>
+          <div>{{ form.box_type }}</div>
+        </div>
+
+        <div class="itemcard-row">
+          <div>Material:</div>
+          <div>{{ form.material }}</div>
+        </div>
+
+        <div class="itemcard-row">
+          <div>Zweck:</div>
+          <div>{{ form.target }}</div>
+        </div>
+      </section>
+
+      <div class="button-wrapper">
+        <button type="submit" name="save" class="btn">Speichern</button>
+      </div>
+    </div>
   </form>
 {% endblock %}

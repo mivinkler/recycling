@@ -15,14 +15,14 @@
   <div class="table-header">{% sort_header "material" "Material" %}</div>
   <div class="table-header">{% sort_header "datum" "Datum" %}</div>
   <div class="table-header">Ansehen</div>
-  <div class="table-header">Drucken</div>
+  <div class="table-header">Aktion</div>
 
   {% for barcode in barcodes %}
-  <div class="table-row js-select-row"
-    data-type="barcode-list"
+  <div class="table-row"
     data-id="{{ barcode.id }}"
-    {% comment %} data-url-detail="{% url 'barcode_detail' pk=barcode.id %}" {% endcomment %}
-    {% comment %} data-url-update="{% url 'barcode_update' pk=barcode.id %}"> {% endcomment %}
+    {% comment %} data-url-detail="{% url 'barcode_detail' pk=barcode.id %}"
+    data-url-update="{% url 'barcode_update' pk=barcode.id %}" {% endcomment %}
+    >
 
     <div class="table-row__id-gray">{{ barcode.id }}</div>
     <div>{{ barcode.code }}</div>
@@ -33,11 +33,14 @@
       noch keine
       {% comment %} <a href="{% url 'reusable_barcode_detail' barcode.pk %}" class="btn btn-sm">Ansehen</a> {% endcomment %}
     </div>
-    <div class="btn btn-sm"><a href="{{ barcode.barcode_image.url }}" target="_blank">🖨️</a></div>
+    <div><a href="{% url 'reusable_barcode_detail' barcode.pk %}">🖨️</a></div>
   {% endfor %}
 </div>
 
 
 {% comment %} {% paginate page_obj %} {% endcomment %}
-{% comment %} <a href="{% url 'reusable_barcode_create' %}" class="btn">Neuen Barcode hinzufügen</a> {% endcomment %}
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'js/selectable-row.js' %}"></script>
 {% endblock %}
