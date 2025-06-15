@@ -77,7 +77,7 @@
 }
 
 .table[data-type="barcode-list"] {
-  grid-template-columns: auto repeat(6, 1fr);
+  grid-template-columns: auto 1fr 2fr repeat(4, 1fr);
 }
 
 /* ================ table ================== */
@@ -322,6 +322,13 @@
 
 .btn:active {
   box-shadow: none;
+}
+
+.barcode-print-icon {
+  display: block;
+  text-align: center;
+  padding: 0;
+  width: 100%;
 }
 
 /* .search-datum {

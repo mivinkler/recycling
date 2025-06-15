@@ -14,7 +14,7 @@ class Delivery(models.Model):
     updated_at = models.DateTimeField(null=True, blank=True, default=None)
     deleted_at = models.DateTimeField(null=True, blank=True, default=None)
 
-    # 🆕 Barcode-Daten
+    # Barcode-Daten
     barcode = models.CharField(max_length=64, blank=True, null=True)
     barcode_image = models.ImageField(upload_to='barcodes/', blank=True, null=True)
 

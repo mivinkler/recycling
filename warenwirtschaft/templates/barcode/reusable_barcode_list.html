@@ -11,11 +11,11 @@
 <div class="table" data-type="barcode-list">
   <div class="table-header">{% sort_header "id" "ID" %}</div>
   <div class="table-header">{% sort_header "barcode" "Barcode" %}</div>
+  <div class="table-header">{% sort_header "supplier" "Supplier" %}</div>
   <div class="table-header">{% sort_header "typ" "Behälter" %}</div>
   <div class="table-header">{% sort_header "material" "Material" %}</div>
   <div class="table-header">{% sort_header "datum" "Datum" %}</div>
-  <div class="table-header">Ansehen</div>
-  <div class="table-header">Aktion</div>
+  <div class="table-header">Drucken</div>
 
   {% for barcode in barcodes %}
   <div class="table-row"
@@ -23,17 +23,13 @@
     {% comment %} data-url-detail="{% url 'barcode_detail' pk=barcode.id %}"
     data-url-update="{% url 'barcode_update' pk=barcode.id %}" {% endcomment %}
     >
-
     <div class="table-row__id-gray">{{ barcode.id }}</div>
     <div>{{ barcode.code }}</div>
+    <div>{{ barcode.supplier }}</div>
     <div>{{ barcode.get_box_type_display }}</div>
     <div>{{ barcode.material }}</div>
     <div>{{ barcode.created_at|date:"d.m.Y H:i" }}</div>
-    <div>
-      noch keine
-      {% comment %} <a href="{% url 'reusable_barcode_detail' barcode.pk %}" class="btn btn-sm">Ansehen</a> {% endcomment %}
-    </div>
-    <div><a href="{% url 'reusable_barcode_detail' barcode.pk %}">🖨️</a></div>
+    <div><a href="{% url 'reusable_barcode_detail' barcode.pk %}" target="_blank" class="btn barcode-print-icon" style="width: 100%">🖨️</a></div>
   {% endfor %}
 </div>
 

@@ -100,4 +100,4 @@ class CustomerForm(forms.ModelForm):
 class ReusableBarcodeForm(forms.ModelForm):
     class Meta:
         model = ReusableBarcode
-        fields = ['box_type', 'material', 'target']
+        fields = ['supplier', 'box_type', 'material', 'target']

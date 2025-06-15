@@ -15,6 +15,13 @@
       {{ form.delivery_unit.errors }}
       {{ form.non_field_errors }}
 
+      <section class="itemcard-topbox">
+        <div class="itemcard-row">
+          <label for="barcode">📷 Barcode scannen:</label>
+          <input type="text" id="barcode" name="barcode" autofocus autocomplete="off" placeholder="Scannen..." style="width: 200px;" />
+        </div>
+      </section>
+
       <div class="itemcard-row">
         <div>Liefereinheit:</div>
         <div>{{ form.delivery_unit }}</div>
@@ -69,4 +76,16 @@
 
 {% block extra_js %}
   <script src="{% static 'js/add-table-row.js' %}"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const barcode = document.getElementById('barcode');
+      const weight = document.querySelector('input[name$="-weight"]');
+
+      if (!barcode || !weight) return;
+
+      barcode.addEventListener('input', () => {
+        weight.focus();
+      });
+    });
+  </script>
 {% endblock %}

@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Neuer Container-Code{% endblock %}
+{% block title %}Barcode erstellen{% endblock %}
 
 {% block content %}
 
@@ -10,10 +10,15 @@
     {% csrf_token %}
 
     <div class="itemcard-small">
-      <h2>Neuen Behälter-Barcode erstellen</h2>
+      <h2>Barcode erstellen</h2>
 
       <section class="itemcard-topbox ">
         {{ form.non_field_errors }}
+
+        <div class="itemcard-row">
+          <div>Lieferant:</div>
+          <div>{{ form.supplier }}</div>
+        </div>
 
         <div class="itemcard-row">
           <div>Behälter:</div>

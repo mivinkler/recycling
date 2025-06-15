@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -54,4 +54,6 @@ urlpatterns = [
     path('reusable-barcodes/create/', ReusableBarcodeCreateView.as_view(), name='reusable_barcode_create'),
     path('reusable-barcodes/list', ReusableBarcodeListView.as_view(), name='reusable_barcode_list'),
     path('reusable-barcodes/detail/<int:pk>/', ReusableBarcodeDetailView.as_view(), name='reusable_barcode_detail'),
-]
+
+    path('api/', include('warenwirtschaft.api.urls')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

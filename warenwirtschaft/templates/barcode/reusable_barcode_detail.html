@@ -1,60 +1,25 @@
-{% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Barcode Detail{% endblock %}
-
-{% block content %}
-<div class="itemcard-large">
-  <h2>Barcode Detail</h2>
-
-  <section class="itemcard-topbox">
-    <div class="itemcard-row">
-      <div>Barcode:</div>
-      <div>{{ barcode.code }}</div>
-    </div>
-    <div>
-      <div>ID:</div>
-      {{ barcode.id }}
-    </div>
-    <div>
-      <div>Behälter:</div>
-      {{ barcode.get_box_type_display }}
-    </div>
-    <div>
-      <div>Material:</div>
-      {{ barcode.material }}
-    </div>
-    <div>
-      <div>Datum:</div>
-      {{ barcode.created_at|date:"d.m.Y H:i" }}
-    </div>
-    <div class="btn btn-sm">
-      <a href="{{ barcode.barcode_image.url }}" target="_blank">🖨️</a>
-    </div>
-  </section>
-  <section>
-    <div>Barcode Image:</div>
-      {{ barcode.barcode_image }}
-      <img src="{% static barcode.barcode_image %}">
-      <button onclick="window.print()" class="btn">🖨️ Drucken</button>
-      <div class="print-area">
-        {% if barcode.barcode_image %}
-          <img src="{{ barcode.barcode_image.url }}" alt="Barcode für {{ barcode.code }}" style="max-width: 300px;">
-        {% endif %}
-        <p>{{ barcode.code }}</p>
-      </div>
-  </section>
-</div>
-<style>
-  @media print {
-    .itemcard-topbox, .btn, nav, header, footer, .non-printable {
-      display: none !important;
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{{ barcode.code }}</title>
+  <style>
+    @media print {
+      body {
+        margin: 0;
+        text-align: center;
+      }
+      img {
+        max-width: 90%;
+      }
+      p {
+        font-size: 18px;
+      }
     }
-    body {
-      margin: 0;
-    }
-  }
-</style>
-{% endblock %}
-
-
+  </style>
+</head>
+<body onload="window.print()">
+  <img src="{% static 'barcodes/' %}{{ barcode.code }}.png">
+</body>
+</html>

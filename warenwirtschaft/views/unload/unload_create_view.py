@@ -1,55 +1,59 @@
-from django.views.generic.edit import FormView
-from django.shortcuts import redirect, render
-from django.db import transaction
+from django.views import View
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from warenwirtschaft.forms import UnloadFormSet, DeliveryUnitForm
-from warenwirtschaft.models import DeliveryUnit, Delivery
+from warenwirtschaft.models import ReusableBarcode
 
-class UnloadCreateView(FormView):
+class UnloadCreateView(View):
     template_name = 'unload/unload_create.html'
-    form_class = DeliveryUnitForm
     success_url = reverse_lazy('unload_list')
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        form = kwargs.get('form') or self.get_form()
-        context['form'] = form
+    def get_barcode_data(self, code):
+        try:
+            reusable = ReusableBarcode.objects.get(code=code, step=1)  # Schritt: Lieferung
+            return {
+                'box_type': reusable.box_type,
+                'material': reusable.material,
+                'target': reusable.target,
+                'code': reusable.code,
+            }
+        except ReusableBarcode.DoesNotExist:
+            return {}
 
-        if hasattr(self, 'formset'):
-            context['formset'] = self.formset
-        else:
-            context['formset'] = UnloadFormSet(prefix='unload')
+    def get(self, request):
+        code = request.GET.get("code")
+        session_weight = request.session.pop('unload_input', {}).get('weight')  # Gewicht aus Session holen
 
-        context['empty_form'] = context['formset'].empty_form
-        return context
+        initial_data = self.get_barcode_data(code) if code else {}
+        if session_weight:
+            initial_data['weight'] = session_weight
 
-    def post(self, request, *args, **kwargs):
-        # Barcode aus POST lesen
-        scanned_barcode = request.POST.get("barcode")
+        form = DeliveryUnitForm()
+        formset = UnloadFormSet(prefix='unload', initial=[initial_data] if initial_data else [{}])
 
-        # Suche DeliveryUnit anhand des Barcodes
-        delivery_unit = None
-        if scanned_barcode:
-            try:
-                delivery = Delivery.objects.get(barcode=scanned_barcode)
-                delivery_unit = DeliveryUnit.objects.filter(delivery=delivery).first()  # можно уточнить фильтр
-            except Delivery.DoesNotExist:
-                delivery_unit = None
+        return render(request, self.template_name, {
+            'form': form,
+            'formset': formset,
+            'empty_form': formset.empty_form,
+            'code': code,
+        })
 
-        if delivery_unit:
-            form = DeliveryUnitForm(initial={'delivery_unit': delivery_unit})
-            self.formset = UnloadFormSet(request.POST, instance=delivery_unit, prefix='unload')
-        else:
-            form = self.get_form()
-            self.formset = UnloadFormSet(request.POST, prefix='unload')
+    def post(self, request):
+        form = DeliveryUnitForm(request.POST)
+        formset = UnloadFormSet(request.POST, prefix='unload')
 
-        if self.formset.is_valid():
-            with transaction.atomic():
-                self.formset.save()
+        if form.is_valid() and formset.is_valid():
+            delivery_unit = form.cleaned_data['delivery_unit']
+            for subform in formset:
+                if not subform.cleaned_data:
+                    continue
+                unload = subform.save(commit=False)
+                unload.delivery_unit = delivery_unit
+                unload.save()
             return redirect(self.success_url)
 
-        return self.render_to_response(self.get_context_data(form=form))
-
-    def form_valid(self, form):
-        # Wird nicht verwendet, da wir alles über post() machen
-        return super().form_valid(form)
+        return render(request, self.template_name, {
+            'form': form,
+            'formset': formset,
+            'empty_form': formset.empty_form,
+        })
