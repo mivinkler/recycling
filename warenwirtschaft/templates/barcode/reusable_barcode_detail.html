@@ -20,6 +20,6 @@
   </style>
 </head>
 <body onload="window.print()">
-  <img src="{% static 'barcodes/' %}{{ barcode.code }}.png">
+  <img src="{{ barcode.barcode_image.url }}" alt="Barcode">
 </body>
 </html>

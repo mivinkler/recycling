@@ -1,5 +1,6 @@
 from django.views.generic.detail import DetailView
 from warenwirtschaft.models import ReusableBarcode
+from django.conf import settings
 
 
 class ReusableBarcodeDetailView(DetailView):
@@ -9,4 +10,5 @@ class ReusableBarcodeDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['MEDIA_URL'] = settings.MEDIA_URL
         return context

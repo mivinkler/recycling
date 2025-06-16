@@ -16,11 +16,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 
 from warenwirtschaft.views.delivery.delivery_units_list_view import DeliveryUnitsListView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('warenwirtschaft/', include("warenwirtschaft.urls")),
+    path('api/', include('warenwirtschaft.api.urls')),
     # path('', DeliveryUnitsListView.as_view(), name='home'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

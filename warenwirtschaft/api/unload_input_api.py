@@ -17,7 +17,7 @@ class UnloadInputAPI(View):
         request.session['unload_input'] = {
             'weight': weight,
         }
-        request.session.modified = True  # wichtig, damit Session gespeichert wird
+        request.session.modified = True
 
         return JsonResponse({'status': 'ok'})
 

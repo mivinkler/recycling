@@ -22,11 +22,8 @@ class UnloadCreateView(View):
 
     def get(self, request):
         code = request.GET.get("code")
-        session_weight = request.session.pop('unload_input', {}).get('weight')  # Gewicht aus Session holen
 
         initial_data = self.get_barcode_data(code) if code else {}
-        if session_weight:
-            initial_data['weight'] = session_weight
 
         form = DeliveryUnitForm()
         formset = UnloadFormSet(prefix='unload', initial=[initial_data] if initial_data else [{}])

@@ -77,15 +77,39 @@
 {% block extra_js %}
   <script src="{% static 'js/add-table-row.js' %}"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const barcode = document.getElementById('barcode');
-      const weight = document.querySelector('input[name$="-weight"]');
+  document.addEventListener('DOMContentLoaded', () => {
+    const barcodeInput = document.getElementById('barcode');
 
-      if (!barcode || !weight) return;
+    if (!barcodeInput) return;
 
-      barcode.addEventListener('input', () => {
-        weight.focus();
-      });
+    barcodeInput.addEventListener('keypress', async (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+
+        const code = barcodeInput.value.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
+        if (!code) return;
+
+        try {
+          // 🔍 Делаем запрос к API
+          const res = await fetch(`/api/barcode-data/?code=${encodeURIComponent(code)}`);
+          if (!res.ok) throw new Error("Barcode nicht gefunden");
+
+          const data = await res.json();
+
+          // ✅ Заполняем первую строку formset
+          document.querySelector('select[name$="-box_type"]').value = data.box_type;
+          document.querySelector('select[name$="-material"]').value = data.material;
+          document.querySelector('select[name$="-target"]').value = data.target;
+
+          // Очистка поля ввода
+          barcodeInput.value = "";
+
+        } catch (err) {
+          alert("Fehler beim Barcode-Scan: " + err.message);
+        }
+      }
     });
-  </script>
+  });
+</script>
+
 {% endblock %}
