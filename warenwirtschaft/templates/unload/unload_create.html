@@ -15,16 +15,19 @@
       {{ form.delivery_unit.errors }}
       {{ form.non_field_errors }}
 
-      <section class="itemcard-topbox">
-        <div class="itemcard-row">
-          <label for="barcode">📷 Barcode scannen:</label>
-          <input type="text" id="barcode" name="barcode" autofocus autocomplete="off" placeholder="Scannen..." style="width: 200px;" />
-        </div>
-      </section>
+      <div class="itemcard-row">
+        <label for="barcode">📷 Barcode scannen:</label>
+        <input type="text" id="barcode" name="barcode" autofocus autocomplete="off" placeholder="Scannen..." style="width: 200px;" />
+      </div>
 
       <div class="itemcard-row">
         <div>Liefereinheit:</div>
         <div>{{ form.delivery_unit }}</div>
+      </div>
+
+      <div class="itemcard-row">
+        <div>Lieferant:</div>
+        <div>{{ delivery.supplier }}</div>
       </div>
     </section>
 
