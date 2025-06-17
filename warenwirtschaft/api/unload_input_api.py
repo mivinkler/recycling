@@ -1,23 +1,18 @@
-import json
-from django.views import View
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
+from django.views import View
+from warenwirtschaft.models import DeliveryUnit
 
-
-@method_decorator(csrf_exempt, name='dispatch')
 class UnloadInputAPI(View):
-    def post(self, request):
-        data = json.loads(request.body)
-        weight = data.get('weight')
+    def get(self, request):
+        code = request.GET.get("code", "").strip().upper()
+        if not code:
+            return JsonResponse({'error': 'Kein Code übergeben'}, status=400)
 
-        if weight is None:
-            return JsonResponse({'error': 'Kein Gewicht erhalten'}, status=400)
-
-        request.session['unload_input'] = {
-            'weight': weight,
-        }
-        request.session.modified = True
-
-        return JsonResponse({'status': 'ok'})
-
+        try:
+            unit = DeliveryUnit.objects.get(barcode__iexact=code)
+            return JsonResponse({
+                'delivery_unit_id': unit.id,
+                'supplier': unit.delivery.supplier.name,
+            })
+        except DeliveryUnit.DoesNotExist:
+            return JsonResponse({'error': 'Nicht gefunden'}, status=404)

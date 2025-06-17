@@ -39,11 +39,10 @@ DeliveryUnitFormSet = inlineformset_factory(
     can_delete=True
 )
 
-
 # Unload
 class DeliveryUnitForm(forms.Form):
     delivery_unit = forms.ModelChoiceField(
-        queryset=DeliveryUnit.objects.filter(status=1),
+        queryset=DeliveryUnit.objects.all(),
         label="Liefereinheit"
     )
 

@@ -4,30 +4,25 @@
 {% block title %}Umladung erfassen{% endblock %}
 
 {% block content %}
-
 <form method="post" action="{% url 'unload_create' %}" id="unload-form">
   {% csrf_token %}
 
   <div class="itemcard-large">
     <h2>Umladung erstellen</h2>
 
-    <section class="itemcard-topbox ">
+    <section class="itemcard-topbox">
       {{ form.delivery_unit.errors }}
       {{ form.non_field_errors }}
 
       <div class="itemcard-row">
         <label for="barcode">📷 Barcode scannen:</label>
-        <input type="text" id="barcode" name="barcode" autofocus autocomplete="off" placeholder="Scannen..." style="width: 200px;" />
+        <input type="text" id="barcode" name="barcode" autofocus autocomplete="off"
+               placeholder="Scannen..." style="width: 200px;" />
       </div>
 
       <div class="itemcard-row">
         <div>Liefereinheit:</div>
         <div>{{ form.delivery_unit }}</div>
-      </div>
-
-      <div class="itemcard-row">
-        <div>Lieferant:</div>
-        <div>{{ delivery.supplier }}</div>
       </div>
     </section>
 
@@ -42,28 +37,21 @@
         <div class="table-header">Gewicht</div>
         <div class="table-header">Zweck</div>
         <div class="table-header">Anmerkung</div>
-      
+        <div class="table-header"></div>
+
         {% for form in formset %}
-          <div class="table-row" data-type="unload-create">
-            <div>{{ forloop.counter }}</div>
-            <div>{{ form.box_type }}</div>
-            <div>{{ form.material }}</div>
-            <div>{{ form.weight }}</div>
-            <div>{{ form.target }}</div>
-            <div>{{ form.note }}</div>
+        <div class="table-row" data-type="unload-create">
+          <div>{{ forloop.counter }}</div>
+          <div>{{ form.box_type }}</div>
+          <div>{{ form.material }}</div>
+          <div>{{ form.weight }}</div>
+          <div>{{ form.target }}</div>
+          <div>{{ form.note }}</div>
+          <div>
+            <button type="button" class="btn fetch-weight-btn">Gewicht anfragen</button>
           </div>
+        </div>
         {% endfor %}
-      
-        <template id="table-row-template">
-          <div class="table-row">
-            <div> __index__</div>
-            <div>{{ empty_form.box_type }}</div>
-            <div>{{ empty_form.material }}</div>
-            <div>{{ empty_form.weight }}</div>
-            <div>{{ empty_form.target }}</div>
-            <div>{{ empty_form.note }}</div>
-          </div>
-        </template>
       </div>
     </section>
 
@@ -74,45 +62,59 @@
     </div>
   </div>
 </form>
-  
 {% endblock %}
 
 {% block extra_js %}
-  <script src="{% static 'js/add-table-row.js' %}"></script>
-  <script>
+<script src="{% static 'js/add-table-row.js' %}"></script>
+<script>
   document.addEventListener('DOMContentLoaded', () => {
     const barcodeInput = document.getElementById('barcode');
+    const deliverySelect = document.querySelector('select[name="delivery_unit"]');
 
-    if (!barcodeInput) return;
+    // Liefereinheit setzen per Barcode
+    barcodeInput?.addEventListener('keypress', async (e) => {
+      if (e.key !== 'Enter') return;
+      e.preventDefault();
 
-    barcodeInput.addEventListener('keypress', async (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
+      const code = barcodeInput.value.trim().toUpperCase();
+      if (!code) return;
 
-        const code = barcodeInput.value.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
-        if (!code) return;
+      try {
+        const res = await fetch(`/api/unload-input/?code=${encodeURIComponent(code)}&type=unit`);
+        if (!res.ok) throw new Error("Nicht gefunden");
+        const { delivery_unit_id } = await res.json();
 
-        try {
-          // 🔍 Делаем запрос к API
-          const res = await fetch(`/api/barcode-data/?code=${encodeURIComponent(code)}`);
-          if (!res.ok) throw new Error("Barcode nicht gefunden");
-
-          const data = await res.json();
-
-          // ✅ Заполняем первую строку formset
-          document.querySelector('select[name$="-box_type"]').value = data.box_type;
-          document.querySelector('select[name$="-material"]').value = data.material;
-          document.querySelector('select[name$="-target"]').value = data.target;
-
-          // Очистка поля ввода
-          barcodeInput.value = "";
-
-        } catch (err) {
-          alert("Fehler beim Barcode-Scan: " + err.message);
+        let option = deliverySelect.querySelector(`option[value="${delivery_unit_id}"]`);
+        if (!option) {
+          option = new Option(`Einheit #${delivery_unit_id}`, delivery_unit_id);
+          deliverySelect.appendChild(option);
         }
+
+        deliverySelect.value = delivery_unit_id;
+        barcodeInput.value = '';
+      } catch {
+        alert("Fehler beim Abrufen der Liefereinheit.");
+      }
+    });
+
+    // Gewicht anfragen für каждую Zeile
+    document.querySelector('.table')?.addEventListener('click', async (e) => {
+      if (!e.target.matches('.fetch-weight-btn')) return;
+
+      const row = e.target.closest('.table-row');
+      const input = row?.querySelector('input[name$="-weight"]');
+      if (!input) return;
+
+      try {
+        const res = await fetch('/api/weight/');
+        if (!res.ok) throw new Error();
+        const { weight } = await res.json();
+        if (weight !== undefined) input.value = weight;
+        else alert("Ungültiges Gewicht");
+      } catch {
+        alert("Fehler beim Abrufen des Gewichts.");
       }
     });
   });
 </script>
-
 {% endblock %}

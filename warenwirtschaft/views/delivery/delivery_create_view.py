@@ -1,9 +1,9 @@
 from django.views.generic.edit import CreateView
 from warenwirtschaft.models.delivery import Delivery
-from warenwirtschaft.forms import DeliveryForm
-from warenwirtschaft.forms import DeliveryUnitFormSet
+from warenwirtschaft.forms import DeliveryForm, DeliveryUnitFormSet
 from django.db import transaction
 from django.urls import reverse_lazy
+from warenwirtschaft.services.barcode_service import generate_barcode  # ✅ Funktion importieren
 
 class DeliveryCreateView(CreateView):
     model = Delivery
@@ -28,6 +28,12 @@ class DeliveryCreateView(CreateView):
             with transaction.atomic():
                 self.object = form.save()
                 formset.instance = self.object
-                formset.save()
+                units = formset.save(commit=False)
+
+                for unit in units:
+                    generate_barcode(unit)  # Barcode generieren und dem Objekt zuweisen
+                    unit.save()
+
             return super().form_valid(form)
+
         return self.render_to_response(self.get_context_data(form=form))

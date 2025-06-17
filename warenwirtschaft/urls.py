@@ -12,6 +12,7 @@ from warenwirtschaft.views.shipping import ShippingUnitsListView, ShippingDetail
 from warenwirtschaft.views.barcode.reusablebarcode_create_view import ReusableBarcodeCreateView
 from warenwirtschaft.views.barcode.reusablebarcode_list_view import ReusableBarcodeListView
 from warenwirtschaft.views.barcode.reuseblebarcode_detail_view import ReusableBarcodeDetailView
+from warenwirtschaft.views.barcode.barcode_print_view import BarcodePrintView
 
 
 urlpatterns = [
@@ -54,6 +55,7 @@ urlpatterns = [
     path('reusable-barcodes/create/', ReusableBarcodeCreateView.as_view(), name='reusable_barcode_create'),
     path('reusable-barcodes/list', ReusableBarcodeListView.as_view(), name='reusable_barcode_list'),
     path('reusable-barcodes/detail/<int:pk>/', ReusableBarcodeDetailView.as_view(), name='reusable_barcode_detail'),
+    path('barcode/<str:model>/<int:pk>/print/', BarcodePrintView.as_view(), name='barcode_print'),
 
     path('api/', include('warenwirtschaft.api.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

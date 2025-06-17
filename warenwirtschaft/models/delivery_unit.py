@@ -30,6 +30,8 @@ class DeliveryUnit(models.Model):
     status = models.PositiveSmallIntegerField(choices=STATUS_CHOICES, default=1)
     box_type = models.PositiveSmallIntegerField(choices=BOX_TYPE_CHOICES)
     note = models.CharField(max_length=255, null=True, blank=True)
+    barcode = models.CharField(max_length=64, blank=True, null=True)
+    barcode_image = models.ImageField(upload_to='barcodes/delivery/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(null=True, blank=True, default=None)
     deleted_at = models.DateTimeField(null=True, blank=True, default=None)

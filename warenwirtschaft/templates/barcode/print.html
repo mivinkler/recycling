@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Barcode drucken</title>
+    <style>
+        body { text-align: center; font-family: Arial, sans-serif; margin-top: 50px; }
+        img { width: 300px; }
+        .info { margin-top: 20px; font-size: 16px; }
+        @media print {
+            .noprint { display: none; }
+        }
+    </style>
+</head>
+<body>
+    {% if obj.barcode_image %}
+        <img src="{{ obj.barcode_image.url }}" alt="Barcode">
+    {% else %}
+        <p>Kein Barcode verfügbar.</p>
+    {% endif %}
+
+    <div class="info">
+        <strong>Barcode:</strong> {{ obj.barcode }}
+        {% if obj.weight %}
+            <br><strong>Gewicht:</strong> {{ obj.weight }} kg
+        {% endif %}
+        {% if obj.material %}
+            <br><strong>Material:</strong> {{ obj.material.name }}
+        {% endif %}
+
+    </div>
+
+    <button onclick="window.print()" class="noprint" style="margin-top: 40px;">Drucken</button>
+</body>
+</html>
