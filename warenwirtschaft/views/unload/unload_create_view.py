@@ -9,14 +9,41 @@ class UnloadCreateView(View):
     success_url = reverse_lazy('unload_list')
 
     def get(self, request):
-        return self.render_form(request)
+        """
+        Zeigt leeres Formular für Umladungserfassung.
+        Falls ein Barcode gescannt wurde, werden zugehörige Felder vorausgefüllt.
+        """
+        code = request.GET.get("code", "").strip().upper()
+
+        initial_data = {}
+        if code:
+            try:
+                reusable = ReusableBarcode.objects.get(code=code, step=1)
+                initial_data = {
+                    'box_type': reusable.box_type,
+                    'material': reusable.material_id,
+                    'target': reusable.target,
+                }
+            except ReusableBarcode.DoesNotExist:
+                pass  # Kein Fehler anzeigen – Benutzer kann manuell ausfüllen
+
+        form = DeliveryUnitForm()
+        formset = UnloadFormSet(prefix='unload', initial=[initial_data] if initial_data else [{}])
+
+        return render(request, self.template_name, {
+            'form': form,
+            'formset': formset,
+            'empty_form': formset.empty_form,
+        })
 
     def post(self, request):
+        """
+        Verarbeitet das Abschicken des Formulars.
+        """
         form = DeliveryUnitForm(request.POST)
         formset = UnloadFormSet(request.POST, prefix='unload')
 
         if form.is_valid() and formset.is_valid():
-            # Lieferungseinheit aus Hauptformular
             delivery_unit = form.cleaned_data['delivery_unit']
             for subform in formset:
                 if not subform.cleaned_data:
@@ -25,18 +52,6 @@ class UnloadCreateView(View):
                 unload.delivery_unit = delivery_unit
                 unload.save()
             return redirect(self.success_url)
-
-        # Bei Fehlern Formular erneut anzeigen
-        return self.render_form(request, form=form, formset=formset)
-
-    def render_form(self, request, form=None, formset=None):
-        """
-        Rendert das Formular mit optionalen Fehlerdaten.
-        """
-        if form is None:
-            form = DeliveryUnitForm()
-        if formset is None:
-            formset = UnloadFormSet(prefix='unload')
 
         return render(request, self.template_name, {
             'form': form,
