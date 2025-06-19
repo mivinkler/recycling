@@ -3,3 +3,4 @@ from .delivery_detail_view import DeliveryDetailView
 from .delivery_create_view import DeliveryCreateView
 from .delivery_update_view import DeliveryUpdateView
 from .delivery_delete_view import DeliveryDeleteView
+from .delivery_unit_detail_view import DeliveryUnitDetailView

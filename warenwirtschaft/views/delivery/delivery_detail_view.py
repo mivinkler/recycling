@@ -14,8 +14,6 @@ class DeliveryDetailView(DetailView):
         context = super().get_context_data(**kwargs)
 
         context["delivery_units"] = self.object.units_for_delivery.all()
-        context["search_query"] = self.request.GET.get("search", "")
-        context["sort_param"] = self.request.GET.get("sort", "")
         context["box_type"] = DeliveryUnit.BOX_TYPE_CHOICES
         context["statuses"] = DeliveryUnit.STATUS_CHOICES
         

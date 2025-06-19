@@ -1,3 +1,5 @@
+<!-- reusable barcode hat eigene Einstellung für Drucker s.a reusable_barcode_detail.html -->
+
 {% load static %}
 <!DOCTYPE html>
 <html>
@@ -5,9 +7,9 @@
     <meta charset="utf-8">
     <title>Barcode drucken</title>
     <style>
-        body { text-align: center; font-family: Arial, sans-serif; margin-top: 50px; }
+        body { text-align: center; margin-top: 50px; }
+        body table {margin: 0 auto; text-align: left; border-spacing: 14px 6px;}
         img { width: 300px; }
-        .info { margin-top: 20px; font-size: 16px; }
         @media print {
             .noprint { display: none; }
         }
@@ -15,22 +17,57 @@
 </head>
 <body>
     {% if obj.barcode_image %}
-        <img src="{{ obj.barcode_image.url }}" alt="Barcode">
+    <img src="{{ obj.barcode_image.url }}" alt="Barcode">
     {% else %}
-        <p>Kein Barcode verfügbar.</p>
+    <p>Kein Barcode verfügbar.</p>
     {% endif %}
+    
+    <table>
+        {% if obj.step %}
+        <tr>
+            <td><strong>Bereich:</strong></td>
+            <td>{{ obj.step }}</td>
+        </tr>
+        {% endif %}
 
-    <div class="info">
-        <strong>Barcode:</strong> {{ obj.barcode }}
+        {% if obj.delivery.supplier %}
+        <tr>
+            <td><strong>Lieferant:</strong></td>
+            <td>{{ obj.delivery.supplier.name }} kg</td>
+        </tr>
+        {% endif %}
+
+        {% if obj.box_type %}
+        <tr>
+            <td><strong>Behälter:</strong></td>
+            <td>{{ obj.get_box_type_display }}</td>
+        </tr>
+        {% endif %}
+
         {% if obj.weight %}
-            <br><strong>Gewicht:</strong> {{ obj.weight }} kg
+        <tr>
+            <td><strong>Gewicht:</strong></td>
+            <td>{{ obj.weight }} kg</td>
+        </tr>
         {% endif %}
+
         {% if obj.material %}
-            <br><strong>Material:</strong> {{ obj.material.name }}
+        <tr>
+            <td><strong>Material:</strong></td>
+            <td>{{ obj.material.name }}</td>
+        </tr>
         {% endif %}
 
-    </div>
 
-    <button onclick="window.print()" class="noprint" style="margin-top: 40px;">Drucken</button>
+        {% if obj.target %}
+        <tr>
+            <td><strong>Ziel:</strong></td>
+            <td>{{ obj.get_target_display }}</td>
+        </tr>
+        {% endif %}
+
+    </table>
+
+    <button onclick="window.print()" style="margin-top: 40px;">Drucken</button>
 </body>
 </html>

@@ -138,7 +138,29 @@
   background-color: #d0e4f5;
 }
 
-/* ============ itemcard ============= */
+/* ============ Detail, Update ============= */
+
+.detail {
+  width: fit-content;
+  margin: 50px auto;
+}
+
+.detail-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  line-height: 26px;
+}
+
+.detail-row div:first-child {
+  font-weight: bold;
+  width: 180px;
+  padding-left: 30px;
+}
+
+.detail-barcode {
+  text-align: left;
+}
 
 .itemcard-small,
 .itemcard-large {

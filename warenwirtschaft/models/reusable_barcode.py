@@ -30,7 +30,7 @@ class ReusableBarcode(models.Model):
     box_type = models.PositiveSmallIntegerField(choices=BOX_TYPE_CHOICES, blank=True, null=True)
     material = models.ForeignKey(Material, on_delete=models.SET_NULL, null=True, blank=True, related_name='material_for_barcode')
     target = models.PositiveSmallIntegerField(choices=TARGET_CHOICES, blank=True, null=True)
-    barcode_image = models.ImageField(upload_to='barcodes/', blank=True, null=True)
+    barcode_image = models.ImageField(upload_to='barcodes/reusable', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(null=True, blank=True, default=None)
     deleted_at = models.DateTimeField(null=True, blank=True, default=None)

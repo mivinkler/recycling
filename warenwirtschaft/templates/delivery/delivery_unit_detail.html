@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% load custom_filters %}
+{% load static %}
+
+{% block title %}Lieferung detail{% endblock %}
+
+{% block content %}
+
+<div class="detail">
+
+    <img src="{{ delivery_unit.barcode_image.url }}" class="detail-barcode">
+
+    <div class="detail-row">
+      <div>Lieferung-ID:</div>
+      <div>{{ delivery.id }}</div>
+    </div>
+
+    <div class="detail-row">
+      <div>Lieferant:</div>
+      <div>{{ delivery.supplier.name }}</div>
+    </div>
+
+    <div class="detail-row">
+      <div>Lieferant-Adresse:</div>
+      <div>{{ delivery.supplier.street }}, {{ delivery.supplier.postal_code }} {{ delivery.supplier.city }}</div>
+    </div>
+
+    <div class="detail-row">
+      <div>Lieferschein:</div>
+      <div>{{ delivery.delivery_receipt }}</div>
+    </div>
+
+    <div class="detail-row">
+      <div>Lieferung-Datum:</div>
+      <div>{{ delivery.created_at|date:"d.m.Y" }}</div>
+    </div>
+
+    <div class="detail-row">
+      <div>Material:</div>
+      <div>{{ delivery_unit.material.name }}</div>
+    </div>
+
+    <div class="detail-row">
+      <div>Gewicht:</div>
+      <div>{{ delivery_unit.weight }} kg</div>
+    </div>
+
+    <div class="detail-row">
+      <div>Behälter:</div>
+      <div>{{ delivery_unit.get_box_type_display }}</div>
+    </div>
+
+    <div class="detail-row">
+      <div>Status:</div>
+      <div>{{ delivery_unit.get_status_display }}</div>
+    </div>
+
+    <div class="detail-row">
+      <div>Einheit-Anmerkung:</div>
+      <div>{{ delivery_unit.note }}</div>
+    </div>
+ 
+  </section>
+
+</div>
+<!-- data-url-update="{% url 'delivery_update' pk=delivery_unit.delivery.id %} -->
+{% endblock %}

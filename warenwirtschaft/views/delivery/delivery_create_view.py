@@ -3,7 +3,7 @@ from warenwirtschaft.models.delivery import Delivery
 from warenwirtschaft.forms import DeliveryForm, DeliveryUnitFormSet
 from django.db import transaction
 from django.urls import reverse_lazy
-from warenwirtschaft.services.barcode_service import generate_barcode  # ✅ Funktion importieren
+from warenwirtschaft.services.barcode_service import generate_barcode
 
 class DeliveryCreateView(CreateView):
     model = Delivery

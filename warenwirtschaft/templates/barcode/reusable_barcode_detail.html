@@ -5,6 +5,8 @@
 <head>
   <title>{{ barcode.code }}</title>
   <style>
+    body { text-align: center; margin-top: 50px; }
+    body table {margin: 0 auto; text-align: left; border-spacing: 14px 6px;}
     @media print {
       body {
         margin: 0;
@@ -13,13 +15,59 @@
       img {
         max-width: 90%;
       }
-      p {
-        font-size: 18px;
-      }
     }
   </style>
 </head>
-<body onload="window.print()">
+<!-- <body onload="window.print()"> -->
+<body>
   <img src="{{ barcode.barcode_image.url }}" alt="Barcode">
+
+      <table>
+        {% if barcode.step %}
+        <tr>
+            <td><strong>Bereich:</strong></td>
+            <td>{{ barcode.step }}</td>
+        </tr>
+        {% endif %}
+
+        {% if barcode.delivery.supplier %}
+        <tr>
+            <td><strong>Lieferant:</strong></td>
+            <td>{{ barcode.delivery.supplier.name }} kg</td>
+        </tr>
+        {% endif %}
+
+        {% if barcode.box_type %}
+        <tr>
+            <td><strong>Behälter:</strong></td>
+            <td>{{ barcode.get_box_type_display }}</td>
+        </tr>
+        {% endif %}
+
+        {% if barcode.weight %}
+        <tr>
+            <td><strong>Gewicht:</strong></td>
+            <td>{{ barcode.weight }} kg</td>
+        </tr>
+        {% endif %}
+
+        {% if barcode.material %}
+        <tr>
+            <td><strong>Material:</strong></td>
+            <td>{{ barcode.material.name }}</td>
+        </tr>
+        {% endif %}
+
+
+        {% if barcode.target %}
+        <tr>
+            <td><strong>Ziel:</strong></td>
+            <td>{{ barcode.get_target_display }}</td>
+        </tr>
+        {% endif %}
+
+    </table>
+
+    <button onclick="window.print()" style="margin-top: 40px;">Drucken</button>
 </body>
 </html>

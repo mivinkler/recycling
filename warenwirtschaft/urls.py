@@ -4,7 +4,7 @@ from django.conf.urls.static import static
 
 from warenwirtschaft.views.supplier import SupplierListView, SupplierUpdateView, SupplierDetailView, SupplierCreateView,SupplierDeleteView
 from warenwirtschaft.views.customer import CustomerListView, CustomerUpdateView, CustomerDetailView, CustomerCreateView, CustomerDeleteView
-from warenwirtschaft.views.delivery import DeliveryUnitsListView, DeliveryDetailView, DeliveryCreateView, DeliveryUpdateView, DeliveryDeleteView
+from warenwirtschaft.views.delivery import DeliveryUnitsListView, DeliveryUnitDetailView, DeliveryDetailView, DeliveryCreateView, DeliveryUpdateView, DeliveryDeleteView
 from warenwirtschaft.views.unload import UnloadListView, UnloadCreateView, UnloadUpdateView, UnloadDeleteView, UnloadDetailView
 from warenwirtschaft.views.recycling import RecyclingListView, RecyclingCreateView, RecyclingUpdateView, RecyclingDeleteView, RecyclingDetailView
 from warenwirtschaft.views.shipping import ShippingUnitsListView, ShippingDetailView, ShippingCreateView, ShippingUpdateView, ShippingDeleteView
@@ -30,6 +30,7 @@ urlpatterns = [
 
     path('delivery/units/', DeliveryUnitsListView.as_view(), name='delivery_list'),
     path('delivery/detail/<int:pk>/', DeliveryDetailView.as_view(), name='delivery_detail'),
+    path('delivery-unit/detail/<int:pk>/', DeliveryUnitDetailView.as_view(), name='delivery_unit_detail'),
     path('delivery/create/', DeliveryCreateView.as_view(), name='delivery_create'),
     path('delivery/update/<int:pk>/', DeliveryUpdateView.as_view(), name='delivery_update'),
     path('delivery/delete/<int:pk>/', DeliveryDeleteView.as_view(), name='delivery_delete'),

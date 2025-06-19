@@ -24,7 +24,8 @@
     <div class="table-row js-select-row"
       data-id="{{ item.id }}"
       data-url-detail="{% url 'delivery_detail' pk=item.delivery.id %}"
-      data-url-update="{% url 'delivery_update' pk=item.delivery.id %}">
+      data-url-update="{% url 'delivery_update' pk=item.delivery.id %}"
+      data-url-unit-detail="{% url 'delivery_unit_detail' pk=item.id %}">
     
       <div class="table-row__id-gray">{{ item.delivery.id }}</div>
       <div>{{ item.delivery.supplier.name }}</div>
