@@ -39,35 +39,41 @@
       {{ formset.management_form }}
 
       <div class="table" data-type="shipping-create-shippingunits">
-        <div class="table-header">№</div>
-        <div class="table-header">Gewicht</div>
-        <div class="table-header">Behälter</div>
-        <div class="table-header">Material</div>
-        <div class="table-header">Anmerkung</div>
+      <div class="table-header">№</div>
+      <div class="table-header">Recycling</div>
+      <div class="table-header">Gewicht</div>
+      <div class="table-header">Behälter</div>
+      <div class="table-header">Material</div>
+      <div class="table-header">Anmerkung</div>
+      <div class="table-header">Status</div>
 
-        {{ formset.non_form_errors }}
-        {% for item_form in formset %}
-          <div class="table-row">
-            {{ item_form.id }}
-            <div>{{ forloop.counter }}</div>
-            <div>{{ item_form.weight }}</div>
-            <div>{{ item_form.box_type }}</div>
-            <div>{{ item_form.material }}</div>
-            <div>{{ item_form.note }}</div>
-          </div>
-        {% endfor %}
-        
-        <template id="table-row-template">
-          <div class="table-row">
-            {{ empty_form.id }}
-            <div>__index__</div>
-            <div>{{ empty_form.weight }}</div>
-            <div>{{ empty_form.box_type }}</div>
-            <div>{{ empty_form.material }}</div>
-            <div>{{ empty_form.note }}</div>
-          </div>
-        </template>
-      </div>
+      {{ formset.non_form_errors }}
+      {% for item_form in formset %}
+        <div class="table-row">
+          {{ item_form.id }}
+          <div>{{ forloop.counter }}</div>
+          <div>{{ item_form.recycling }}</div>
+          <div>{{ item_form.weight }}</div>
+          <div>{{ item_form.box_type }}</div>
+          <div>{{ item_form.material }}</div>
+          <div>{{ item_form.note }}</div>
+          <div>{{ item_form.status }}</div>  {# ← Добавь поле статус #}
+        </div>
+      {% endfor %}
+      <template id="table-row-template">
+        <div class="table-row">
+          {{ empty_form.id }}
+          <div>__index__</div>
+          <div>{{ empty_form.recycling }}</div>
+          <div>{{ empty_form.weight }}</div>
+          <div>{{ empty_form.box_type }}</div>
+          <div>{{ empty_form.material }}</div>
+          <div>{{ empty_form.note }}</div>
+          <div>{{ empty_form.status }}</div>  {# ← и здесь тоже #}
+        </div>
+      </template>
+    </div>
+
     </section>
 
     <button class="btn-row-add" type="button" id="add-form-btn">+</button>

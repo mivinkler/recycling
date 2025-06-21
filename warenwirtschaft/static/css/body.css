@@ -29,7 +29,7 @@
 }
 
 .table[data-type="unload-create"] {
-  grid-template-columns: auto repeat(5, 1fr) 2fr;
+  grid-template-columns: auto repeat(4, 1fr) 2fr auto;
 }
 
 .table[data-type="unload-update"] {
@@ -65,7 +65,7 @@
 }
 
 .table[data-type="shipping-create-shippingunits"] {
-  grid-template-columns: auto repeat(4, 1fr);
+  grid-template-columns: auto 2fr repeat(5, 1fr);
 }
 
 .table[data-type="shipping-update-shippingunits"] {
@@ -143,6 +143,10 @@
 .detail {
   width: fit-content;
   margin: 50px auto;
+}
+
+.detail img {
+  width: 90%;
 }
 
 .detail-row {
@@ -353,15 +357,16 @@
   width: 100%;
 }
 
-/* .search-datum {
-  display: flex;
-  justify-content: space-between;
-  gap: 6px;
+.print-btn-wrapper {
+  margin-left: 30px;
+  margin-top: 50px;
 }
 
-.search-datum > input {
-  width: 48%;
-} */
+.print-btn {
+  border: 1px solid var(--color-gray-500);
+  margin-right: 20px;
+  width: 70px;
+}
 
 /* ====== Pagination ====== */
 
@@ -392,3 +397,43 @@
   border-color: var(--color-gray-600);
   color: white;
 }
+
+/* ====== Сontext Menu ====== */
+
+/* Контекстное меню */
+.context-menu {
+  position: absolute;
+  display: none;
+  z-index: 1000;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+  list-style: none;
+  width: 160px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.context-menu li {
+  padding: 8px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+  transition: background-color 0.2s;
+}
+
+.context-menu li:last-child {
+  border-bottom: none;
+}
+
+.context-menu li:hover {
+  background-color: #f5f5f5;
+}
+
+
+/* ====== Media ====== */
+
+  @media print {
+    .no-print {
+      display: none !important;
+    }
+  }

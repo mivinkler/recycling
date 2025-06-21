@@ -48,6 +48,6 @@ class CustomerDetailView(DetailView):
             "search_query": self.request.GET.get("search", ""),
             "sort_param": self.request.GET.get("sort", ""),
             "sortable_fields": self.sortable_fields,
-            "selected_menu": "shipping_list",
+            "selected_menu": "shipping_units_list",
         })
         return context

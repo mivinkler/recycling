@@ -41,7 +41,37 @@
     </div>
   </section>
 
-  <section class="itemcard-table">
+  <section>
+    <div class="itemcard-table-title">Ladungseinheiten:</div>
+
+    {% for item in delivery_units %}
+      <div>{{ item }}</div>
+
+      {% for unload in item.unload_for_delivery_unit.all %}
+        <div class="indent-1">↳ {{ unload }}</div>
+
+        {% for recycling in unload.recycling_for_unload.all %}
+          <div class="indent-2">↳ ♻️ {{ recycling }}</div>
+
+          {% for shipping in recycling.shipping_for_recycling.all %}
+            <div class="indent-3">↳ 🚚 {{ shipping }}</div>
+          {% empty %}
+            <div class="indent-3">🚫 Keine Shipping-Daten</div>
+          {% endfor %}
+
+        {% empty %}
+          <div class="indent-2">🚫 Keine Recycling-Daten</div>
+        {% endfor %}
+
+      {% empty %}
+        <div class="indent-1">🚫 Keine Umladung</div>
+      {% endfor %}
+
+    {% endfor %}
+  </section>
+
+
+  <!-- <section class="itemcard-table">
     <div class="itemcard-table-title">Ladungseinheiten:</div>
 
     <div class="table" data-type="delivery-detail-deliveryunits">
@@ -66,7 +96,7 @@
       {% endfor %}
     </div>
     
-  </section>
+  </section> -->
 
 </div>
 {% endblock %}

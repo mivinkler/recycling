@@ -8,7 +8,12 @@ class DeliveryDetailView(DetailView):
     context_object_name = "delivery"
 
     def get_queryset(self):
-        return super().get_queryset().prefetch_related("units_for_delivery__delivery", "units_for_delivery__material")
+        return super().get_queryset().prefetch_related(
+            "units_for_delivery__delivery",
+            "units_for_delivery__material",
+            "units_for_delivery__unload_for_delivery_unit",
+            "units_for_delivery__unload_for_delivery_unit__recycling_for_unload",
+        )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

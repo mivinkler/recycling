@@ -11,7 +11,7 @@ class ShippingUpdateView(UpdateView):
     form_class = ShippingForm
     template_name = 'shipping/shipping_update.html'
     context_object_name = 'shipping'
-    success_url = reverse_lazy('shipping_list')
+    success_url = reverse_lazy('shipping_units_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

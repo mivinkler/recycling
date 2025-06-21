@@ -32,3 +32,6 @@ class Recycling(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(null=True, blank=True, default=None)
     deleted_at = models.DateTimeField(null=True, blank=True, default=None)
+
+    def __str__(self):
+        return f"{self.get_box_type_display()} - {self.material_other} - {self.weight} kg - {self.target} - {self.status}"

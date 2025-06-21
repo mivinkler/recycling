@@ -3,8 +3,8 @@ from warenwirtschaft.models.customer import Customer
 
 class Shipping(models.Model):
     TRANSPORT_CHOICES = [
-        (1, "K"), #Kunde
-        (2, "E"), #Eigen
+        (1, "Kunde"),
+        (2, "Eigen"),
     ]
 
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='shipping_for_customer')
@@ -14,3 +14,6 @@ class Shipping(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(null=True, blank=True, default=None)
     deleted_at = models.DateTimeField(null=True, blank=True, default=None)
+
+def __str__(self):
+        return f"{self.customer} - {self.certificate} - {self.transport} - {self.note}"

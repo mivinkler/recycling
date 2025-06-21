@@ -9,11 +9,8 @@ class UnloadCreateView(View):
     success_url = reverse_lazy('unload_list')
 
     def get(self, request):
-        """
-        Zeigt leeres Formular für Umladungserfassung.
-        Falls ein Barcode gescannt wurde, werden zugehörige Felder vorausgefüllt.
-        """
         code = request.GET.get("code", "").strip().upper()
+        unit_id = request.GET.get("unit_id")
 
         initial_data = {}
         if code:
@@ -25,9 +22,9 @@ class UnloadCreateView(View):
                     'target': reusable.target,
                 }
             except ReusableBarcode.DoesNotExist:
-                pass  # Kein Fehler anzeigen – Benutzer kann manuell ausfüllen
+                pass
 
-        form = DeliveryUnitForm()
+        form = DeliveryUnitForm(initial={'delivery_unit': unit_id} if unit_id else None)
         formset = UnloadFormSet(prefix='unload', initial=[initial_data] if initial_data else [{}])
 
         return render(request, self.template_name, {
@@ -35,6 +32,7 @@ class UnloadCreateView(View):
             'formset': formset,
             'empty_form': formset.empty_form,
         })
+
 
     def post(self, request):
         """

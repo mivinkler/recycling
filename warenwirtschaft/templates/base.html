@@ -22,7 +22,7 @@
     
 </head>
 <body>
-    <header>
+    <header class="no-print">
         <div>
             ANDERWERK <span style="color: red; font-weight: bold; width: 100px;">❯</span>
         </div>
@@ -31,14 +31,14 @@
             <img class="user-white-icon" src="{% static 'icons/user-white-icon.svg' %}">
         </div>
     </header>
-    <div class="top-menu">
+    <div class="top-menu no-print">
         <div><a href="{% url 'reusable_barcode_list' %}">Barcode</a></div>
         <div><a href="{% url 'supplier_list' %}" class="{% if selected_menu == 'supplier_list' %} selected {% endif %}">Kunden</a></div>
         <div><a href="{% url 'customer_list' %}" class="{% if selected_menu == 'customer_list' %} selected {% endif %}">Abholer</a></div>
         <div><a href="{% url 'delivery_list' %}" class="{% if selected_menu == 'delivery_list' %} selected {% endif %}">Eingang</a></div>
         <div><a href="{% url 'unload_list' %}" class="{% if selected_menu == 'unload_list' %} selected {% endif %}">Umladung</a></div>
         <div><a href="{% url 'recycling_list' %}" class="{% if selected_menu == 'recycling_list' %} selected {% endif %}">Recycling</a></div>
-        <div><a href="{% url 'shipping_list' %}" class="{% if selected_menu == 'shipping_list' %} selected {% endif %}">Versand</a></div>
+        <div><a href="{% url 'shipping_units_list' %}" class="{% if selected_menu == 'shipping_units_list' %} selected {% endif %}">Versand</a></div>
     </div>
     
     {% include 'components/top_navi.html' %}

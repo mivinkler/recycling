@@ -42,7 +42,7 @@ DeliveryUnitFormSet = inlineformset_factory(
 # Unload
 class DeliveryUnitForm(forms.Form):
     delivery_unit = forms.ModelChoiceField(
-        queryset=DeliveryUnit.objects.all(),
+        queryset=DeliveryUnit.objects.filter(status=1),
         label="Liefereinheit"
     )
 
@@ -80,7 +80,7 @@ class ShippingForm(forms.ModelForm):
 ShippingUnitFormSet = inlineformset_factory(
     parent_model=Shipping,
     model=ShippingUnit,
-    fields=['box_type', 'material', 'weight', 'status', 'note'],
+    fields=['recycling', 'box_type', 'material', 'weight', 'status', 'note'],
     extra=1,
     can_delete=True
 )

@@ -21,11 +21,12 @@
   <div class="table-header">{% sort_header "note" "Notiz" %}</div>
 
   {% for item in page_obj %}
-    <div class="table-row js-select-row"
-      data-id="{{ item.id }}"
-      data-url-detail="{% url 'delivery_detail' pk=item.delivery.id %}"
-      data-url-update="{% url 'delivery_update' pk=item.delivery.id %}"
-      data-url-unit-detail="{% url 'delivery_unit_detail' pk=item.id %}">
+  <div class="table-row js-select-row"
+     data-id="{{ item.id }}"
+     data-url-detail="{% url 'delivery_detail' pk=item.delivery.id %}"
+     data-url-update="{% url 'delivery_update' pk=item.delivery.id %}"
+     data-url-unit-detail="{% url 'delivery_unit_detail' pk=item.id %}"
+     data-url-unload-create="{% url 'unload_create' %}?unit_id={{ item.id }}">
     
       <div class="table-row__id-gray">{{ item.delivery.id }}</div>
       <div>{{ item.delivery.supplier.name }}</div>
@@ -40,10 +41,13 @@
   {% endfor %}
 </div>
 
+
 {% paginate page_obj %}
 
 {% endblock %}
 
 {% block extra_js %}
-    <script src="{% static 'js/selectable-row.js' %}"></script>
+  <!-- <script src="{% static 'js/selectable-row.js' %}"></script> -->
+  <script src="{% static 'js/mouse-right-click.js' %}"></script>
+  <script src="{% static 'js/mouse-left-click.js' %}"></script>
 {% endblock %}

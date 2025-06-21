@@ -47,7 +47,7 @@ urlpatterns = [
     path('recycling/delete/<int:pk>/', RecyclingDeleteView.as_view(), name='recycling_delete'),
     path('recycling/detail/<int:pk>/', RecyclingDetailView.as_view(), name='recycling_detail'),
 
-    path('shipping/list/', ShippingUnitsListView.as_view(), name='shipping_list'),
+    path('shipping/list/', ShippingUnitsListView.as_view(), name='shipping_units_list'),
     path('shipping/detail/<int:pk>/', ShippingDetailView.as_view(), name='shipping_detail'),
     path('shipping/create/', ShippingCreateView.as_view(), name='shipping_create'),
     path('shipping/update/<int:pk>/', ShippingUpdateView.as_view(), name='shipping_update'),
