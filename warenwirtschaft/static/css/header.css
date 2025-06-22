@@ -1,6 +1,6 @@
 header {
     padding: 0 35px;
-    height: 3px;
+    height: 1px;
     background-color: var(--color-gray-400);
     color: #fff;
     display: flex;
@@ -13,7 +13,7 @@ header {
 
 header:hover {
     height: 26px;
-    background-color: var(--color-gray-600);
+    background-color: var(--color-hero);
 }
 
 .header-user {
