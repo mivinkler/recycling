@@ -23,12 +23,12 @@ class DeliveryUnit(models.Model):
     ]
 
     delivery = models.ForeignKey(Delivery, on_delete=models.CASCADE, related_name='units_for_delivery')
+    box_type = models.PositiveSmallIntegerField(choices=BOX_TYPE_CHOICES)
     material = models.ForeignKey(Material, on_delete=models.CASCADE, null=True, blank=True, related_name='material_for_delivery_units')
     material_other = models.CharField(max_length=50, null=True, blank=True)
     weight = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     target = models.PositiveSmallIntegerField(choices=TARGET_CHOICES)
     status = models.PositiveSmallIntegerField(choices=STATUS_CHOICES, default=1)
-    box_type = models.PositiveSmallIntegerField(choices=BOX_TYPE_CHOICES)
     note = models.CharField(max_length=255, null=True, blank=True)
     barcode = models.CharField(max_length=64, blank=True, null=True)
     barcode_image = models.ImageField(upload_to='barcodes/delivery/', blank=True, null=True)
@@ -37,4 +37,4 @@ class DeliveryUnit(models.Model):
     deleted_at = models.DateTimeField(null=True, blank=True, default=None)
 
     def __str__(self):
-        return f"Kunde: {self.delivery.supplier.name} - Lid: {self.id} - {self.get_box_type_display()} - {self.material} - {self.weight} kg"
+        return f"ID: {self.id} - {self.get_box_type_display()} - {self.material} - {self.weight} kg - {self.status}"

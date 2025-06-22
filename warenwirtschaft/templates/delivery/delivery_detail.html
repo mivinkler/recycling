@@ -6,97 +6,81 @@
 {% block title %}Lieferung detail{% endblock %}
 
 {% block content %}
-<div class="itemcard-small">
+<div class="process-wrapper">
   <h2>Lieferung detail</h2>
+  
+  <div>Datum: {{ delivery.created_at }}</div>
 
-  <section class="itemcard-topbox">
-    <div class="itemcard-row">
-      <div>Lieferant:</div>
-      <div>{{ delivery.supplier.name }}</div>
-    </div>
+  <table class="process-table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Lieferung</th>
+        <th>Umladung</th>
+        <th>Recycling</th>
+        <th>Versand</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="process-row-color">
+        <td class="indent-1">{{ delivery }}</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
 
-    <div class="itemcard-row">
-      <div>Adresse:</div>
-      <div>{{ delivery.supplier.street }}, {{ delivery.supplier.postal_code }} {{ delivery.supplier.city }}</div>
-    </div>
-
-    <div class="itemcard-row">
-      <div>Lieferschein:</div>
-      <div>{{ delivery.delivery_receipt }}</div>
-    </div>
-
-    <div class="itemcard-row">
-      <div>Lieferung-ID:</div>
-      <div>{{ delivery.id }}</div>
-    </div>
-
-    <div class="itemcard-row">
-      <div>Datum:</div>
-      <div>{{ delivery.created_at|date:"d.m.Y" }}</div>
-    </div>
-
-    <div class="itemcard-row">
-      <div>Anmerkung:</div>
-      <div>{{ delivery.note }}</div>
-    </div>
-  </section>
-
-  <section>
-    <div class="itemcard-table-title">Ladungseinheiten:</div>
-
-    {% for item in delivery_units %}
-      <div>{{ item }}</div>
-
-      {% for unload in item.unload_for_delivery_unit.all %}
-        <div class="indent-1">↳ {{ unload }}</div>
-
-        {% for recycling in unload.recycling_for_unload.all %}
-          <div class="indent-2">↳ ♻️ {{ recycling }}</div>
-
-          {% for shipping in recycling.shipping_for_recycling.all %}
-            <div class="indent-3">↳ 🚚 {{ shipping }}</div>
-          {% empty %}
-            <div class="indent-3">🚫 Keine Shipping-Daten</div>
-          {% endfor %}
-
-        {% empty %}
-          <div class="indent-2">🚫 Keine Recycling-Daten</div>
-        {% endfor %}
-
-      {% empty %}
-        <div class="indent-1">🚫 Keine Umladung</div>
-      {% endfor %}
-
-    {% endfor %}
-  </section>
-
-
-  <!-- <section class="itemcard-table">
-    <div class="itemcard-table-title">Ladungseinheiten:</div>
-
-    <div class="table" data-type="delivery-detail-deliveryunits">
-      <div class="table-header">№</div>
-      <div class="table-header">Gewicht</div>
-      <div class="table-header">Behälter</div>
-      <div class="table-header">Material</div>
-      <div class="table-header">Status</div>
-      <div class="table-header">Barcode</div>
-      <div class="table-header">Drucken</div>
-    
       {% for item in delivery_units %}
-        <div class="table-row">
-          <div>{{ forloop.counter }}</div>
-          <div>{{ item.weight|default:"-" }}</div>
-          <div>{{ item.get_box_type_display }}</div>
-          <div>{{ item.material.name|default:"-" }}</div>
-          <div>{{ item.get_status_display }}</div>
-          <div>{{ item.barcode }}</div>
-          <a href="{% url 'barcode_print' model='deliveryunit' pk=item.id %}" target="_blank" class="btn barcode-print-icon">🖨️</a>
-        </div>
-      {% endfor %}
-    </div>
-    
-  </section> -->
+      <tr >
+        <td class="indent-2">⮡ &nbsp; Lieferung: {{ item.get_box_type_display }} - {{ item.material }}</td>
+        <td>{{ item.weight }} kg</td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
 
+        {% for unload in item.unload_for_delivery_unit.all %}
+        <tr class="process-row-color">
+          <td class="indent-3">⮡ &nbsp; Umladung: {{ unload.get_box_type_display }} - {{ unload.material }}</td>
+          <td></td>
+          <td>{{ unload.weight }} kg</td>
+          <td></td>
+          <td></td>
+        </tr>
+
+          {% for recycling in unload.recycling_for_unload.all %}
+          <tr>
+            <td class="indent-4">⮡ &nbsp; Recycling: {{ recycling.get_box_type_display }} - {{ recycling.material }}</td>
+            <td></td>
+            <td></td>
+            <td>{{ recycling.weight }} kg</td>
+            <td></td>
+          </tr>
+
+            {% for shipping in recycling.shipping_for_recycling.all %}
+            <tr class="process-row-color">
+              <td class="indent-5">⮡ &nbsp; Versand: {{ shipping }}</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>{{ shipping.weight }} kg</td>
+            </tr>
+            {% endfor %}
+          {% endfor %}
+        {% endfor %}
+      {% endfor %}
+
+      <tr class="process-total-weight">
+        <td class="total-weight">Gesamt:</td>
+        <td class="total-weight">500,00 kg</td>
+        <td class="total-weight">
+          480,00 kg
+          <p>-20 kg</p>
+        </td>
+        <td class="total-weight">480,00 kg</td>
+        <td class="total-weight"></td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 {% endblock %}

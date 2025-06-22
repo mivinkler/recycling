@@ -35,4 +35,4 @@ class Unload(models.Model):
     deleted_at = models.DateTimeField(null=True, blank=True, default=None)
 
     def __str__(self):
-        return f"{self.get_box_type_display()} - {self.material_other} - {self.weight} kg - {self.target} - {self.status}"
+        return f"ID: {self.id} - {self.get_box_type_display()} - {self.material_other} - {self.weight} kg - {self.target} - {self.status}"

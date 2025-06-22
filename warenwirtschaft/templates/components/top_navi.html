@@ -1,43 +1,88 @@
 {% load static %}
 
 <div class="top-icons-wrapper no-print">
-
-  <!-- Zeile -->
-  <div>
-    <div class="top-icon">
-      <a href="#" id="detail-link" class="tooltip-wrapper">
-        <span class="tooltip-text">Detail</span>
-        <img src="{% static 'icons/info-icon.svg' %}">
-      </a>
-      <a href="#" id="edit-link" class="tooltip-wrapper">
-        <span class="tooltip-text">Bearbeiten</span>
-        <img src="{% static 'icons/edit-icon.svg' %}">
+  
+  <!-- Verzeichnis -->
+  <div class="top-icon">
+    <div>
+      <a href="{% url 'reusable_barcode_list' %}">Barcode</a>
+      <a href="{% url 'reusable_barcode_create' %}" class="tooltip-wrapper">
+        <img src="{% static 'icons/barcode-icon.svg' %}">
+        <span class="tooltip-text">Barcode Erstellen</span>
       </a>
     </div>
-    <p class="top-icons-title">Zeile</p>
+    <div>
+      <a href="{% url 'supplier_list' %}" class="{% if selected_menu == 'supplier_list' %} selected {% endif %}">Kunden</a>
+      <a href="{% url 'supplier_create' %}" class="tooltip-wrapper">
+        <img src="{% static 'icons/supplier-icon.svg' %}">
+        <span class="tooltip-text">Kunde Erstellen</span>
+      </a>
+    </div>
+    <div>
+      <a href="{% url 'customer_list' %}" class="{% if selected_menu == 'customer_list' %} selected {% endif %}">Abholer</a>
+      <a href="{% url 'customer_create' %}" class="tooltip-wrapper">
+        <img src="{% static 'icons/customer-icon.svg' %}">
+        <span class="tooltip-text">Abholer erstellen</span>
+      </a>
+    </div>
   </div>
 
+  <!-- Prozess -->
+  <div class="top-icon top-icon-border">
+    <div>
+      <a href="{% url 'delivery_list' %}" class="{% if selected_menu == 'delivery_list' %} selected {% endif %}">Eingang</a>
+      <a href="{% url 'delivery_create' %}" class="tooltip-wrapper">
+        <img src="{% static 'icons/container-icon.svg' %}">
+        <span class="tooltip-text">Lieferung erstellen</span>
+      </a>
+    </div>
+    
+    <div>
+      <a href="{% url 'unload_list' %}" class="{% if selected_menu == 'unload_list' %} selected {% endif %}">Umladung</a>
+      <a href="{% url 'unload_create' %}" class="tooltip-wrapper">
+        <img src="{% static 'icons/forklift-icon.svg' %}">
+        <span class="tooltip-text">Leerung erstellen</span>
+      </a>
+    </div>
+    
+    <div>
+      <a href="{% url 'recycling_list' %}" class="{% if selected_menu == 'recycling_list' %} selected {% endif %}">Recycling</a>
+      <a href="{% url 'recycling_create' %}" class="tooltip-wrapper">
+        <img src="{% static 'icons/recycle-icon.svg' %}">
+        <span class="tooltip-text">Recycling erstellen</span>
+      </a>
+    </div>
+    
+    <div>
+      <a href="{% url 'shipping_units_list' %}" class="{% if selected_menu == 'shipping_units_list' %} selected {% endif %}">Versand</a>
+      <a href="{% url 'shipping_create' %}" class="tooltip-wrapper">
+        <img src="{% static 'icons/shipping-icon.svg' %}">
+        <span class="tooltip-text">Versand erstellen</span>
+      </a>
+    </div>
+  </div>
+  
+  
   <!-- Suche -->
-  <div>
-    <div class="top-icon">
-      
-      <!-- Suchfeld -->
+
+  <div class="top-icon">
+    <!-- Suchfeld -->
       <details class="top-icon-detail">
         <summary class="tooltip-wrapper">
-          <span class="tooltip-text">Suche</span>
           <img src="{% static 'icons/search-icon.svg' %}">
+          <span class="tooltip-text">Suche</span>
         </summary>
         <div>
           <form method="GET" class="icon-search">
             <input class="icon-search-input" type="text" name="search" placeholder="Suchen..." value="{{ filters.search }}">
 
-            <!-- Даты -->
+            <!-- Datum -->
             <div class="flex-items-between">
               <input type="date" name="date_start" value="{{ filters.date_start }}">
               <input type="date" name="date_end" value="{{ filters.date_end }}">
             </div>
 
-            <!-- Статус: Aktiv / Erledigt -->
+            <!-- Aktiv / Erledigt -->
             <div class="flex-items-between">
               <div>Status</div>
               <select name="status_filter">
@@ -51,85 +96,61 @@
           </form>
         </div>
       </details>
-
-      <!-- Sortieren -->
-      <details class="top-icon-detail">
-        <summary class="tooltip-wrapper">
-          <span class="tooltip-text">Sortieren</span>
-          <img src="{% static 'icons/sort-icon.svg' %}">
-        </summary>
-        <div>
-          {% for field, label in active_fields %}
-            <div class="icon-sort">
-              <span>{{ label }}</span>
-              <div>
-                <a href="?sort={{ field }}_asc"
-                   class="{% if sort_param == field|add:'_asc' %}icon-active{% endif %}">▼</a>
-                <a href="?sort={{ field }}_desc"
-                   class="{% if sort_param == field|add:'_desc' %}icon-active{% endif %}">▲</a>
-              </div>
-            </div>
-          {% endfor %}
+    
+    <!-- Sortieren -->
+    <details class="top-icon-detail">
+      <summary class="tooltip-wrapper">
+        <img src="{% static 'icons/sort-icon.svg' %}">
+        <span class="tooltip-text">Sortieren</span>
+      </summary>
+      <div>
+        {% for field, label in active_fields %}
+        <div class="icon-sort">
+          <span>{{ label }}</span>
+          <div>
+            <a href="?sort={{ field }}_asc"
+            class="{% if sort_param == field|add:'_asc' %}icon-active{% endif %}">▼</a>
+            <a href="?sort={{ field }}_desc"
+            class="{% if sort_param == field|add:'_desc' %}icon-active{% endif %}">▲</a>
+          </div>
         </div>
-      </details>
-
-      <!-- Reset -->
-      <a href="#" class="tooltip-wrapper top-icon-js">
-        <span class="tooltip-text">Reset</span>
-        <img src="{% static 'icons/reset-icon.svg' %}">
-      </a>
-      
-    </div>
-    <p class="top-icons-title">Suchen</p>
-  </div>
-
-  <!-- Statistik -->
-  <!-- <div>
-    <div class="top-icon">
-      <a href="#" class="tooltip-wrapper">
-        <span class="tooltip-text">Statistik</span>
-        <img src="{% static 'icons/statistic-icon.svg' %}">
-      </a>
-      <a href="#" class="tooltip-wrapper">
-        <span class="tooltip-text">Statistik</span>
-        <img src="{% static 'icons/diagram-icon.svg' %}">
-      </a>
-    </div>
-    <p class="top-icons-title">Statistik</p>
-  </div> -->
-
-  <!-- Erstellen -->
-  <div>
-    <div class="top-icon">
-      <a href="{% url 'supplier_create' %}" class="tooltip-wrapper">
-        <span class="tooltip-text">Lieferant</span>
-        <img src="{% static 'icons/supplier-icon.svg' %}">
-      </a>
-      <a href="{% url 'customer_create' %}" class="tooltip-wrapper">
-        <span class="tooltip-text">Abholer</span>
-        <img src="{% static 'icons/customer-icon.svg' %}">
-      </a>
-      <a href="{% url 'delivery_create' %}" class="tooltip-wrapper">
-        <span class="tooltip-text">Lieferung</span>
-        <img src="{% static 'icons/container-icon.svg' %}">
-      </a>
-      <a href="{% url 'unload_create' %}" class="tooltip-wrapper">
-        <span class="tooltip-text">Leerung</span>
-        <img src="{% static 'icons/forklift-icon.svg' %}">
-      </a>
-      <a href="{% url 'recycling_create' %}" class="tooltip-wrapper">
-        <span class="tooltip-text">Recycling</span>
-        <img src="{% static 'icons/recycle-icon.svg' %}">
-      </a>
-      <a href="{% url 'shipping_create' %}" class="tooltip-wrapper">
-        <span class="tooltip-text">Versand</span>
-        <img src="{% static 'icons/shipping-icon.svg' %}">
-      </a>
-      <a href="{% url 'reusable_barcode_create' %}" class="tooltip-wrapper">
-        <span class="tooltip-text">Barcode</span>
-        <img src="{% static 'icons/barcode-icon.svg' %}">
-      </a>
-    </div>
-    <p class="top-icons-title">Erstellen</p>
+        {% endfor %}
+      </div>
+    </details>
+    
+    <!-- Reset -->
+    <a href="#" class="tooltip-wrapper top-icon-js">
+      <span class="tooltip-text">Reset</span>
+      <img src="{% static 'icons/reset-icon.svg' %}">
+    </a>  
   </div>
 </div>
+
+
+  <!-- <div>
+    <div class="top-icon">
+      <a href="#" id="detail-link" class="tooltip-wrapper">
+        <span class="tooltip-text">Detail</span>
+        <img src="{% static 'icons/info-icon.svg' %}">
+      </a>
+      <a href="#" id="edit-link" class="tooltip-wrapper">
+        <span class="tooltip-text">Bearbeiten</span>
+        <img src="{% static 'icons/edit-icon.svg' %}">
+      </a>
+    </div>
+  </div> -->
+
+<!-- Statistik -->
+<!-- <div>
+  <div class="top-icon">
+    <a href="#" class="tooltip-wrapper">
+      <span class="tooltip-text">Statistik</span>
+      <img src="{% static 'icons/statistic-icon.svg' %}">
+    </a>
+    <a href="#" class="tooltip-wrapper">
+      <span class="tooltip-text">Statistik</span>
+      <img src="{% static 'icons/diagram-icon.svg' %}">
+    </a>
+  </div>
+  <p class="top-icons-title">Statistik</p>
+</div> -->
