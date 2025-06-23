@@ -6,7 +6,7 @@ from django.views import View
 class WeightInputAPI(View):
     def get(self, request):
         try:
-            url = 'http://192.168.2.230/waage/waage/stillwiegen'  # ✅ Правильный адрес весов
+            url = 'http://192.168.2.230/waage/waage/stillwiegen'
             with urllib.request.urlopen(url, timeout=3) as response:
                 data = json.load(response)
                 netto = data.get("netto")

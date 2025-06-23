@@ -22,8 +22,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const actions = [
       { text: "Detail", key: "url-detail" },
+      { text: "Barcode", key: "url-detail-barcode" },
       { text: "Ändern", key: "url-update" },
-      { text: "Barcode", key: "url-unit-detail" }
+      { text: "Erstellen", key: "url-create" }
     ];
 
     actions.forEach(({ text, key }) => {

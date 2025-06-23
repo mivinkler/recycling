@@ -3,6 +3,8 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from warenwirtschaft.forms import UnloadFormSet, DeliveryUnitForm
 from warenwirtschaft.models import ReusableBarcode
+from warenwirtschaft.services.barcode_service import generate_barcode
+from warenwirtschaft.models import Unload
 
 class UnloadCreateView(View):
     template_name = 'unload/unload_create.html'
@@ -13,6 +15,8 @@ class UnloadCreateView(View):
         unit_id = request.GET.get("unit_id")
 
         initial_data = {}
+        delivery_unit_id = None
+
         if code:
             try:
                 reusable = ReusableBarcode.objects.get(code=code, step=1)
@@ -24,7 +28,21 @@ class UnloadCreateView(View):
             except ReusableBarcode.DoesNotExist:
                 pass
 
-        form = DeliveryUnitForm(initial={'delivery_unit': unit_id} if unit_id else None)
+        elif unit_id:  # unit_id ist ID Unload
+            try:
+                existing_unload = Unload.objects.get(id=unit_id)
+                initial_data = {
+                    'box_type': existing_unload.box_type,
+                    'material': existing_unload.material_id,
+                    'target': existing_unload.target,
+                    'weight': existing_unload.weight,
+                    'note': existing_unload.note,
+                }
+                delivery_unit_id = existing_unload.delivery_unit_id
+            except Unload.DoesNotExist:
+                pass
+
+        form = DeliveryUnitForm(initial={'delivery_unit': delivery_unit_id} if delivery_unit_id else None)
         formset = UnloadFormSet(prefix='unload', initial=[initial_data] if initial_data else [{}])
 
         return render(request, self.template_name, {
@@ -35,9 +53,6 @@ class UnloadCreateView(View):
 
 
     def post(self, request):
-        """
-        Verarbeitet das Abschicken des Formulars.
-        """
         form = DeliveryUnitForm(request.POST)
         formset = UnloadFormSet(request.POST, prefix='unload')
 
@@ -48,6 +63,9 @@ class UnloadCreateView(View):
                     continue
                 unload = subform.save(commit=False)
                 unload.delivery_unit = delivery_unit
+
+                generate_barcode(unload)
+
                 unload.save()
             return redirect(self.success_url)
 
