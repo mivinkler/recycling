@@ -7,14 +7,15 @@
 
 {% block content %}
 <div class="process-wrapper">
-  <h2>Lieferung detail</h2>
-  
-  <div>Datum: {{ delivery.created_at }}</div>
+  <div class="process-title">
+    <h2>Lieferung detail</h2>
+    <div>Datum: {{ delivery.created_at }}</div>
+  </div>
 
   <table class="process-table">
     <thead>
-      <tr>
-        <th></th>
+      <tr class="process-row">
+        <th>{{ delivery.supplier.name }} - LS: {{ delivery.delivery_receipt }}</th>
         <th>Lieferung</th>
         <th>Umladung</th>
         <th>Recycling</th>
@@ -22,17 +23,9 @@
       </tr>
     </thead>
     <tbody>
-      <tr class="process-row-color">
-        <td class="indent-1">{{ delivery }}</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-
       {% for item in delivery_units %}
-      <tr >
-        <td class="indent-2">⮡ &nbsp; Lieferung: {{ item.get_box_type_display }} - {{ item.material }}</td>
+      <tr class="process-row process-row">
+        <td class="indent-1"><span>⮡ </span> Liefereinheit: {{ item.get_box_type_display }} - {{ item.material }}</td>
         <td>{{ item.weight }} kg</td>
         <td></td>
         <td></td>
@@ -40,8 +33,8 @@
       </tr>
 
         {% for unload in item.unload_for_delivery_unit.all %}
-        <tr class="process-row-color">
-          <td class="indent-3">⮡ &nbsp; Umladung: {{ unload.get_box_type_display }} - {{ unload.material }}</td>
+        <tr class="process-row process-row-color">
+          <td class="indent-2"><span>⮡ </span> Umladung: {{ unload.get_box_type_display }} - {{ unload.material }}</td>
           <td></td>
           <td>{{ unload.weight }} kg</td>
           <td></td>
@@ -49,8 +42,8 @@
         </tr>
 
           {% for recycling in unload.recycling_for_unload.all %}
-          <tr>
-            <td class="indent-4">⮡ &nbsp; Recycling: {{ recycling.get_box_type_display }} - {{ recycling.material }}</td>
+          <tr class="process-row">
+            <td class="indent-3"><span>⮡ </span> Recycling: {{ recycling.get_box_type_display }} - {{ recycling.material }}</td>
             <td></td>
             <td></td>
             <td>{{ recycling.weight }} kg</td>
@@ -59,7 +52,7 @@
 
             {% for shipping in recycling.shipping_for_recycling.all %}
             <tr class="process-row-color">
-              <td class="indent-5">⮡ &nbsp; Versand: {{ shipping }}</td>
+              <td class="indent-4"><span>⮡ </span> Versand: {{ shipping }}</td>
               <td></td>
               <td></td>
               <td></td>
@@ -69,18 +62,48 @@
           {% endfor %}
         {% endfor %}
       {% endfor %}
-
       <tr class="process-total-weight">
         <td class="total-weight">Gesamt:</td>
-        <td class="total-weight">500,00 kg</td>
+        <td class="total-weight">{{ total_item_weight|floatformat:2 }} kg</td>
         <td class="total-weight">
-          480,00 kg
-          <p>-20 kg</p>
+          {{ total_unload_weight|floatformat:2 }} kg
+          <p class="process-diff" id="item-diff">
+            {{ item_diff|floatformat:2 }} kg
+          </p>
         </td>
-        <td class="total-weight">480,00 kg</td>
-        <td class="total-weight"></td>
+        <td class="total-weight">
+          {{ total_recycling_weight|floatformat:2 }} kg
+          <p class="process-diff" id="unload-diff">
+            {{ unload_diff|floatformat:2 }} kg
+          </p>
+        </td>
       </tr>
+
+
+
+
     </tbody>
   </table>
 </div>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Функция для изменения цвета
+    function updateColorBasedOnValue(elementId) {
+      const element = document.getElementById(elementId);
+      const value = element.textContent.trim();
+
+      if (value.startsWith("-")) {
+        element.style.color = "red";  // Если число отрицательное
+      } else {
+        element.style.color = "green";  // Если число положительное
+      }
+    }
+
+    // Применяем к элементам с разницей
+    updateColorBasedOnValue("item-diff");
+    updateColorBasedOnValue("unload-diff");
+  });
+</script>
 {% endblock %}
+
+
