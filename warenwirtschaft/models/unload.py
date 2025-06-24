@@ -5,14 +5,14 @@ from warenwirtschaft.models.delivery_unit import DeliveryUnit
 
 class Unload(models.Model):
     BOX_TYPE_CHOICES = [
-        (1, "Gitterbox"),
-        (2, "Palette"),
-        (3, "Container"),
+        (1, "Container"),
+        (2, "Gitterbox"),
+        (3, "Wagen"),
         (4, "Ohne Behälter"),
     ]
 
     TARGET_CHOICES = [
-        (2, "Recycling"),
+        (2, "Aufbereitung"),
         (3, "Abholung"),
         (4, "Entsorgung"),
     ]

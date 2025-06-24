@@ -11,6 +11,7 @@ class ReusableBarcode(models.Model):
     ]
 
     BOX_TYPE_CHOICES = [
+        (0, "Container"),              
         (1, "Gitterbox"),
         (2, "Palette"),
         (3, "Gelbe Waagen"),
@@ -19,7 +20,7 @@ class ReusableBarcode(models.Model):
 
     TARGET_CHOICES = [
         (1, "Umladung"),
-        (2, "Recycling"),
+        (2, "Aufbereitung"),
         (3, "Abholung"),
         (4, "Entsorgung"),
     ]

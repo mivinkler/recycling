@@ -1,73 +1,60 @@
+{% extends 'base.html' %}
+
 {% load static %}
 
-<!DOCTYPE html>
-<html>
-<head>
-  <title>{{ barcode.code }}</title>
-  <style>
-    body { text-align: center; margin-top: 50px; }
-    body table {margin: 0 auto; text-align: left; border-spacing: 14px 6px;}
-    @media print {
-      body {
-        margin: 0;
-        text-align: center;
-      }
-      img {
-        max-width: 90%;
-      }
-    }
-  </style>
-</head>
-<!-- <body onload="window.print()"> -->
-<body>
-  <img src="{{ barcode.barcode_image.url }}" alt="Barcode">
-
-      <table>
-        {% if barcode.step %}
-        <tr>
-            <td><strong>Bereich:</strong></td>
-            <td>{{ barcode.step }}</td>
-        </tr>
-        {% endif %}
-
-        {% if barcode.delivery.supplier %}
-        <tr>
-            <td><strong>Lieferant:</strong></td>
-            <td>{{ barcode.delivery.supplier.name }} kg</td>
-        </tr>
-        {% endif %}
-
-        {% if barcode.box_type %}
-        <tr>
-            <td><strong>Behälter:</strong></td>
-            <td>{{ barcode.get_box_type_display }}</td>
-        </tr>
-        {% endif %}
-
-        {% if barcode.weight %}
-        <tr>
-            <td><strong>Gewicht:</strong></td>
-            <td>{{ barcode.weight }} kg</td>
-        </tr>
-        {% endif %}
-
-        {% if barcode.material %}
-        <tr>
-            <td><strong>Material:</strong></td>
-            <td>{{ barcode.material.name }}</td>
-        </tr>
-        {% endif %}
+{% block title %}Reusable Barcode{% endblock %}
 
 
-        {% if barcode.target %}
-        <tr>
-            <td><strong>Ziel:</strong></td>
-            <td>{{ barcode.get_target_display }}</td>
-        </tr>
-        {% endif %}
+{% block content %}
+<div class="detail">
+  <section id="print-area">
+    <img src="{{ barcode.barcode_image.url }}" alt="Barcode">
+    {% if barcode.step %}
+    <div class="detail-row">
+        <div>Bereich:</div>
+        <div>{{ barcode.get_step_display }}</div>
+    </div>
+    {% endif %}
 
-    </table>
+    {% if barcode.supplier %}
+    <div class="detail-row">
+        <div>Lieferant:</div>
+        <div>{{ barcode.supplier.name }} kg</div>
+    </div>
+    {% endif %}
 
-    <button onclick="window.print()" style="margin-top: 40px;">Drucken</button>
-</body>
-</html>
+    {% if barcode.box_type %}
+    <div class="detail-row">
+        <div>Behälter:</div>
+        <div>{{ barcode.get_box_type_display }}</div>
+    </div>
+    {% endif %}
+
+    {% if barcode.weight %}
+    <div class="detail-row">
+        <div>Gewicht:</div>
+        <div>{{ barcode.weight }} kg</div>
+    </div>
+    {% endif %}
+
+    {% if barcode.material %}
+    <div class="detail-row">
+        <div>Material:</div>
+        <div>{{ barcode.material.name }}</div>
+    </div>
+    {% endif %}
+
+
+    {% if barcode.target %}
+    <div class="detail-row">
+        <div>Ziel:</div>
+        <div>{{ barcode.get_target_display }}</div>
+    </div>
+    {% endif %}
+  </section>
+
+  <section class="print-btn-wrapper no-print">
+    <button onclick="window.print()" class="print-btn btn">Drucken</button>
+  </section>
+
+  {% endblock %}

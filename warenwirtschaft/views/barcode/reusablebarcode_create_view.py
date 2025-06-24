@@ -21,7 +21,7 @@ class ReusableBarcodeCreateView(CreateView):
 
         # Wenn kein Code eingegeben wurde – generieren wir ihn automatisch
         if not self.object.code:
-            self.object.code = f"{uuid.uuid4().hex[:8].upper()}"
+            self.object.code = f"R{uuid.uuid4().hex[:8].upper()}"
 
         # Barcode-Bild generieren
         if self.object.code:
