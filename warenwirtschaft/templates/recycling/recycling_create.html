@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Recycling erfassen{% endblock %}
+{% block title %}Aufbereitung erfassen{% endblock %}
 
 {% block content %}
 
@@ -9,7 +9,7 @@
   {% csrf_token %}
 
   <div class="itemcard-large">
-    <h2>Recycling erstellen</h2>
+    <h2>Aufbereitung erstellen</h2>
 
     <section class="itemcard-topbox ">
       {{ form.unload.errors }}
@@ -22,7 +22,7 @@
     </section>
 
     <section class="itemcard-table">
-      <div class="itemcard-table-title">Recycling-Einheit:</div>
+      <div class="itemcard-table-title">Aufbereitung-Einheit:</div>
       {{ formset.management_form }}
 
       <div class="table" data-type="recycling-create">

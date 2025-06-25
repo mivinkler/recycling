@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Recycling bearbeiten{% endblock %}
+{% block title %}Aufbereitung bearbeiten{% endblock %}
 
 {% block content %}
 
@@ -9,8 +9,8 @@
   {% csrf_token %}
 
   <div class="itemcard-title-box">
-    <h2>Recycling bearbeiten</h2>
-    <a href="{% url 'recycling_delete' unload.pk %}" class="delete-btn" title="Recycling löschen">
+    <h2>Aufbereitung bearbeiten</h2>
+    <a href="{% url 'recycling_delete' unload.pk %}" class="delete-btn" title="Aufbereitung löschen">
         <img src="{% static 'icons/delete-icon.svg' %}">
     </a>
   </div>
@@ -22,7 +22,7 @@
     </section>
 
     <section class="itemcard-table">
-      <div class="itemcard-table-title">Recycling-Einheit:</div>
+      <div class="itemcard-table-title">Aufbereitung-Einheit:</div>
       {{ formset.management_form }}
 
       <div class="table" data-type="recycling-update">

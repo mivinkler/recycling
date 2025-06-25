@@ -2,7 +2,6 @@ from django.db import models
 from warenwirtschaft.models.material import Material
 from warenwirtschaft.models.unload import Unload
 
-
 class Recycling(models.Model):
     BOX_TYPE_CHOICES = [
         (1, "Gitterbox"),

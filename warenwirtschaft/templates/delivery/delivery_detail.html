@@ -18,7 +18,7 @@
         <th>{{ delivery.supplier.name }} - LS: {{ delivery.delivery_receipt }}</th>
         <th>Lieferung</th>
         <th>Umladung</th>
-        <th>Recycling</th>
+        <th>Aufbereitung</th>
         <th>Versand</th>
       </tr>
     </thead>
@@ -43,7 +43,7 @@
 
           {% for recycling in unload.recycling_for_unload.all %}
           <tr class="process-row">
-            <td class="indent-3"><span>⮡ </span> Recycling: {{ recycling.get_box_type_display }} - {{ recycling.material }}</td>
+            <td class="indent-3"><span>⮡ </span> Aufbereitung: {{ recycling.get_box_type_display }} - {{ recycling.material }}</td>
             <td></td>
             <td></td>
             <td>{{ recycling.weight }} kg</td>

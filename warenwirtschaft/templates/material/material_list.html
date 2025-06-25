@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load sort_tags %}
+{% load custom_filters %}
+{% load pagination %}
+
+{% block title %}Leerungen{% endblock %}
+
+{% block content %}
+<div class="table" data-type="material-list">
+  <div class="table-header">{% sort_header "id" "ID" %}</div>
+  <div class="table-header">{% sort_header "name" "Name" %}</div>
+  <div class="table-header">{% sort_header "action" "Action" %}</div>
+
+  {% for item in page_obj %}
+    <div class="table-row js-select-row">
+      <div class="table-row__id-gray">{{ item.id }}</div>
+      <div>{{ item.name }}</div>
+      <div>
+        <button class="btn"><img style="height: 13px; vertical-align: middle;" src="{% static 'icons/reset-icon.svg' %}"></button>
+        {% comment %} <button class="btn"><img style="height: 14px; vertical-align: middle;" src="{% static 'icons/delete-icon.svg' %}"></button> {% endcomment %}
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+{% paginate page_obj %}
+
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'js/selectable-row.js' %}"></script>
+{% endblock %}
+

@@ -80,6 +80,12 @@
   grid-template-columns: auto 1fr 2fr repeat(4, 1fr);
 }
 
+.table[data-type="material-list"] {
+  grid-template-columns:  auto 1fr auto;
+  width: 300px;
+  border-top: 5px solid var(--color-gray-100);
+}
+
 /* ================ table ================== */
 
 .table {

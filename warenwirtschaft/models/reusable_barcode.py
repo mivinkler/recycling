@@ -6,7 +6,7 @@ class ReusableBarcode(models.Model):
     STEP_CHOICES = [
         (1, 'Lieferung'),
         (2, 'Umladung'),
-        (3, 'Recycling'),
+        (3, 'Aufbereitung'),
         (4, 'Versand'),
     ]
 

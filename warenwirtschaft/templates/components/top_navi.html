@@ -12,6 +12,13 @@
       </a>
     </div>
     <div>
+      <a href="{% url 'reusable_barcode_list' %}">Material</a>
+      <a href="{% url 'reusable_barcode_create' %}" class="tooltip-wrapper">
+        <img src="{% static 'icons/material-icon.svg' %}">
+        <span class="tooltip-text">Material Erstellen</span>
+      </a>
+    </div>
+    <div>
       <a href="{% url 'supplier_list' %}" class="{% if selected_menu == 'supplier_list' %} selected {% endif %}">Kunden</a>
       <a href="{% url 'supplier_create' %}" class="tooltip-wrapper">
         <img src="{% static 'icons/supplier-icon.svg' %}">
@@ -46,10 +53,10 @@
     </div>
     
     <div>
-      <a href="{% url 'recycling_list' %}" class="{% if selected_menu == 'recycling_list' %} selected {% endif %}">Recycling</a>
+      <a href="{% url 'recycling_list' %}" class="{% if selected_menu == 'recycling_list' %} selected {% endif %}">Aufbereitung</a>
       <a href="{% url 'recycling_create' %}" class="tooltip-wrapper">
         <img src="{% static 'icons/recycle-icon.svg' %}">
-        <span class="tooltip-text">Recycling erstellen</span>
+        <span class="tooltip-text">Aufbereitung erstellen</span>
       </a>
     </div>
     
