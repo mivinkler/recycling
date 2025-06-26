@@ -82,8 +82,7 @@
 
 .table[data-type="material-list"] {
   grid-template-columns:  auto 1fr auto;
-  width: 300px;
-  border-top: 5px solid var(--color-gray-100);
+
 }
 
 /* ================ table ================== */
@@ -129,11 +128,12 @@
 .table-row > div {
   border-right: 1px solid var(--color-gray-200);
   border-bottom: 1px solid var(--color-gray-200);
-  padding: 2px 2px 2px 4px;
+  padding: 2px 2px 2px 6px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   cursor: pointer;
+  align-content: center;
 }
 
 .table-row:hover > div {
@@ -243,6 +243,44 @@
 .indent-3 { padding-left: 100px; }
 .indent-4 { padding-left: 140px; }
 
+/* ============ Material List ============= */
+
+.material-list-column {
+  width: 300px;
+  vertical-align: middle;
+}
+
+.material-list-column .table-header {
+  border-top: 5px solid var(--color-gray-100);
+}
+
+.material-list-column .btn {
+  height: 24px;
+  width: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2px 2px 2px 4px;
+  box-shadow: 0 1px 2px var(--color-gray-400);
+}
+
+.material-list-btn {
+  width: 14px;
+  vertical-align: middle;
+}
+
+.icon-lock {
+  width: 20px;
+  height: 20x;
+  background-image: url("{% static 'icons/lock-icon.svg' %}");
+  background-size: cover;
+  background-repeat: no-repeat;
+  transition: background-image 0.3s ease;
+}
+
+.icon-lock:hover {
+  background-image: url("{% static 'icons/lock-open-icon.svg' %}");
+}
 
 /* ============ Detail, Update ============= */
 
