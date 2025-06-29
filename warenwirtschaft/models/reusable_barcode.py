@@ -18,6 +18,7 @@ class ReusableBarcode(models.Model):
         (3, "Aufbereitung"),
         (4, "Abholung"),
         (5, "Entsorgung"),
+        (6, "Zusatzdaten"),
     ]
     
     TARGET_CHOICES = [
@@ -26,7 +27,6 @@ class ReusableBarcode(models.Model):
         (3, "Aufbereitung"),
         (4, "Abholung"),
         (5, "Entsorgung"),
-        (6, "Zusatzdaten"),
     ]
 
 

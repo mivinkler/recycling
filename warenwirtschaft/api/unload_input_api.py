@@ -5,28 +5,30 @@ from warenwirtschaft.models import DeliveryUnit, ReusableBarcode
 class UnloadInputAPI(View):
     def get(self, request):
         code = request.GET.get("code", "").strip().upper()
-        barcode_type = request.GET.get("type", "").strip().lower()
+        prefix = code[:1]
 
-        if barcode_type == "unit":
+        if prefix == "U":
             try:
                 unit = DeliveryUnit.objects.get(barcode__iexact=code)
                 return JsonResponse({
+                    'type': 'delivery_unit',
                     'delivery_unit_id': unit.id,
-                    'supplier': unit.delivery.supplier.name,
+                    'supplier': unit.delivery.supplier.name or None,
                 })
             except DeliveryUnit.DoesNotExist:
-                return JsonResponse({'error': 'DeliveryUnit nicht gefunden'}, status=404)
+                return JsonResponse({'error': 'Liefereinheit nicht gefunden'}, status=404)
 
-        elif barcode_type == "reuse":
+        elif prefix == "Z":
             try:
                 reuse = ReusableBarcode.objects.get(code__iexact=code)
                 return JsonResponse({
+                    'type': 'reusable',
                     'code': reuse.code,
-                    'box_type': reuse.box_type,
-                    'material': reuse.material_id,
-                    'target': reuse.target,
+                    'box_type': reuse.box_type or None,
+                    'material': reuse.material_id or None,
+                    'target': reuse.target or None,
                 })
             except ReusableBarcode.DoesNotExist:
                 return JsonResponse({'error': 'ReusableBarcode nicht gefunden'}, status=404)
 
-        return JsonResponse({'error': 'Ungültiger Typ'}, status=400)
+        return JsonResponse({'error': 'Unbekannter Barcode-Typ'}, status=400)

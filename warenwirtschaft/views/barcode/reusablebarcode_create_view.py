@@ -13,7 +13,7 @@ class ReusableBarcodeCreateView(CreateView):
     form_class = ReusableBarcodeForm
     template_name = 'barcode/reusable_barcode_create.html'
 
-    TARGET_PREFIX = {
+    AREA_PREFIX = {
         1: "L",  # Eingang (Lieferung)
         2: "U",  # Umladung
         3: "A",  # Aufbereitung
@@ -25,7 +25,7 @@ class ReusableBarcodeCreateView(CreateView):
     def form_valid(self, form):
         self.object = form.save(commit=False)
 
-        prefix = self.TARGET_PREFIX[self.object.target]
+        prefix = self.AREA_PREFIX[self.object.area]
         suffix = uuid.uuid4().hex[:8].upper()
         code = f"{prefix}{suffix}"
         self.object.code = code

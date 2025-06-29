@@ -35,7 +35,7 @@ class DeliveryCreateView(CreateView):
 
                 for unit in units:
                     suffix = uuid.uuid4().hex[:8].upper()
-                    code = f"L{suffix}"
+                    code = f"U{suffix}"
                     unit.barcode = code
                     BarcodeGenerator(unit, code, 'barcodes/delivery').generate_image()
                     unit.save()
