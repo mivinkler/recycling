@@ -1,35 +1,41 @@
 from django.db import models
 from warenwirtschaft.models.material import Material
 from warenwirtschaft.models.supplier import Supplier
+from warenwirtschaft.models.customer import Customer
 
 class ReusableBarcode(models.Model):
-    STEP_CHOICES = [
-        (1, 'Lieferung'),
-        (2, 'Umladung'),
-        (3, 'Aufbereitung'),
-        (4, 'Versand'),
-    ]
-
     BOX_TYPE_CHOICES = [
-        (0, "Container"),              
-        (1, "Gitterbox"),
-        (2, "Palette"),
-        (3, "Gelbe Waagen"),
-        (4, "Ohne Behälter"),
+        (1, "Container"),              
+        (2, "Gitterbox"),
+        (3, "Palette"),
+        (4, "Gelbe Waagen"),
+        (5, "Ohne Behälter"),
     ]
 
-    TARGET_CHOICES = [
-        (1, "Umladung"),
-        (2, "Aufbereitung"),
-        (3, "Abholung"),
-        (4, "Entsorgung"),
+    AREA_CHOICES = [
+        (1, "Eingang"),
+        (2, "Umladung"),
+        (3, "Aufbereitung"),
+        (4, "Abholung"),
+        (5, "Entsorgung"),
     ]
+    
+    TARGET_CHOICES = [
+        (1, "Eingang"),
+        (2, "Umladung"),
+        (3, "Aufbereitung"),
+        (4, "Abholung"),
+        (5, "Entsorgung"),
+        (6, "Zusatzdaten"),
+    ]
+
 
     code = models.CharField(max_length=64, unique=True)
-    step = models.PositiveSmallIntegerField(choices=STEP_CHOICES, blank=True, null=True)
     supplier = models.ForeignKey(Supplier, on_delete=models.SET_NULL, blank=True, null=True, related_name='supplier_for_barcode')
+    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank=True, null=True, related_name='customer_for_barcode')
     box_type = models.PositiveSmallIntegerField(choices=BOX_TYPE_CHOICES, blank=True, null=True)
     material = models.ForeignKey(Material, on_delete=models.SET_NULL, null=True, blank=True, related_name='material_for_barcode')
+    area = models.PositiveSmallIntegerField(choices=AREA_CHOICES, blank=True, null=True)
     target = models.PositiveSmallIntegerField(choices=TARGET_CHOICES, blank=True, null=True)
     barcode_image = models.ImageField(upload_to='barcodes/reusable', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)

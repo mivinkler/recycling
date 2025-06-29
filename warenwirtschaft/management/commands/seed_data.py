@@ -127,7 +127,7 @@ class Command(BaseCommand):
                     material=random.choice(materials),
                     weight=round(random.uniform(100, 500), 2),
                     target=random.choice([1, 2, 3, 4]),
-                    status=random.choice([1, 2]),
+                    status=2,
                     box_type=random.choice([1, 2, 3, 4]),
                     note=generate_note(),
                 ))

@@ -289,10 +289,6 @@
   margin: 50px auto;
 }
 
-.detail img {
-  width: 90%;
-}
-
 .detail-row {
   display: flex;
   align-items: center;

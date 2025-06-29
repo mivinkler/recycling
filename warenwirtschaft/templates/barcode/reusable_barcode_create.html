@@ -6,43 +6,44 @@
 {% block content %}
 
 
-  <form method="post">
-    {% csrf_token %}
+<form method="post">
+  {% csrf_token %}
+  
+  <div class="itemcard-small">
+    <h2>Barcode erstellen</h2>
+    
+    <section class="itemcard-topbox ">
+      {{ form.non_field_errors }}
 
-    <div class="itemcard-small">
-      <h2>Barcode erstellen</h2>
+      <div class="itemcard-row">
+        <div>Zweck:</div>
+        <div>{{ form.target }}</div>
+      </div>
 
-      <section class="itemcard-topbox ">
-        {{ form.non_field_errors }}
+      <div class="itemcard-row">
+        <div>Kunde:</div>
+        <div>{{ form.supplier }}</div>
+      </div>
 
-        <div class="itemcard-row">
-          <div>Lieferant:</div>
-          <div>{{ form.supplier }}</div>
-        </div>
+      <div class="itemcard-row">
+        <div>Abholer:</div>
+        <div>{{ form.customer }}</div>
+      </div>
 
-        <div class="itemcard-row">
-          <div>Behälter:</div>
-          <div>{{ form.box_type }}</div>
-        </div>
+      <div class="itemcard-row">
+        <div>Behälter:</div>
+        <div>{{ form.box_type }}</div>
+      </div>
 
-        <div class="itemcard-row">
-          <div>Material:</div>
-          <div>{{ form.material }}</div>
-        </div>
+      <div class="itemcard-row">
+        <div>Material:</div>
+        <div>{{ form.material }}</div>
+      </div>
 
-        <div class="itemcard-row">
-          <div>Bereich:</div>
-          <div>{{ form.step }}</div>
-        </div>
-
-        <div class="itemcard-row">
-          <div>Zweck:</div>
-          <div>{{ form.target }}</div>
-        </div>
       </section>
 
       <div class="button-wrapper">
-        <button type="submit" name="save" class="btn">Drücken</button>
+        <button type="submit" name="save" class="btn">Speichern</button>
       </div>
     </div>
   </form>

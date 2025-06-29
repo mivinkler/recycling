@@ -7,54 +7,55 @@
 
 {% block content %}
 <div class="detail">
-  <section id="print-area">
-    <img src="{{ barcode.barcode_image.url }}" alt="Barcode">
-    {% if barcode.step %}
-    <div class="detail-row">
-        <div>Bereich:</div>
-        <div>{{ barcode.get_step_display }}</div>
-    </div>
-    {% endif %}
+    <section id="print-area">
+        <img src="{{ barcode.barcode_image.url }}" alt="Barcode">
+      
+        {% if barcode.target %}
+        <div class="detail-row">
+            <div>Zweck:</div>
+            <div>{{ barcode.get_target_display }}</div>
+        </div>
+        {% endif %}
 
-    {% if barcode.supplier %}
-    <div class="detail-row">
-        <div>Lieferant:</div>
-        <div>{{ barcode.supplier.name }} kg</div>
-    </div>
-    {% endif %}
+        {% if barcode.supplier %}
+        <div class="detail-row">
+            <div>Kunde:</div>
+            <div>{{ barcode.supplier.name }} kg</div>
+        </div>
+        {% endif %}
 
-    {% if barcode.box_type %}
-    <div class="detail-row">
-        <div>Behälter:</div>
-        <div>{{ barcode.get_box_type_display }}</div>
-    </div>
-    {% endif %}
+        {% if barcode.customer %}
+        <div class="detail-row">
+            <div>Abholer:</div>
+            <div>{{ barcode.customer.name }} kg</div>
+        </div>
+        {% endif %}
 
-    {% if barcode.weight %}
-    <div class="detail-row">
-        <div>Gewicht:</div>
-        <div>{{ barcode.weight }} kg</div>
-    </div>
-    {% endif %}
+        {% if barcode.box_type %}
+        <div class="detail-row">
+            <div>Behälter:</div>
+            <div>{{ barcode.get_box_type_display }}</div>
+        </div>
+        {% endif %}
 
-    {% if barcode.material %}
-    <div class="detail-row">
-        <div>Material:</div>
-        <div>{{ barcode.material.name }}</div>
-    </div>
-    {% endif %}
+        {% if barcode.weight %}
+        <div class="detail-row">
+            <div>Gewicht:</div>
+            <div>{{ barcode.weight }} kg</div>
+        </div>
+        {% endif %}
 
+        {% if barcode.material %}
+        <div class="detail-row">
+            <div>Material:</div>
+            <div>{{ barcode.material.name }}</div>
+        </div>
+        {% endif %}
+    </section>
 
-    {% if barcode.target %}
-    <div class="detail-row">
-        <div>Ziel:</div>
-        <div>{{ barcode.get_target_display }}</div>
-    </div>
-    {% endif %}
-  </section>
+    <section class="print-btn-wrapper no-print">
+        <button onclick="window.print()" class="print-btn btn">Drucken</button>
+    </section>
+</div>
 
-  <section class="print-btn-wrapper no-print">
-    <button onclick="window.print()" class="print-btn btn">Drucken</button>
-  </section>
-
-  {% endblock %}
+{% endblock %}

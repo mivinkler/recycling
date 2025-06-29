@@ -1,15 +1,11 @@
 {% extends 'base.html' %}
 
-{% load static %}
-{% load sort_tags %}
-{% load custom_filters %}
-
 {% block title %}Leerungen{% endblock %}
 
 {% block content %}
 <div class="table material-list-column" data-type="material-list">
-  <div class="table-header">{% sort_header "id" "ID" %}</div>
-  <div class="table-header">{% sort_header "name" "Material Eingang" %}</div>
+  <div class="table-header">ID</div>
+  <div class="table-header">Material Eingang</div>
   <div></div>
 
   {% for item in page_obj %}

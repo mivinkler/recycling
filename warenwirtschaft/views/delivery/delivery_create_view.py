@@ -1,9 +1,11 @@
+import uuid
 from django.views.generic.edit import CreateView
-from warenwirtschaft.models.delivery import Delivery
-from warenwirtschaft.forms import DeliveryForm, DeliveryUnitFormSet
 from django.db import transaction
 from django.urls import reverse_lazy
-from warenwirtschaft.services.barcode_service import generate_barcode
+
+from warenwirtschaft.models.delivery import Delivery
+from warenwirtschaft.forms import DeliveryForm, DeliveryUnitFormSet
+from warenwirtschaft.services.barcode_service import BarcodeGenerator
 
 class DeliveryCreateView(CreateView):
     model = Delivery
@@ -24,6 +26,7 @@ class DeliveryCreateView(CreateView):
     def form_valid(self, form):
         context = self.get_context_data()
         formset = context['formset']
+
         if formset.is_valid():
             with transaction.atomic():
                 self.object = form.save()
@@ -31,7 +34,10 @@ class DeliveryCreateView(CreateView):
                 units = formset.save(commit=False)
 
                 for unit in units:
-                    generate_barcode(unit)  # Barcode generieren und dem Objekt zuweisen
+                    suffix = uuid.uuid4().hex[:8].upper()
+                    code = f"L{suffix}"
+                    unit.barcode = code
+                    BarcodeGenerator(unit, code, 'barcodes/delivery').generate_image()
                     unit.save()
 
             return super().form_valid(form)

@@ -1,21 +1,21 @@
-import uuid
+
 import barcode
 from io import BytesIO
 from barcode.writer import ImageWriter
 from django.core.files.base import ContentFile
 
-def generate_barcode(obj):
+class BarcodeGenerator:
     """
-    Generiert einen eindeutigen Barcode und speichert ihn als PNG im Verzeichnis,
-    Erwartet, dass das Objekt die Felder 'barcode' und 'barcode_image' besitzt.
+    Generiert ein Barcode-Bild und speichert es im angegebenen Verzeichnis.
     """
-    code = str(uuid.uuid4()).replace("-", "")[:12]
-    obj.barcode = code
+    def __init__(self, obj, code, upload_to):
+        self.obj = obj
+        self.code = code
+        self.upload_to = upload_to
 
-    # Code128
-    ean = barcode.get('code128', code, writer=ImageWriter())
-    buffer = BytesIO()
-    ean.write(buffer)
-
-    # Das ImageField speichert automatisch im richtigen Pfad entsprechend 'upload_to'
-    obj.barcode_image.save(f'{code}.png', ContentFile(buffer.getvalue()), save=False)
+    def generate_image(self):
+        ean = barcode.get('code128', self.code, writer=ImageWriter())
+        buffer = BytesIO()
+        ean.write(buffer)
+        file_name = f"{self.upload_to}/{self.code}.png"
+        self.obj.barcode_image.save(file_name, ContentFile(buffer.getvalue()), save=False)

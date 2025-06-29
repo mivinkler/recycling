@@ -1,35 +1,39 @@
-import barcode
-from io import BytesIO
+import uuid
 from django.views.generic.edit import CreateView
-from django.urls import reverse_lazy
-from django.core.files.base import ContentFile
-from barcode.writer import ImageWriter
+from django.urls import reverse
+from django.http import HttpResponseRedirect
 
 from warenwirtschaft.models import ReusableBarcode
 from warenwirtschaft.forms import ReusableBarcodeForm
+from warenwirtschaft.services.barcode_service import BarcodeGenerator
 
-import uuid
 
 class ReusableBarcodeCreateView(CreateView):
     model = ReusableBarcode
     form_class = ReusableBarcodeForm
     template_name = 'barcode/reusable_barcode_create.html'
-    success_url = reverse_lazy('reusable_barcode_create')
+
+    TARGET_PREFIX = {
+        1: "L",  # Eingang (Lieferung)
+        2: "U",  # Umladung
+        3: "A",  # Aufbereitung
+        4: "V",  # Abholung (Versand)
+        5: "E",  # Entsorgung
+        6: "Z",  # Zusatzdaten
+    }
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
 
-        # Wenn kein Code eingegeben wurde – generieren wir ihn automatisch
-        if not self.object.code:
-            self.object.code = f"R{uuid.uuid4().hex[:8].upper()}"
+        prefix = self.TARGET_PREFIX[self.object.target]
+        suffix = uuid.uuid4().hex[:8].upper()
+        code = f"{prefix}{suffix}"
+        self.object.code = code
 
-        # Barcode-Bild generieren
-        if self.object.code:
-            ean = barcode.get('code128', self.object.code, writer=ImageWriter())
-            buffer = BytesIO()
-            ean.write(buffer)
-            file_name = f"{self.object.code}.png"
-            self.object.barcode_image.save(file_name, ContentFile(buffer.getvalue()), save=False)
-
+        BarcodeGenerator(self.object, code, 'barcodes/reusable').generate_image()
         self.object.save()
-        return super().form_valid(form)
+
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        return reverse('reusable_barcode_detail', kwargs={'pk': self.object.pk})

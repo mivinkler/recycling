@@ -24,7 +24,6 @@ document.addEventListener("DOMContentLoaded", () => {
       { text: "Detail", key: "url-detail" },
       { text: "Barcode", key: "url-detail-barcode" },
       { text: "Ändern", key: "url-update" },
-      { text: "Erstellen", key: "url-create" }
     ];
 
     actions.forEach(({ text, key }) => {
