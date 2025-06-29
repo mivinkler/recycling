@@ -11,6 +11,8 @@
   <div class="itemcard-small">
     <h2>Lieferung erstellen</h2>
 
+    <input type="text" id="barcode" data-api="/api/unload-input/" autocomplete="off" placeholder="Barcode scannen..." />
+
     <section class="itemcard-topbox ">
       {{ form.non_field_errors }}
 
@@ -82,4 +84,5 @@
 
 {% block extra_js %}
   <script src="{% static 'js/add-table-row.js' %}"></script>
+  <script src="{% static 'js/delivery-barcode-scan.js' %}"></script>
 {% endblock %}
