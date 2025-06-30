@@ -44,4 +44,22 @@ document.addEventListener('DOMContentLoaded', () => {
       alert("Barcode nicht erkannt oder Fehler beim Verarbeiten.");
     }
   });
+
+    document.querySelector('.table')?.addEventListener('click', async (e) => {
+    if (!e.target.matches('.fetch-weight-btn')) return;
+
+    const row = e.target.closest('.table-row');
+    const weightInput = row?.querySelector('input[name$="-weight"]');
+    if (!weightInput) return;
+
+    try {
+      const res = await fetch('/api/weight-data/');
+      const data = await res.json();
+      if (!res.ok || !data.weight) throw new Error(data.error || 'Kein Gewicht');
+
+      weightInput.value = data.weight;
+    } catch (err) {
+      alert(err.message || 'Fehler beim Abrufen des Gewichts.');
+    }
+  });
 });
