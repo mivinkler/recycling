@@ -245,18 +245,17 @@
 
 /* ============ Material List ============= */
 
-.material-list-column {
-  width: 300px;
+.material-list {
+  width: 500px;
   vertical-align: middle;
 }
 
-.material-list-column .table-header {
+.material-list .table-header {
   border-top: 5px solid var(--color-gray-100);
 }
 
-.material-list-column .btn {
+.material-list .btn {
   height: 24px;
-  width: 24px;
   display: flex;
   align-items: center;
   justify-content: center;

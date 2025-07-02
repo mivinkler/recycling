@@ -1,0 +1,2 @@
+from .material_list_view import MaterialListView
+from .material_update_view import MaterialUpdateView

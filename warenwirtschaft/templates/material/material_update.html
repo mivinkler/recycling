@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Material ändern{% endblock %}
+
+{% block content %}
+<form method="post">
+  {% csrf_token %}
+  <div class="table material-list" data-type="material-list">
+    <div class="table-header">ID</div>
+    <div class="table-header">Material Eingang</div>
+    <div></div>
+
+    {% for item in material_list %}
+      <div class="table-row js-select-row">
+        <div class="table-row__id-gray">{{ item.id }}</div>
+
+        <div>
+          {% if item.id == edit_material.id %}
+            <input type="text" name="name" value="{{ item.name }}">
+          {% else %}
+            {{ item.name }}
+          {% endif %}
+        </div>
+
+        <div>
+          {% if item.id == edit_material.id %}
+            <div style="display: flex; gap: 5px;">
+                <a class="btn">✔</a>
+                <button type="submit" class="btn">Speichern</button>
+            </div>
+          {% else %}
+            <a href="{% url 'material_update' item.id %}" class="btn">
+              <img class="material-list-btn" src="{% static 'icons/lock-icon.svg' %}">
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</form>
+{% endblock %}
