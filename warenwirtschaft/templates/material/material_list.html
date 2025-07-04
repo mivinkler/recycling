@@ -4,18 +4,34 @@
 {% block title %}Material{% endblock %}
 
 {% block content %}
-<div class="table material-list-column" data-type="material-list">
+
+<div class="table-border"></div>
+<div class="table" data-type="material-list">
   <div class="table-header">ID</div>
-  <div class="table-header">Material Eingang</div>
-  <div></div>
+  <div class="table-header">Material</div>
+  <div class="table-header" title="Eingang">E</div>
+  <div class="table-header" title="Umladung">U</div>
+  <div class="table-header" title="Aufbereitung">A</div>
+  <div class="table-header"></div>
 
   {% for item in material_list %}
     <div class="table-row js-select-row">
       <div class="table-row__id-gray">{{ item.id }}</div>
       <div>{{ item.name }}</div>
-      <button class="btn">
-        <img class="material-list-btn" src="{% static 'icons/lock-icon.svg' %}">
-      </button>
+      <div class="material-input">
+        <input type="radio" name="material-delivery" name="material-delivery" class="material-input">
+      </div>
+      <div class="material-input">
+        <input type="radio" name="material-unload" class="material-input">
+      </div>
+      <div class="material-input">
+        <input type="radio" name="material-recycling" class="material-input">
+      </div>
+
+      <div class="material-action">
+        <a href="{% url 'material_update' item.id %}" class="material-btn btn material-list-lock"></a>
+      </div>
+      
     </div>
   {% endfor %}
 </div>

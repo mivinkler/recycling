@@ -16,4 +16,4 @@ class MaterialUpdateView(View):
         name = request.POST.get("name")
         if name:
             Material.objects.filter(pk=pk).update(name=name)
-        return redirect("material_update", pk=pk)
+        return redirect("material_list")

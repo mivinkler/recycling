@@ -81,8 +81,7 @@
 }
 
 .table[data-type="material-list"] {
-  grid-template-columns:  auto 1fr auto;
-
+  grid-template-columns:  34px 200px repeat(3, 40px) auto;
 }
 
 /* ================ table ================== */
@@ -122,7 +121,6 @@
 
 .table-row > div:first-child {
   text-align: center;
-  min-width: 32px;
 }
 
 .table-row > div {
@@ -137,11 +135,11 @@
 }
 
 .table-row:hover > div {
-  background-color: var(--color-gray-300);
+  background-color: var(--color-gray-100);
 }
 
 .table-row:focus > div {
-  background-color: var(--color-gray-300);
+  background-color: var(--color-gray-200);
 }
 
 .js-select-row.row-selected > div {
@@ -163,7 +161,6 @@
   width: 100%;
   border-collapse: collapse;
 }
-
 
 .process-table th,
 .process-table td {
@@ -211,14 +208,6 @@
   background-color: var(--color-gray-50);
 }
 
-/* .process-total-weight {
-  border-top: 1px solid var(--color-gray-100) !important;
-}
-
-.process-table thead {
-  border-bottom: 1px solid var(--color-gray-100) !important;
-} */
-
 .process-total-weight td:first-child {
    font-size: 1.1em;
 }
@@ -243,42 +232,68 @@
 .indent-3 { padding-left: 100px; }
 .indent-4 { padding-left: 140px; }
 
-/* ============ Material List ============= */
+/* ============ Material ============= */
 
-.material-list {
-  width: 500px;
-  vertical-align: middle;
+.table-row > .material-action {
+  border-bottom: none;
 }
 
-.material-list .table-header {
-  border-top: 5px solid var(--color-gray-100);
+.table-row:hover > .material-action {
+  background-color: #fff;
 }
 
-.material-list .btn {
-  height: 24px;
+.table-row > .material-input {
+  padding-left: 2px;
+}
+
+.material-input {
   display: flex;
-  align-items: center;
   justify-content: center;
-  margin: 2px 2px 2px 4px;
-  box-shadow: 0 1px 2px var(--color-gray-400);
+  width: 100%; 
+  padding-left: none;
 }
 
-.material-list-btn {
-  width: 14px;
-  vertical-align: middle;
+.material-input > input {
+  width: 12px; 
 }
 
-.icon-lock {
-  width: 20px;
-  height: 20x;
-  background-image: url("{% static 'icons/lock-icon.svg' %}");
-  background-size: cover;
+.material-action {
+  display: flex;
+  justify-content: left;
+  gap: 10px;
+  align-items: center;
+  margin-left: 4px;
+  cursor: pointer;
+  height: 30px;
+}
+
+.btn.material-btn {
+  min-width: 28px;
+  height: 26px;
+  background-position: center;
   background-repeat: no-repeat;
-  transition: background-image 0.3s ease;
+  transition: background-image 0.3s ease, transform 0.3s ease;
+  padding: 0 5px;
+  box-shadow: 0 1px 2px var(--color-gray-200);
 }
 
-.icon-lock:hover {
-  background-image: url("{% static 'icons/lock-open-icon.svg' %}");
+.material-update-lock:hover,
+.material-list-lock {
+  background-image: url('/static/icons/lock-icon.svg');
+}
+
+.material-update-lock,
+.material-list-lock:hover {
+  background-image: url('/static/icons/lock-open-icon.svg');
+}
+
+.material-delete {
+  display: flex;
+  justify-content: center;
+}
+
+.material-delete img:hover {
+  transform: scale(1.2);
 }
 
 /* ============ Detail, Update ============= */
@@ -540,7 +555,6 @@
 
 /* ====== Сontext Menu ====== */
 
-/* Контекстное меню */
 .context-menu {
   position: absolute;
   display: none;
