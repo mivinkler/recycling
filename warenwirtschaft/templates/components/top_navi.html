@@ -2,39 +2,6 @@
 
 <div class="top-icons-wrapper no-print">
   
-  <!-- Verzeichnis -->
-  <div class="top-icon">
-    <div>
-      <a href="{% url 'reusable_barcode_list' %}">Barcode</a>
-      <a href="{% url 'reusable_barcode_create' %}" class="tooltip-wrapper">
-        <img src="{% static 'icons/barcode-icon.svg' %}">
-        <span class="tooltip-text">Barcode Erstellen</span>
-      </a>
-    </div>
-    <div>
-      <a href="{% url 'material_list' %}">Material</a>
-      <a href="{% url 'material_list' %}" class="tooltip-wrapper">
-        <img src="{% static 'icons/material-icon.svg' %}">
-        <span class="tooltip-text">Material Erstellen</span>
-      </a>
-    </div>
-    <div>
-      <a href="{% url 'supplier_list' %}" class="{% if selected_menu == 'supplier_list' %} selected {% endif %}">Kunden</a>
-      <a href="{% url 'supplier_create' %}" class="tooltip-wrapper">
-        <img src="{% static 'icons/supplier-icon.svg' %}">
-        <span class="tooltip-text">Kunde Erstellen</span>
-      </a>
-    </div>
-    <div>
-      <a href="{% url 'customer_list' %}" class="{% if selected_menu == 'customer_list' %} selected {% endif %}">Abholer</a>
-      <a href="{% url 'customer_create' %}" class="tooltip-wrapper">
-        <img src="{% static 'icons/customer-icon.svg' %}">
-        <span class="tooltip-text">Abholer erstellen</span>
-      </a>
-    </div>
-  </div>
-
-  <!-- Prozess -->
   <div class="top-icon top-icon-border">
     <div>
       <a href="{% url 'delivery_list' %}" class="{% if selected_menu == 'delivery_list' %} selected {% endif %}">Eingang</a>
@@ -45,7 +12,7 @@
     </div>
     
     <div>
-      <a href="{% url 'unload_list' %}" class="{% if selected_menu == 'unload_list' %} selected {% endif %}">Umladung</a>
+      <a href="{% url 'unload_list' %}" class="{% if selected_menu == 'unload_list' %} selected {% endif %}">Sortierung</a>
       <a href="{% url 'unload_create' %}" class="tooltip-wrapper">
         <img src="{% static 'icons/forklift-icon.svg' %}">
         <span class="tooltip-text">Leerung erstellen</span>
@@ -68,12 +35,50 @@
       </a>
     </div>
   </div>
-  
-  
-  <!-- Suche -->
 
+  <div class="top-icon top-icon-border">
+    <div>
+      <a href="{% url 'supplier_list' %}" class="{% if selected_menu == 'supplier_list' %} selected {% endif %}">Kunden</a>
+      <a href="{% url 'supplier_create' %}" class="tooltip-wrapper">
+        <img src="{% static 'icons/supplier-icon.svg' %}">
+        <span class="tooltip-text">Kunde Erstellen</span>
+      </a>
+    </div>
+    <div>
+      <a href="{% url 'customer_list' %}" class="{% if selected_menu == 'customer_list' %} selected {% endif %}">Abholer</a>
+      <a href="{% url 'customer_create' %}" class="tooltip-wrapper">
+        <img src="{% static 'icons/customer-icon.svg' %}">
+        <span class="tooltip-text">Abholer erstellen</span>
+      </a>
+    </div>
+    <div>
+      <a href="{% url 'reusable_barcode_list' %}">Barcode</a>
+      <a href="{% url 'reusable_barcode_create' %}" class="tooltip-wrapper">
+        <img src="{% static 'icons/barcode-icon.svg' %}">
+        <span class="tooltip-text">Barcode Erstellen</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Material/Statistik -->
+  <div class="top-icon top-icon-border">
+    <div>
+      <a href="{% url 'material_list' %}" class="tooltip-wrapper">
+        <img src="{% static 'icons/material-icon.svg' %}">
+        <span class="tooltip-text">Material</span>
+      </a>
+    </div>
+    <div>
+      <a href="#" class="tooltip-wrapper">
+        <img src="{% static 'icons/statistic-icon.svg' %}">
+        <span class="tooltip-text">Statistik</span>
+      </a>
+    </div>
+  </div>
+
+
+  <!-- Suche/Sortierung -->
   <div class="top-icon">
-    <!-- Suchfeld -->
       <details class="top-icon-detail">
         <summary class="tooltip-wrapper">
           <img src="{% static 'icons/search-icon.svg' %}">
