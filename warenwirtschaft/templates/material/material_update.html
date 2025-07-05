@@ -6,6 +6,7 @@
 {% block content %}
 <form method="post">
   {% csrf_token %}
+  {{ formset.management_form }}
 
   <div class="table-border"></div>
   <div class="table material-list" data-type="material-list">
@@ -17,17 +18,10 @@
     <div class="table-header"></div>
 
     {% for item in material_list %}
-      <div class="table-row js-select-row">
-        <div class="table-row__id-gray">
-          {% if item.id == edit_material.id %}
-            <div class="material-delete">
-              <img src="{% static 'icons/delete-icon.svg' %}">
-            </div>
-          {% else %}
-            <div>{{ item.id }}</div>
-          {% endif %}
-        </div>
+      <div class="table-row{% if item.id == edit_material.id %} active-row{% endif %}">
+        <div>{{ item.id }}</div>
 
+        {# ——— Name ——— #}
         <div>
           {% if item.id == edit_material.id %}
             <input type="text" name="name" value="{{ item.name }}">
@@ -36,16 +30,31 @@
           {% endif %}
         </div>
 
+        {# ——— delivery ——— #}
         <div class="material-input">
-          <input type="radio" name="material-delivery" name="material-delivery">
+          {% if item.id == edit_material.id %}
+            <input type="checkbox" name="delivery" {% if item.delivery %}checked{% endif %}>
+          {% else %}
+            <input type="checkbox" disabled {% if item.delivery %}checked{% endif %}>
+          {% endif %}
         </div>
 
+        {# ——— unload ——— #}
         <div class="material-input">
-          <input type="radio" name="material-unload">
+          {% if item.id == edit_material.id %}
+            <input type="checkbox" name="unload" {% if item.unload %}checked{% endif %}>
+          {% else %}
+            <input type="checkbox" disabled {% if item.unload %}checked{% endif %}>
+          {% endif %}
         </div>
 
+        {# ——— recycling ——— #}
         <div class="material-input">
-          <input type="radio" name="material-recycling">
+          {% if item.id == edit_material.id %}
+            <input type="checkbox" name="recycling" {% if item.recycling %}checked{% endif %}>
+          {% else %}
+            <input type="checkbox" disabled {% if item.recycling %}checked{% endif %}>
+          {% endif %}
         </div>
 
         <div class="material-action">
@@ -58,6 +67,28 @@
         </div>
       </div>
     {% endfor %}
+
+    <template id="table-row-template">
+      <div class="table-row active-row">
+        <div>__index__</div>
+
+        <div>{{ empty_form.name }}</div>
+
+        <div class="material-input">{{ empty_form.delivery }}</div>
+        <div class="material-input">{{ empty_form.unload }}</div>
+        <div class="material-input">{{ empty_form.recycling }}</div>
+
+        <div class="material-action">
+          <button type="button" class="material-btn btn row-delete">−</button>
+        </div>
+      </div>
+    </template>
+
+    <button class="btn-row-add" type="button" id="add-form-btn">+</button>
   </div>
 </form>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'js/add-table-row.js' %}"></script>
 {% endblock %}

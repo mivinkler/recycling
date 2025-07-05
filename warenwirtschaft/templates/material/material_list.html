@@ -18,14 +18,15 @@
     <div class="table-row js-select-row">
       <div class="table-row__id-gray">{{ item.id }}</div>
       <div>{{ item.name }}</div>
+
       <div class="material-input">
-        <input type="radio" name="material-delivery" name="material-delivery" class="material-input">
+        <input type="checkbox" name="material-delivery-{{ item.id }}" class="material-input" disabled {% if item.delivery %}checked{% endif %}>
       </div>
       <div class="material-input">
-        <input type="radio" name="material-unload" class="material-input">
+        <input type="checkbox" name="material-unload-{{ item.id }}" class="material-input" disabled {% if item.unload %}checked{% endif %}>
       </div>
       <div class="material-input">
-        <input type="radio" name="material-recycling" class="material-input">
+        <input type="checkbox" name="material-recycling-{{ item.id }}" class="material-input" disabled {% if item.recycling %}checked{% endif %}>
       </div>
 
       <div class="material-action">

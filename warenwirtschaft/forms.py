@@ -1,5 +1,6 @@
 from django import forms
 from django.forms import inlineformset_factory
+from django.forms import modelformset_factory
 
 from warenwirtschaft.models.supplier import Supplier
 from warenwirtschaft.models.delivery import Delivery
@@ -9,6 +10,7 @@ from warenwirtschaft.models.recycling import Recycling
 from warenwirtschaft.models.shipping import Shipping
 from warenwirtschaft.models.shipping_unit import ShippingUnit
 from warenwirtschaft.models.customer import Customer
+from warenwirtschaft.models.material import Material
 from warenwirtschaft.models.reusable_barcode import ReusableBarcode
 
 # Supplier
@@ -99,3 +101,18 @@ class ReusableBarcodeForm(forms.ModelForm):
     class Meta:
         model = ReusableBarcode
         fields = ['supplier', 'delivery_receipt', 'customer', 'box_type', 'material', 'weight', 'area', 'target']
+
+
+# Material
+class MaterialForm(forms.ModelForm):
+    class Meta:
+        model = Material
+        fields = ['name', 'delivery', 'unload', 'recycling']
+
+
+MaterialFormSet = modelformset_factory(
+    Material,
+    form=MaterialForm,
+    extra=0,
+    can_delete=False
+)

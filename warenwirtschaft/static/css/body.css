@@ -212,7 +212,6 @@
    font-size: 1.1em;
 }
 
-
 .process-diff {
   font-size: 0.8em; 
   color: red; 
@@ -249,12 +248,8 @@
 .material-input {
   display: flex;
   justify-content: center;
+  align-items: center;
   width: 100%; 
-  padding-left: none;
-}
-
-.material-input > input {
-  width: 12px; 
 }
 
 .material-action {
@@ -295,6 +290,16 @@
 .material-delete img:hover {
   transform: scale(1.2);
 }
+
+.active-row > * {
+  background-color: var(--color-gray-300);
+}
+
+.active-row > .material-action {
+  background-color: transparent;
+}
+
+
 
 /* ============ Detail, Update ============= */
 
@@ -591,3 +596,8 @@
       display: none !important;
     }
   }
+
+
+  /* ====== Input ====== */
+
+

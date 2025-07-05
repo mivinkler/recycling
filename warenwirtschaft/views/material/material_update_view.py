@@ -13,7 +13,13 @@ class MaterialUpdateView(View):
         return render(request, self.template_name, context)
 
     def post(self, request, pk):
-        name = request.POST.get("name")
-        if name:
-            Material.objects.filter(pk=pk).update(name=name)
-        return redirect("material_list")
+        material = get_object_or_404(Material, pk=pk)
+
+        material.name = request.POST.get("name", material.name)
+
+        material.delivery  = "delivery"  in request.POST
+        material.unload    = "unload"    in request.POST
+        material.recycling = "recycling" in request.POST
+
+        material.save()
+        return redirect("material_update", pk=pk)
