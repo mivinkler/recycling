@@ -9,61 +9,99 @@
   {% csrf_token %}
 
   <div class="itemcard-large">
-    <h2>Aufbereitung erstellen</h2>
+    <h2 class="itemcard-margin-left">Aufbereitung erstellen</h2>
 
-    <section class="itemcard-topbox ">
+    <section class="itemcard-topbox">
       {{ form.unload.errors }}
       {{ form.non_field_errors }}
 
-      <div class="itemcard-row">
-        <div>Fraktion:</div>
+      <div class="itemcard-row itemcard-margin-left">
+        <div>Vorsortierung:</div>
         <div>{{ form.unload }}</div>
       </div>
     </section>
 
-    <section class="itemcard-table">
-      <div class="itemcard-table-title">Aufbereitung-Einheit:</div>
+    <section class="itemcard-table itemcard-table-first">
+      <div class="itemcard-table-title itemcard-margin-left">Vorhandene Waagen:</div>
+
       {{ formset.management_form }}
+      {{ formset.non_form_errors }}
 
       <div class="table" data-type="recycling-create">
+        <div class="table-row-radio"></div>
         <div class="table-header">№</div>
         <div class="table-header">Behälter</div>
         <div class="table-header">Gewicht</div>
         <div class="table-header">Material</div>
         <div class="table-header">Zweck</div>
+        <div class="table-header">Status</div>
         <div class="table-header">Anmerkung</div>
-      
-        {% for form in formset %}
-          <div class="table-row" data-type="recycling-create">
+
+        {% for form in vorhandene_forms %}
+          <div class="table-row">
+            <input type="checkbox" name="selected_recycling" value="{{ form.instance.pk }}" checked>
             <div>{{ forloop.counter }}</div>
+            <div>{{ form.instance.get_box_type_display }}</div>
+            <div>{{ form.instance.weight }}</div>
+            <div>{{ form.instance.material }}</div>
+            <div>{{ form.instance.get_target_display }}</div>
+            <div>{{ form.instance.get_status_display }}</div>
+            <div>{{ form.instance.note }}</div>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="itemcard-table itemcard-table-second itemcard-margin-left">
+      <div class="itemcard-table-title">Neue Waagen:</div>
+
+      <div class="table add-row-js" data-type="recycling-create">
+        <div class="table-header">№</div>
+        <div class="table-header">Behälter</div>
+        <div class="table-header">Gewicht</div>
+        <div class="table-header">Material</div>
+        <div class="table-header">Zweck</div>
+        <div class="table-header">Status</div>
+        <div class="table-header">Anmerkung</div>
+
+        {% for form in formset %}
+          <div class="table-row">
+            {{ form.id }}
+            <div class="table-row-id">{{ forloop.counter }}</div>
             <div>{{ form.box_type }}</div>
             <div>{{ form.weight }}</div>
             <div>{{ form.material }}</div>
             <div>{{ form.target }}</div>
+            <div>{{ form.status }}</div>
             <div>{{ form.note }}</div>
           </div>
         {% endfor %}
       
-        <template id="table-row-template">
-          <div class="table-row">
-            <div> __index__</div>
-            <div>{{ empty_form.box_type }}</div>
-            <div>{{ empty_form.weight }}</div>
-            <div>{{ empty_form.material }}</div>
-            <div>{{ empty_form.target }}</div>
-            <div>{{ empty_form.note }}</div>
-          </div>
-        </template>
-      </div>
+      <template id="table-row-template">
+        <div class="table-row">
+          {{ empty_form.id }}
+          <div class="table-row-id">__index__</div>
+          <div>{{ empty_form.box_type }}</div>
+          <div>{{ empty_form.weight }}</div>
+          <div>{{ empty_form.material }}</div>
+          <div>{{ empty_form.target }}</div>
+          <div>{{ empty_form.status }}</div>
+          <div>{{ empty_form.note }}</div>
+        </div>
+      </template>
+    </div>
+
+      <button class="btn-row-add" type="button" id="add-form-btn">+</button>
     </section>
 
-    <button class="btn-row-add" type="button" id="add-form-btn">+</button>
 
     <div class="button-wrapper">
       <button type="submit" name="save" class="btn">Speichern</button>
     </div>
+
   </div>
 </form>
+
   
 {% endblock %}
 

@@ -1,75 +1,76 @@
 /* ================ Grid Row ================== */
 
 .table[data-type="supplier-list"] {
-  grid-template-columns: auto 1fr 2fr 2fr 1fr 2fr 1fr 2fr 1fr 4fr;
+  grid-template-columns: minmax(32px, max-content) 1fr 2fr 2fr 1fr 2fr 1fr 2fr 1fr 4fr;
 }
 
 .table[data-type="supplier-detail-deliveryunits"] {
-  grid-template-columns: auto repeat(8, 1fr);
+  grid-template-columns: minmax(32px, max-content) repeat(8, 1fr);
 }
 
 .table[data-type="deliveryunits-list"] {
-  grid-template-columns: auto repeat(7, 1fr) 2fr;
+  grid-template-columns: minmax(32px, max-content) repeat(7, 1fr) 2fr;
 }
 
 .table[data-type="delivery-detail-deliveryunits"] {
-  grid-template-columns: auto repeat(6, 1fr);
+  grid-template-columns: minmax(32px, max-content) repeat(6, 1fr);
 }
 
 .table[data-type="delivery-create-deliveryunits"] {
-  grid-template-columns: auto repeat(5, 1fr);
+  grid-template-columns: minmax(32px, max-content) repeat(5, 1fr);
 }
 
 .table[data-type="delivery-update-deliveryunits"] {
-  grid-template-columns: auto repeat(5, 4fr) 1fr;
+  grid-template-columns: minmax(32px, max-content) repeat(5, 4fr) 1fr;
 }
 
 .table[data-type="unload-list"] {
-  grid-template-columns:  repeat(3, auto) 2fr 3fr repeat(6, 1fr) 4fr;
+  grid-template-columns: repeat(3, auto) 2fr 3fr repeat(6, 1fr) 4fr;
 }
 
 .table[data-type="unload-create"] {
-  grid-template-columns: auto repeat(4, 1fr) 2fr auto;
+  grid-template-columns: minmax(32px, max-content) repeat(4, 1fr) 2fr auto;
 }
 
 .table[data-type="unload-update"] {
-  grid-template-columns: auto repeat(4, 1fr) 2fr auto;
+  grid-template-columns: minmax(32px, max-content) repeat(4, 1fr) 2fr auto;
 }
 
 .table[data-type="unload-detail"] {
-  grid-template-columns: auto repeat(5, 1fr) 2fr;
+  grid-template-columns: minmax(32px, max-content) repeat(5, 1fr) 2fr;
 }
 
 .table[data-type="recycling-list"] {
-  grid-template-columns: auto repeat(7, 1fr) 2fr;
+  grid-template-columns: minmax(32px, max-content) repeat(6, 1fr) 2fr;
+}
+
+.itemcard-table-first .table[data-type="recycling-create"] {
+  grid-template-columns: 24px minmax(32px, max-content) repeat(5, 1fr) 2fr;
 }
 
 .table[data-type="recycling-create"] {
-  grid-template-columns: auto repeat(4, 1fr) 2fr;
+  grid-template-columns: minmax(32px, max-content) repeat(5, 1fr) 2fr;
 }
 
-.table[data-type="recycling-update"] {
-  grid-template-columns: auto repeat(4, 1fr) 2fr auto;
-}
 
 .table[data-type="recycling-detail"] {
-  grid-template-columns: auto repeat(4, 1fr) 2fr auto;
+  grid-template-columns: minmax(32px, max-content) repeat(4, 1fr) 2fr auto;
 }
 
 .table[data-type="shippingunits-list"] {
-  grid-template-columns: auto repeat(7, 1fr) 2fr;
+  grid-template-columns: minmax(32px, max-content) repeat(7, 1fr) 2fr;
 }
 
 .table[data-type="shipping-detail-shippingunits"] {
-  grid-template-columns: auto repeat(3, 1fr) auto;
+  grid-template-columns: minmax(32px, max-content) repeat(3, 1fr) auto;
 }
 
 .table[data-type="shipping-create-shippingunits"] {
-  grid-template-columns: auto 2fr repeat(5, 1fr);
+  grid-template-columns: minmax(32px, max-content) 2fr repeat(5, 1fr);
 }
 
 .table[data-type="shipping-update-shippingunits"] {
-  grid-template-columns: auto repeat(4, 1fr) auto;
+  grid-template-columns: minmax(32px, max-content) repeat(4, 1fr) auto;
 }
 
 .table[data-type="customer-detail__shippingunits"] {
@@ -77,11 +78,11 @@
 }
 
 .table[data-type="barcode-list"] {
-  grid-template-columns: auto 1fr 2fr repeat(4, 1fr);
+  grid-template-columns: minmax(32px, max-content) 1fr 2fr repeat(4, 1fr);
 }
 
 .table[data-type="material-list"] {
-  grid-template-columns:  34px 200px repeat(3, 40px) auto;
+  grid-template-columns:  minmax(32px, max-content) 200px repeat(3, 40px) auto;
 }
 
 /* ================ table ================== */
@@ -126,6 +127,7 @@
 .table-row > div {
   border-right: 1px solid var(--color-gray-200);
   border-bottom: 1px solid var(--color-gray-200);
+  height: 26px;
   padding: 2px 2px 2px 6px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -145,6 +147,25 @@
 .js-select-row.row-selected > div {
   background-color: #d0e4f5;
 }
+
+.table-row input[checkbox] {
+    text-align: center;
+}
+
+.table-row-id {
+  padding-left: 6px;
+}
+
+.itemcard-table .table-row > .table-row-radio {
+  border-bottom: none;
+  background-color: transparent;
+  text-align: center;
+}
+
+.itemcard-table .table[data-type="recycling-create"] {
+  border-left: none;
+}
+
 
 /* ============ Detail  ============= */
 
@@ -373,7 +394,6 @@
 }
 
 .itemcard-table .table {
-  border-top: 1px solid var(--color-gray-300);
   border-left: 1px solid var(--color-gray-300);
   margin-top: 8px;
 }
@@ -384,11 +404,20 @@
 
 .itemcard-table .table-header {
   background-color: var(--color-gray-200);
-  border-top: none;
 }
 
 .itemcard-table-title {
-  font-weight: 500;
+  font-weight: 600;
+  color: var(--color-gray-900);
+}
+
+.itemcard-table-first,
+.itemcard-table-second {
+  margin-top: 30px;
+}
+
+.itemcard-margin-left {
+  margin-left: 24px;
 }
 
 /* ============ info-table NEU ============= */
@@ -599,5 +628,4 @@
 
 
   /* ====== Input ====== */
-
 

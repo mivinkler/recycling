@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     const addButton = document.getElementById('add-form-btn');
-    const tableBody = document.querySelector('.table');
+    const tableBody = document.querySelector('.add-row-js');
     const template = document.getElementById('table-row-template').innerHTML;
     const totalFormsInput = document.querySelector('input[name$="-TOTAL_FORMS"]');
     const prefix = totalFormsInput.name.replace('-TOTAL_FORMS', '');

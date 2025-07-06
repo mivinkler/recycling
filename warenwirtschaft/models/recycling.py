@@ -1,6 +1,5 @@
 from django.db import models
 from warenwirtschaft.models.material import Material
-from warenwirtschaft.models.unload import Unload
 
 class Recycling(models.Model):
     BOX_TYPE_CHOICES = [
@@ -20,7 +19,9 @@ class Recycling(models.Model):
         (2, "Erledigt"),
     ]
 
-    unload = models.ForeignKey(Unload, on_delete=models.CASCADE, related_name="recycling_for_unload")
+    # Viele-zu-viele Beziehung zu Unload
+    unloads = models.ManyToManyField("warenwirtschaft.Unload", related_name="recycling_for_unload")
+
     box_type = models.PositiveSmallIntegerField(choices=BOX_TYPE_CHOICES)
     material = models.ForeignKey(Material, on_delete=models.CASCADE, null=True, blank=True, related_name="material_for_recycling")
     material_other = models.CharField(max_length=50, null=True, blank=True)

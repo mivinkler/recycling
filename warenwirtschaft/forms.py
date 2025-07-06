@@ -61,10 +61,24 @@ class UnloadForm(forms.Form):
         queryset=Unload.objects.filter(status=1),
     )
 
-RecyclingFormSet = inlineformset_factory(
-    parent_model=Unload,
-    model=Recycling,
-    fields=["id", "box_type", "material", "weight", "target", "note"],
+class RecyclingForm(forms.ModelForm):
+    selected = forms.BooleanField(
+        required=False,
+        initial=True,
+        label="Ausgewählt"
+    )
+
+    class Meta:
+        model = Recycling
+        fields = ["box_type", "material", "material_other", "weight", "target", "status", "note", "unloads"]
+        widgets = {
+            "unloads": forms.CheckboxSelectMultiple,
+        }
+
+RecyclingFormSet = modelformset_factory(
+    Recycling,
+    form=RecyclingForm,
+    fields=["box_type", "material", "material_other", "weight", "target", "status", "note"],
     extra=1,
     can_delete=True
 )

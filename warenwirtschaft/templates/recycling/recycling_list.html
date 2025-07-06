@@ -11,7 +11,6 @@
 <div class="table-border"></div>
 <div class="table" data-type="recycling-list">
   <div class="table-header">{% sort_header "id" "ID" %}</div>
-  <div class="table-header">Umladung</div>
   <div class="table-header">{% sort_header "box_type" "Behälter" %}</div>
   <div class="table-header">{% sort_header "weight" "Gewicht" %}</div>
   <div class="table-header">{% sort_header "target" "Zweck" %}</div>
@@ -23,11 +22,11 @@
   {% for item in page_obj %}
     <div class="table-row js-select-row"
       data-id="{{ item.id }}"
-      data-url-detail="{% url 'recycling_detail' pk=item.unload.id %}"
-      data-url-update="{% url 'recycling_update' pk=item.unload.id %}">
+      data-url-detail="{% url 'recycling_detail' pk=item.id %}"
+      data-url-update="{% url 'recycling_update' pk=item.id %}">
 
       <div class="table-row__id-gray">{{ item.id }}</div>
-      <div>{{ item.unload }}</div>
+
       <div>{{ item|getattr:"get_box_type_display" }}</div>
       <div>{{ item.weight }}</div>
       <div>{{ item|getattr:"get_target_display" }}</div>
