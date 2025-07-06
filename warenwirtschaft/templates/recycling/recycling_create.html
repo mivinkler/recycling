@@ -39,7 +39,9 @@
 
         {% for form in vorhandene_forms %}
           <div class="table-row">
-            <input type="checkbox" name="selected_recycling" value="{{ form.instance.pk }}" checked>
+            <div class="table-row-radio">
+              <input type="checkbox" name="selected_recycling" value="{{ form.instance.pk }}" checked>
+            </div>
             <div>{{ forloop.counter }}</div>
             <div>{{ form.instance.get_box_type_display }}</div>
             <div>{{ form.instance.weight }}</div>

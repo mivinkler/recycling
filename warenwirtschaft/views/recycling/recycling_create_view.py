@@ -31,14 +31,12 @@ class RecyclingCreateView(View):
             unload = unload_form.cleaned_data["unload"]
 
             with transaction.atomic():
-                # Сохраняем/удаляем связи с выбранными vorhandene recycling
                 for recycling in vorhandene_recycling:
                     if str(recycling.pk) in selected_ids:
                         recycling.unloads.add(unload)
                     else:
                         recycling.unloads.remove(unload)
 
-                # Сохраняем новые записи из formset
                 instances = formset.save(commit=False)
                 for instance in instances:
                     instance.save()
@@ -48,30 +46,25 @@ class RecyclingCreateView(View):
 
             return redirect(self.success_url)
 
-        # В случае ошибок пересобираем формы
         vorhandene_forms = self.build_vorhandene_forms(self.get_selected_unload(request))
         return self.render_page(unload_form, formset, vorhandene_forms)
 
     def get_selected_unload(self, request):
-        """Определяет выбранный Unload из GET-параметров."""
         selected_unload_id = request.GET.get("unload")
         if selected_unload_id:
             return Unload.objects.filter(id=selected_unload_id).first()
         return None
 
     def build_vorhandene_forms(self, selected_unload):
-        """Создаёт список форм для уже существующих Recycling."""
         forms = []
         for recycling in Recycling.objects.filter(status=1):
             form = RecyclingForm(instance=recycling, prefix=f"recycling_{recycling.pk}")
-            # Если связь уже есть, отмечаем как выбранную
             if selected_unload and selected_unload in recycling.unloads.all():
                 form.fields["selected"].initial = True
             forms.append(form)
         return forms
 
     def render_page(self, unload_form, formset, vorhandene_forms):
-        """Отрисовывает шаблон со всеми данными."""
         return render(self.request, self.template_name, {
             "form": unload_form,
             "formset": formset,

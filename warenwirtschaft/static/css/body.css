@@ -159,7 +159,7 @@
 .itemcard-table .table-row > .table-row-radio {
   border-bottom: none;
   background-color: transparent;
-  text-align: center;
+  text-align: left;
 }
 
 .itemcard-table .table[data-type="recycling-create"] {
