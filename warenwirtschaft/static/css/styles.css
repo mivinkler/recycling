@@ -94,6 +94,12 @@ input[type="checkbox"]:checked::before {
   background-color: var(--color-hero);
 }
 
+
+input[type="checkbox"]:active,
+input[type="checkbox"]:focus {
+  outline: none;
+}
+
 /* Allgemeine Style */
 .flex-items-between {
   display: flex;

@@ -1,27 +1,27 @@
 /* ================ Grid Row ================== */
 
 .table[data-type="supplier-list"] {
-  grid-template-columns: minmax(32px, max-content) 1fr 2fr 2fr 1fr 2fr 1fr 2fr 1fr 4fr;
+  grid-template-columns: minmax(33px, max-content) 1fr 2fr 2fr 1fr 2fr 1fr 2fr 1fr 4fr;
 }
 
 .table[data-type="supplier-detail-deliveryunits"] {
-  grid-template-columns: minmax(32px, max-content) repeat(8, 1fr);
+  grid-template-columns: minmax(33px, max-content) repeat(8, 1fr);
 }
 
 .table[data-type="deliveryunits-list"] {
-  grid-template-columns: minmax(32px, max-content) repeat(7, 1fr) 2fr;
+  grid-template-columns: minmax(33px, max-content) repeat(7, 1fr) 2fr;
 }
 
 .table[data-type="delivery-detail-deliveryunits"] {
-  grid-template-columns: minmax(32px, max-content) repeat(6, 1fr);
+  grid-template-columns: minmax(33px, max-content) repeat(6, 1fr);
 }
 
 .table[data-type="delivery-create-deliveryunits"] {
-  grid-template-columns: minmax(32px, max-content) repeat(5, 1fr);
+  grid-template-columns: minmax(33px, max-content) repeat(5, 1fr);
 }
 
 .table[data-type="delivery-update-deliveryunits"] {
-  grid-template-columns: minmax(32px, max-content) repeat(5, 4fr) 1fr;
+  grid-template-columns: minmax(33px, max-content) repeat(5, 4fr) 1fr;
 }
 
 .table[data-type="unload-list"] {
@@ -29,48 +29,48 @@
 }
 
 .table[data-type="unload-create"] {
-  grid-template-columns: minmax(32px, max-content) repeat(4, 1fr) 2fr auto;
+  grid-template-columns: minmax(33px, max-content) repeat(4, 1fr) 2fr auto;
 }
 
 .table[data-type="unload-update"] {
-  grid-template-columns: minmax(32px, max-content) repeat(4, 1fr) 2fr auto;
+  grid-template-columns: minmax(33px, max-content) repeat(4, 1fr) 2fr auto;
 }
 
 .table[data-type="unload-detail"] {
-  grid-template-columns: minmax(32px, max-content) repeat(5, 1fr) 2fr;
+  grid-template-columns: minmax(33px, max-content) repeat(5, 1fr) 2fr;
 }
 
 .table[data-type="recycling-list"] {
-  grid-template-columns: minmax(32px, max-content) repeat(6, 1fr) 2fr;
+  grid-template-columns: minmax(33px, max-content) repeat(6, 1fr) 2fr;
 }
 
 .itemcard-table-first .table[data-type="recycling-create"] {
-  grid-template-columns: 24px minmax(32px, max-content) repeat(5, 1fr) 2fr;
+  grid-template-columns: 30px minmax(34px, max-content) repeat(5, 1fr) 2fr;
 }
 
 .table[data-type="recycling-create"] {
-  grid-template-columns: minmax(32px, max-content) repeat(5, 1fr) 2fr;
+  grid-template-columns: minmax(33px, max-content) repeat(5, 1fr) 2fr;
 }
 
 
 .table[data-type="recycling-detail"] {
-  grid-template-columns: minmax(32px, max-content) repeat(4, 1fr) 2fr auto;
+  grid-template-columns: minmax(33px, max-content) repeat(4, 1fr) 2fr auto;
 }
 
 .table[data-type="shippingunits-list"] {
-  grid-template-columns: minmax(32px, max-content) repeat(7, 1fr) 2fr;
+  grid-template-columns: minmax(33px, max-content) repeat(7, 1fr) 2fr;
 }
 
 .table[data-type="shipping-detail-shippingunits"] {
-  grid-template-columns: minmax(32px, max-content) repeat(3, 1fr) auto;
+  grid-template-columns: minmax(33px, max-content) repeat(3, 1fr) auto;
 }
 
 .table[data-type="shipping-create-shippingunits"] {
-  grid-template-columns: minmax(32px, max-content) 2fr repeat(5, 1fr);
+  grid-template-columns: minmax(33px, max-content) 2fr repeat(5, 1fr);
 }
 
 .table[data-type="shipping-update-shippingunits"] {
-  grid-template-columns: minmax(32px, max-content) repeat(4, 1fr) auto;
+  grid-template-columns: minmax(33px, max-content) repeat(4, 1fr) auto;
 }
 
 .table[data-type="customer-detail__shippingunits"] {
@@ -78,11 +78,11 @@
 }
 
 .table[data-type="barcode-list"] {
-  grid-template-columns: minmax(32px, max-content) 1fr 2fr repeat(4, 1fr);
+  grid-template-columns: minmax(33px, max-content) 1fr 2fr repeat(4, 1fr);
 }
 
 .table[data-type="material-list"] {
-  grid-template-columns:  minmax(32px, max-content) 200px repeat(3, 40px) auto;
+  grid-template-columns:  minmax(33px, max-content) 200px repeat(3, 40px) auto;
 }
 
 /* ================ table ================== */
@@ -387,6 +387,7 @@
 
 .itemcard-row div:last-child {
   width: 75%;
+  height: 28px;
 }
 
 .itemcard-row textarea {
@@ -417,7 +418,7 @@
 }
 
 .itemcard-margin-left {
-  margin-left: 24px;
+  margin-left: 30px;
 }
 
 /* ============ info-table NEU ============= */
