@@ -65,7 +65,6 @@ class RecyclingForm(forms.ModelForm):
     selected = forms.BooleanField(
         required=False,
         initial=True,
-        label="Ausgewählt"
     )
 
     class Meta:
@@ -79,7 +78,7 @@ RecyclingFormSet = modelformset_factory(
     Recycling,
     form=RecyclingForm,
     fields=["box_type", "material", "material_other", "weight", "target", "status", "note"],
-    extra=1,
+    extra=0,
     can_delete=True
 )
 
