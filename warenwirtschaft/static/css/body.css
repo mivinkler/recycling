@@ -9,7 +9,7 @@
 }
 
 .table[data-type="deliveryunits-list"] {
-  grid-template-columns: minmax(33px, max-content) repeat(7, 1fr) 2fr;
+  grid-template-columns: minmax(33px, max-content) repeat(8, 1fr) 2fr;
 }
 
 .table[data-type="delivery-detail-deliveryunits"] {
