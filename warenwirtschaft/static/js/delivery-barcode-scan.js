@@ -6,17 +6,27 @@ document.addEventListener('DOMContentLoaded', () => {
   const supplierSelect = document.querySelector('select[name="supplier"]');
   const receiptInput = document.querySelector('input[name="delivery_receipt"]');
 
-  const fillLastRow = (fields) => {
+  // Suche die erste leere Zeile (nach Gewicht-Feld)
+  const findEmptyRow = () => {
     const rows = table?.querySelectorAll('.table-row');
-    const lastRow = rows?.[rows.length - 1];
-    if (!lastRow) return;
+    for (const row of rows) {
+      const weightInput = row.querySelector('[name$="-weight"]');
+      if (weightInput && !weightInput.value) {
+        return row;
+      }
+    }
+    return null;
+  };
 
+  // Fügt die übergebene Zeichenfolge mit Daten
+  const fillRow = (row, fields) => {
     for (const [key, value] of Object.entries(fields)) {
-      const input = lastRow.querySelector(`[name$="-${key}"]`);
+      const input = row.querySelector(`[name$="-${key}"]`);
       if (input) input.value = value;
     }
   };
 
+  // Barcode Scan Verarbeitung
   barcodeInput?.addEventListener('keypress', async (e) => {
     if (e.key !== 'Enter') return;
     e.preventDefault();
@@ -29,16 +39,23 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Fehler beim Barcode');
 
-      // Setze Lieferant & Lieferschein wenn vorhanden
-      if (data.supplier && supplierSelect) {
-        supplierSelect.value = data.supplier;
-      }
-      if (data.delivery_receipt && receiptInput) {
-        receiptInput.value = data.delivery_receipt;
+      // Geben Sie den Lieferanten und ggf. die Lieferschein ein.
+      if (data.supplier && supplierSelect) supplierSelect.value = data.supplier;
+      if (data.delivery_receipt && receiptInput) receiptInput.value = data.delivery_receipt;
+
+      // Suchen nach der ersten leere Zeile
+      let row = findEmptyRow();
+
+      // Wenn keine leere Zeile vorhanden ist, fügen wir sie hinzu
+      if (!row) {
+        addBtn?.click();
+        await new Promise(resolve => setTimeout(resolve, 50)); // ждём DOM
+        row = findEmptyRow();
       }
 
-      addBtn?.click();
-      fillLastRow(data);
+      // Füllen die Zeile aus
+      if (row) fillRow(row, data);
+
       barcodeInput.value = '';
     } catch (err) {
       alert(err.message || 'Barcode konnte nicht verarbeitet werden.');

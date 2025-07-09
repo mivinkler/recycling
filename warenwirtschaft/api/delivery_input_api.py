@@ -9,7 +9,7 @@ class DeliveryInputAPI(View):
         prefix = code[:1]
 
         if prefix != "L":
-            return JsonResponse({'error': 'Nur Barcodes mit L-Präfix sind für Lieferung gültig.'}, status=400)
+            return JsonResponse({'error': 'Nur Barcodes mit L-Präfix sind für Wareneingang gültig.'}, status=400)
 
         try:
             reuse = ReusableBarcode.objects.get(code__iexact=code)

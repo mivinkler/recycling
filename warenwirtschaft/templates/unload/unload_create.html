@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Umladung erfassen{% endblock %}
+{% block title %}Vorsortierung erfassen{% endblock %}
 
 {% block content %}
 <form method="post" action="{% url 'unload_create' %}" id="unload-form">
   {% csrf_token %}
 
   <div class="itemcard-large">
-    <h2>Umladung erstellen</h2>
+    <h2>Vorsortierung erstellen</h2>
 
     <section class="itemcard-topbox">
       {{ form.delivery_unit.errors }}

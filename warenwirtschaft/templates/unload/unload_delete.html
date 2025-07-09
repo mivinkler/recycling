@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Umladung löschen{% endblock %}
+{% block title %}Vorsortierung löschen{% endblock %}
 
 {% block content %}
 
@@ -9,10 +9,10 @@
   <form method="post">
     {% csrf_token %}
 
-    <h2>Umladung löschen</h2>
+    <h2>Vorsortierung löschen</h2>
     
     <div class="itemcard-topbox ">
-      <p>Sind Sie sicher, dass der Umladung <strong>"{{ delivery_unit }}"</strong> gelöscht wird?</p>
+      <p>Sind Sie sicher, dass der Vorsortierung <strong>"{{ delivery_unit }}"</strong> gelöscht wird?</p>
     </div>
 
     <div class="button-wrapper">

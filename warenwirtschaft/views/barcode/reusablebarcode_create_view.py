@@ -14,8 +14,8 @@ class ReusableBarcodeCreateView(CreateView):
     template_name = 'barcode/reusable_barcode_create.html'
 
     AREA_PREFIX = {
-        1: "L",  # Eingang (Lieferung)
-        2: "U",  # Umladung
+        1: "L",  # Eingang (Eingang)
+        2: "S",  # Vorsortierung
         3: "A",  # Aufbereitung
         4: "V",  # Abholung (Versand)
         5: "E",  # Entsorgung

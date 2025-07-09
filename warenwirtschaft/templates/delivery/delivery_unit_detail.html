@@ -3,7 +3,7 @@
 {% load custom_filters %}
 {% load static %}
 
-{% block title %}Lieferung detail{% endblock %}
+{% block title %}Wareneingang detail{% endblock %}
 
 {% block content %}
 <div class="detail">
@@ -11,17 +11,17 @@
     <img src="{{ delivery_unit.barcode_image.url }}" class="detail-barcode">
 
     <div class="detail-row">
-      <div>Lieferung-ID:</div>
+      <div>Eingang-ID:</div>
       <div>{{ delivery.id }}</div>
     </div>
 
     <div class="detail-row">
-      <div>Lieferant:</div>
+      <div>Kunde:</div>
       <div>{{ delivery.supplier.name }}</div>
     </div>
 
     <div class="detail-row">
-      <div>Lieferant-Adresse:</div>
+      <div>Kunde-Adresse:</div>
       <div>{{ delivery.supplier.street }}, {{ delivery.supplier.postal_code }} {{ delivery.supplier.city }}</div>
     </div>
 
@@ -31,7 +31,7 @@
     </div>
 
     <div class="detail-row">
-      <div>Lieferung-Datum:</div>
+      <div>Eingang-Datum:</div>
       <div>{{ delivery.created_at|date:"d.m.Y" }}</div>
     </div>
 

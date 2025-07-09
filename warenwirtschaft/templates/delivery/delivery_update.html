@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Lieferung ändern{% endblock %}
+{% block title %}Wareneingang ändern{% endblock %}
 
 {% block content %}
 
@@ -9,7 +9,7 @@
   {% csrf_token %}
   
   <div class="itemcard-title-box">
-    <h2>Lieferung ändern</h2>
+    <h2>Wareneingang ändern</h2>
     <a href="{% url 'delivery_delete' delivery.pk %}" class="delete-btn" title="Lieferung löschen">
         <img src="{% static 'icons/delete-icon.svg' %}">
     </a>

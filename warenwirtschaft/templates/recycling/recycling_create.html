@@ -55,16 +55,16 @@
     </section>
 
     <section class="itemcard-table itemcard-table-second itemcard-margin-left">
-      <div class="itemcard-table-title">Neue Wagen:</div>
+      {% comment %} <div class="itemcard-table-title">Neue Wagen:</div> {% endcomment %}
 
       <div class="table add-row-js" data-type="recycling-create">
-        <div class="table-header">№</div>
+        {% comment %} <div class="table-header">№</div>
         <div class="table-header">Behälter</div>
         <div class="table-header">Gewicht</div>
         <div class="table-header">Material</div>
         <div class="table-header">Zweck</div>
         <div class="table-header">Status</div>
-        <div class="table-header">Anmerkung</div>
+        <div class="table-header">Anmerkung</div> {% endcomment %}
 
         {% for form in formset %}
           <div class="table-row">

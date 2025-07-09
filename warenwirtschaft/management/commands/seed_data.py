@@ -91,7 +91,7 @@ class Command(BaseCommand):
             )
         self.stdout.write(self.style.SUCCESS("Abholer erstellt!"))
 
-        # === Lieferungen + Versand vorbereiten ===
+        # === Eingang + Versand vorbereiten ===
         suppliers = list(Supplier.objects.all())
         customers = list(Customer.objects.all())
 
@@ -150,7 +150,7 @@ class Command(BaseCommand):
                 ))
 
         Unload.objects.bulk_create(unloads)
-        self.stdout.write(self.style.SUCCESS("Umladung erstellt!"))
+        self.stdout.write(self.style.SUCCESS("Vorsortierung erstellt!"))
 
         # === Recycling-Einheiten ===
         recyclings = []

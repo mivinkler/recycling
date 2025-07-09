@@ -4,18 +4,18 @@
   
   <div class="top-icon top-icon-border">
     <div>
-      <a href="{% url 'delivery_list' %}" class="{% if selected_menu == 'delivery_list' %} selected {% endif %}">Eingang</a>
+      <a href="{% url 'delivery_list' %}" class="{% if selected_menu == 'delivery_list' %} selected {% endif %}">Wareneingang</a>
       <a href="{% url 'delivery_create' %}" class="tooltip-wrapper">
         <img src="{% static 'icons/container-icon.svg' %}">
-        <span class="tooltip-text">Lieferung erstellen</span>
+        <span class="tooltip-text">Eingang erstellen</span>
       </a>
     </div>
     
     <div>
-      <a href="{% url 'unload_list' %}" class="{% if selected_menu == 'unload_list' %} selected {% endif %}">Sortierung</a>
+      <a href="{% url 'unload_list' %}" class="{% if selected_menu == 'unload_list' %} selected {% endif %}">Vorsortierung</a>
       <a href="{% url 'unload_create' %}" class="tooltip-wrapper">
         <img src="{% static 'icons/forklift-icon.svg' %}">
-        <span class="tooltip-text">Leerung erstellen</span>
+        <span class="tooltip-text">Vorsortierung erstellen</span>
       </a>
     </div>
     
@@ -28,10 +28,10 @@
     </div>
     
     <div>
-      <a href="{% url 'shipping_units_list' %}" class="{% if selected_menu == 'shipping_units_list' %} selected {% endif %}">Versand</a>
+      <a href="{% url 'shipping_units_list' %}" class="{% if selected_menu == 'shipping_units_list' %} selected {% endif %}">Abholung</a>
       <a href="{% url 'shipping_create' %}" class="tooltip-wrapper">
         <img src="{% static 'icons/shipping-icon.svg' %}">
-        <span class="tooltip-text">Versand erstellen</span>
+        <span class="tooltip-text">Abholung erstellen</span>
       </a>
     </div>
   </div>
@@ -52,7 +52,7 @@
       </a>
     </div>
     <div>
-      <a href="{% url 'reusable_barcode_list' %}">Barcode</a>
+      <a href="{% url 'reusable_barcode_list' %}">Mehrweg-Barcode</a>
       <a href="{% url 'reusable_barcode_create' %}" class="tooltip-wrapper">
         <img src="{% static 'icons/barcode-icon.svg' %}">
         <span class="tooltip-text">Barcode Erstellen</span>

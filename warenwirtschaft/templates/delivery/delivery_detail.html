@@ -3,12 +3,12 @@
 {% load custom_filters %}
 {% load static %}
 
-{% block title %}Lieferung detail{% endblock %}
+{% block title %}Wareneingang detail{% endblock %}
 
 {% block content %}
 <div class="process-wrapper">
   <div class="process-title">
-    <h2>Lieferung detail</h2>
+    <h2>Wareneingang detail</h2>
     <div>Datum: {{ delivery.created_at }}</div>
   </div>
 
@@ -16,8 +16,8 @@
     <thead>
       <tr class="process-row">
         <th>{{ delivery.supplier.name }} - LS: {{ delivery.delivery_receipt }}</th>
-        <th>Lieferung</th>
-        <th>Umladung</th>
+        <th>Eingang</th>
+        <th>Vorsortierung</th>
         <th>Aufbereitung</th>
         <th>Versand</th>
       </tr>
@@ -34,7 +34,7 @@
 
         {% for unload in item.unload_for_delivery_unit.all %}
         <tr class="process-row process-row-color">
-          <td class="indent-2"><span>⮡ </span> Umladung: {{ unload.get_box_type_display }} - {{ unload.material }}</td>
+          <td class="indent-2"><span>⮡ </span> Vorsortierung: {{ unload.get_box_type_display }} - {{ unload.material }}</td>
           <td></td>
           <td>{{ unload.weight }} kg</td>
           <td></td>
@@ -52,7 +52,7 @@
 
             {% for shipping in recycling.shipping_for_recycling.all %}
             <tr class="process-row-color">
-              <td class="indent-4"><span>⮡ </span> Versand: {{ shipping }}</td>
+              <td class="indent-4"><span>⮡ </span> Abholung: {{ shipping }}</td>
               <td></td>
               <td></td>
               <td></td>

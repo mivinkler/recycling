@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Lieferung erstellen{% endblock %}
+{% block title %}Eingang erstellen{% endblock %}
 
 {% block content %}
 
@@ -9,7 +9,7 @@
 {% csrf_token %}
 
   <div class="itemcard-small">
-    <h2>Lieferung erstellen</h2>
+    <h2>Wareneingang erstellen</h2>
 
     <input type="text" id="barcode" data-api="/api/unload-input/" autocomplete="off" placeholder="Barcode scannen..." />
 
@@ -33,7 +33,7 @@
     </section>
 
     <section class="itemcard-table">
-      <div class="itemcard-table-title">Ladungseinheiten:</div>
+      <div class="itemcard-table-title">Transportgut:</div>
       {{ formset.management_form }}
 
       <div class="table add-row-js" data-type="delivery-create-deliveryunits">
