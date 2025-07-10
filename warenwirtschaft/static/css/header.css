@@ -11,25 +11,6 @@ header {
     font-size: 12px;
 }
 
-header:hover {
-    height: 26px;
-    background-color: var(--color-hero);
-}
-
-.header-user {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-}
-
-header:hover .header-user {
-    opacity: 1;
-}
-
-
-
 /* ============ Top-menu =============*/
   
 /* .top-menu {
@@ -83,7 +64,8 @@ header:hover .header-user {
 .top-icon > div {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    justify-content: space-between;
+    height: 76px;
 }
 
 .top-icon-detail {
@@ -120,6 +102,10 @@ header:hover .header-user {
 
   .tooltip-wrapper {
     position: relative;
+  }
+
+  .tooltip-wrapper > img {
+    vertical-align: bottom;
   }
   
   .tooltip-wrapper .tooltip-text {

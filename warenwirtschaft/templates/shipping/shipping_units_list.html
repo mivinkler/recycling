@@ -14,6 +14,7 @@
   <div class="table-header">{% sort_header "customer__name" "Abholer" %}</div>
   <div class="table-header">{% sort_header "certificate" "Übernahmeschein" %}</div>
   <div class="table-header">{% sort_header "box_type" "Behälter" %}</div>
+  <div class="table-header">{% sort_header "transport" "Transport" %}</div>
   <div class="table-header">{% sort_header "material" "Material" %}</div>
   <div class="table-header">{% sort_header "weight" "Gewicht" %}</div>
   <div class="table-header">{% sort_header "status" "Status" %}</div>
@@ -30,6 +31,7 @@
       <div>{{ item.shipping.customer.name }}</div>
       <div>{{ item.shipping.certificate }}</div>
       <div>{{ item.get_box_type_display }}</div>
+      <div>{{ item.shipping.get_transport_display }}</div>
       <div>{{ item.material }}</div>
       <div>{{ item.weight }}</div>
       <div>{{ item.get_status_display }}</div>

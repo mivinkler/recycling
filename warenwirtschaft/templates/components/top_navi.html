@@ -52,10 +52,17 @@
       </a>
     </div>
     <div>
-      <a href="{% url 'reusable_barcode_list' %}">Mehrweg-Barcode</a>
+      <a href="{% url 'reusable_barcode_list' %}" class="{% if selected_menu == 'reusable_barcode_list' %} selected {% endif %}">Mehrweg-Barcode</a>
       <a href="{% url 'reusable_barcode_create' %}" class="tooltip-wrapper">
         <img src="{% static 'icons/barcode-icon.svg' %}">
         <span class="tooltip-text">Barcode Erstellen</span>
+      </a>
+    </div>
+    <div>
+      <a href="{% url 'reusable_barcode_list' %}" class="{% if selected_menu == 'reusable_barcode_create' %} selected {% endif %}">Tagliches Wiegen</a>
+      <a href="{% url 'reusable_barcode_create' %}" class="tooltip-wrapper">
+        <img src="{% static 'icons/date-and-time-icon.svg' %}">
+        <span class="tooltip-text">Tagliches Wiegen</span>
       </a>
     </div>
   </div>
@@ -134,15 +141,6 @@
       <span class="tooltip-text">Reset</span>
       <img src="{% static 'icons/reset-icon.svg' %}">
     </a>  
-  </div>
-
-
-     <!-- tägliches Wiegen -->
-  <div class="top-icon daily-weighing">
-    <a href="#" class="tooltip-wrapper">
-      <img src="{% static 'icons/date-and-time-icon.svg' %}">
-      <span class="tooltip-text">Tagliches Wiegen</span>
-    </a>
   </div>
 </div>
 
