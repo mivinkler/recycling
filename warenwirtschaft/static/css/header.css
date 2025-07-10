@@ -11,33 +11,30 @@ header {
     font-size: 12px;
 }
 
-/* ============ Top-menu =============*/
-  
-/* .top-menu {
-    display: flex;
-    padding: 10px 22px 5px;
-    background-color: var(--color-gray-100);
-}
-  
-.top-menu div {
-    min-width: 100px;
-    height: 20px;
+/* ============ Icons =============*/
 
-}
-  
-.top-menu a {
+ 
+.top-icon a {
     font-size: 13px;
     padding-bottom: 4px;
     transition: border-color 0.2s ease-in-out;
     font-weight: 500;
 }
 
-.top-menu a:hover, 
-.top-menu .selected {
+.header-list-title {
+    border-bottom: 3px solid transparent;
+}
+
+.header-list-title:hover, 
+.top-icon .selected {
     border-bottom: 3px solid var(--color-hero);
 }
-   */
-/* ============ Icons =============*/
+
+.icon-selected svg {
+    fill: var(--color-hero);
+    filter: brightness(85%);
+    /* filter: drop-shadow(0px 1px 3px var(--color-gray-600)); */
+}
   
 .top-icons-wrapper {
     display: flex;
@@ -100,28 +97,41 @@ header {
 
 /*  ============ tooltip  ============ */
 
-  .tooltip-wrapper {
+.tooltip-wrapper {
     position: relative;
   }
 
-  .tooltip-wrapper > img {
+.tooltip-wrapper > img {
     vertical-align: bottom;
   }
   
-  .tooltip-wrapper .tooltip-text {
-    display: none;
+.tooltip-wrapper .tooltip-text {
+    opacity: 0;
+    visibility: hidden;
     position: absolute;
+    transition: opacity 0.3s ease-in-out, visibility 0s linear;
+    transition-delay: 0s;
     left: 50%;
     transform: translateX(-50%);
     z-index: 1000;
     font-size: 10px;
     text-align: center;
-    bottom: -18px;
+    bottom: -14px;
     width: max-content;
   }
   
-  .tooltip-wrapper:hover .tooltip-text {
-    display: block;
+.tooltip-wrapper:hover .tooltip-text {
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 1s;
+  }
+
+.icon-selected .tooltip-text {
+    opacity: 1;
+    visibility: visible;
+    color: var(--color-hero);
+    filter: brightness(50%);
+    font-size: 11px;
   }
   
 /* ============ Icon: search =============*/

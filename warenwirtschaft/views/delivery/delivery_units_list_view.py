@@ -53,7 +53,7 @@ class DeliveryUnitsListView(ListView):
         context["search_query"] = self.request.GET.get("search", "")
         context["box_types"] = DeliveryUnit.BOX_TYPE_CHOICES
         context["statuses"] = DeliveryUnit.STATUS_CHOICES
-        context["selected_menu"] = "delivery_units_list"
+        context["selected_menu"] = "delivery_list"
 
         context["filters"] = {
             "search": self.request.GET.get("search", ""),
