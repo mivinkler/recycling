@@ -49,8 +49,10 @@ class DeliveryUnitsListView(ListView):
         page_obj = paginator.get_paginated_queryset(self.get_queryset())
 
         context["page_obj"] = page_obj
+        context['request'] = self.request
         context["active_fields"] = self.active_fields
         context["search_query"] = self.request.GET.get("search", "")
+        context["sort_param"] = self.request.GET.get("sort", "")
         context["box_types"] = DeliveryUnit.BOX_TYPE_CHOICES
         context["statuses"] = DeliveryUnit.STATUS_CHOICES
         context["selected_menu"] = "delivery_list"

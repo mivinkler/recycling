@@ -22,12 +22,10 @@ class SearchService:
         q_objects = Q()
 
         # choice
-       # Поиск по значению choice-полей
         for field, choices in self.choices_fields.items():
             label_to_value = {label.lower(): value for value, label in choices}
-            if search_query in label_to_value:  # Возможно, стоит использовать точное совпадение
+            if search_query in label_to_value:
                 q_objects |= Q(**{field: label_to_value[search_query]})
-
 
         # Textsuche
         for field in self.search_fields:

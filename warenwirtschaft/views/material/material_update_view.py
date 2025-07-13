@@ -22,4 +22,4 @@ class MaterialUpdateView(View):
         material.recycling = "recycling" in request.POST
 
         material.save()
-        return redirect("material_update", pk=pk)
+        return redirect("material_create")

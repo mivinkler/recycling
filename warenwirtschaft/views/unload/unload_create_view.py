@@ -30,6 +30,7 @@ class UnloadCreateView(View):
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data()
+        context["selected_menu"] = "unload_create"
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):

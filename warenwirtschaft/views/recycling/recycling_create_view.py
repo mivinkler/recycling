@@ -70,4 +70,5 @@ class RecyclingCreateView(View):
             "formset": formset,
             "vorhandene_forms": vorhandene_forms,
             "empty_form": formset.empty_form,
+            "selected_menu": "recycling_create",
         })

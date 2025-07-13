@@ -1,2 +1,3 @@
 from .material_list_view import MaterialListView
+from .material_create_view import MaterialCreateView
 from .material_update_view import MaterialUpdateView

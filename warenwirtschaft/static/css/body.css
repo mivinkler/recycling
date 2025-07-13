@@ -82,7 +82,11 @@
 }
 
 .table[data-type="material-list"] {
-  grid-template-columns:  minmax(33px, max-content) 200px repeat(3, 40px) auto;
+  grid-template-columns: minmax(33px, max-content) 200px repeat(3, 40px);
+}
+
+.table[data-type="material-create"] {
+  grid-template-columns: minmax(33px, max-content) 200px repeat(3, 40px) auto;
 }
 
 /* ================ table ================== */

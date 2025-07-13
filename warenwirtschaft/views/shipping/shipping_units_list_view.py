@@ -50,6 +50,7 @@ class ShippingUnitsListView(ListView):
         context["page_obj"] = page_obj
         context["active_fields"] = self.active_fields
         context["search_query"] = self.request.GET.get("search", ""),
+        context["sort_param"] = self.request.GET.get("sort", "")
         context["box_types"] = ShippingUnit.BOX_TYPE_CHOICES,
         context["selected_menu"] = "shipping_units_list"
 

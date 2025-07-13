@@ -1,12 +1,12 @@
 from django.views.generic import ListView
 from warenwirtschaft.models.material import Material
 
-class MaterialListView(ListView):
+class MaterialCreateView(ListView):
     model = Material
-    template_name = "material/material_list.html"
+    template_name = "material/material_create.html"
     context_object_name = "material_list"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['selected_menu'] = 'material_list'
+        context['selected_menu'] = 'material_create'
         return context

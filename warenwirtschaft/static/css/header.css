@@ -16,7 +16,6 @@ header {
  
 .top-icon a {
     font-size: 13px;
-    padding-bottom: 4px;
     transition: border-color 0.2s ease-in-out;
     font-weight: 500;
 }
@@ -79,13 +78,12 @@ header {
 
 .top-icon-detail > div {
     position: absolute;
-    top: 100%;
+    top: 38px;
     left: 0;
     z-index: 100;
     min-width: 150px;
-    margin-top: 4px;
-    padding: 8px;
-    border: 1px solid var(--color-gray-300);
+    padding: 10px;
+    border: 1px solid var(--color-gray-400);
     background-color: #fff;
     box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
     display: none;
@@ -104,7 +102,7 @@ header {
 .tooltip-wrapper > img {
     vertical-align: bottom;
   }
-  
+.tooltip-wrapper .tooltip-text-reset, 
 .tooltip-wrapper .tooltip-text {
     opacity: 0;
     visibility: hidden;
@@ -118,13 +116,13 @@ header {
     text-align: center;
     bottom: -14px;
     width: max-content;
-  }
+}
   
 .tooltip-wrapper:hover .tooltip-text {
     opacity: 1;
     visibility: visible;
     transition-delay: 1s;
-  }
+}
 
 .icon-selected .tooltip-text {
     opacity: 1;
@@ -132,48 +130,65 @@ header {
     color: var(--color-hero);
     filter: brightness(50%);
     font-size: 11px;
-  }
+}
+  
+.tooltip-wrapper .tooltip-text-reset {
+    visibility: visible;
+    opacity: 1;
+    color: #9f5017;
+}
   
 /* ============ Icon: search =============*/
-  
+
+.tooltip-wrapper > div {
+    box-shadow: 0 1px 3px var(--color-gray-500);
+}
+
 .icon-search {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 14px;
     width: 240px;
+
 }
 
 .icon-search-input,
 .icon-search-button,
-.icon-search-date input {
+.search-date input,
+.search-status select {
     height: 28px;
     border: 1px solid var(--color-gray-500);
     color: var(--color-gray-900);
 }
 
-.icon-search-date input,
-.icon-search-input {
-    width: 100%;
-    padding-left: 6px;
-    outline: none;
+.search-date input:focus {
+    outline: 2px solid var(--color-hero);
+    outline-offset: -1px;
 }
 
-.icon-search-date input:focus,
-.icon-search-input:focus {
-    border: 1px solid var(--color-hero);
-}
-
-.icon-search-button {
-    width: 28px;
-    background: var(--color-gray-500);
-    text-align: center;
-}
-
-.icon-search-date {
+.search-status,
+.search-date {
     display: flex;
     justify-content: space-between;
     gap: 6px;
-    margin-top: 12px;
+}
+
+.search-status *,
+.search-date * {
+    width: 48%;
+    align-content: center;
+    
+}
+
+.search-status div {
+    text-align: left;
+    margin-left: 10px;
+    font-size: 1.1em;
+    height: 28px;
+}
+
+.icon-search button {
+    box-shadow: 0 0.5px 2px var(--color-gray-500);
 }
 
 /* ============ Icon: sort =============*/
@@ -188,7 +203,7 @@ header {
 .icon-sort a {
     color: var(--color-gray-900);
     font-size: 12px;
-    transition: all 1s ease;
+    transition: all 0.5s ease;
 }
   
 .icon-sort a:hover,
@@ -196,7 +211,8 @@ header {
     color: rgb(2, 141, 2);
     display: inline-block;
     transform: scale(1.2);
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    text-shadow: 0.5px 0.5px 0 rgba(0, 0, 0, 0.2);
+    fill: rgb(2, 141, 2);;
 }
   
 .icon-sort a.icon-active {

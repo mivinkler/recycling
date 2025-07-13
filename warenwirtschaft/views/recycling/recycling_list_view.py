@@ -50,6 +50,7 @@ class RecyclingListView(ListView):
 
         context["active_fields"] = self.active_fields
         context["search_query"] = self.request.GET.get("search", "")
+        context["sort_param"] = self.request.GET.get("sort", "")
         context["box_type"] = Recycling.BOX_TYPE_CHOICES
         context["status"] = Recycling.STATUS_CHOICES
         context["selected_menu"] = "recycling_list"

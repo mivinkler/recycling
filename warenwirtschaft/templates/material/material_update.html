@@ -9,7 +9,7 @@
   {{ formset.management_form }}
 
   <div class="table-border"></div>
-  <div class="table material-list add-row-js" data-type="material-list">
+  <div class="table material-list add-row-js" data-type="material-create">
     <div class="table-header">ID</div>
     <div class="table-header">Material</div>
     <div class="table-header" title="Eingang">E</div>
@@ -60,7 +60,7 @@
         <div class="material-action">
           {{ item_form.id }}
           {% if item.id == edit_material.id %}
-            <a href="{% url 'material_list' %}" class="material-btn btn material-update-lock"></a>
+            <a href="{% url 'material_create' %}" class="material-btn btn material-update-lock"></a>
             <button type="submit" class="material-btn btn">Speichern</button>
           {% else %}
             <a href="{% url 'material_update' item.id %}" class="material-btn btn material-list-lock"></a>

@@ -15,6 +15,7 @@ class ShippingCreateView(CreateView):
         context = super().get_context_data(**kwargs)
         context['formset'] = ShippingUnitFormSet(self.request.POST or None)
         context['empty_form'] = context['formset'].empty_form
+        context["selected_menu"] = "shipping_create"
         return context
 
     def form_valid(self, form):

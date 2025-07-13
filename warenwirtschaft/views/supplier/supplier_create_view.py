@@ -8,3 +8,8 @@ class SupplierCreateView(CreateView):
     template_name = 'supplier/supplier_create.html'
     form_class = SupplierForm
     success_url = reverse_lazy('supplier_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['selected_menu'] = 'supplier_create'
+        return context

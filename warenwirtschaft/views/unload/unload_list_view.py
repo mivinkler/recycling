@@ -52,6 +52,7 @@ class UnloadListView(ListView):
 
         context["active_fields"] = self.active_fields
         context["search_query"] = self.request.GET.get("search", "")
+        context["sort_param"] = self.request.GET.get("sort", "")
         context["box_type"] = Unload.BOX_TYPE_CHOICES
         context["status"] = Unload.STATUS_CHOICES
         context["selected_menu"] = "unload_list"
