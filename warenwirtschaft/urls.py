@@ -2,7 +2,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-from warenwirtschaft.views.material import MaterialListView, MaterialCreateView, MaterialUpdateView
+from warenwirtschaft.views.material import MaterialListView, MaterialCreateView, MaterialUpdateView, MaterialDeleteView
 from warenwirtschaft.views.supplier import SupplierListView, SupplierUpdateView, SupplierDetailView, SupplierCreateView,SupplierDeleteView
 from warenwirtschaft.views.customer import CustomerListView, CustomerUpdateView, CustomerDetailView, CustomerCreateView, CustomerDeleteView
 from warenwirtschaft.views.delivery import DeliveryUnitsListView, DeliveryUnitDetailView, DeliveryDetailView, DeliveryCreateView, DeliveryUpdateView, DeliveryDeleteView
@@ -62,6 +62,7 @@ urlpatterns = [
     path('material/list/', MaterialListView.as_view(), name='material_list'),
     path('material/create/', MaterialCreateView.as_view(), name='material_create'),
     path("material/update/<int:pk>/", MaterialUpdateView.as_view(), name="material_update"),
+    path('material/delete/<int:pk>/', MaterialDeleteView.as_view(), name='material_delete'),
 
     path('api/', include('warenwirtschaft.api.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

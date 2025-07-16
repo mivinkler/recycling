@@ -1,12 +1,17 @@
-from django.views.generic import ListView
+from django.views.generic.edit import CreateView
+from django.urls import reverse_lazy
 from warenwirtschaft.models.material import Material
+from warenwirtschaft.forms import MaterialForm
 
-class MaterialCreateView(ListView):
+class MaterialCreateView(CreateView):
     model = Material
+    form_class = MaterialForm
     template_name = "material/material_create.html"
-    context_object_name = "material_list"
+    success_url = reverse_lazy("material_create")
+    context_object_name = "form"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['selected_menu'] = 'material_create'
+        context["material_list"] = Material.objects.all()
+        context["selected_menu"] = "material_create"
         return context

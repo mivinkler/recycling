@@ -122,11 +122,3 @@ class MaterialForm(forms.ModelForm):
     class Meta:
         model = Material
         fields = ['name', 'delivery', 'unload', 'recycling']
-
-
-MaterialFormSet = modelformset_factory(
-    Material,
-    form=MaterialForm,
-    extra=0,
-    can_delete=False
-)

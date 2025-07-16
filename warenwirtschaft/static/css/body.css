@@ -154,7 +154,7 @@
 }
 
 .table-row-id {
-  padding-left: 6px;
+  text-align: center;
 }
 
 .itemcard-table .table-row > .table-row-radio {
@@ -295,13 +295,12 @@
   box-shadow: 0 1px 2px var(--color-gray-200);
 }
 
-.material-update-lock:hover,
-.material-list-lock {
+.closed-lock {
   background-image: url('/static/icons/lock-icon.svg');
 }
 
-.material-update-lock,
-.material-list-lock:hover {
+.open-lock,
+.closed-lock:hover {
   background-image: url('/static/icons/lock-open-icon.svg');
 }
 
@@ -311,7 +310,7 @@
 }
 
 .material-delete img:hover {
-  transform: scale(1.2);
+  transform: scale(1.1);
 }
 
 .active-row > * {
@@ -458,6 +457,7 @@
 .itemcard-margin-left {
   margin-left: 30px;
 }
+
 
 /* ============ info-table NEU ============= */
 

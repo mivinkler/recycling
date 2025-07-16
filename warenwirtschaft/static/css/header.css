@@ -68,11 +68,11 @@ header {
     position: relative;
 }
   
-.top-icon-detail summary {
+summary {
     list-style: none;
 }
   
-.top-icon-detail summary::-webkit-details-marker {
+summary::-webkit-details-marker {
     display: none; /* Entfernt das Dreieck im Browser */
 }
 

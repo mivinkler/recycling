@@ -23,71 +23,51 @@
 
     <section class="itemcard-table">
       <div class="itemcard-table-title itemcard-margin-left">Aktive Fraktionen:</div>
-
       {{ formset.management_form }}
-      {{ formset.non_form_errors }}
 
-      <div class="table" data-type="recycling-create">
+      <div class="table add-row-js" data-type="recycling-create">
         <div class="table-row-radio"></div>
         <div class="table-header">№</div>
         <div class="table-header">Material</div>
         <div class="table-header">Behälter</div>
         <div class="table-header">Gewicht</div>
 
-
-
+        {{ formset.non_form_errors }}
         {% for form in vorhandene_forms %}
-          <div class="table-row">
-            
+          {{ form.id }}
+          <div class="table-row" data-type="recycling-create">
             <div class="table-row-radio">
               <input type="checkbox" name="selected_recycling" value="{{ form.instance.pk }}" checked>
             </div>
-            <div>{{ forloop.counter }}</div>
+            <div class="table-row-id">{{ forloop.counter }}</div>
             <div>{{ form.instance.material }}</div>
             <div>{{ form.instance.get_box_type_display }}</div>
             <div>{{ form.instance.weight }}</div>
-            <!-- <div>{{ form.instance.get_target_display }}</div> -->
-
           </div>
         {% endfor %}
+
+        <template id="table-row-template">
+          <div class="table-row">
+            {{ empty_form.id }}
+            <div class="table-row-radio"></div>
+            <div class="table-row-id">__index__</div>
+            <div>{{ empty_form.material }}</div>
+            <div>{{ empty_form.box_type }}</div>
+            <div>{{ empty_form.weight }}</div>
+          </div>
+        </template>
       </div>
     </section>
 
-    <section class="itemcard-table itemcard-table-second itemcard-margin-left">
-      {% comment %} <div class="itemcard-table-title">Neue Wagen:</div> {% endcomment %}
-
-      <div class="table add-row-js" data-type="recycling-create">
-        {% comment %} <div class="table-header">№</div>
-        <div class="table-header">Behälter</div>
-        <div class="table-header">Gewicht</div>
-        <div class="table-header">Material</div>
-        <div class="table-header">Zweck</div>
-        <div class="table-header">Status</div>
-        <div class="table-header">Anmerkung</div> {% endcomment %}
-
-
-      
-      <template id="table-row-template">
-        <div class="table-row">
-          {{ empty_form.id }}
-          <div></div>
-          <div class="table-row-id">__index__</div>
-          <div>{{ empty_form.box_type }}</div>
-          <div>{{ empty_form.weight }}</div>
-          <div>{{ empty_form.material }}</div>
-
-        </div>
-      </template>
+    <div>
+      <button class="btn-row-add itemcard-margin-left" type="button" id="form-add-btn">+</button>
+      <button class="btn-row-add" type="button" id="form-remove-btn">–</button>
     </div>
-
-      <button class="btn-row-add" type="button" id="add-form-btn">+</button>
-    </section>
 
 
     <div class="button-wrapper">
       <button type="submit" name="save" class="btn">Speichern</button>
     </div>
-
   </div>
 </form>
 

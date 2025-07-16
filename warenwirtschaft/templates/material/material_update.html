@@ -9,7 +9,7 @@
   {{ formset.management_form }}
 
   <div class="table-border"></div>
-  <div class="table material-list add-row-js" data-type="material-create">
+  <section class="table material-list add-row-js" data-type="material-create">
     <div class="table-header">ID</div>
     <div class="table-header">Material</div>
     <div class="table-header" title="Eingang">E</div>
@@ -19,7 +19,17 @@
 
     {% for item in material_list %}
       <div class="table-row{% if item.id == edit_material.id %} active-row{% endif %}">
-        <div>{{ item.id }}</div>
+
+        {# ——— ID ——— #}
+        <div class="material-delete-wrapper">
+          {% if item.id == edit_material.id %}
+            <a href="{% url 'material_delete' item.id %}" class="material-delete" title="Löschen">
+              <img src="{% static 'icons/delete-icon.svg' %}">
+            </a>
+          {% else %}
+            {{ item.id }}
+          {% endif %}
+        </div>
 
         {# ——— Name ——— #}
         <div>
@@ -60,44 +70,39 @@
         <div class="material-action">
           {{ item_form.id }}
           {% if item.id == edit_material.id %}
-            <a href="{% url 'material_create' %}" class="material-btn btn material-update-lock"></a>
+            <a href="{% url 'material_update' item.id %}" class="material-btn btn open-lock"></a>
             <button type="submit" class="material-btn btn">Speichern</button>
           {% else %}
-            <a href="{% url 'material_update' item.id %}" class="material-btn btn material-list-lock"></a>
+            <a href="{% url 'material_update' item.id %}" class="material-btn btn closed-lock"></a>
           {% endif %}
         </div>
       </div>
     {% endfor %}
-
-    <template id="table-row-template">
-      <div class="table-row active-row">
-        <div>__index__</div>
-
-        <div>
-          <input type="text" name="material_set-__prefix__-name" value="">
-        </div>
-
-        <div class="material-input">
-          <input type="checkbox" name="material_set-__prefix__-delivery">
-        </div>
-        <div class="material-input">
-          <input type="checkbox" name="material_set-__prefix__-unload">
-        </div>
-        <div class="material-input">
-          <input type="checkbox" name="material_set-__prefix__-recycling">
-        </div>
-
-        <div class="material-action">
-          <button type="button" class="material-btn btn row-delete">−</button>
-        </div>
-      </div>
-    </template>
-
-    <button class="btn-row-add" type="button" id="add-form-btn">+</button>
-  </div>
+  </section>
 </form>
-{% endblock %}
 
-{% block extra_js %}
-  <script src="{% static 'js/add-table-row.js' %}"></script>
+  <a href="{% url 'material_create' %}" class="table" data-type="material-create">
+    <div class="table-row">
+
+      <div class="table-row__id-gray">...</div>
+      <div>...</div>
+
+      <div class="material-input">
+        <input type="checkbox" class="material-input" disabled>
+      </div>
+      <div class="material-input">
+        <input type="checkbox" class="material-input" disabled>
+      </div>
+      <div class="material-input">
+        <input type="checkbox" class="material-input" disabled>
+      </div>
+
+      <div class="material-action">
+        <div class="material-btn btn closed-lock"></div>
+      </div>
+    </div>
+  </a>
+
+    <!-- <a href="{% url 'material_create' %}" class="btn-row-add" type="button">+</a> -->
+
 {% endblock %}
