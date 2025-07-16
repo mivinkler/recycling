@@ -11,13 +11,13 @@
 
     <h2>Material löschen</h2>
     
-    <div class="itemcard-topbox ">
+    <div class="delete-card">
       <p>Sind Sie sicher, dass der Material <strong>"{{ material.name }}"</strong> gelöscht wird?</p>
     </div>
 
     <div class="button-wrapper">
         <button  type="submit" name="save" class="btn">Löschen</button>
-        <a href="{% url 'delivery_list' %}" class="btn">Abbrechen</a>
+        <a href="{% url 'material_create' %}" class="btn">Abbrechen</a>
     </div>
   </form>
 </div>

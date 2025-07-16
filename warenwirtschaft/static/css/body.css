@@ -286,8 +286,8 @@
 }
 
 .btn.material-btn {
-  min-width: 28px;
-  height: 26px;
+  min-width: 26px;
+  height: 25px;
   background-position: center;
   background-repeat: no-repeat;
   transition: background-image 0.3s ease, transform 0.3s ease;
@@ -524,6 +524,10 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+}
+
+.delete-card {
+  margin: 20px 0;
 }
 
 /* ============= Buttons ============ */
