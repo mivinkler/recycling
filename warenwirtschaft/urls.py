@@ -5,15 +5,12 @@ from django.conf.urls.static import static
 from warenwirtschaft.views.material import MaterialListView, MaterialCreateView, MaterialUpdateView, MaterialDeleteView
 from warenwirtschaft.views.supplier import SupplierListView, SupplierUpdateView, SupplierDetailView, SupplierCreateView,SupplierDeleteView
 from warenwirtschaft.views.customer import CustomerListView, CustomerUpdateView, CustomerDetailView, CustomerCreateView, CustomerDeleteView
-from warenwirtschaft.views.delivery import DeliveryUnitsListView, DeliveryUnitDetailView, DeliveryDetailView, DeliveryCreateView, DeliveryUpdateView, DeliveryDeleteView
-from warenwirtschaft.views.unload import UnloadListView, UnloadCreateView, UnloadUpdateView, UnloadDeleteView, UnloadDetailView
+from warenwirtschaft.views.delivery import DeliveryUnitsListView, DeliveryUnitDetailView, DeliveryDetailWeightView, DeliveryCreateView, DeliveryUpdateView, DeliveryDeleteView
+from warenwirtschaft.views.unload import UnloadListView, UnloadCreateView, UnloadUpdateView, UnloadDeleteView, UnloadDetailWeightView
 from warenwirtschaft.views.recycling import RecyclingListView, RecyclingCreateView, RecyclingUpdateView, RecyclingDeleteView, RecyclingDetailView
 from warenwirtschaft.views.shipping import ShippingUnitsListView, ShippingDetailView, ShippingCreateView, ShippingUpdateView, ShippingDeleteView
+from warenwirtschaft.views.barcode import ReusableBarcodeListView, ReusableBarcodeDetailView, ReusableBarcodeCreateView, ReusableBarcodeUpdateView, ReusableBarcodeDeleteView, BarcodePrintView
 
-from warenwirtschaft.views.barcode.reusablebarcode_create_view import ReusableBarcodeCreateView
-from warenwirtschaft.views.barcode.reusablebarcode_list_view import ReusableBarcodeListView
-from warenwirtschaft.views.barcode.reuseblebarcode_detail_view import ReusableBarcodeDetailView
-from warenwirtschaft.views.barcode.barcode_print_view import BarcodePrintView
 
 
 urlpatterns = [
@@ -30,7 +27,7 @@ urlpatterns = [
     path('customer/delete/<int:pk>/', CustomerDeleteView.as_view(), name='customer_delete'),
 
     path('delivery/units/', DeliveryUnitsListView.as_view(), name='delivery_list'),
-    path('delivery/detail/<int:pk>/', DeliveryDetailView.as_view(), name='delivery_detail'),
+    path('delivery/detail-weight/<int:pk>/', DeliveryDetailWeightView.as_view(), name='delivery_detail_weight'),
     path('delivery-unit/detail/<int:pk>/', DeliveryUnitDetailView.as_view(), name='delivery_unit_detail'),
     path('delivery/create/', DeliveryCreateView.as_view(), name='delivery_create'),
     path('delivery/update/<int:pk>/', DeliveryUpdateView.as_view(), name='delivery_update'),
@@ -40,7 +37,7 @@ urlpatterns = [
     path('unload/create/', UnloadCreateView.as_view(), name='unload_create'),
     path('unload/update/<int:pk>/', UnloadUpdateView.as_view(), name='unload_update'),
     path('unload/delete/<int:pk>/', UnloadDeleteView.as_view(), name='unload_delete'),
-    path('unload/detail/<int:pk>/', UnloadDetailView.as_view(), name='unload_detail'),
+    path('unload/detail-weight/<int:pk>/', UnloadDetailWeightView.as_view(), name='unload_detail_weight'),
 
     path('recycling/list/', RecyclingListView.as_view(), name='recycling_list'),
     path('recycling/create/', RecyclingCreateView.as_view(), name='recycling_create'),
@@ -54,9 +51,11 @@ urlpatterns = [
     path('shipping/update/<int:pk>/', ShippingUpdateView.as_view(), name='shipping_update'),
     path('shipping/delete/<int:pk>/', ShippingDeleteView.as_view(), name='shipping_delete'),
 
-    path('reusable-barcodes/create/', ReusableBarcodeCreateView.as_view(), name='reusable_barcode_create'),
-    path('reusable-barcodes/list', ReusableBarcodeListView.as_view(), name='reusable_barcode_list'),
-    path('reusable-barcodes/detail/<int:pk>/', ReusableBarcodeDetailView.as_view(), name='reusable_barcode_detail'),
+    path('reusable-barcode/list/', ReusableBarcodeListView.as_view(), name='reusable_barcode_list'),
+    path('reusable-barcode/detail/<int:pk>/', ReusableBarcodeDetailView.as_view(), name='reusable_barcode_detail'),
+    path('reusable-barcode/create/', ReusableBarcodeCreateView.as_view(), name='reusable_barcode_create'),
+    path('reusable-barcode/update/<int:pk>/', ReusableBarcodeUpdateView.as_view(), name='reusable_barcode_update'),
+    path('reusable-barcode/delete/<int:pk>/', ReusableBarcodeDeleteView.as_view(), name='reusable_barcode_delete'),
     path('barcode/<str:model>/<int:pk>/print/', BarcodePrintView.as_view(), name='barcode_print'),
 
     path('material/list/', MaterialListView.as_view(), name='material_list'),

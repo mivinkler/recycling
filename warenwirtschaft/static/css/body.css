@@ -75,7 +75,7 @@
 }
 
 .table[data-type="barcode-list"] {
-  grid-template-columns: minmax(33px, max-content) 1fr 2fr repeat(4, 1fr);
+  grid-template-columns: minmax(33px, max-content) repeat(7, 1fr);
 }
 
 .table[data-type="material-list"] {
@@ -397,7 +397,7 @@
   font-size: 0.9em;
 }
 
-
+.itemcard-row,
 .itemcard-topbox > div {
   display: flex;
   align-items: center;
@@ -410,6 +410,7 @@
   justify-content: space-between;
   align-items: center;
 }
+
 
 .itemcard-row div:first-child {
   width: 25%;

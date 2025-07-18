@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Barcodes bearbeiten{% endblock %}
+
+{% block content %}
+
+<form class="itemcard-small" method="post" action="{% url 'reusable_barcode_update' form.instance.pk %}">
+    {% csrf_token %}
+
+    <div class="itemcard-title-box">
+        <h2>Barcode bearbeiten</h2>
+        <a href="{% url 'reusable_barcode_delete' form.instance.pk %}" class="delete-btn" title="Barcode löschen">
+            <img src="{% static 'icons/delete-icon.svg' %}">
+        </a>
+    </div>
+
+    <section class="itemcard-topbox">
+        {{ form.non_field_errors }}
+
+        <div class="itemcard-row">
+            <div>Code</div>
+            <div>{{ form.code }}</div>
+        </div>
+
+        <div class="itemcard-row">
+            <div>Bereich</div>
+            <div>{{ form.area }}</div>
+        </div>
+
+        <div class="itemcard-row">
+            <div>Lieferant</div>
+            <div>{{ form.supplier }}</div>
+        </div>
+
+        <div class="itemcard-row">
+            <div>Behälter</div>
+            <div>{{ form.box_type }}</div>
+        </div>
+
+        <div class="itemcard-row">
+            <div>Material</div>
+            <div>{{ form.material }}</div>
+        </div>
+
+        <div class="itemcard-row">
+            <div>Zweck</div>
+            <div>{{ form.target }}</div>
+        </div>
+
+        <div class="itemcard-row">
+            <div>Gewicht</div>
+            <div>{{ form.weight }}</div>
+        </div>
+    </section>
+
+  <div class="button-wrapper mt-4">
+    <button type="submit" class="btn">Speichern</button>
+  </div>
+</form>
+{% endblock %}
+

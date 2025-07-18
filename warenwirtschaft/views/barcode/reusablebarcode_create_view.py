@@ -14,12 +14,10 @@ class ReusableBarcodeCreateView(CreateView):
     template_name = 'barcode/reusable_barcode_create.html'
 
     AREA_PREFIX = {
-        1: "L",  # Eingang (Eingang)
+        1: "L",  # Lieferung (Wareneingang)
         2: "S",  # Vorsortierung
         3: "A",  # Aufbereitung
         4: "V",  # Abholung (Versand)
-        5: "E",  # Entsorgung
-        6: "Z",  # Zusatzdaten
     }
 
     def get_context_data(self, **kwargs):
@@ -32,6 +30,7 @@ class ReusableBarcodeCreateView(CreateView):
 
         prefix = self.AREA_PREFIX[self.object.area]
         suffix = uuid.uuid4().hex[:8].upper()
+        
         code = f"{prefix}{suffix}"
         self.object.code = code
 

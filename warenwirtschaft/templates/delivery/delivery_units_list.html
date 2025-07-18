@@ -23,11 +23,11 @@
 
   {% for item in page_obj %}
   <div class="table-row js-select-row"
-     data-id="{{ item.id }}"
-     data-url-detail="{% url 'delivery_detail' pk=item.delivery.id %}"
-     data-url-update="{% url 'delivery_update' pk=item.delivery.id %}"
-     data-url-detail-barcode="{% url 'delivery_unit_detail' pk=item.id %}"
-     data-url-unload-create="{% url 'unload_create' %}?unit_id={{ item.id }}">
+    data-id="{{ item.id }}"
+    data-url-detail-weight="{% url 'delivery_detail_weight' pk=item.delivery.id %}"
+    data-url-detail-barcode="{% url 'delivery_unit_detail' pk=item.id %}"
+    data-url-unload-create="{% url 'unload_create' %}?unit_id={{ item.id }}"
+    data-url-update="{% url 'delivery_update' pk=item.delivery.id %}">
     
       <div class="table-row__id-gray">{{ item.delivery.id }}</div>
       <div>{{ item.delivery.supplier.name }}</div>

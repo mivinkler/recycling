@@ -84,7 +84,6 @@
 </div>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
-    // Функция для изменения цвета
     function updateColorBasedOnValue(elementId) {
       const element = document.getElementById(elementId);
       const value = element.textContent.trim();
@@ -96,7 +95,6 @@
       }
     }
 
-    // Применяем к элементам с разницей
     updateColorBasedOnValue("item-diff");
     updateColorBasedOnValue("unload-diff");
   });

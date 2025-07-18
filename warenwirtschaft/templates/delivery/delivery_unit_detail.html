@@ -64,7 +64,7 @@
   <section class="print-btn-wrapper no-print">
     <button class="print-btn btn" onclick="window.print()">Drücken</button>
     <button class="print-btn btn"><a href="{% url 'delivery_update' pk=delivery_unit.delivery.id %}">Ändern</a></button>
-    <button class="print-btn btn"><a href="{% url 'delivery_detail' pk=delivery_unit.delivery.id %}">Detail</a></button>
+    <button class="print-btn btn"><a href="{% url 'delivery_detail_weight' pk=delivery_unit.delivery.id %}">Detail</a></button>
   </section>
 </div>
 {% endblock %}

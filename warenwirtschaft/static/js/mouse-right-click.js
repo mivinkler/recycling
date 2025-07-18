@@ -8,6 +8,13 @@ document.addEventListener("DOMContentLoaded", () => {
     row.addEventListener("contextmenu", e => {
       e.preventDefault();
       currentRow = row;
+
+      // nur verfügbare Menüpunkte anzeigen
+      menu.querySelectorAll("li").forEach(li => {
+        const key = toCamel(li.dataset.action);
+        li.style.display = currentRow.dataset[key] ? "block" : "none";
+      });
+
       showMenuAt(menu, e.pageX, e.pageY);
     });
   });
@@ -21,9 +28,9 @@ document.addEventListener("DOMContentLoaded", () => {
     menu.className = "context-menu";
 
     const actions = [
-      { text: "Detail", key: "url-detail" },
-      { text: "Barcode", key: "url-detail-barcode" },
-      { text: "Ändern", key: "url-update" },
+      { text: "Barcode drücken", key: "url-detail-barcode" },
+      { text: "Gewichtsprüfung", key: "url-detail-weight" },
+      { text: "Inhalt ändern", key: "url-update" },
     ];
 
     actions.forEach(({ text, key }) => {
@@ -41,17 +48,17 @@ document.addEventListener("DOMContentLoaded", () => {
     return menu;
   }
 
-function showMenuAt(menu, x, y) {
-  menu.style.top = `${y}px`;
-  menu.style.left = `${x}px`;
-  menu.style.display = "block";
-}
+  function showMenuAt(menu, x, y) {
+    menu.style.top = `${y}px`;
+    menu.style.left = `${x}px`;
+    menu.style.display = "block";
+  }
 
-function hideMenu(menu) {
-  menu.style.display = "none";
-}
+  function hideMenu(menu) {
+    menu.style.display = "none";
+  }
 
-function toCamel(str) {
-  return str.replace(/-([a-z])/g, (_, char) => char.toUpperCase());
-}
+  function toCamel(str) {
+    return str.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
+  }
 });

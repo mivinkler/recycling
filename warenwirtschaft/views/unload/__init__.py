@@ -2,4 +2,4 @@ from .unload_list_view import UnloadListView
 from .unload_create_view import UnloadCreateView
 from .unload_update_view import UnloadUpdateView
 from .unload_delete_view import UnloadDeleteView
-from .unload_detail_view import UnloadDetailView
+from .unload_detail_view import UnloadDetailWeightView
