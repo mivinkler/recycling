@@ -1,32 +1,18 @@
 from django.views.generic.edit import UpdateView
-from django.db import transaction
 from django.urls import reverse_lazy
-
-from warenwirtschaft.models.delivery_unit import DeliveryUnit
-from warenwirtschaft.forms import UnloadFormSet
+from warenwirtschaft.models import Unload
+from warenwirtschaft.forms import UnloadForm
 
 
 class UnloadUpdateView(UpdateView):
-    model = DeliveryUnit
+    model = Unload
+    form_class = UnloadForm
     template_name = 'unload/unload_update.html'
-    context_object_name = 'delivery_unit'
-    fields = []
+    context_object_name = 'unload'
     success_url = reverse_lazy('unload_list')
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        if self.request.method == 'POST':
-            self.formset = UnloadFormSet(self.request.POST, instance=self.object, prefix='unload')
-        else:
-            self.formset = UnloadFormSet(instance=self.object, prefix='unload')
-        context['formset'] = self.formset
-        context['empty_form'] = self.formset.empty_form
-        return context
-
-    def form_valid(self, form):
-        self.get_context_data()
-        if self.formset.is_valid():
-            with transaction.atomic():
-                self.formset.save()
-            return super().form_valid(form)
-        return self.form_invalid(form)
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        print("DEBUG: geladenes Unload-Objekt:", self.object)
+        print("DEBUG: initial data:", self.get_form().initial)
+        return super().get(request, *args, **kwargs)

@@ -21,13 +21,13 @@
   <div class="table-header">{% sort_header "target" "Zweck" %}</div>
   <div class="table-header">{% sort_header "created_at" "Datum" %}</div>
   <div class="table-header">{% sort_header "status" "Status" %}</div>
-  <div class="table-header">{% sort_header "note" "Anmerkung" %}</div>
+
 
   {% for item in page_obj %}
     <div class="table-row js-select-row"
       data-id="{{ item.id }}"
       data-url-detail-weight="{% url 'unload_detail_weight' pk=item.delivery_unit.id %}"
-      data-url-detail-barcode="{% url 'delivery_unit_detail' pk=item.id %}"
+      data-url-detail-barcode="{% url 'unload_detail' pk=item.id %}"
       data-url-update="{% url 'unload_update' pk=item.delivery_unit.id %}"
       data-url-create="{% url 'recycling_create' %}?unit_id={{ item.id }}">
 
@@ -42,7 +42,6 @@
       <div>{{ item|getattr:"get_target_display" }}</div>
       <div>{{ item.created_at|date:'d.m.Y' }}</div>
       <div>{{ item|getattr:"get_status_display" }}</div>
-      <div title="{{ item.note }}">{{ item.note }}</div>
     </div>
   {% endfor %}
 </div>

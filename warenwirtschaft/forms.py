@@ -39,26 +39,37 @@ DeliveryUnitFormSet = inlineformset_factory(
     extra=1,
     can_delete=True
 )
-
-# Unload
+# Liefereinheit-Auswahl (z.B. in CreateView)
 class DeliveryUnitForm(forms.Form):
     delivery_unit = forms.ModelChoiceField(
         queryset=DeliveryUnit.objects.filter(status=1),
         label="Liefereinheit"
     )
 
+
+# Hauptformular für Unload (als ModelForm)
+class UnloadForm(forms.ModelForm):
+    class Meta:
+        model = Unload
+        fields = ['box_type', 'material', 'weight', 'target', 'note']
+
+
+# Inline-FormSet für die Bearbeitung von mehreren Unloads
 UnloadFormSet = inlineformset_factory(
     parent_model=DeliveryUnit,
     model=Unload,
+    form=UnloadForm,  # ← теперь это твоя основная форма
     fields=['id', 'box_type', 'material', 'weight', 'target', 'note'],
     extra=1,
     can_delete=True
 )
 
-# Recycling
-class UnloadForm(forms.Form):
+
+# Auswahl-Formular für Recycling (nur eine Unload wählen)
+class UnloadChoiceForm(forms.Form):
     unload = forms.ModelChoiceField(
         queryset=Unload.objects.filter(status=1),
+        label="Fraktion wählen"
     )
 
 class RecyclingForm(forms.ModelForm):
