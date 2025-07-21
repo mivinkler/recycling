@@ -67,7 +67,7 @@
           {% endif %}
         </div>
 
-        <div class="material-action">
+        <div class="row-action">
           {{ item_form.id }}
           {% if item.id == edit_material.id %}
             <a href="{% url 'material_update' item.id %}" class="material-btn btn open-lock"></a>
@@ -97,7 +97,7 @@
         <input type="checkbox" class="material-input" disabled>
       </div>
 
-      <div class="material-action">
+      <div class="row-action">
         <div class="material-btn btn closed-lock"></div>
       </div>
     </div>

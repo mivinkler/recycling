@@ -81,7 +81,7 @@ class RecyclingForm(forms.ModelForm):
 
     class Meta:
         model = Recycling
-        fields = ["box_type", "material", "material_other", "weight", "target", "status", "note", "unloads"]
+        fields = ["box_type", "material", "weight", "target", "status", "unloads"]
         widgets = {
             "unloads": forms.CheckboxSelectMultiple,
         }
@@ -89,10 +89,16 @@ class RecyclingForm(forms.ModelForm):
 RecyclingFormSet = modelformset_factory(
     Recycling,
     form=RecyclingForm,
-    fields=["box_type", "material", "material_other", "weight", "target", "status", "note"],
-    extra=1,
+    fields=["box_type", "material", "weight"],
+    extra=0,
     can_delete=True
 )
+
+# Recycling-update
+class SimpleRecyclingForm(forms.ModelForm):
+    class Meta:
+        model = Recycling
+        fields = ["box_type", "material", "weight"]
 
 # Shipping
 class ShippingForm(forms.ModelForm):

@@ -29,7 +29,7 @@
           <input type="checkbox" name="material-recycling-{{ item.id }}" class="material-input" disabled {% if item.recycling %}checked{% endif %}>
         </div>
 
-        <div class="material-action">
+        <div class="row-action">
           <a href="{% url 'material_update' item.id %}" class="material-btn btn closed-lock"></a>
         </div>
       </div>
@@ -55,7 +55,7 @@
           {{ form.recycling }}
         </div>
 
-        <div class="material-action">
+        <div class="row-action">
           <div class="material-btn btn open-lock"></div>
           <button type="submit" class="material-btn btn">Speichern</button>
         </div>

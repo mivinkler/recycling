@@ -44,10 +44,8 @@
   grid-template-columns: minmax(33px, max-content) repeat(6, 1fr) 2fr;
 }
 
-
-
 .table[data-type="recycling-create"] {
-  grid-template-columns: 30px minmax(34px, max-content) repeat(2, 2fr) 1fr;;
+  grid-template-columns: 30px minmax(34px, max-content) 2fr 2fr 1fr;
 }
 
 .table[data-type="recycling-detail"] {
@@ -256,11 +254,16 @@
 
 /* ============ Material ============= */
 
-.table-row > .material-action {
-  border-bottom: none;
+.table-row > .row-action {
+  border: none;
 }
 
-.table-row:hover > .material-action {
+.itemcard-table .table-row > .recycling-action {
+  background-color: var(--color-gray-100);
+  padding: 4px;
+}
+
+.table-row:hover > .row-action {
   background-color: #fff;
 }
 
@@ -275,7 +278,7 @@
   width: 100%; 
 }
 
-.material-action {
+.row-action {
   display: flex;
   justify-content: left;
   gap: 10px;
@@ -317,7 +320,7 @@
   background-color: var(--color-gray-300);
 }
 
-.active-row > .material-action {
+.active-row > .row-action {
   background-color: transparent;
 }
 

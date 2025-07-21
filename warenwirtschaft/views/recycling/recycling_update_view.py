@@ -3,8 +3,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.db import transaction
 
+from warenwirtschaft.forms import UnloadChoiceForm, RecyclingFormSet, RecyclingForm
 from warenwirtschaft.models import Unload, Recycling
-from warenwirtschaft.forms import UnloadForm, RecyclingFormSet, RecyclingForm
 
 
 class RecyclingUpdateView(View):
@@ -12,70 +12,72 @@ class RecyclingUpdateView(View):
     success_url = reverse_lazy("recycling_list")
 
     def get(self, request, pk):
+        # Lade bestehende Leerung
         unload = get_object_or_404(Unload, pk=pk)
-        form_unload = UnloadForm(initial={"unload": unload})
-        formset = RecyclingFormSet(queryset=Recycling.objects.none())  # Neue Wagen
+
+        # Zeige aktuelle Verknüpfung in der Form
+        form = UnloadChoiceForm(initial={"unload": unload})
+
+        # Nur neue Recycling-Einträge im Formset
+        formset = RecyclingFormSet(queryset=Recycling.objects.none())
+
+        # Vorhandene aktive Recycling-Objekte anzeigen
         vorhandene_forms = self.build_vorhandene_forms(unload)
-        return self.render_page(form_unload, formset, vorhandene_forms)
+
+        return self.render_page(form, formset, vorhandene_forms, unload)
 
     def post(self, request, pk):
         unload = get_object_or_404(Unload, pk=pk)
-        form_unload = UnloadForm(request.POST)
-        formset = RecyclingFormSet(request.POST)
+
+        form = UnloadChoiceForm(request.POST)
+        formset = RecyclingFormSet(request.POST, queryset=Recycling.objects.none())
         selected_ids = request.POST.getlist("selected_recycling")
 
-        # leere Zeilen erlauben
-        for form in formset.forms:
-            if not form.has_changed():
-                form.empty_permitted = True
-
-        # Wir ignorieren unload aus dem Formular — immer verwenden wir URL-unload (pk)
-        if formset.is_valid():
+        if form.is_valid() and formset.is_valid():
             with transaction.atomic():
-                self.update_recycling_links(unload, selected_ids)
-                self.save_new_recycling(formset, unload)
+                # Bestehende Verknüpfungen aktualisieren
+                for recycling in Recycling.objects.filter(status=1):
+                    if str(recycling.pk) in selected_ids:
+                        recycling.unloads.add(unload)
+                    else:
+                        recycling.unloads.remove(unload)
+
+                # Neue Recycling-Einträge speichern und verknüpfen
+                new_instances = formset.save(commit=False)
+                for instance in new_instances:
+                    instance.save()
+                    instance.unloads.add(unload)
+
+                # Entfernte Einträge löschen
+                for deleted in formset.deleted_objects:
+                    deleted.delete()
+
+                # Optional: Status der Unload ändern, wenn nötig
+                # unload.status = 3
+                # unload.save()
+
             return redirect(self.success_url)
 
-        # Fehlerfall
+        # Fehlerfall: Seite neu anzeigen mit Fehlern
         vorhandene_forms = self.build_vorhandene_forms(unload)
-        return self.render_page(form_unload, formset, vorhandene_forms)
-
-    def update_recycling_links(self, unload, selected_ids):
-        """Verknüpfe oder entferne Recycling-Einträge basierend auf Checkbox-Auswahl."""
-        selected_ids = set(map(str, selected_ids))
-
-        for recycling in Recycling.objects.filter(status=1):
-            linked = unload in recycling.unloads.all()
-            selected = str(recycling.pk) in selected_ids
-
-            if selected and not linked:
-                recycling.unloads.add(unload)
-            elif not selected and linked:
-                recycling.unloads.remove(unload)
-
-    def save_new_recycling(self, formset, unload):
-        for instance in formset.save(commit=False):
-            instance.save()
-            instance.unloads.add(unload)
-
-        for obj in formset.deleted_objects:
-            obj.delete()
+        return self.render_page(form, formset, vorhandene_forms, unload)
 
     def build_vorhandene_forms(self, unload):
-        """Alle aktiven Recycling, Checkbox gesetzt wenn mit Unload verknüpft."""
+        """Baue Formulare für bestehende Recycling-Einträge mit gesetzten Checkboxen."""
         forms = []
-        for recycling in Recycling.objects.filter(status=1):
-            form = RecyclingForm(instance=recycling, prefix=f"recycling_{recycling.pk}")
-            if unload in recycling.unloads.all():
+        for obj in Recycling.objects.filter(status=1):
+            form = RecyclingForm(instance=obj, prefix=f"recycling_{obj.pk}")
+            if unload in obj.unloads.all():
                 form.fields["selected"].initial = True
             forms.append(form)
         return forms
 
-    def render_page(self, form_unload, formset, vorhandene_forms):
+    def render_page(self, form, formset, vorhandene_forms, unload):
         return render(self.request, self.template_name, {
-            "form": form_unload,
+            "form": form,
             "formset": formset,
-            "vorhandene_forms": vorhandene_forms,
             "empty_form": formset.empty_form,
-            "unload": form_unload.initial["unload"],
+            "vorhandene_forms": vorhandene_forms,
+            "unload": unload,
+            "selected_menu": "recycling_update",
         })
