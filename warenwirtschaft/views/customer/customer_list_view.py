@@ -44,7 +44,7 @@ class CustomerListView(ListView):
         context["sort_param"] = self.request.GET.get("sort", "")
         context["search_query"] = self.request.GET.get("search", "")
         context["active_fields"] = self.active_fields
-
+        context["dashboard"] = True
         context["selected_menu"] = "customer_list"
 
         return context

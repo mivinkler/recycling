@@ -35,6 +35,9 @@ class SupplierListView(ListView):
 
         return queryset
 
+    def dashboard(request):
+        return render(request, 'dashboard.html', {'show_dashboard_menu': True})
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
@@ -47,6 +50,7 @@ class SupplierListView(ListView):
         context["search_query"] = self.request.GET.get("search", "")
         context["sort_param"] = self.request.GET.get("sort", "")
         context["selected_menu"] = "supplier_list"
+        context["dashboard"] = True
 
         return context
 

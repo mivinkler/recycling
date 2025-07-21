@@ -9,4 +9,5 @@ class ReusableBarcodeListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['selected_menu'] = 'reusable_barcode_list'
+        context["dashboard"] = True
         return context

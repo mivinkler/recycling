@@ -53,5 +53,6 @@ class ShippingUnitsListView(ListView):
         context["sort_param"] = self.request.GET.get("sort", "")
         context["box_types"] = ShippingUnit.BOX_TYPE_CHOICES,
         context["selected_menu"] = "shipping_units_list"
+        context["dashboard"] = True
 
         return context

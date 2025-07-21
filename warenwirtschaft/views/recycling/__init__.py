@@ -3,4 +3,3 @@ from .recycling_create_view import RecyclingCreateView
 from .recycling_update_view import RecyclingUpdateView
 from .recycling_detail_view import RecyclingDetailView
 from .recycling_delete_view import RecyclingDeleteView
-from .recycling_update_weight_view import RecyclingUpdateWeightView

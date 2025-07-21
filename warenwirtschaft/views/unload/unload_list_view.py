@@ -56,5 +56,6 @@ class UnloadListView(ListView):
         context["box_type"] = Unload.BOX_TYPE_CHOICES
         context["status"] = Unload.STATUS_CHOICES
         context["selected_menu"] = "unload_list"
+        context["dashboard"] = True
 
         return context
