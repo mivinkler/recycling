@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Aufbereitung erfassen{% endblock %}
+
+{% block content %}
+<form method="post" action="{% url 'recycling_update_weight' %}" id="recycling-form">
+  {% csrf_token %}
+
+  <div class="itemcard-large">
+    <h2 class="itemcard-margin-left">Aufbereitung erstellen</h2>
+
+    <section class="itemcard-table">
+      <div class="itemcard-table-title itemcard-margin-left">Aktive Fraktionen:</div>
+      {{ formset.management_form }}
+
+      <div class="table add-row-js" data-type="recycling-update-weight">
+        <div class="table-header">№</div>
+        <div class="table-header">Material</div>
+        <div class="table-header">Behälter</div>
+        <div class="table-header">Gewicht</div>
+        <div class="table-header">Gewicht neu</div>
+        <div></div>
+
+        {{ formset.non_form_errors }}
+        {% for item in recycling %}
+          <div class="table-row">
+            <input type="hidden" name="{{ item.id.html_name }}" value="{{ item.id.value }}">
+            <div class="table-row-id">{{ forloop.counter }}</div>
+            <div>{{ item.material }}</div>
+            <div>{{ item.get_box_type_display }}</div>
+            <div>{{ item.weight }}</div>
+            <div>{{ item.weight }}</div>
+            <div class="row-action" style="background-color: #eee;">
+              <button type="button" class="btn fetch-weight-btn">Gewicht anfragen</button>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+  </div>
+</form>
+{% endblock %}

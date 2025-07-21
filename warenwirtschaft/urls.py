@@ -7,7 +7,7 @@ from warenwirtschaft.views.supplier import SupplierListView, SupplierUpdateView,
 from warenwirtschaft.views.customer import CustomerListView, CustomerUpdateView, CustomerDetailView, CustomerCreateView, CustomerDeleteView
 from warenwirtschaft.views.delivery import DeliveryUnitsListView, DeliveryUnitDetailView, DeliveryDetailWeightView, DeliveryCreateView, DeliveryUpdateView, DeliveryDeleteView
 from warenwirtschaft.views.unload import UnloadListView, UnloadCreateView, UnloadUpdateView, UnloadDeleteView, UnloadDetailView, UnloadDetailWeightView
-from warenwirtschaft.views.recycling import RecyclingListView, RecyclingCreateView, RecyclingUpdateView, RecyclingDeleteView, RecyclingDetailView
+from warenwirtschaft.views.recycling import RecyclingListView, RecyclingCreateView, RecyclingUpdateView, RecyclingDeleteView, RecyclingDetailView, RecyclingUpdateWeightView
 from warenwirtschaft.views.shipping import ShippingUnitsListView, ShippingDetailView, ShippingCreateView, ShippingUpdateView, ShippingDeleteView
 from warenwirtschaft.views.barcode import ReusableBarcodeListView, ReusableBarcodeDetailView, ReusableBarcodeCreateView, ReusableBarcodeUpdateView, ReusableBarcodeDeleteView, BarcodePrintView
 
@@ -43,6 +43,7 @@ urlpatterns = [
     path('recycling/list/', RecyclingListView.as_view(), name='recycling_list'),
     path('recycling/create/', RecyclingCreateView.as_view(), name='recycling_create'),
     path('recycling/update/<int:pk>/', RecyclingUpdateView.as_view(), name='recycling_update'),
+    path('recycling/update-weight/', RecyclingUpdateWeightView.as_view(), name='recycling_update_weight'),
     path('recycling/delete/<int:pk>/', RecyclingDeleteView.as_view(), name='recycling_delete'),
     path('recycling/detail/<int:pk>/', RecyclingDetailView.as_view(), name='recycling_detail'),
 
