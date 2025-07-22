@@ -48,8 +48,8 @@
   grid-template-columns: 30px minmax(34px, max-content) 2fr 2fr 1fr;
 }
 
-.table[data-type="recycling-update-weight"] {
-  grid-template-columns: minmax(34px, max-content) repeat(4, 1fr) auto;
+.table[data-type="recycling-weight"] {
+  grid-template-columns: minmax(34px, max-content) repeat(4, 1fr) 120px;
 }
 
 .table[data-type="recycling-detail"] {

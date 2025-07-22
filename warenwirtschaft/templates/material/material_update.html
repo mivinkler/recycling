@@ -17,8 +17,9 @@
     <div class="table-header" title="Aufbereitung">A</div>
     <div class="table-header"></div>
 
+    {# ——— TODO ———> Umschreiben #}
     {% for item in material_list %}
-      <div class="table-row{% if item.id == edit_material.id %} active-row{% endif %}">
+      <div class="table-row {% if item.id == edit_material.id %} active-row{% endif %}">
 
         {# ——— ID ——— #}
         <div class="material-delete-wrapper">

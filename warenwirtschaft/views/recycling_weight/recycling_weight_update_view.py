@@ -1,16 +1,14 @@
-from django.views.generic.edit import FormView
-from django.urls import reverse_lazy
-from warenwirtschaft.models import Recycling
-from warenwirtschaft.forms import RecyclingForm
+from django.views import View
+from django.shortcuts import render, redirect, get_object_or_404
+from warenwirtschaft.models.recycling import Recycling
 
+class RecyclingWeightUpdateView(View):
+    template_name = 'recycling_weight/recycling_weight_update.html'
 
-class RecyclingWeightUpdateView(FormView):
-    form_class = RecyclingForm
-    template_name = 'recycling/recycling_weight_update.html'
-    success_url = reverse_lazy('recycling_list')
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        context['recycling'] = Recycling.objects.filter(status=1)
-        return context
+    def get(self, request, pk):
+        context = {
+            "recycling_list": Recycling.objects.filter(status=1),
+            "selected_menu": "recycling_weight_update",
+            "edit_recycling": get_object_or_404(Recycling, pk=pk),
+        }
+        return render(request, self.template_name, context)  # ← исправлено
