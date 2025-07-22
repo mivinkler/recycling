@@ -439,10 +439,18 @@
   border-left: 1px solid var(--color-gray-300);
 }
 
-.itemcard-table .table-row > div {
-  background-color: #fff;
+.itemcard-table .table-row > div:not(.table-row-input) {
   padding-left: 4px;
 }
+
+.itemcard-table .table-row > div {
+  background-color: #fff;
+}
+
+.table-row-input input {
+  /* border: none; */
+}
+
 
 .itemcard-table .table-header {
   background-color: var(--color-gray-200);

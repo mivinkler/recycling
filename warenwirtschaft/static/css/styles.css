@@ -47,6 +47,11 @@ a {
   color: inherit;
 }
 
+input[type="text"] {
+    padding-block: 0;
+    padding-inline: 0;
+}
+
 input,
 select,
 textarea {
