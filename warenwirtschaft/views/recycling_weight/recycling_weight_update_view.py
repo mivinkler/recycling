@@ -10,5 +10,6 @@ class RecyclingWeightUpdateView(View):
             "recycling_list": Recycling.objects.filter(status=1),
             "selected_menu": "recycling_weight_update",
             "edit_recycling": get_object_or_404(Recycling, pk=pk),
+            "status_choices": Recycling.STATUS_CHOICES,
         }
-        return render(request, self.template_name, context)  # ← исправлено
+        return render(request, self.template_name, context)

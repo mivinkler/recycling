@@ -89,7 +89,7 @@ class RecyclingForm(forms.ModelForm):
 RecyclingFormSet = modelformset_factory(
     Recycling,
     form=RecyclingForm,
-    fields=["box_type", "material", "weight"],
+    fields=["box_type", "material", "weight", "status"],
     extra=0,
     can_delete=True
 )
@@ -98,7 +98,7 @@ RecyclingFormSet = modelformset_factory(
 class SimpleRecyclingForm(forms.ModelForm):
     class Meta:
         model = Recycling
-        fields = ["box_type", "material", "weight"]
+        fields = ["box_type", "material", "weight", "status"]
 
 # Shipping
 class ShippingForm(forms.ModelForm):

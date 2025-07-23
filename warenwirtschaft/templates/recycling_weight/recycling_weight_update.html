@@ -18,6 +18,7 @@
         <div class="table-header">Behälter</div>
         <div class="table-header">Gewicht</div>
         <div class="table-header">Gewicht neu</div>
+        <div class="table-header">Status</div>
         <div></div>
 
         {% for item in recycling_list %}
@@ -27,9 +28,8 @@
             <div class="table-row-id">{{ forloop.counter }}</div>
             <div>{{ item.material }}</div>
             <div>{{ item.get_box_type_display }}</div>
-            <div>
-              <input name="weight" type="text" style="border: none">
-            </div>
+            <div>{{ item.weight }}</div>
+
             <div class="table-row-input">
               {% if item.id == edit_recycling.id %}
                 <form method="post" action="{% url 'recycling_weight_update' pk=edit_recycling.id %}" id="recycling-form">
@@ -37,17 +37,35 @@
                   <input type="text" name="name" value="{{ item.name }}">
                 </form>
               {% else %}
-                <a href="{% url 'recycling_weight_update' item.id %}" style="width: 100%; height: 100%;"></a>
+                <a href="{% url 'recycling_weight_update' item.id %}"></a>
               {% endif %}
             </div>
-            <div class="row-action">
+
+            <div>
+              {% if item.id == edit_recycling.id %}
+                <select name="status">
+                  {% for key, value in status_choices %}
+                    <option value="{{ key }}" {% if item.status == key %}selected{% endif %}>
+                      {{ value }}
+                    </option>
+                  {% endfor %}
+                </select>
+              {% else %}
+              <p class="table-row-select">
+                {{ item.get_status_display }}
+              </p>
+                {% endif %}
+            </div>
+
+            <div class="row-action" style="background-color: var(--color-gray-100);">
               {{ item_form.id }}
               {% if item.id == edit_recycling.id %}
-                
+ 
                 <button type="submit" class="material-btn btn">Speichern</button>
               
               {% endif %}
             </div>
+
           </div>
         {% endfor %}
       </div>

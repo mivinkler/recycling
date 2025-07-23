@@ -16,7 +16,7 @@ class Recycling(models.Model):
 
     STATUS_CHOICES = [
         (1, "Aktiv"),
-        (2, "Erledigt"),
+        (2, "Lieferbar"),
     ]
 
     # Viele-zu-viele Beziehung zu Unload
