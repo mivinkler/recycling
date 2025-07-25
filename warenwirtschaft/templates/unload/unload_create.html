@@ -43,7 +43,7 @@
         {% for form in formset %}
         <div class="table-row" data-type="unload-create">
           {{ item_form.id }}
-          <div class="table-row-id">{{ forloop.counter }}</div>
+          <div class="table-cell-id">{{ forloop.counter }}</div>
           <div>{{ form.box_type }}</div>
           <div>{{ form.material }}</div>
           <div>{{ form.target }}</div>
@@ -57,7 +57,7 @@
         <template id="table-row-template">
           <div class="table-row">
             {{ empty_form.id }}
-            <div class="table-row-id">__index__</div>
+            <div class="table-cell-id">__index__</div>
             <div>{{ empty_form.box_type }}</div>
             <div>{{ empty_form.material }}</div>
             <div>{{ empty_form.target }}</div>

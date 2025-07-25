@@ -35,10 +35,11 @@ class DeliveryForm(forms.ModelForm):
 DeliveryUnitFormSet = inlineformset_factory(
     parent_model=Delivery,
     model=DeliveryUnit,
-    fields=['box_type', 'material', 'target', 'material_other', 'weight', 'note'],
-    extra=1,
+    fields=['box_type', 'material', 'weight', 'note'],
+    extra=0,
     can_delete=True
 )
+
 # Liefereinheit-Auswahl (z.B. in CreateView)
 class DeliveryUnitForm(forms.Form):
     delivery_unit = forms.ModelChoiceField(

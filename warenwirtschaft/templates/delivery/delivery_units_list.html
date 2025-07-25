@@ -29,16 +29,16 @@
     data-url-unload-create="{% url 'unload_create' %}?unit_id={{ item.id }}"
     data-url-update="{% url 'delivery_update' pk=item.delivery.id %}">
   
-    <div class="table-row__id-gray">{{ item.delivery.id }}</div>
-    <div>{{ item.delivery.supplier.name }}</div>
-    <div>{{ item.delivery.delivery_receipt }}</div>
-    <div>{{ item.get_box_type_display }}</div>
-    <div>{{ item.material.name|default:"-" }}</div>
-    <div>{{ item.weight }}</div>
-    <div>{{ item.created_at|date:'d.m.Y' }}</div>
-    <div>{{ item.get_target_display }}</div>
-    <div>{{ item.get_status_display }}</div>
-    <div title="{{ item.note }}">{{ item.note }}</div>
+    <div class="table-cell table-cell-id">{{ item.delivery.id }}</div>
+    <div class="table-cell">{{ item.delivery.supplier.name }}</div>
+    <div class="table-cell">{{ item.delivery.delivery_receipt }}</div>
+    <div class="table-cell">{{ item.get_box_type_display }}</div>
+    <div class="table-cell">{{ item.material.name|default:"-" }}</div>
+    <div class="table-cell">{{ item.weight }}</div>
+    <div class="table-cell">{{ item.created_at|date:'d.m.Y' }}</div>
+    <div class="table-cell">{{ item.get_target_display }}</div>
+    <div class="table-cell">{{ item.get_status_display }}</div>
+    <div class="table-cell" title="{{ item.note }}">{{ item.note }}</div>
   </div>
   {% endfor %}
 </div>

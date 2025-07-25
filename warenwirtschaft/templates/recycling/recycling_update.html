@@ -41,7 +41,7 @@
             <div class="table-row-radio">
               <input type="checkbox" name="selected_recycling" value="{{ form.pk }}" checked>
             </div>
-            <div class="table-row-id">{{ forloop.counter }}</div>
+            <div class="table-cell-id">{{ forloop.counter }}</div>
             <div>{{ form.material }}</div>
             <div>{{ form.box_type }}</div>
             <div>{{ form.weight }}</div>
@@ -52,7 +52,7 @@
           <div class="table-row">
             {{ empty_form.id }}
             <div class="table-row-radio"></div>
-            <div class="table-row-id">__index__</div>
+            <div class="table-cell-id">__index__</div>
             <div>{{ empty_form.material }}</div>
             <div>{{ empty_form.box_type }}</div>
             <div>{{ empty_form.weight }}</div>

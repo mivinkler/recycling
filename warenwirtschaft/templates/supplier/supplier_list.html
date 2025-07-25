@@ -27,16 +27,16 @@
     data-url-detail="{% url 'supplier_detail' pk=supplier.id %}"
     data-url-update="{% url 'supplier_update' pk=supplier.id %}">
     
-    <div class="table-row__id-gray">{{ supplier.id }}</div>
-    <div>{{ supplier.avv_number }}</div>
-    <div>{{ supplier.name }}</div>
-    <div>{{ supplier.street }}</div>
-    <div>{{ supplier.postal_code }}</div>
-    <div>{{ supplier.city }}</div>
-    <div>{{ supplier.phone }}</div>
-    <div>{{ supplier.email }}</div>
-    <div>{{ supplier.created_at|date:"d.m.Y" }}</div>
-    <div title="{{ supplier.note }}">{{ supplier.note }}</div>
+    <div class="table-cell table-cell-id">{{ supplier.id }}</div>
+    <div class="table-cell">{{ supplier.avv_number }}</div>
+    <div class="table-cell">{{ supplier.name }}</div>
+    <div class="table-cell">{{ supplier.street }}</div>
+    <div class="table-cell">{{ supplier.postal_code }}</div>
+    <div class="table-cell">{{ supplier.city }}</div>
+    <div class="table-cell">{{ supplier.phone }}</div>
+    <div class="table-cell">{{ supplier.email }}</div>
+    <div class="table-cell">{{ supplier.created_at|date:"d.m.Y" }}</div>
+    <div class="table-cell" title="{{ supplier.note }}">{{ supplier.note }}</div>
   </div>
   {% endfor %}
 </div>

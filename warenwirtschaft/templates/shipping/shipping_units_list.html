@@ -27,16 +27,16 @@
       data-url-detail="{% url 'shipping_detail' pk=item.shipping.id %}"
       data-url-update="{% url 'shipping_update' pk=item.shipping.id %}">
     
-      <div class="table-row__id-gray">{{ item.shipping.id }}</div>
-      <div>{{ item.shipping.customer.name }}</div>
-      <div>{{ item.shipping.certificate }}</div>
-      <div>{{ item.get_box_type_display }}</div>
-      <div>{{ item.shipping.get_transport_display }}</div>
-      <div>{{ item.material }}</div>
-      <div>{{ item.weight }}</div>
-      <div>{{ item.get_status_display }}</div>
-      <div>{{ item.created_at|date:'d.m.Y' }}</div>
-      <div title="{{ item.note }}">{{ item.note }}</div>
+      <div class="table-cell table-cell-id">{{ item.shipping.id }}</div>
+      <div class="table-cell">{{ item.shipping.customer.name }}</div>
+      <div class="table-cell">{{ item.shipping.certificate }}</div>
+      <div class="table-cell">{{ item.get_box_type_display }}</div>
+      <div class="table-cell">{{ item.shipping.get_transport_display }}</div>
+      <div class="table-cell">{{ item.material }}</div>
+      <div class="table-cell">{{ item.weight }}</div>
+      <div class="table-cell">{{ item.get_status_display }}</div>
+      <div class="table-cell">{{ item.created_at|date:'d.m.Y' }}</div>
+      <div class="table-cell" title="{{ item.note }}">{{ item.note }}</div>
     </div>
   {% endfor %}
 </div>

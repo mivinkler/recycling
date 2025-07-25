@@ -27,16 +27,16 @@
     data-url-detail="{% url 'customer_detail' pk=customer.id %}"
     data-url-update="{% url 'customer_update' pk=customer.id %}">
     
-    <div class="table-row__id-gray">{{ customer.id }}</div>
-    <div>{{ customer.avv_number }}</div>
-    <div>{{ customer.name }}</div>
-    <div>{{ customer.street }}</div>
-    <div>{{ customer.postal_code }}</div>
-    <div>{{ customer.city }}</div>
-    <div>{{ customer.phone }}</div>
-    <div>{{ customer.email }}</div>
-    <div>{{ customer.created_at|date:"d.m.Y" }}</div>
-    <div title="{{ customer.note }}">{{ customer.note }}</div>
+    <div class="table-cell table-cell-id">{{ customer.id }}</div>
+    <div class="table-cell">{{ customer.avv_number }}</div>
+    <div class="table-cell">{{ customer.name }}</div>
+    <div class="table-cell">{{ customer.street }}</div>
+    <div class="table-cell">{{ customer.postal_code }}</div>
+    <div class="table-cell">{{ customer.city }}</div>
+    <div class="table-cell">{{ customer.phone }}</div>
+    <div class="table-cell">{{ customer.email }}</div>
+    <div class="table-cell">{{ customer.created_at|date:"d.m.Y" }}</div>
+    <div class="table-cell" title="{{ customer.note }}">{{ customer.note }}</div>
   </div>
   {% endfor %}
 </div>

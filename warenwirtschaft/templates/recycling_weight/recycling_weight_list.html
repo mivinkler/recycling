@@ -14,19 +14,23 @@
         <div class="table-header">Behälter</div>
         <div class="table-header">Gewicht</div>
         <div class="table-header">Gewicht neu</div>
+        <div class="table-header">Status</div>
         <div></div>
 
         {% for item in recycling_list %}
           <div class="table-row">
             <input type="hidden" name="recycling_id_{{ item.id }}" value="{{ item.id }}">
-            <div class="table-row-id">{{ forloop.counter }}</div>
+            <div class="table-cell-id">{{ forloop.counter }}</div>
             <div>{{ item.material }}</div>
             <div>{{ item.get_box_type_display }}</div>
             <div>{{ item.weight }}</div>
             <div></div>
+            <div class="table-row-status">{{ item.get_status_display }}</div>
+
+
+            <!-- Button -->
             <div class="row-action" style="background-color: #eee; padding-left: 0;">
               <a href="{% url 'recycling_weight_update' item.id %}" class="material-btn btn closed-lock"></a>
-
             </div>
           </div>
         {% endfor %}

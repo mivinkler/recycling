@@ -25,11 +25,12 @@
         {{ item_form.id }}
           <div class="table-row {% if item.id == edit_recyling.id %} active-row{% endif %}">
             <input type="hidden" name="{{ item.id.html_name }}" value="{{ item.id.value }}">
-            <div class="table-row-id">{{ forloop.counter }}</div>
+            <div class="table-cell-id">{{ forloop.counter }}</div>
             <div>{{ item.material }}</div>
             <div>{{ item.get_box_type_display }}</div>
             <div>{{ item.weight }}</div>
 
+            <!-- Gewicht neu -->
             <div class="table-row-input">
               {% if item.id == edit_recycling.id %}
                 <form method="post" action="{% url 'recycling_weight_update' pk=edit_recycling.id %}" id="recycling-form">
@@ -41,6 +42,8 @@
               {% endif %}
             </div>
 
+
+            <!-- Status -->
             <div>
               {% if item.id == edit_recycling.id %}
                 <select name="status">
@@ -57,12 +60,14 @@
                 {% endif %}
             </div>
 
+            <!-- Button -->
             <div class="row-action" style="background-color: var(--color-gray-100);">
               {{ item_form.id }}
               {% if item.id == edit_recycling.id %}
- 
+                <a href="{% url 'recycling_weight_list' %}" class="material-btn btn open-lock"></a>
                 <button type="submit" class="material-btn btn">Speichern</button>
-              
+              {% else %}
+                <a href="{% url 'recycling_weight_update' item.id %}" class="material-btn btn closed-lock"></a>
               {% endif %}
             </div>
 

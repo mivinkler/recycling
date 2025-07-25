@@ -15,16 +15,16 @@
 
   {% for item in material_list %}
     <div class="table-row js-select-row">
-      <div class="table-row__id-gray">{{ item.id }}</div>
-      <div>{{ item.name }}</div>
+      <div class="table-cell-id">{{ item.id }}</div>
+      <div class="table-cell">{{ item.name }}</div>
 
-      <div class="material-input">
+      <div class="table-cell material-input">
         <input type="checkbox" name="material-delivery-{{ item.id }}" class="material-input" disabled {% if item.delivery %}checked{% endif %}>
       </div>
-      <div class="material-input">
+      <div class="table-cell material-input">
         <input type="checkbox" name="material-unload-{{ item.id }}" class="material-input" disabled {% if item.unload %}checked{% endif %}>
       </div>
-      <div class="material-input">
+      <div class="table-cell material-input">
         <input type="checkbox" name="material-recycling-{{ item.id }}" class="material-input" disabled {% if item.recycling %}checked{% endif %}>
       </div>
     </div>

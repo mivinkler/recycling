@@ -25,14 +25,14 @@
     data-url-detail-barcode="{% url 'reusable_barcode_detail' pk=barcode.id %}"
     data-url-update="{% url 'reusable_barcode_update' pk=barcode.id %}"
     >
-    <div class="table-row__id-gray">{{ barcode.id }}</div>
-    <div>{{ barcode.code }}</div>
-    <div>{{ barcode.get_area_display }}</div>
-    <div>{{ barcode.supplier }}</div>
-    <div>{{ barcode.get_box_type_display }}</div>
-    <div>{{ barcode.material }}</div>
-    <div>{{ barcode.get_target_display }}</div>
-    <div>{{ barcode.created_at|date:"d.m.Y H:i" }}</div>
+    <div class="table-cell table-cell-id">{{ barcode.id }}</div>
+    <div class="table-cell">{{ barcode.code }}</div>
+    <div class="table-cell">{{ barcode.get_area_display }}</div>
+    <div class="table-cell">{{ barcode.supplier }}</div>
+    <div class="table-cell">{{ barcode.get_box_type_display }}</div>
+    <div class="table-cell">{{ barcode.material }}</div>
+    <div class="table-cell">{{ barcode.get_target_display }}</div>
+    <div class="table-cell">{{ barcode.created_at|date:"d.m.Y H:i" }}</div>
   </div>
   {% endfor %}
 
@@ -41,7 +41,5 @@
 {% endblock %}
 
 {% block extra_js %}
-  <!-- <script src="{% static 'js/selectable-row.js' %}"></script> -->
-  <script src="{% static 'js/mouse-right-click.js' %}"></script>
   <script src="{% static 'js/mouse-left-click.js' %}"></script>
 {% endblock %}

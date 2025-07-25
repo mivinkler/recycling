@@ -1,34 +1,38 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const addButton = document.getElementById('form-add-btn');
-    const removeButton = document.getElementById('form-remove-btn');
-    const tableBody = document.querySelector('.add-row-js');
-    const template = document.getElementById('table-row-template').innerHTML;
-    const totalFormsInput = document.querySelector('input[name$="-TOTAL_FORMS"]');
+  const addButton = document.getElementById('form-add-btn');
+  const removeButton = document.getElementById('form-remove-btn');
+  const tableBody = document.querySelector('.itemcard-tbody');
+  const template = document.getElementById('table-row-template');
+  const totalFormsInput = document.querySelector('input[name$="-TOTAL_FORMS"]');
 
-    addButton.addEventListener('click', function () {
-        const formIndex = +totalFormsInput.value;
-        const existingRowCount = tableBody.querySelectorAll('.table-row-id').length;
+  let formIndex = +totalFormsInput.value;
+  let rowNumber = formIndex;
 
-        const newRowHtml = template
-            .replace(/__prefix__/g, formIndex)
-            .replace(/__index__/g, existingRowCount + 1);
+  addButton.addEventListener('click', function () {
+    const clone = template.content.cloneNode(true).firstElementChild;
 
-        tableBody.insertAdjacentHTML('beforeend', newRowHtml);
-        totalFormsInput.value = formIndex + 1;
-    });
+    // Заменяем индексы в name/id и №
+    clone.innerHTML = clone.innerHTML
+      .replace(/__prefix__/g, formIndex)
+      .replace(/__index__/g, rowNumber + 1);
 
-    removeButton.addEventListener('click', function () {
-        const currentFormCount = +totalFormsInput.value;
+    tableBody.appendChild(clone);
 
-        if (currentFormCount > 0) {
-            const rows = tableBody.querySelectorAll('.table-row');
-            if (rows.length > 0) {
-                const lastRow = rows[rows.length - 1];
-                if (!lastRow.querySelector('input[type="checkbox"]')) {
-                    lastRow.remove();
-                    totalFormsInput.value = currentFormCount - 1;
-                }
-            }
-        }
-    });
+    formIndex++;
+    rowNumber++;
+    totalFormsInput.value = formIndex;
+  });
+
+  removeButton.addEventListener('click', function () {
+    const dynamicRows = tableBody.querySelectorAll('.dynamic-row');
+
+    if (dynamicRows.length > 0) {
+      const lastRow = dynamicRows[dynamicRows.length - 1];
+      lastRow.remove();
+
+      formIndex--;
+      rowNumber--;
+      totalFormsInput.value = formIndex;
+    }
+  });
 });
