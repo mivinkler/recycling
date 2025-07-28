@@ -5,7 +5,8 @@
 
 {% block content %}
 <div class="table-border"></div>
-  <section class="table" data-type="material-create">
+
+  <section class="table" data-type="material">
     <div class="table-header">ID</div>
     <div class="table-header">Material</div>
     <div class="table-header" title="Wareneingang">E</div>
@@ -15,17 +16,17 @@
 
     {% for item in material_list %}
       <div class="table-row">
-        <div class="table-cell-id">{{ item.id }}</div>
-        <div>{{ item.name }}</div>
+        <div class="table-cell table-cell-id">{{ item.id }}</div>
+        <div class="table-cell">{{ item.name }}</div>
 
-        <div class="material-input">
-          <input type="checkbox" name="material-delivery-{{ item.id }}" class="material-input" disabled {% if item.delivery %}checked{% endif %}>
+        <div class="table-cell checkbox-circle">
+          <input type="checkbox" name="material-delivery-{{ item.id }}" disabled {% if item.delivery %}checked{% endif %}>
         </div>
-        <div class="material-input">
-          <input type="checkbox" name="material-unload-{{ item.id }}" class="material-input" disabled {% if item.unload %}checked{% endif %}>
+        <div class="table-cell checkbox-circle">
+          <input type="checkbox" name="material-unload-{{ item.id }}" disabled {% if item.unload %}checked{% endif %}>
         </div>
-        <div class="material-input">
-          <input type="checkbox" name="material-recycling-{{ item.id }}" class="material-input" disabled {% if item.recycling %}checked{% endif %}>
+        <div class="table-cell checkbox-circle">
+          <input type="checkbox" name="material-recycling-{{ item.id }}" disabled {% if item.recycling %}checked{% endif %}>
         </div>
 
         <div class="row-action">
@@ -34,10 +35,10 @@
       </div>
     {% endfor %} 
   </section>
-    
+  
   <form method="post">
   {% csrf_token %}
-    <section class="table" data-type="material-create">
+    <section class="table" data-type="material">
       <div class="table-row">
         <div class="table-cell-id">...</div>
         <div>
@@ -62,7 +63,7 @@
       <!-- <button class="btn-row-add" type="button">+</button> -->
     </section>
   </form>
-
+</div>
 
 {% endblock %}
 

@@ -2,13 +2,40 @@
   grid-template-columns: minmax(33px, max-content) 1fr 2fr 2fr 1fr 2fr 1fr 2fr 1fr 4fr;
 }
 
+.table[data-type="deliveryunits-list"] {
+  grid-template-columns: minmax(33px, max-content) repeat(8, 1fr) 2fr;
+}
+
+.table[data-type="unload-list"] {
+  grid-template-columns: repeat(3, auto) 2fr 3fr repeat(6, 1fr);
+}
+
+.table[data-type="recycling-list"] {
+  grid-template-columns: minmax(33px, max-content) repeat(6, 1fr) 2fr;
+}
+
+
+.table[data-type="shippingunits-list"] {
+  grid-template-columns: minmax(33px, max-content) repeat(8, 1fr) 2fr;
+}
+
+
+
+.table[data-type="barcode-list"] {
+  grid-template-columns: minmax(33px, max-content) repeat(7, 1fr);
+}
+
+
+.table[data-type="material"] {
+  grid-template-columns: minmax(33px, max-content) 200px repeat(3, 40px) auto;
+  }
+  
+/* 
 .table[data-type="supplier-detail-deliveryunits"] {
   grid-template-columns: minmax(33px, max-content) repeat(8, 1fr);
 }
 
-.table[data-type="deliveryunits-list"] {
-  grid-template-columns: minmax(33px, max-content) repeat(8, 1fr) 2fr;
-}
+
 
 .table[data-type="delivery-detail-deliveryunits"] {
   grid-template-columns: minmax(33px, max-content) repeat(6, 1fr);
@@ -22,9 +49,7 @@
   grid-template-columns: minmax(33px, max-content) repeat(5, 4fr) 1fr;
 }
 
-.table[data-type="unload-list"] {
-  grid-template-columns: repeat(3, auto) 2fr 3fr repeat(6, 1fr);
-}
+
 
 .table[data-type="unload-create"] {
   grid-template-columns: minmax(33px, max-content) repeat(3, 2fr) 1fr auto;
@@ -38,9 +63,7 @@
   grid-template-columns: minmax(33px, max-content) repeat(5, 1fr) 2fr;
 }
 
-.table[data-type="recycling-list"] {
-  grid-template-columns: minmax(33px, max-content) repeat(6, 1fr) 2fr;
-}
+
 
 .table[data-type="recycling-create"] {
   grid-template-columns: 30px minmax(34px, max-content) 2fr 2fr 1fr;
@@ -54,9 +77,6 @@
   grid-template-columns: minmax(33px, max-content) repeat(4, 1fr) 2fr auto;
 }
 
-.table[data-type="shippingunits-list"] {
-  grid-template-columns: minmax(33px, max-content) repeat(8, 1fr) 2fr;
-}
 
 .table[data-type="shipping-detail-shippingunits"] {
   grid-template-columns: minmax(33px, max-content) repeat(3, 1fr) auto;
@@ -74,17 +94,13 @@
   grid-template-columns: repeat(3, auto) repeat(5, 1fr) auto 2fr;
 }
 
-.table[data-type="barcode-list"] {
-  grid-template-columns: minmax(33px, max-content) repeat(7, 1fr);
-}
+
 
 .table[data-type="material-list"] {
   grid-template-columns: minmax(33px, max-content) 200px repeat(3, 40px);
-}
+} */
 
-.table[data-type="material-create"] {
-  grid-template-columns: minmax(33px, max-content) 200px repeat(3, 40px) auto;
-}
+
 
 /* ================ Table (List) ================== */
 
@@ -558,7 +574,12 @@ td.itemcard-id {
 
 /* ============ Material ============= */
 
-.table-row > .row-action {
+.table-row:hover > .row-action {
+  background-color: #fff;
+}
+
+
+/* .table-row > .row-action {
   border: none;
 }
 
@@ -567,22 +588,15 @@ td.itemcard-id {
   padding: 4px;
 }
 
-.table-row:hover > .row-action {
-  background-color: #fff;
-}
-
-.table-row > .material-input {
-  padding-left: 2px;
-}
 
 .material-input {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%; 
-}
+} */
 
-.row-action {
+/* .row-action {
   display: flex;
   justify-content: left;
   gap: 10px;
@@ -590,7 +604,7 @@ td.itemcard-id {
   margin-left: 4px;
   cursor: pointer;
   height: 30px;
-}
+} */
 
 .btn.material-btn {
   min-width: 26px;
