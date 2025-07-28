@@ -47,7 +47,7 @@
           <th class="itemcard-material">Material</th>
           <th class="itemcard-weight">Gewicht</th>
           <th class="itemcard-note">Anmerkung</th>
-          <th class="itemcard-delete"><img src="/static/icons/delete-icon.svg" title="Zeile löschen"></th>
+          <th class="checkbox-square"><img src="/static/icons/delete-icon.svg" title="Zeile löschen"></th>
         </tr>
       </thead>
 
@@ -59,11 +59,11 @@
         <tr class="itemcard-table-row">
           <td hidden>{{ item_form.id }}</td>
           <td class="itemcard-id">{{ forloop.counter }}</td>
-          <td>{{ item_form.box_type }}</td>
-          <td>{{ item_form.material }}</td>
+          <td class="itemcard-material">{{ item_form.material }}</td>
+          <td class="itemcard-boxtype">{{ item_form.box_type }}</td>
           <td class="itemcard-weight">{{ item_form.weight }}</td>
-          <td>{{ item_form.note }}</td>
-          <td class="itemcard-row-delete">{{ item_form.DELETE }}</td>
+          <td class="itemcard-note">{{ item_form.note }}</td>
+          <td class="checkbox-square">{{ item_form.DELETE }}</td>
         </tr>
         {% endfor %}
       </tbody>
@@ -73,11 +73,11 @@
       <tr class="itemcard-table-row dynamic-row">
         <td hidden>{{ empty_form.id }}</td>
         <td class="itemcard-id">__index__</td>
-        <td>{{ empty_form.box_type }}</td>
-        <td>{{ empty_form.material }}</td>
+        <td class="itemcard-material">{{ empty_form.material }}</td>
+        <td class="itemcard-boxtype">{{ empty_form.box_type }}</td>
         <td class="itemcard-weight">{{ empty_form.weight }}</td>
-        <td>{{ empty_form.note }}</td>
-        <td class="itemcard-row-delete">{{ empty_form.DELETE }}</td>
+        <td class="itemcard-note">{{ empty_form.note }}</td>
+        <td class="checkbox-square"></td>
       </tr>
     </template>
 

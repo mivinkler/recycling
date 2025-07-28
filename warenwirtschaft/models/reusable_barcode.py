@@ -15,8 +15,7 @@ class ReusableBarcode(models.Model):
     AREA_CHOICES = [
         (1, "Eingang"),
         (2, "Vorsortierung"),
-        (3, "Aufbereitung"),
-        (4, "Abholung"),
+        (3, "Abholung"),
     ]
     
     TARGET_CHOICES = [

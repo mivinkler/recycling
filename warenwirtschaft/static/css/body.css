@@ -1,5 +1,3 @@
-/* ================ Grid Row ================== */
-
 .table[data-type="supplier-list"] {
   grid-template-columns: minmax(33px, max-content) 1fr 2fr 2fr 1fr 2fr 1fr 2fr 1fr 4fr;
 }
@@ -172,12 +170,6 @@
 }
 
 
-
-
-
-
-
-
 /* ================ Itemcard ================ */
 
 .itemcard {
@@ -189,22 +181,24 @@
 }
 
 .itemcard-small {
-  max-width: 600px;
+  max-width: 760px;
 }
 
 .itemcard-large {
-  max-width: 840px;
+  max-width: 920px;
 }
 
 .itemcard-topbox {
   margin: 30px 0 20px 0;
 }
 
+/* ================ Itemcard Topbox ================ */
+
 .itemcard-topbox-row {
   display: flex;
   gap: 16px;
   margin-bottom: 12px;
-  min-height: 25px;
+  min-height: 27px;
 }
 
 .itemcard-topbox-row div {
@@ -215,7 +209,8 @@
   width: 75%;
 }
 
-.itemcard-topbox-row label {
+.itemcard-topbox-row label,
+.itemcard-topbox-row span {
   width: 25%;
   font-weight: 500;
 }
@@ -225,13 +220,11 @@
   box-sizing: border-box;
 }
 
-
-
-
-
+/* ================ Itemcard Table ================ */
 
 .itemcard-table-title {
   padding-bottom: 8px;
+  font-weight: 500;
 }
 
 .itemcard-table {
@@ -239,30 +232,65 @@
   font-size: 0.9em;
 }
 
-.itemcard-thead th {
-  height: 25px;
-  border-color: var(--color-gray-400);
-  background-color: var(--color-gray-300);
+.itemcard-table th,
+.itemcard-table td {
+  height: 27px;
 }
 
-.itemcard-tbody td,
-.itemcard-tbody template td {
-  border-color: var(--color-gray-300);
-  height: 25px;
-}
-
-.itemcard-id {
-  width: 33px;
+td.itemcard-boxtype,
+td.itemcard-material,
+td.itemcard-weight,
+td.itemcard-target,
+td.itemcard-note {
+  padding-left: 4px;
   background-color: #fff;
+  border: 1px solid var(--color-gray-300);
+}
+
+td.itemcard-id {
+  width: 33px;
   text-align: center;
+  background-color: #fff;
+  border: 1px solid var(--color-gray-300);
 }
 
 .itemcard-weight {
-  width: 80px;
+  width: 100px;
 }
 
-.itemcard-row-delete {
-  width: 26px;
+.itemcard-boxtype {
+  width: 200px;
+}
+
+.table-cell.checkbox-circle {
+  padding-left: 0;
+  text-align: center;
+}
+
+.itemcard .checkbox-circle {
+  width: 0;
+  border: none;
+  padding-right: 10px;
+}
+
+.itemcard .checkbox-square {
+  width: 32px;
+  background-color: #fff;
+}
+
+.itemcard-margin-left {
+  margin-left: 24px;
+}
+
+.itemcard-weight-btn {
+  font-size: 0.9em;
+  border: none;
+  width: 0;
+  padding-left: 8px;
+}
+
+.itemcard-weight-btn button {
+  text-align: right;
 }
 
 
@@ -291,6 +319,15 @@
 
 
 
+
+
+
+
+
+
+
+
+/* 
 .itemcard .table-header {
   padding-top: 5px;
   border-top: 1px solid var(--color-gray-300);
@@ -300,11 +337,9 @@
 .itemcard .table-header,
 .itemcard .table-row > div {
   border-color: var(--color-gray-400);
-}
+} */
 
-.fetch-weight-btn {
-  font-size: 0.9em;
-}
+
 
 
 
@@ -325,9 +360,9 @@
   border-left: 1px solid var(--color-gray-300);
 }
 
-.itemcard-table .table-row > div:not(.table-row-input) {
+/* .itemcard-table .table-row > div:not(.table-row-input) {
   padding-left: 4px;
-}
+} */
 
 .itemcard-table .table-row > div {
   background-color: #fff;
@@ -367,9 +402,7 @@
   margin-top: 30px;
 }
 
-.itemcard-margin-left {
-  margin-left: 30px;
-}
+
 
 
 .table-row-select {
@@ -666,7 +699,7 @@
   outline: none;
 }
 
-.itemcard-row-delete input {
+/* .itemcard-row-delete input {
   min-height: 0;
   width: 15px;
   height: 15px;
@@ -684,7 +717,7 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-}
+} */
 
 .delete-card {
   margin: 20px 0;

@@ -16,8 +16,7 @@ class ReusableBarcodeCreateView(CreateView):
     AREA_PREFIX = {
         1: "L",  # Lieferung (Wareneingang)
         2: "S",  # Vorsortierung
-        3: "A",  # Aufbereitung
-        4: "V",  # Abholung (Versand)
+        3: "V",  # Abholung (Versand)
     }
 
     def get_context_data(self, **kwargs):

@@ -12,17 +12,16 @@ class RecyclingCreateView(View):
     success_url = reverse_lazy("recycling_list")
 
     def get(self, request):
-        # Formular für die Auswahl einer Leerung
         form = UnloadChoiceForm()
         formset = RecyclingFormSet(queryset=Recycling.objects.none())
+        unload = None
 
-        # Bereits vorhandene Recycling-Objekte (Status = aktiv)
         vorhandene_forms = [
             RecyclingForm(instance=obj, prefix=f"recycling_{obj.pk}")
             for obj in Recycling.objects.filter(status=1)
         ]
 
-        return self.render_page(form, formset, vorhandene_forms)
+        return self.render_page(form, formset, vorhandene_forms, unload)
 
     def post(self, request):
         unload_form = UnloadChoiceForm(request.POST)
@@ -33,39 +32,41 @@ class RecyclingCreateView(View):
             unload = unload_form.cleaned_data["unload"]
 
             with transaction.atomic():
-                # Bestehende Verknüpfungen aktualisieren
                 for recycling in Recycling.objects.filter(status=1):
                     if str(recycling.pk) in selected_ids:
                         recycling.unloads.add(unload)
                     else:
                         recycling.unloads.remove(unload)
 
-                # Neue Einträge speichern und mit unload verknüpfen
                 new_instances = formset.save(commit=False)
                 for instance in new_instances:
                     instance.save()
                     instance.unloads.add(unload)
 
-                # Gelöschte Einträge löschen
                 for deleted in formset.deleted_objects:
                     deleted.delete()
 
-                # ✅ Markiere unload als erledigt
                 unload.status = 2
                 unload.save()
 
-            return redirect(self.success_url)
+            return redirect("recycling_update", pk=unload.pk)
 
-        # Fehlerfall: Seite mit Fehlern neu anzeigen
-        vorhandene_forms = self.build_vorhandene_forms(self.get_selected_unload(request))
-        return self.render_page(unload_form, formset, vorhandene_forms)
+        vorhandene_forms = [
+            RecyclingForm(instance=obj, prefix=f"recycling_{obj.pk}")
+            for obj in Recycling.objects.filter(status=1)
+        ]
+        unload = unload_form.cleaned_data.get("unload") if unload_form.is_valid() else None
+        return self.render_page(unload_form, formset, vorhandene_forms, unload)
 
+        print("Unload object:", unload)
+        print("Unload PK:", unload.pk)
 
-    def render_page(self, form, formset, vorhandene_forms):
+    def render_page(self, form, formset, vorhandene_forms, unload=None):
         return render(self.request, self.template_name, {
             "form": form,
             "formset": formset,
             "empty_form": formset.empty_form,
             "vorhandene_forms": vorhandene_forms,
+            "unload": unload,
             "selected_menu": "recycling_create",
         })

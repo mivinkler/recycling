@@ -23,7 +23,7 @@ class SupplierForm(forms.ModelForm):
         }
 
 
-# Delivery
+Delivery
 class DeliveryForm(forms.ModelForm):
     class Meta:
         model = Delivery

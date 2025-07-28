@@ -3,8 +3,7 @@ from django.db import transaction
 from django.urls import reverse_lazy
 
 from warenwirtschaft.models.delivery import Delivery
-from warenwirtschaft.forms import DeliveryForm
-from warenwirtschaft.forms import DeliveryUnitFormSet
+from warenwirtschaft.forms_neu.delivery_form import DeliveryForm, get_delivery_unit_formset
 
 class DeliveryUpdateView(UpdateView):
     model = Delivery
@@ -15,6 +14,7 @@ class DeliveryUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        DeliveryUnitFormSet = get_delivery_unit_formset(extra=0)
         if self.request.POST:
             # Wenn ein POST-Request vorliegt, laden wir das Formset mit den neuen Daten
             context['formset'] = DeliveryUnitFormSet(self.request.POST, instance=self.object)

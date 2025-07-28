@@ -4,7 +4,7 @@ from django.db import transaction
 from django.urls import reverse_lazy
 
 from warenwirtschaft.models.delivery import Delivery
-from warenwirtschaft.forms import DeliveryForm, DeliveryUnitFormSet
+from warenwirtschaft.forms_neu.delivery_form import DeliveryForm, get_delivery_unit_formset
 from warenwirtschaft.services.barcode_service import BarcodeGenerator
 
 class DeliveryCreateView(CreateView):
@@ -16,6 +16,7 @@ class DeliveryCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        DeliveryUnitFormSet = get_delivery_unit_formset(extra=1)
         if self.request.POST:
             context['formset'] = DeliveryUnitFormSet(self.request.POST)
         else:

@@ -28,7 +28,7 @@
       data-id="{{ item.id }}"
       data-url-detail-weight="{% url 'unload_detail_weight' pk=item.delivery_unit.id %}"
       data-url-detail-barcode="{% url 'unload_detail' pk=item.id %}"
-      data-url-update="{% url 'unload_update' pk=item.delivery_unit.id %}"
+      data-url-update="{% url 'unload_update' pk=item.id %}"
       data-url-create="{% url 'recycling_create' %}?unit_id={{ item.id }}">
 
       <div class="table-cell table-cell-id">{{ forloop.counter }}</div>
@@ -52,5 +52,7 @@
 
 {% block extra_js %}
   <script src="{% static 'js/mouse-left-click.js' %}"></script>
+  <script src="{% static 'js/current-date.js' %}"></script>
+  <script src="{% static 'js/summary-close.js' %}"></script>
 {% endblock %}
 

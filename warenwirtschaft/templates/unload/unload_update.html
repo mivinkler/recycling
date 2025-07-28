@@ -4,44 +4,45 @@
 {% block title %}Fraktion bearbeiten{% endblock %}
 
 {% block content %}
-
-<div class="itemcard-small">
   <form method="post">
     {% csrf_token %}
 
-    <h2>Vorsortierung-Wagen bearbeiten</h2>
-
-    <section class="itemcard-topbox">
-      <div class="itemcard-row">
-        <div>Liefereinheit:</div>
-        <div>{{ unload.delivery_unit }}</div>
+    <div class="itemcard itemcard-small">
+      <div class="itemcard-title-box">
+        <h2>Vorsortierung-Wagen bearbeiten</h2>
       </div>
 
-      <div class="itemcard-row">
-        <div>Behälter:</div>
-        <div>{{ form.box_type }}</div>
-      </div>
+      <section class="itemcard-topbox">
+        <div class="itemcard-topbox-row">
+          <span>Liefereinheit:</span>
+          <p>{{ unload.delivery_unit }}</p>
+        </div>
 
-      <div class="itemcard-row">
-        <div>Material:</div>
-        <div>{{ form.material }}</div>
-      </div>
+        <div class="itemcard-topbox-row">
+          <label for="id_box_type">Behälter:</label>
+          <div>{{ form.box_type }}</div>
+        </div>
 
-      <div class="itemcard-row">
-        <div>Zweck:</div>
-        <div>{{ form.target }}</div>
-      </div>
+        <div class="itemcard-topbox-row">
+          <label for="id_material">Material:</label>
+          <div>{{ form.material }}</div>
+        </div>
 
-      <div class="itemcard-row">
-        <div>Gewicht:</div>
-        <div>{{ form.weight }}</div>
-      </div>
-      
-    </section>
+        <div class="itemcard-topbox-row">
+          <label for="id_target">Zweck:</label>
+          <div>{{ form.target }}</div>
+        </div>
 
-    <div class="button-wrapper">
-      <button type="submit" name="save" class="btn">Speichern</button>
+        <div class="itemcard-topbox-row">
+          <label for="id_weight">Gewicht:</label>
+          <div>{{ form.weight }}</div>
+        </div>
+      </section>
+
+      <div class="button-wrapper">
+        <button type="submit" name="save" class="btn">Speichern</button>
+      </div>
     </div>
   </form>
-</div>
+
 {% endblock %}

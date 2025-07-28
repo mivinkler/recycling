@@ -6,12 +6,13 @@ document.addEventListener('DOMContentLoaded', function () {
   const totalFormsInput = document.querySelector('input[name$="-TOTAL_FORMS"]');
 
   let formIndex = +totalFormsInput.value;
-  let rowNumber = formIndex;
+
+  // Считаем количество строк с классом .itemcard-table-row, у которых НЕТ класса .dynamic-row (то есть существующие строки)
+  let rowNumber = tableBody.querySelectorAll('tr.itemcard-table-row:not(.dynamic-row)').length;
 
   addButton.addEventListener('click', function () {
     const clone = template.content.cloneNode(true).firstElementChild;
 
-    // Заменяем индексы в name/id и №
     clone.innerHTML = clone.innerHTML
       .replace(/__prefix__/g, formIndex)
       .replace(/__index__/g, rowNumber + 1);
