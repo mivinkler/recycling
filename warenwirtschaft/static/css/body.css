@@ -14,95 +14,17 @@
   grid-template-columns: minmax(33px, max-content) repeat(6, 1fr) 2fr;
 }
 
-
 .table[data-type="shippingunits-list"] {
   grid-template-columns: minmax(33px, max-content) repeat(8, 1fr) 2fr;
 }
-
-
 
 .table[data-type="barcode-list"] {
   grid-template-columns: minmax(33px, max-content) repeat(7, 1fr);
 }
 
-
 .table[data-type="material"] {
   grid-template-columns: minmax(33px, max-content) 200px repeat(3, 40px) auto;
-  }
-  
-/* 
-.table[data-type="supplier-detail-deliveryunits"] {
-  grid-template-columns: minmax(33px, max-content) repeat(8, 1fr);
 }
-
-
-
-.table[data-type="delivery-detail-deliveryunits"] {
-  grid-template-columns: minmax(33px, max-content) repeat(6, 1fr);
-}
-
-.table[data-type="delivery-create-deliveryunits"] {
-  grid-template-columns: minmax(33px, max-content) 2fr 2fr 1fr;
-}
-
-.table[data-type="delivery-update-deliveryunits"] {
-  grid-template-columns: minmax(33px, max-content) repeat(5, 4fr) 1fr;
-}
-
-
-
-.table[data-type="unload-create"] {
-  grid-template-columns: minmax(33px, max-content) repeat(3, 2fr) 1fr auto;
-}
-
-.table[data-type="unload-update"] {
-  grid-template-columns: minmax(33px, max-content) repeat(4, 1fr) 2fr auto;
-}
-
-.table[data-type="unload-detail"] {
-  grid-template-columns: minmax(33px, max-content) repeat(5, 1fr) 2fr;
-}
-
-
-
-.table[data-type="recycling-create"] {
-  grid-template-columns: 30px minmax(34px, max-content) 2fr 2fr 1fr;
-}
-
-.table[data-type="recycling-weight"] {
-  grid-template-columns: minmax(34px, max-content) repeat(5, 1fr) 120px;
-}
-
-.table[data-type="recycling-detail"] {
-  grid-template-columns: minmax(33px, max-content) repeat(4, 1fr) 2fr auto;
-}
-
-
-.table[data-type="shipping-detail-shippingunits"] {
-  grid-template-columns: minmax(33px, max-content) repeat(3, 1fr) auto;
-}
-
-.table[data-type="shipping-create-shippingunits"] {
-  grid-template-columns: minmax(33px, max-content) 2fr repeat(5, 1fr);
-}
-
-.table[data-type="shipping-update-shippingunits"] {
-  grid-template-columns: minmax(33px, max-content) repeat(4, 1fr) auto;
-}
-
-.table[data-type="customer-detail__shippingunits"] {
-  grid-template-columns: repeat(3, auto) repeat(5, 1fr) auto 2fr;
-}
-
-
-
-.table[data-type="material-list"] {
-  grid-template-columns: minmax(33px, max-content) 200px repeat(3, 40px);
-} */
-
-
-
-/* ================ Table (List) ================== */
 
 .table {
   display: grid;
@@ -185,7 +107,6 @@
   color: white;
 }
 
-
 /* ================ Itemcard ================ */
 
 .itemcard {
@@ -194,18 +115,11 @@
   background-color: var(--color-gray-100);
   border: 1px solid var(--color-gray-300);
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
-}
-
-.itemcard-small {
-  max-width: 760px;
-}
-
-.itemcard-large {
-  max-width: 920px;
+  width: fit-content;
 }
 
 .itemcard-topbox {
-  margin: 30px 0 20px 0;
+  margin-bottom: 20px;
 }
 
 /* ================ Itemcard Topbox ================ */
@@ -238,8 +152,11 @@
 
 /* ================ Itemcard Table ================ */
 
-.itemcard-table-title {
-  padding-bottom: 8px;
+.itemcard-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
   font-weight: 500;
 }
 
@@ -248,34 +165,29 @@
   font-size: 0.9em;
 }
 
-.itemcard-table th,
-.itemcard-table td {
-  height: 27px;
-}
-
-td.itemcard-boxtype,
-td.itemcard-material,
-td.itemcard-weight,
-td.itemcard-target,
-td.itemcard-note {
-  padding-left: 4px;
-  background-color: #fff;
-  border: 1px solid var(--color-gray-300);
+td p {
+  padding: 2px 2px 2px 6px;
 }
 
 td.itemcard-id {
   width: 33px;
   text-align: center;
-  background-color: #fff;
-  border: 1px solid var(--color-gray-300);
 }
 
+.itemcard-status,
 .itemcard-weight {
   width: 100px;
 }
 
 .itemcard-boxtype {
   width: 200px;
+}
+
+.itemcard-btn-weight  {
+  font-size: 0.9em;
+  border: none;
+  width: 0;
+  padding-left: 8px;
 }
 
 .table-cell.checkbox-circle {
@@ -289,340 +201,110 @@ td.itemcard-id {
   padding-right: 10px;
 }
 
-.itemcard .checkbox-square {
-  width: 32px;
-  background-color: #fff;
-}
-
 .itemcard-margin-left {
   margin-left: 24px;
 }
 
-.itemcard-weight-btn {
-  font-size: 0.9em;
-  border: none;
-  width: 0;
-  padding-left: 8px;
-}
+/* ================ column-action / Buttons ================ */
 
-.itemcard-weight-btn button {
+.column-action button {
   text-align: right;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* 
-.itemcard .table-header {
-  padding-top: 5px;
-  border-top: 1px solid var(--color-gray-300);
-}
-
-.itemcard > .itemcard-table .table,
-.itemcard .table-header,
-.itemcard .table-row > div {
-  border-color: var(--color-gray-400);
-} */
-
-
-
-
-
-.itemcard-title-box {
+.button-form-save {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: flex-end;
+  gap: 20px;
 }
 
-
-
-.itemcard-table input[type=number],
-.itemcard-table select {
-  border: none;
-}
-
-.itemcard-table .table {
-  border-left: 1px solid var(--color-gray-300);
-}
-
-/* .itemcard-table .table-row > div:not(.table-row-input) {
-  padding-left: 4px;
-} */
-
-.itemcard-table .table-row > div {
-  background-color: #fff;
-}
-
-.table-row-input input {
-  border: 1px solid var(--color-gray-700);
-}
-
-.itemcard-table .table-header {
-  background-color: var(--color-gray-200);
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.itemcard-table-first {
-  margin-top: 30px;
-}
-
-
-
-
-.table-row-select {
-  padding-left: 8px;
-}
-
-.itemcard-table .table-row > div.table-row-status {
-  padding-left: 12px;
-}
-
-
-
-
-
-
-
-/* Müll */
-
-/* .table-row > div {
-  border-right: 1px solid var(--color-gray-200);
-  border-bottom: 1px solid var(--color-gray-200);
-  height: 26px;
-  padding: 2px 2px 2px 6px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.btn {
+  background-color: var(--color-gray-50);
+  color: var(--color-gray-800);
+  border-radius: 3px;
+  border: 1px solid var(--color-gray-400);
+  outline: 1px solid #fff;
+  outline-offset: -2px;
   cursor: pointer;
-  align-content: center;
-  } 
-  
-.table-row:hover > div {
-  background-color: var(--color-gray-100);
-  }
+}
 
-.table-row:focus > div {
+.btn:hover {
   background-color: var(--color-gray-200);
 }
 
-.table-cell-id {
-  text-align: center;
-  } */
-
-
-.table-row:focus > div {
-  background-color: var(--color-gray-200);
+.btn:active {
+  background-color: var(--color-gray-300);
 }
 
-.js-select-row.row-selected > div {
-  background-color: #d0e4f5;
+.btn:active {
+  box-shadow: none;
 }
-  
-.table-row input[checkbox] {
-    text-align: center;
+
+.btn-row-add {
+  padding: 0 11px;
+  margin-top: 4px;
+  font-weight: bold;
+  font-size: 16px;
 }
-.itemcard-table .table-row > .table-row-radio {
-  border-bottom: none;
-  border-top: none;
+
+.itemcard-action {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 6px;
+  width: 118px;
+  border: none;
   background-color: transparent;
-  text-align: left;
 }
 
-.itemcard-table .table[data-type="recycling-create"] {
-  border-left: none;
+.active-row > * {
+background-color: var(--color-gray-300);
 }
 
-
-/* ============ Detail Prozess ============= */
-            
-.process-wrapper {
-  margin: 50px auto;
-  width: 1000px;
-}
-
-.process-title {
-  margin-bottom: 50px;
-}
-
-.process-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.process-table th,
-.process-table td {
-  text-align: right;
-  border: none;
-  line-height: 3;
-  padding-right: 8px;
-  border-right: 1px solid var(--color-gray-100);
-}
-
-.process-table th:last-child,
-.process-table td:last-child {
-  border-right: none;
-}
-
-.process-table th {
-  text-align: center;
-  padding: 0;
-  font-weight: 600;
-  background-color: var(--color-gray-50);
-}
-
-.process-table th:first-child{
-  background-color: #fff;
-  font-size: 1.1em;
-  padding-left: 5px;
-}
-
-.process-row {
-  border-bottom: 1px solid var(--color-gray-100) !important;
-}
-
-.process-table span {
-  font-size: 1.1rem;
-  padding-right: 10px;
-}
-
-.process-table th:first-child,
-.process-table td:first-child {
-  text-align: left;
-  width: 500px;
-}
-
-.process-row-color {
-  background-color: var(--color-gray-50);
-}
-
-.process-total-weight td:first-child {
-   font-size: 1.1em;
-}
-
-.process-diff {
-  font-size: 0.8em; 
-  color: red; 
-  line-height: 0.6;
-}
-
-.total-weight {
-  font-weight: 500;
-  vertical-align: top;
-  padding-top: 20px;
-  padding-right: 8px;
-  padding-left: 10px;
-}
-
-.indent-1 { padding-left: 20px; font-weight: 500; font-size: 1.1em;}
-.indent-2 { padding-left: 60px; font-weight: 500; }
-.indent-3 { padding-left: 100px; }
-.indent-4 { padding-left: 140px; }
-
-
-
-/* ============ Material ============= */
-
-.table-row:hover > .row-action {
-  background-color: #fff;
-}
-
-
-/* .table-row > .row-action {
-  border: none;
-}
-
-.itemcard-table .table-row > .recycling-action {
-  background-color: var(--color-gray-100);
-  padding: 4px;
-}
-
-
-.material-input {
+.lock-wrapper {
+  width: 100px;
   display: flex;
-  justify-content: center;
   align-items: center;
-  width: 100%; 
-} */
+  gap: 6px;
+  width: max-content;
+  margin-left: 6px;
+  background-color: transparent;
+}
 
-/* .row-action {
-  display: flex;
-  justify-content: left;
-  gap: 10px;
-  align-items: center;
-  margin-left: 4px;
-  cursor: pointer;
-  height: 30px;
-} */
-
-.btn.material-btn {
-  min-width: 26px;
-  height: 25px;
+.open-lock,
+.closed-lock {
   background-position: center;
   background-repeat: no-repeat;
   transition: background-image 0.3s ease, transform 0.3s ease;
-  padding: 0 5px;
-  box-shadow: 0 1px 2px var(--color-gray-200);
+  height: 25px;
+  width: 26px;
 }
 
 .closed-lock {
   background-image: url('/static/icons/lock-icon.svg');
 }
 
-.open-lock,
-.closed-lock:hover {
+.open-lock {
   background-image: url('/static/icons/lock-open-icon.svg');
+}
+
+.table-row:hover > .lock-wrapper {
+  background-color: #fff;
+}
+
+.btn-lock-save {
+  height: 25px;
+  padding: 0 6px;
+  font-weight: 500;
+}
+
+.btn-weight {
+  padding: 2px 4px;
+}
+
+.btn-save {
+  padding: 4px 8px;
+  font-weight: 500;
+  box-shadow: 0 1px 3px var(--color-gray-500);
 }
 
 .material-delete {
@@ -634,159 +316,12 @@ td.itemcard-id {
   transform: scale(1.1);
 }
 
-.active-row > * {
-  background-color: var(--color-gray-300);
-}
-
-.active-row > .row-action {
-  background-color: transparent;
-}
-
-/* ============ Detail, Update ============= */
-
-.detail {
-  width: fit-content;
-  margin: 50px auto;
-}
-
-.detail-row {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  line-height: 26px;
-}
-
-.detail-row div:first-child {
-  font-weight: bold;
-  width: 180px;
-  padding-left: 30px;
-}
-
-.detail-barcode {
-  text-align: left;
-}
-
-/* ============ info-table NEU ============= */
-
-.info-table-wrapper {
-  background-color: var(--color-gray-50);
-  padding: 16px 22px 26px;
-  border-bottom: 1px solid var(--color-gray-300);
-}
-
-.info-table {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  align-content: flex-start;
-  column-gap: 100px;
-  row-gap: 16px;
-  width: 100vw;
-  margin-top: 16px;
-  height: 118px;
-}
-
-.info-table-row {
-  display: flex;
-  justify-content: start;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.info-table-row div:first-child {
-  font-weight: bold;
-  width: 100px;
-}
-
-.info-table-row div:last-child {
-  max-width: 640px;
-}
-
-/* ============= itemcard-row-delete ============= */
-
-.itemcard-row-delete {
-  text-align: center;
-  align-content: center;
-}
-
-.itemcard-row-delete input:focus {
-  outline: none;
-}
-
-/* .itemcard-row-delete input {
-  min-height: 0;
-  width: 15px;
-  height: 15px;
-  position: relative;
-  border-radius: 3px;
-  border-color: var(--color-gray-500);
-}
-
-.itemcard-row-delete input:checked::before {
-  content: '\2716'; 
-  position: absolute;
-  font-size: 11px;
-  font-weight: 900;
-  color: rgb(216, 21, 21);
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-} */
-
-.delete-card {
-  margin: 20px 0;
-}
-
-/* ============= Buttons ============ */
-
 .delete-btn {
   width: 14px;
   height: 14px;
 }
 
-.button-wrapper {
-  display: flex;
-  justify-content: flex-end;
-  gap: 20px;
-}
-
-.btn,
-.btn-row-add {
-  background-color: var(--color-gray-50);
-  color: var(--color-gray-800);
-  border-radius: 3px;
-  border: 1px solid var(--color-gray-400);
-  outline: 1px solid #fff;
-  outline-offset: -2px;
-  cursor: pointer;
-}
-
-.btn-row-add {
-  padding: 0 11px;
-  margin-top: 4px;
-  font-weight: bold;
-  font-size: 16px;
-}
-
-.btn {
-  padding: 4px 8px;
-  font-weight: 500;
-  box-shadow: 0 1px 3px var(--color-gray-500);
-}
-
-.btn:hover,
-.btn-row-add:hover {
-  background-color: var(--color-gray-200);
-}
-
-.btn:active,
-.btn-row-add:active {
-  background-color: var(--color-gray-300);
-}
-
-.btn:active {
-  box-shadow: none;
-}
+/* ================ barcode-print ================ */
 
 .barcode-print-icon {
   display: block;

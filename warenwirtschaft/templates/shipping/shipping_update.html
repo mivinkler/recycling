@@ -8,7 +8,7 @@
 <form class="itemcard-small" method="post" action="{% url 'shipping_update' shipping.pk %}" id="eingang-form">
   {% csrf_token %}
   
-  <div class="itemcard-title-box">
+  <div class="itemcard-title">
     <h2>Abholung ändern</h2>
     <a href="{% url 'shipping_delete' shipping.pk %}" class="delete-btn" title="Lieferung löschen">
       <img src="{% static 'icons/delete-icon.svg' %}">
@@ -40,7 +40,7 @@
     </section>
 
     <section class="itemcard-table">
-      <div class="itemcard-table-title">Abholung-Einheiten:</div>
+      <div class="itemcard-title">Abholung-Einheiten:</div>
       {{ formset.management_form }}
 
       <div class="table add-row-js" data-type="shipping-update-shippingunits">
@@ -79,10 +79,10 @@
         </template>
       </div>
     </section>
-    <button class="btn-row-add" type="button" id="add-form-btn">+</button>
+    <button class="btn btn-row-add" type="button" id="add-form-btn">+</button>
 
-    <div class="button-wrapper">
-      <button type="submit" name="save" class="btn">Speichern</button>
+    <div class="button-form-save">
+      <button type="submit" name="save" class="btn btn-save">Speichern</button>
     </div>
 </form>
 

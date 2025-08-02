@@ -4,44 +4,51 @@
 {% block title %}Aufbereitung erfassen{% endblock %}
 
 {% block content %}
-  <div class="itemcard-large">
-    <h2>Aufbereitung erstellen</h2>
-
-    <section class="itemcard-table">
-      <div class="table add-row-js" data-type="recycling-weight">
-        <div class="table-header">№</div>
-        <div class="table-header">Material</div>
-        <div class="table-header">Behälter</div>
-        <div class="table-header">Gewicht</div>
-        <div class="table-header">Gewicht neu</div>
-        <div class="table-header">Status</div>
-        <div></div>
-
-        {% for item in recycling_list %}
-          <div class="table-row">
-            <input type="hidden" name="recycling_id_{{ item.id }}" value="{{ item.id }}">
-            <div class="table-cell-id">{{ forloop.counter }}</div>
-            <div>{{ item.material }}</div>
-            <div>{{ item.get_box_type_display }}</div>
-            <div>{{ item.weight }}</div>
-            <div></div>
-            <div class="table-row-status">{{ item.get_status_display }}</div>
-
-
-            <!-- Button -->
-            <div class="row-action" style="background-color: #eee; padding-left: 0;">
-              <a href="{% url 'recycling_weight_update' item.id %}" class="material-btn btn closed-lock"></a>
-            </div>
-          </div>
-        {% endfor %}
-      </div>
-    </section>
+<div class="itemcard itemcard-small">
+  <div class="itemcard-title">
+    <h2>Tägliches wiegen</h2>
   </div>
 
-{% endblock %}
+  <table class="itemcard-table">
+    <thead class="itemcard-thead">
+      <tr>
+        <th class="itemcard-id">№</th>
+        <th class="itemcard-material">Material</th>
+        <th class="itemcard-boxtype">Behälter</th>
+        <th class="itemcard-status">Status</th>
+        <th class="itemcard-weight">Gewicht</th>
+        <th class="itemcard-weight">Gewicht neu</th>
+        <div></div>
+      </tr>
+    </thead>
+  
+    <tbody class="itemcard-tbody">
+      {% for item in recycling_list %}
+        <tr class="itemcard-table-row">
+          <input type="hidden" name="recycling_id_{{ item.id }}" value="{{ item.id }}">
+          <td class="itemcard-id">
+            {{ forloop.counter }}
+          </td>
+          <td class="itemcard-material">
+            <p>{{ item.material }}</p>
+          </td>
+          <td class="itemcard-boxtype">
+            <p>{{ item.get_box_type_display }}</p>
+          </td>
+          <td class="itemcard-status">
+            <p>{{ item.get_status_display }}</p>
+          </td>
+          <td class="itemcard-weight">
+            <p>{{ item.weight }}</p>
+          </td>
+          <td class="itemcard-weight"></td>
 
-{% block extra_js %}
-  <script src="{% static 'js/mouse-right-click.js' %}"></script>
-  <script src="{% static 'js/current-date.js' %}"></script>
-  <script src="{% static 'js/summary-close.js' %}"></script>
+          <td class="itemcard-action">
+            <a href="{% url 'recycling_weight_update' item.id %}" class="btn closed-lock"></a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 {% endblock %}

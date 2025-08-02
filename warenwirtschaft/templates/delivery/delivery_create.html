@@ -8,7 +8,7 @@
   {% csrf_token %}
 
   <div class="itemcard itemcard-small">
-    <div class="itemcard-title-box">
+    <div class="itemcard-title">
       <h2>Wareneingang erstellen</h2>
     </div>
 
@@ -39,7 +39,7 @@
       </div>
     </section>
 
-    <div class="itemcard-table-title">Transportgut:</div>
+    <div class="itemcard-title">Transportgut:</div>
 
     <table class="itemcard-table add-row-js">
       {{ formset.management_form }}
@@ -79,12 +79,12 @@
     </template>
 
     <div>
-      <button class="btn-row-add" type="button" id="form-add-btn">+</button>
-      <button class="btn-row-add" type="button" id="form-remove-btn">–</button>
+      <button class="btn btn-row-add" type="button" id="form-add-btn">+</button>
+      <button class="btn btn-row-add" type="button" id="form-remove-btn">–</button>
     </div>
 
-    <div class="button-wrapper">
-      <button type="submit" name="save" class="btn">Speichern</button>
+    <div class="button-form-save">
+      <button type="submit" name="save" class="btn btn-save">Speichern</button>
     </div>
   </div>
 </form>

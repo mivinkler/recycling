@@ -13,7 +13,6 @@ header {
 
 /* ============ Icons =============*/
 
- 
 .top-icon a {
     font-size: 13px;
     transition: border-color 0.2s ease-in-out;
@@ -22,17 +21,17 @@ header {
 
 .header-list-title {
     border-bottom: 3px solid transparent;
+    padding-bottom: 3px;
 }
 
 .header-list-title:hover, 
 .top-icon .selected {
-    border-bottom: 3px solid var(--color-hero);
+    border-color: var(--color-hero);
 }
 
 .icon-selected svg {
     fill: var(--color-hero);
     filter: brightness(85%);
-    /* filter: drop-shadow(0px 1px 3px var(--color-gray-600)); */
 }
   
 .top-icons-wrapper {
@@ -42,6 +41,7 @@ header {
     height: 105px;
     background-color: var(--color-gray-100);
     box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid var(--color-gray-300);
 }
   
 .top-icon {
@@ -149,7 +149,6 @@ summary::-webkit-details-marker {
     flex-direction: column;
     gap: 14px;
     width: 240px;
-
 }
 
 .icon-search-input,
@@ -177,7 +176,6 @@ summary::-webkit-details-marker {
 .search-date * {
     width: 48%;
     align-content: center;
-    
 }
 
 .search-status div {
@@ -217,11 +215,4 @@ summary::-webkit-details-marker {
   
 .icon-sort a.icon-active {
     transform: scale(1.3);
-}
-
-/* ====== tägliches Wiegen ====== */
-
-
-.daily-weighing {
-    margin-left: auto;
 }

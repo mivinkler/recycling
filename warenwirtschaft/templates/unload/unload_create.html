@@ -8,7 +8,7 @@
   {% csrf_token %}
 
   <div class="itemcard itemcard-small">
-    <div class="itemcard-title-box">
+    <div class="itemcard-title">
       <h2>Vorsortierung erstellen</h2>
     </div>
 
@@ -29,7 +29,7 @@
       </div>
     </section>
 
-    <div class="itemcard-table-title">Wagen:</div>
+    <div class="itemcard-title">Wagen:</div>
 
     <table class="itemcard-table add-row-js">
       {{ formset.management_form }}
@@ -41,7 +41,7 @@
           <th class="itemcard-boxtype">Behälter</th>
           <th class="itemcard-target">Zweck</th>
           <th class="itemcard-weight">Gewicht</th>
-          <th class="itemcard-weight-btn"></th>
+          <th class="itemcard-btn-weight"></th>
         </tr>
       </thead>
 
@@ -55,8 +55,8 @@
           <td class="itemcard-boxtype">{{ form.box_type }}</td>
           <td class="itemcard-target">{{ form.target }}</td>
           <td class="itemcard-weight">{{ form.weight }}</td>
-          <td class="itemcard-weight-btn">
-            <button type="button" class="btn">Wiegen</button>
+          <td class="itemcard-btn-weight">
+            <button type="button" class="btn btn-weight">wiegen</button>
           </td>
         </tr>
         {% endfor %}
@@ -70,19 +70,19 @@
         <td class="itemcard-boxtype">{{ empty_form.box_type }}</td>
         <td class="itemcard-target">{{ empty_form.target }}</td>
         <td class="itemcard-weight">{{ empty_form.weight }}</td>
-        <td class="itemcard-weight-btn">
-          <button type="button" class="btn">Wiegen</button>
+        <td class="itemcard-btn-weight">
+          <button type="button" class="btn btn-weight">wiegen</button>
         </td>
       </tr>
     </template>
 
     <div>
-      <button class="btn-row-add" type="button" id="form-add-btn">+</button>
-      <button class="btn-row-add" type="button" id="form-remove-btn">–</button>
+      <button class="btn btn-row-add" type="button" id="form-add-btn">+</button>
+      <button class="btn btn-row-add" type="button" id="form-remove-btn">–</button>
     </div>
 
-    <div class="button-wrapper">
-      <button type="submit" name="save" class="btn">Speichern</button>
+    <div class="button-form-save">
+      <button type="submit" name="save" class="btn btn-save">Speichern</button>
     </div>
   </div>
 </form>

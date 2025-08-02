@@ -9,7 +9,7 @@
   {% csrf_token %}
 
   <div class="itemcard itemcard-small">
-    <div class="itemcard-title-box">
+    <div class="itemcard-title">
       <h2>Wareneingang ändern</h2>
       <a href="{% url 'delivery_delete' delivery.pk %}" class="delete-btn" title="Lieferung löschen">
         <img src="{% static 'icons/delete-icon.svg' %}">
@@ -35,7 +35,7 @@
       </div>
     </section>
 
-    <div class="itemcard-table-title">Transportgut:</div>
+    <div class="itemcard-title">Transportgut:</div>
 
     <table class="itemcard-table add-row-js">
       {{ formset.management_form }}
@@ -47,7 +47,7 @@
           <th class="itemcard-material">Material</th>
           <th class="itemcard-weight">Gewicht</th>
           <th class="itemcard-note">Anmerkung</th>
-          <th class="checkbox-square"><img src="/static/icons/delete-icon.svg" title="Zeile löschen"></th>
+          <th class="itemcard-action"><img src="/static/icons/delete-icon.svg" title="Zeile löschen"></th>
         </tr>
       </thead>
 
@@ -63,7 +63,7 @@
           <td class="itemcard-boxtype">{{ item_form.box_type }}</td>
           <td class="itemcard-weight">{{ item_form.weight }}</td>
           <td class="itemcard-note">{{ item_form.note }}</td>
-          <td class="checkbox-square">{{ item_form.DELETE }}</td>
+          <td class="itemcard-action checkbox-square">{{ item_form.DELETE }}</td>
         </tr>
         {% endfor %}
       </tbody>
@@ -77,17 +77,17 @@
         <td class="itemcard-boxtype">{{ empty_form.box_type }}</td>
         <td class="itemcard-weight">{{ empty_form.weight }}</td>
         <td class="itemcard-note">{{ empty_form.note }}</td>
-        <td class="checkbox-square"></td>
+        <td class="itemcard-action checkbox-square"></td>
       </tr>
     </template>
 
     <div>
-      <button class="btn-row-add" type="button" id="form-add-btn">+</button>
-      <button class="btn-row-add" type="button" id="form-remove-btn">–</button>
+      <button class="btn btn-row-add" type="button" id="form-add-btn">+</button>
+      <button class="btn btn-row-add" type="button" id="form-remove-btn">–</button>
     </div>
 
-    <div class="button-wrapper">
-      <button type="submit" name="save" class="btn">Speichern</button>
+    <div class="button-form-save">
+      <button type="submit" name="save" class="btn btn-save">Speichern</button>
     </div>
   </div>
 </form>

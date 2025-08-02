@@ -1,79 +1,102 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Aufbereitung erfassen{% endblock %}
+{% block title %}Tägliches wiegen{% endblock %}
 
 {% block content %}
+<div class="itemcard itemcard-small">
+  <div class="itemcard-title">
+    <h2>Tägliches wiegen</h2>
+  </div>
 
+  <table class="itemcard-table">
+    {{ formset.management_form }}
+    <thead class="itemcard-thead">
+      <tr>
+        <th class="itemcard-id">№</th>
+        <th class="itemcard-material">Material</th>
+        <th class="itemcard-boxtype">Behälter</th>
+        <th class="itemcard-status">Status</th>
+        <th class="itemcard-weight">Gewicht</th>
+        <th class="itemcard-weight">Gewicht neu</th>
+        <th class="itemcard-action"></th>
+      </tr>
+    </thead>
 
-  <div class="itemcard-large">
-    <h2>Aufbereitung erstellen</h2>
+    <tbody class="itemcard-tbody">
+      {% for item in recycling_list %}
+        {% if item.id == edit_recycling.id %}
+        <form method="post" action="{% url 'recycling_weight_update' pk=item.id %}">
+          {% csrf_token %}
+          <tr class="itemcard-table-row active-row">
+            <input type="hidden" name="recycling_id_{{ item.id }}" value="{{ item.id }}">
+            
+            <!-- № -->
+            <td class="itemcard-id">
+              {{ forloop.counter }}
+            </td>
 
-    <section class="itemcard-table">
-      {{ formset.management_form }}
+            <!-- Material -->
+            <td class="itemcard-material">
+              <p>{{ item.material }}</p>
+            </td>
 
-      <div class="table add-row-js" data-type="recycling-weight">
-        <div class="table-header">№</div>
-        <div class="table-header">Material</div>
-        <div class="table-header">Behälter</div>
-        <div class="table-header">Gewicht</div>
-        <div class="table-header">Gewicht neu</div>
-        <div class="table-header">Status</div>
-        <div></div>
-
-        {% for item in recycling_list %}
-        {{ item_form.id }}
-          <div class="table-row {% if item.id == edit_recyling.id %} active-row{% endif %}">
-            <input type="hidden" name="{{ item.id.html_name }}" value="{{ item.id.value }}">
-            <div class="table-cell-id">{{ forloop.counter }}</div>
-            <div>{{ item.material }}</div>
-            <div>{{ item.get_box_type_display }}</div>
-            <div>{{ item.weight }}</div>
-
-            <!-- Gewicht neu -->
-            <div class="table-row-input">
-              {% if item.id == edit_recycling.id %}
-                <form method="post" action="{% url 'recycling_weight_update' pk=edit_recycling.id %}" id="recycling-form">
-                  {% csrf_token %}
-                  <input type="text" name="name" value="{{ item.name }}">
-                </form>
-              {% else %}
-                <a href="{% url 'recycling_weight_update' item.id %}"></a>
-              {% endif %}
-            </div>
-
+            <!-- Behälter -->
+            <td class="itemcard-boxtype">
+              <p>{{ item.get_box_type_display }}</p>
+            </td>
 
             <!-- Status -->
-            <div>
-              {% if item.id == edit_recycling.id %}
-                <select name="status">
-                  {% for key, value in status_choices %}
-                    <option value="{{ key }}" {% if item.status == key %}selected{% endif %}>
-                      {{ value }}
-                    </option>
-                  {% endfor %}
-                </select>
-              {% else %}
-              <p class="table-row-select">
-                {{ item.get_status_display }}
-              </p>
-                {% endif %}
-            </div>
+            <td class="itemcard-status">
+              <select name="status">
+                {% for key, value in status_choices %}
+                <option value="{{ key }}" {% if item.status == key %}selected{% endif %}>{{ value }}</option>
+                {% endfor %}
+              </select>
+            </td>
+
+            <!-- Gewicht -->
+            <td class="itemcard-weight">
+              <p>{{ item.weight }}</p>
+            </td>
+
+            <!-- Gewicht neu -->
+            <td class="itemcard-weight">
+              <input type="number" name="new_weight" autofocus>
+            </td>
 
             <!-- Button -->
-            <div class="row-action" style="background-color: var(--color-gray-100);">
-              {{ item_form.id }}
-              {% if item.id == edit_recycling.id %}
-                <a href="{% url 'recycling_weight_list' %}" class="material-btn btn open-lock"></a>
-                <button type="submit" class="material-btn btn">Speichern</button>
-              {% else %}
-                <a href="{% url 'recycling_weight_update' item.id %}" class="material-btn btn closed-lock"></a>
-              {% endif %}
-            </div>
-
-          </div>
-        {% endfor %}
-      </div>
-    </section>
-  </div>
+            <td class="itemcard-action">
+              <a href="{% url 'recycling_weight_list' %}" class="btn open-lock"></a>
+              <button type="submit" class="btn btn-lock-save">Speichern</button>
+            </td>
+          </tr>
+        </form>
+        {% else %}
+        <tr class="itemcard-table-row">
+          <td class="itemcard-id">{{ forloop.counter }}</td>
+          <td class="itemcard-material">
+            <p>{{ item.material }}</p>
+          </td>
+          <td class="itemcard-boxtype">
+            <p>{{ item.get_box_type_display }}</p>
+          </td>
+          <td class="itemcard-status">
+            <p>{{ item.get_status_display }}</p>
+          </td>
+          <td class="itemcard-weight">
+            <p>{{ item.weight }}</p>
+          </td>
+          <td class="itemcard-weight">
+            <a href="{% url 'recycling_weight_update' item.id %}"></a>
+          </td>
+          <td class="itemcard-action">
+            <a href="{% url 'recycling_weight_update' item.id %}" class="btn closed-lock"></a>
+          </td>
+        </tr>
+        {% endif %}
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 {% endblock %}

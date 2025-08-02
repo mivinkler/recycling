@@ -8,7 +8,7 @@
 <form class="itemcard-small" method="post" action="{% url 'reusable_barcode_update' form.instance.pk %}">
     {% csrf_token %}
 
-    <div class="itemcard-title-box">
+    <div class="itemcard-title">
         <h2>Barcode bearbeiten</h2>
         <a href="{% url 'reusable_barcode_delete' form.instance.pk %}" class="delete-btn" title="Barcode löschen">
             <img src="{% static 'icons/delete-icon.svg' %}">
@@ -54,8 +54,8 @@
         </div>
     </section>
 
-  <div class="button-wrapper mt-4">
-    <button type="submit" class="btn">Speichern</button>
+  <div class="button-form-save mt-4">
+    <button type="submit" class="btn btn-save">Speichern</button>
   </div>
 </form>
 {% endblock %}

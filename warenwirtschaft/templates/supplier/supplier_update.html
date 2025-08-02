@@ -9,7 +9,7 @@
     {% csrf_token %}
 
     <div class="itemcard itemcard-small">
-        <div class="itemcard-title-box">
+        <div class="itemcard-title">
             <h2>Kunde bearbeiten</h2>
             <a href="{% url 'supplier_delete' supplier.pk %}" class="delete-btn" title="Lieferant löschen">
                 <img src="{% static 'icons/delete-icon.svg' %}">
@@ -60,8 +60,8 @@
         </div>
     </section>
 
-    <div class="button-wrapper">
-        <button type="submit" name="save" class="btn">Speichern</button>
+    <div class="button-form-save">
+        <button type="submit" name="save" class="btn btn-save">Speichern</button>
     </div>
 </form>
 

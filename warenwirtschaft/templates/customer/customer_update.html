@@ -9,7 +9,7 @@
   <form method="post" action="{% url 'customer_update' customer.pk %}" id="customer-form">
     {% csrf_token %}
 
-    <div class="itemcard-title-box">
+    <div class="itemcard-title">
         <h2>Abholer ändern</h2>
         <a href="{% url 'customer_delete' customer.pk %}" class="delete-btn" title="Lieferant löschen">
             <img src="{% static 'icons/delete-icon.svg' %}">
@@ -59,7 +59,7 @@
         </div>
     </section>
 
-    <div class="button-wrapper">
+    <div class="button-form-save">
         <button type="submit" name="save" class="btn">Speichern</button>
       </div>
   </form>

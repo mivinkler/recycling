@@ -7,9 +7,9 @@
 <form method="post">
   {% csrf_token %}
   {{ formset.management_form }}
-
   <div class="table-border"></div>
-  <section class="table material-list add-row-js" data-type="material-create">
+
+  <section class="table add-row-js" data-type="material">
     <div class="table-header">ID</div>
     <div class="table-header">Material</div>
     <div class="table-header" title="Eingang">E</div>
@@ -17,12 +17,10 @@
     <div class="table-header" title="Aufbereitung">A</div>
     <div class="table-header"></div>
 
-    {# ——— TODO ———> Umschreiben #}
     {% for item in material_list %}
-      <div class="table-row {% if item.id == edit_material.id %} active-row{% endif %}">
+      <div class="table-row {% if item.id == edit_material.id %}active-row{% endif %}">
 
-        {# ——— ID ——— #}
-        <div class="material-delete-wrapper">
+        <div class="table-cell table-cell-id">
           {% if item.id == edit_material.id %}
             <a href="{% url 'material_delete' item.id %}" class="material-delete" title="Löschen">
               <img src="{% static 'icons/delete-icon.svg' %}">
@@ -32,17 +30,12 @@
           {% endif %}
         </div>
 
-        {# ——— Name ——— #}
-        <div>
-          {% if item.id == edit_material.id %}
-            <input type="text" name="name" value="{{ item.name }}">
-          {% else %}
-            {{ item.name }}
-          {% endif %}
+        <div class="table-cell">
+          {{ item.name }}
         </div>
 
-        {# ——— delivery ——— #}
-        <div class="material-input">
+
+        <div class="table-cell checkbox-circle">
           {% if item.id == edit_material.id %}
             <input type="checkbox" name="delivery" {% if item.delivery %}checked{% endif %}>
           {% else %}
@@ -50,8 +43,8 @@
           {% endif %}
         </div>
 
-        {# ——— unload ——— #}
-        <div class="material-input">
+
+        <div class="table-cell checkbox-circle">
           {% if item.id == edit_material.id %}
             <input type="checkbox" name="unload" {% if item.unload %}checked{% endif %}>
           {% else %}
@@ -59,8 +52,8 @@
           {% endif %}
         </div>
 
-        {# ——— recycling ——— #}
-        <div class="material-input">
+
+        <div class="table-cell checkbox-circle">
           {% if item.id == edit_material.id %}
             <input type="checkbox" name="recycling" {% if item.recycling %}checked{% endif %}>
           {% else %}
@@ -68,13 +61,13 @@
           {% endif %}
         </div>
 
-        <div class="row-action">
+        <div class="lock-wrapper">
           {{ item_form.id }}
           {% if item.id == edit_material.id %}
-            <a href="{% url 'material_update' item.id %}" class="material-btn btn open-lock"></a>
-            <button type="submit" class="material-btn btn">Speichern</button>
+            <a href="{% url 'material_create' %}" class="btn open-lock"></a>
+            <button type="submit" class="btn btn-lock-save">Speichern</button>
           {% else %}
-            <a href="{% url 'material_update' item.id %}" class="material-btn btn closed-lock"></a>
+            <a href="{% url 'material_update' item.id %}" class="btn closed-lock"></a>
           {% endif %}
         </div>
       </div>
@@ -82,28 +75,25 @@
   </section>
 </form>
 
-  <a href="{% url 'material_create' %}" class="table" data-type="material-create">
-    <div class="table-row">
+<a href="{% url 'material_create' %}" class="table" data-type="material">
+  <div class="table-row">
 
-      <div class="table-cell-id">...</div>
-      <div>...</div>
+    <div class="table-cell table-cell-id">...</div>
+    <div class="table-cell">...</div>
 
-      <div class="material-input">
-        <input type="checkbox" class="material-input" disabled>
-      </div>
-      <div class="material-input">
-        <input type="checkbox" class="material-input" disabled>
-      </div>
-      <div class="material-input">
-        <input type="checkbox" class="material-input" disabled>
-      </div>
-
-      <div class="row-action">
-        <div class="material-btn btn closed-lock"></div>
-      </div>
+    <div class="table-cell checkbox-circle">
+      <input type="checkbox" disabled>
     </div>
-  </a>
+    <div class="table-cell checkbox-circle">
+      <input type="checkbox" disabled>
+    </div>
+    <div class="table-cell checkbox-circle">
+      <input type="checkbox" disabled>
+    </div>
 
-    <!-- <a href="{% url 'material_create' %}" class="btn-row-add" type="button">+</a> -->
-
+    <div class="lock-wrapper">
+      <div class="btn closed-lock"></div>
+    </div>
+  </div>
+</a>
 {% endblock %}
