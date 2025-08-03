@@ -8,12 +8,14 @@
 {% block content %}
 <div class="detail">
   <section id="print-area">
-    <img src="{{ delivery_unit.barcode_image.url }}" class="detail-barcode">
-
-    <div class="detail-row">
-      <div>Eingang-ID:</div>
-      <div>{{ delivery.id }}</div>
-    </div>
+    {% if delivery_unit.barcode_image.url %}
+      <img src="{{ delivery_unit.barcode_image.url }}" class="detail-barcode">
+    {% else %}
+      <div class="detail-row">
+        <div>Barcode:</div>
+        <div>keine</div>
+      </div>
+    {% endif %}
 
     <div class="detail-row">
       <div>Kunde:</div>
@@ -21,8 +23,13 @@
     </div>
 
     <div class="detail-row">
-      <div>Kunde-Adresse:</div>
-      <div>{{ delivery.supplier.street }}, {{ delivery.supplier.postal_code }} {{ delivery.supplier.city }}</div>
+      <div>Straße:</div>
+      <div>{{ delivery.supplier.street }}</div>
+    </div>
+
+    <div class="detail-row">
+      <div>Ort:</div>
+      <div>{{ delivery.supplier.postal_code }} {{ delivery.supplier.city }}</div>
     </div>
 
     <div class="detail-row">
@@ -31,7 +38,7 @@
     </div>
 
     <div class="detail-row">
-      <div>Eingang-Datum:</div>
+      <div>Datum:</div>
       <div>{{ delivery.created_at|date:"d.m.Y" }}</div>
     </div>
 
@@ -53,11 +60,6 @@
     <div class="detail-row">
       <div>Status:</div>
       <div>{{ delivery_unit.get_status_display }}</div>
-    </div>
-
-    <div class="detail-row">
-      <div>Einheit-Anmerkung:</div>
-      <div>{{ delivery_unit.note }}</div>
     </div>
     
   </section>

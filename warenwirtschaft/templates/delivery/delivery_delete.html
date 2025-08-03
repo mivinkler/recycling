@@ -5,19 +5,21 @@
 
 {% block content %}
 
-<div class="itemcard-small">
+<div class="itemcard">
   <form method="post">
     {% csrf_token %}
 
-    <h2>Lieferung löschen</h2>
-    
-    <div class="delete-card">
-      <p>Sind Sie sicher, dass der Lieferung <strong>"{{ delivery }}"</strong> gelöscht wird?</p>
+    <div class="itemcard-title">
+      <h2>Lieferung löschen</h2>
     </div>
+    
+    <section class="itemcard-row-delete">
+      <p>Sind Sie sicher, dass der Lieferung <strong>"{{ delivery }}"</strong> gelöscht wird?</p>
+    </section>
 
     <div class="button-form-save">
-        <button  type="submit" name="save" class="btn">Löschen</button>
-        <a href="{% url 'delivery_list' %}" class="btn">Abbrechen</a>
+      <button  type="submit" name="save" class="btn btn-save">Löschen</button>
+      <a href="{% url 'delivery_list' %}" class="btn btn-save">Abbrechen</a>
     </div>
   </form>
 </div>

@@ -5,8 +5,8 @@ from django.conf.urls.static import static
 from warenwirtschaft.views.material import MaterialListView, MaterialCreateView, MaterialUpdateView, MaterialDeleteView
 from warenwirtschaft.views.supplier import SupplierListView, SupplierUpdateView, SupplierDetailView, SupplierCreateView,SupplierDeleteView
 from warenwirtschaft.views.customer import CustomerListView, CustomerUpdateView, CustomerDetailView, CustomerCreateView, CustomerDeleteView
-from warenwirtschaft.views.delivery import DeliveryUnitsListView, DeliveryUnitDetailView, DeliveryDetailWeightView, DeliveryCreateView, DeliveryUpdateView, DeliveryDeleteView
-from warenwirtschaft.views.unload import UnloadListView, UnloadCreateView, UnloadUpdateView, UnloadDeleteView, UnloadDetailView, UnloadDetailWeightView
+from warenwirtschaft.views.delivery import DeliveryListView, DeliveryDetailBarcodeView, DeliveryDetailWeightView, DeliveryCreateView, DeliveryUpdateView, DeliveryDeleteView
+from warenwirtschaft.views.unload import UnloadListView, UnloadCreateView, UnloadUpdateView, UnloadDeleteView, UnloadDetailBarcodeView, UnloadDetailWeightView
 from warenwirtschaft.views.recycling import RecyclingListView, RecyclingCreateView, RecyclingUpdateView, RecyclingDeleteView, RecyclingDetailView
 from warenwirtschaft.views.recycling_weight import RecyclingWeightUpdateView, RecyclingWeightListView
 from warenwirtschaft.views.shipping import ShippingUnitsListView, ShippingDetailView, ShippingCreateView, ShippingUpdateView, ShippingDeleteView
@@ -27,9 +27,9 @@ urlpatterns = [
     path('customer/update/<int:pk>/', CustomerUpdateView.as_view(), name='customer_update'),
     path('customer/delete/<int:pk>/', CustomerDeleteView.as_view(), name='customer_delete'),
 
-    path('delivery/units/', DeliveryUnitsListView.as_view(), name='delivery_list'),
-    path('delivery/detail-weight/<int:pk>/', DeliveryDetailWeightView.as_view(), name='delivery_detail_weight'),
-    path('delivery-unit/detail/<int:pk>/', DeliveryUnitDetailView.as_view(), name='delivery_unit_detail'),
+    path('delivery/list/', DeliveryListView.as_view(), name='delivery_list'),
+    path('delivery/detail/weight/<int:pk>/', DeliveryDetailWeightView.as_view(), name='delivery_detail_weight'),
+    path('delivery/detail/barcode/<int:pk>/', DeliveryDetailBarcodeView.as_view(), name='delivery_detail_barcode'),
     path('delivery/create/', DeliveryCreateView.as_view(), name='delivery_create'),
     path('delivery/update/<int:pk>/', DeliveryUpdateView.as_view(), name='delivery_update'),
     path('delivery/delete/<int:pk>/', DeliveryDeleteView.as_view(), name='delivery_delete'),
@@ -38,8 +38,8 @@ urlpatterns = [
     path('unload/create/', UnloadCreateView.as_view(), name='unload_create'),
     path('unload/update/<int:pk>/', UnloadUpdateView.as_view(), name='unload_update'),
     path('unload/delete/<int:pk>/', UnloadDeleteView.as_view(), name='unload_delete'),
-    path('unload/detail/<int:pk>/', UnloadDetailView.as_view(), name='unload_detail'),
-    path('unload/detail-weight/<int:pk>/', UnloadDetailWeightView.as_view(), name='unload_detail_weight'),
+    path('unload/detail/barcode/<int:pk>/', UnloadDetailBarcodeView.as_view(), name='unload_detail_barcode'),
+    path('unload/detail/weight/<int:pk>/', UnloadDetailWeightView.as_view(), name='unload_detail_weight'),
 
     path('recycling/list/', RecyclingListView.as_view(), name='recycling_list'),
     path('recycling/create/', RecyclingCreateView.as_view(), name='recycling_create'),

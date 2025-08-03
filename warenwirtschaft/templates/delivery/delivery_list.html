@@ -26,7 +26,7 @@
   <div class="table-row js-select-row"
     data-id="{{ item.id }}"
     data-url-detail-weight="{% url 'delivery_detail_weight' pk=item.delivery.id %}"
-    data-url-detail-barcode="{% url 'delivery_unit_detail' pk=item.id %}"
+    data-url-detail-barcode="{% url 'delivery_detail_barcode' pk=item.id %}"
     data-url-unload-create="{% url 'unload_create' %}?unit_id={{ item.id }}"
     data-url-update="{% url 'delivery_update' pk=item.delivery.id %}">
   

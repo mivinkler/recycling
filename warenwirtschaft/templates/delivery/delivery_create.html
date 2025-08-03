@@ -7,7 +7,7 @@
 <form method="post" action="{% url 'delivery_create' %}" id="eingang-form">
   {% csrf_token %}
 
-  <div class="itemcard itemcard-small">
+  <div class="itemcard">
     <div class="itemcard-title">
       <h2>Wareneingang erstellen</h2>
     </div>
@@ -39,7 +39,7 @@
       </div>
     </section>
 
-    <div class="itemcard-title">Transportgut:</div>
+    <div class="itemcard-table-title">Transportgut:</div>
 
     <table class="itemcard-table add-row-js">
       {{ formset.management_form }}

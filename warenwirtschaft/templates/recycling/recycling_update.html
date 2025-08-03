@@ -7,7 +7,7 @@
 <form method="post" action="{% if unload and unload.pk %}{% url 'recycling_update' pk=unload.pk %}{% endif %}">
   {% csrf_token %}
 
-  <div class="itemcard itemcard-small">
+  <div class="itemcard">
     <div class="itemcard-title itemcard-margin-left">
       <h2>Wareneingang ändern</h2>
     </div>

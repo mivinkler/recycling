@@ -7,7 +7,7 @@
 <form method="post" action="{% url 'unload_create' %}" id="unload-form">
   {% csrf_token %}
 
-  <div class="itemcard itemcard-small">
+  <div class="itemcard">
     <div class="itemcard-title">
       <h2>Vorsortierung erstellen</h2>
     </div>
@@ -29,7 +29,7 @@
       </div>
     </section>
 
-    <div class="itemcard-title">Wagen:</div>
+    <div class="itemcard-table-title">Wagen:</div>
 
     <table class="itemcard-table add-row-js">
       {{ formset.management_form }}
@@ -41,7 +41,7 @@
           <th class="itemcard-boxtype">Behälter</th>
           <th class="itemcard-target">Zweck</th>
           <th class="itemcard-weight">Gewicht</th>
-          <th class="itemcard-btn-weight"></th>
+          <th class="itemcard-action-alone"></th>
         </tr>
       </thead>
 
@@ -55,7 +55,7 @@
           <td class="itemcard-boxtype">{{ form.box_type }}</td>
           <td class="itemcard-target">{{ form.target }}</td>
           <td class="itemcard-weight">{{ form.weight }}</td>
-          <td class="itemcard-btn-weight">
+          <td class="itemcard-action-alone">
             <button type="button" class="btn btn-weight">wiegen</button>
           </td>
         </tr>
@@ -70,7 +70,7 @@
         <td class="itemcard-boxtype">{{ empty_form.box_type }}</td>
         <td class="itemcard-target">{{ empty_form.target }}</td>
         <td class="itemcard-weight">{{ empty_form.weight }}</td>
-        <td class="itemcard-btn-weight">
+        <td class="itemcard-action-alone">
           <button type="button" class="btn btn-weight">wiegen</button>
         </td>
       </tr>

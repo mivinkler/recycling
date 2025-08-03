@@ -6,9 +6,9 @@ from warenwirtschaft.services.sorting_service import SortingService
 from warenwirtschaft.services.pagination_service import PaginationService
 
 
-class DeliveryUnitsListView(ListView):
+class DeliveryListView(ListView):
     model = DeliveryUnit
-    template_name = "delivery/delivery_units_list.html"
+    template_name = "delivery/delivery_list.html"
     context_object_name = "delivery_units"
     paginate_by = 50
 

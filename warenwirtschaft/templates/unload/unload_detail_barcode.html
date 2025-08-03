@@ -16,7 +16,6 @@
         <div>Barcode:</div>
         <div>Kein Barcode verfügbar.</div>
       </div>
-      
     {% endif %}
 
     <div class="detail-row">
@@ -52,7 +51,7 @@
     
   </section>
   <section class="print-btn-wrapper no-print">
-    <button class="print-btn btn"><a href="{% url 'unload_detail' pk=unload.pk %}">Drucken</a></button>
+    <button class="print-btn btn"><a href="{% url 'unload_detail_barcode' pk=unload.pk %}">Drucken</a></button>
     <button class="print-btn btn"><a href="{% url 'unload_update' pk=unload.id %}">Ändern</a></button>
     <button class="print-btn btn"><a href="{% url 'unload_list' %}">Zurück</a></button>
   </section>

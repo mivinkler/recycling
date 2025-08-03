@@ -7,7 +7,7 @@
 <form method="post" action="{% if unload and unload.pk %}{% url 'recycling_update' pk=unload.pk %}{% endif %}">
   {% csrf_token %}
 
-  <div class="itemcard itemcard-small">
+  <div class="itemcard">
     <div class="itemcard-title itemcard-margin-left">
       <h2>Vorsortierung erstellen</h2>
     </div>
@@ -17,19 +17,27 @@
       {{ form.non_field_errors }}
 
       <div class="itemcard-topbox-row itemcard-margin-left">
-        <label for="id_unload">Vorsortierung-Wagen:</label>
+        <label for="barcode">Barcode:</label>
+        <div>
+          <!-- TODO:  "/api/unload-input/"??? -->
+          <input type="text" id="barcode" data-api="/api/unload-input/" autofocus autocomplete="off" placeholder="Barcode scannen..." />
+        </div>
+      </div>
+
+      <div class="itemcard-topbox-row itemcard-margin-left">
+        <label for="id_unload">Vorsortierung:</label>
         <div>{{ form.unload }}</div>
       </div>
     </section>
 
-    <div class="itemcard-title itemcard-margin-left">Aktive Fraktionen:</div>
+    <div class="itemcard-table-title itemcard-margin-left">Aktive Fraktionen:</div>
 
     <table class="itemcard-table add-row-js">
       {{ formset.management_form }}
 
       <thead class="itemcard-thead">
         <tr>
-          <th class="checkbox-circle bg-tansparent"></th>
+          <th class="checkbox-circle itemcard-action-left"></th>
           <th class="itemcard-id">№</th>
           <th class="itemcard-material">Material</th>
           <th class="itemcard-boxtype">Behälter</th>
@@ -46,13 +54,13 @@
           data-url-update="{% url 'recycling_update' pk=form.instance.pk %}">
 
           <td hidden>{{ form.id }}</td>
-          <td class="checkbox-circle">
+          <td class="checkbox-circle itemcard-action-left">
             <input type="checkbox" name="selected_recycling" value="{{ form.instance.pk }}" title="Fraktion verknüpfen" checked>
           </td>
           <td class="itemcard-id">{{ forloop.counter }}</td>
-          <td class="itemcard-material">{{ form.instance.material }}</td>
-          <td class="itemcard-boxtype">{{ form.instance.get_box_type_display }}</td>
-          <td class="itemcard-weight">{{ form.instance.weight }}</td>
+          <td class="itemcard-material"><p>{{ form.instance.material }}</p></td>
+          <td class="itemcard-boxtype"><p>{{ form.instance.get_box_type_display }}</p></td>
+          <td class="itemcard-weight"><p>{{ form.instance.weight }}</p></td>
         </tr>
         {% endfor %}
       </tbody>
@@ -61,11 +69,11 @@
     <template id="table-row-template">
       <tr class="itemcard-table-row dynamic-row">
         <td hidden>{{ empty_form.id }}</td>
-        <td class="checkbox-circle"></td>
+        <td class="checkbox-circle itemcard-action-left"></td>
         <td class="itemcard-id">__index__</td>
-        <td class="itemcard-material">{{ empty_form.material }}</td>
-        <td class="itemcard-boxtype">{{ empty_form.box_type }}</td>
-        <td class="itemcard-weight">{{ empty_form.weight }}</td>
+        <td class="itemcard-material"><p>{{ empty_form.material }}</p></td>
+        <td class="itemcard-boxtype"><p>{{ empty_form.box_type }}</p></td>
+        <td class="itemcard-weight"><p>{{ empty_form.weight }}</p></td>
       </div>
     </template>
 

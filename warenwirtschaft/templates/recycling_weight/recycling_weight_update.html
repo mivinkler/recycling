@@ -4,7 +4,7 @@
 {% block title %}Tägliches wiegen{% endblock %}
 
 {% block content %}
-<div class="itemcard itemcard-small">
+<div class="itemcard">
   <div class="itemcard-title">
     <h2>Tägliches wiegen</h2>
   </div>
@@ -48,7 +48,7 @@
 
             <!-- Status -->
             <td class="itemcard-status">
-              <select name="status">
+              <select name="status" class="active-border">
                 {% for key, value in status_choices %}
                 <option value="{{ key }}" {% if item.status == key %}selected{% endif %}>{{ value }}</option>
                 {% endfor %}
@@ -62,7 +62,7 @@
 
             <!-- Gewicht neu -->
             <td class="itemcard-weight">
-              <input type="number" name="new_weight" autofocus>
+              <input class="active-border" type="number" name="new_weight" autofocus>
             </td>
 
             <!-- Button -->

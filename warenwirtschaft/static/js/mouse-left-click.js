@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const actions = [
       { text: "Barcode drücken", key: "url-detail-barcode" },
-      { text: "Gewichtsprüfung", key: "url-detail-weight" },
+      // { text: "Gewichtsprüfung", key: "url-detail-weight" },
       { text: "Inhalt ändern", key: "url-update" },
     ];
 

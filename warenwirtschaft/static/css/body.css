@@ -122,8 +122,6 @@
   margin-bottom: 20px;
 }
 
-/* ================ Itemcard Topbox ================ */
-
 .itemcard-topbox-row {
   display: flex;
   gap: 16px;
@@ -137,11 +135,13 @@
 
 .itemcard-topbox-row div:last-child {
   width: 75%;
+  min-width: 360px;
 }
 
 .itemcard-topbox-row label,
 .itemcard-topbox-row span {
   width: 25%;
+  min-width: 120px;
   font-weight: 500;
 }
 
@@ -160,9 +160,9 @@
   font-weight: 500;
 }
 
-.itemcard-table {
-  color: var(--color-gray-900);
-  font-size: 0.9em;
+.itemcard-table-title {
+  margin-bottom: 10px;
+  font-weight: 500;
 }
 
 td p {
@@ -174,6 +174,10 @@ td.itemcard-id {
   text-align: center;
 }
 
+.active-border {
+  border: 1px solid var(--color-hero);
+}
+
 .itemcard-status,
 .itemcard-weight {
   width: 100px;
@@ -183,11 +187,36 @@ td.itemcard-id {
   width: 200px;
 }
 
-.itemcard-btn-weight  {
-  font-size: 0.9em;
+.itemcard-action,
+.itemcard-action-alone,
+.itemcard-action-left {
+  background-color: transparent;
   border: none;
+  text-align: center;
+}
+
+.itemcard-action-alone {
+  padding-left: 10px;
   width: 0;
-  padding-left: 8px;
+}
+
+.itemcard-action-left {
+  padding-right: 10px;
+  width: 0;
+}
+
+.itemcard-action {
+  max-width: 106px;
+  margin-left: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.itemcard-row-delete {
+  margin-bottom: 20px;
+  max-width: 540px;
+  line-height: 1.8;
 }
 
 .table-cell.checkbox-circle {
@@ -195,15 +224,10 @@ td.itemcard-id {
   text-align: center;
 }
 
-.itemcard .checkbox-circle {
-  width: 0;
-  border: none;
-  padding-right: 10px;
+.itemcard-margin-left {
+  margin-left: 23px;
 }
 
-.itemcard-margin-left {
-  margin-left: 24px;
-}
 
 /* ================ column-action / Buttons ================ */
 
@@ -219,23 +243,22 @@ td.itemcard-id {
 
 .btn {
   background-color: var(--color-gray-50);
-  color: var(--color-gray-800);
-  border-radius: 3px;
+  border-radius: 2px;
   border: 1px solid var(--color-gray-400);
   outline: 1px solid #fff;
+  -moz-outline-radius: 2px;
   outline-offset: -2px;
   cursor: pointer;
+  font-size: 0.9em;
 }
 
 .btn:hover {
   background-color: var(--color-gray-200);
+  box-shadow: none;
 }
 
 .btn:active {
   background-color: var(--color-gray-300);
-}
-
-.btn:active {
   box-shadow: none;
 }
 
@@ -246,18 +269,8 @@ td.itemcard-id {
   font-size: 16px;
 }
 
-.itemcard-action {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 6px;
-  width: 118px;
-  border: none;
-  background-color: transparent;
-}
-
-.active-row > * {
-background-color: var(--color-gray-300);
+.active-row > td {
+  background-color: var(--color-gray-100);
 }
 
 .lock-wrapper {
@@ -276,7 +289,7 @@ background-color: var(--color-gray-300);
   background-repeat: no-repeat;
   transition: background-image 0.3s ease, transform 0.3s ease;
   height: 25px;
-  width: 26px;
+  width: 25px;
 }
 
 .closed-lock {
@@ -298,13 +311,14 @@ background-color: var(--color-gray-300);
 }
 
 .btn-weight {
-  padding: 2px 4px;
+  padding: 4px 6px;
+  font-weight: 500;
 }
 
 .btn-save {
-  padding: 4px 8px;
+  padding: 5px 8px;
   font-weight: 500;
-  box-shadow: 0 1px 3px var(--color-gray-500);
+  box-shadow: 0 1px 3px var(--color-gray-350);
 }
 
 .material-delete {
@@ -321,7 +335,29 @@ background-color: var(--color-gray-300);
   height: 14px;
 }
 
-/* ================ barcode-print ================ */
+/* ================ Detail / Barcode ================ */
+
+.detail {
+  width: fit-content;
+  margin: 50px auto;
+}
+
+.detail-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  line-height: 26px;
+}
+
+.detail-row div:first-child {
+  font-weight: bold;
+  width: 150px;
+  padding-left: 30px;
+}
+
+.detail-barcode {
+  text-align: left;
+}
 
 .barcode-print-icon {
   display: block;
@@ -338,8 +374,8 @@ background-color: var(--color-gray-300);
 }
 
 .print-btn {
-  border: 1px solid var(--color-gray-500);
   width: 70px;
+  height: 26px;
 }
 
 /* ====== Сontext Menu ====== */
@@ -372,7 +408,6 @@ background-color: var(--color-gray-300);
   background-color: #f5f5f5;
 }
 
-
 /* ====== Media ====== */
 
   @media print {
@@ -380,4 +415,3 @@ background-color: var(--color-gray-300);
       display: none !important;
     }
   }
-

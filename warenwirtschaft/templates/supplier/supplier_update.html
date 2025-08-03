@@ -8,7 +8,7 @@
 <form method="post" action="{% url 'supplier_update' supplier.pk %}" id="supplier-form">
     {% csrf_token %}
 
-    <div class="itemcard itemcard-small">
+    <div class="itemcard">
         <div class="itemcard-title">
             <h2>Kunde bearbeiten</h2>
             <a href="{% url 'supplier_delete' supplier.pk %}" class="delete-btn" title="Lieferant löschen">

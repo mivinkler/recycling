@@ -28,10 +28,15 @@ class DeliveryUpdateView(UpdateView):
         context = self.get_context_data()
         formset = context['formset']
         if formset.is_valid():
-            # Atomare Transaktion: Sicherstellen, dass sowohl das Formular als auch das Formset gespeichert werden
             with transaction.atomic():
                 self.object = form.save()
                 formset.instance = self.object
+
+                # Zeile löschen
+                for deleted_form in formset.deleted_forms:
+                    if deleted_form.instance.pk:
+                        deleted_form.instance.delete()
+
                 formset.save()
             return super().form_valid(form)
         return self.render_to_response(self.get_context_data(form=form))

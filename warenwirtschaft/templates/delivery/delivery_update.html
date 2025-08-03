@@ -8,7 +8,7 @@
 <form method="post" action="{% url 'delivery_update' delivery.pk %}" id="eingang-form">
   {% csrf_token %}
 
-  <div class="itemcard itemcard-small">
+  <div class="itemcard">
     <div class="itemcard-title">
       <h2>Wareneingang ändern</h2>
       <a href="{% url 'delivery_delete' delivery.pk %}" class="delete-btn" title="Lieferung löschen">
@@ -47,7 +47,7 @@
           <th class="itemcard-material">Material</th>
           <th class="itemcard-weight">Gewicht</th>
           <th class="itemcard-note">Anmerkung</th>
-          <th class="itemcard-action"><img src="/static/icons/delete-icon.svg" title="Zeile löschen"></th>
+          <th class="itemcard-action-alone"><img src="/static/icons/delete-icon.svg" title="Zeile löschen"></th>
         </tr>
       </thead>
 
@@ -63,7 +63,12 @@
           <td class="itemcard-boxtype">{{ item_form.box_type }}</td>
           <td class="itemcard-weight">{{ item_form.weight }}</td>
           <td class="itemcard-note">{{ item_form.note }}</td>
-          <td class="itemcard-action checkbox-square">{{ item_form.DELETE }}</td>
+          <td class="itemcard-action-alone">
+            <label class="checkbox-square">
+              {{ item_form.DELETE }}
+              <span data-name="cross"></span>
+            </label>
+          </td>
         </tr>
         {% endfor %}
       </tbody>
@@ -77,7 +82,12 @@
         <td class="itemcard-boxtype">{{ empty_form.box_type }}</td>
         <td class="itemcard-weight">{{ empty_form.weight }}</td>
         <td class="itemcard-note">{{ empty_form.note }}</td>
-        <td class="itemcard-action checkbox-square"></td>
+        <td class="itemcard-action-alone">
+          <label class="checkbox-square">
+            {{ empty_form.DELETE }}
+            <span data-name="cross"></span>
+          </label>
+        </td>
       </tr>
     </template>
 

@@ -18,14 +18,14 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from warenwirtschaft.views.delivery import DeliveryUnitsListView
+from warenwirtschaft.views.delivery import DeliveryListView
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('warenwirtschaft/', include("warenwirtschaft.urls")),
     path('api/', include('warenwirtschaft.api.urls')),
-    path('', DeliveryUnitsListView.as_view(), name='home'),
+    path('', DeliveryListView.as_view(), name='home'),
 ]
 
 if settings.DEBUG:
