@@ -9,27 +9,26 @@
 
   <div class="itemcard">
     <div class="itemcard-title itemcard-margin-left">
-      <h2>Wareneingang ändern</h2>
+      <h2>Aufbereitung ändern</h2>
     </div>
 
     <section class="itemcard-topbox">
       {{ form.non_field_errors }}
 
       <div class="itemcard-topbox-row itemcard-margin-left">
-        <span>Vorsortierung-Wagen:</span>
+        <span for="id_unload">Vorsortierung:</span>
         <p>{{ unload }}</p>
-        {{ form.unload.as_hidden }}
       </div>
     </section>
 
-    <div class="itemcard-title itemcard-margin-left">Aktive Fraktionen:</div>
+    <div class="itemcard-table-title itemcard-margin-left">Aktive Fraktionen:</div>
 
     <table class="itemcard-table add-row-js">
       {{ formset.management_form }}
 
       <thead class="itemcard-thead">
         <tr>
-          <th class="checkbox-circle bg-tansparent"></th>
+          <th class="checkbox-circle itemcard-action-left"></th>
           <th class="itemcard-id">№</th>
           <th class="itemcard-material">Material</th>
           <th class="itemcard-boxtype">Behälter</th>
@@ -48,16 +47,13 @@
 
 
             <td hidden>{{ form.id }}</td>
-            <td class="checkbox-circle">
-              <input type="checkbox"
-                    name="selected_recycling"
-                    value="{{ form.instance.pk }}"
-                    {% if selected %}checked{% endif %}>
+            <td class="checkbox-circle itemcard-action-left">
+              <input type="checkbox" name="selected_recycling" value="{{ form.instance.pk }}" {% if selected %}checked{% endif %}>
             </td>
             <td class="itemcard-id">{{ forloop.counter }}</td>
-            <td class="itemcard-material">{{ form.instance.material }}</td>
-            <td class="itemcard-boxtype">{{ form.instance.get_box_type_display }}</td>
-            <td class="itemcard-weight">{{ form.instance.weight }}</td>
+            <td class="itemcard-material"><p>{{ form.instance.material }}</p></td>
+            <td class="itemcard-boxtype"><p>{{ form.instance.get_box_type_display }}</p></td>
+            <td class="itemcard-weight"><p>{{ form.instance.weight }}</p></td>
           </tr>
         {% endfor %}
       </tbody>
@@ -79,8 +75,8 @@
       <button class="btn btn-row-add" type="button" id="form-remove-btn">–</button>
     </div>
 
-    <div class="button-form-save">
-      <button type="submit" name="save" class="btn btn-save">Speichern</button>
+    <div class="buttons-form-footer">
+      <button type="submit" name="save" class="btn btn-main">Speichern</button>
     </div>
   </div>
 </form>

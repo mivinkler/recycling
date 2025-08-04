@@ -1,3 +1,5 @@
+<!-- TODO: Überlegen, ob Delete für Recycling notwendig ist. was soll gelöscht werden? -->
+
 {% extends 'base.html' %}
 {% load static %}
 
@@ -5,19 +7,21 @@
 
 {% block content %}
 
-<div class="itemcard-small">
+<div class="itemcard">
   <form method="post">
     {% csrf_token %}
-
-    <h2>Aufbereitung löschen</h2>
     
-    <div class="itemcard-topbox ">
-      <p>Sind Sie sicher, dass der Aufbereitung <strong>"{{ unload }}"</strong> gelöscht wird?</p>
+    <div class="itemcard-title">
+      <h2>Aufbereitung löschen</h2>
     </div>
 
-    <div class="button-form-save">
-        <button  type="submit" name="save" class="btn">Löschen</button>
-        <a href="{% url 'recycling_list' %}" class="btn">Abbrechen</a>
+    <section class="itemcard-row-delete">
+      <p>Sind Sie sicher, dass der Aufbereitung <strong>"{{ unload }}"</strong> gelöscht wird?</p>
+    </section>
+
+    <div class="buttons-form-footer">
+        <button  type="submit" name="save" class="btn btn-main">Löschen</button>
+        <a href="{% url 'recycling_list' %}" class="btn btn-main">Abbrechen</a>
     </div>
   </form>
 </div>

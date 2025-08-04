@@ -44,7 +44,9 @@
           <td class="itemcard-weight"></td>
 
           <td class="itemcard-action">
-            <a href="{% url 'recycling_weight_update' item.id %}" class="btn closed-lock"></a>
+            <a href="{% url 'recycling_weight_update' item.id %}" class="btn btn-lock">
+              <img src="{% static 'icons/lock-icon.svg' %}">
+            </a>
           </td>
         </tr>
       {% endfor %}

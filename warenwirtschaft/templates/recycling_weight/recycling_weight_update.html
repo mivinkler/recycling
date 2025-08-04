@@ -67,8 +67,10 @@
 
             <!-- Button -->
             <td class="itemcard-action">
-              <a href="{% url 'recycling_weight_list' %}" class="btn open-lock"></a>
-              <button type="submit" class="btn btn-lock-save">Speichern</button>
+              <a href="{% url 'recycling_weight_list' %}" class="btn btn-lock">
+                <img src="{% static 'icons/lock-open-icon.svg' %}">
+              </a>
+              <button type="submit" class="btn btn-main">Speichern</button>
             </td>
           </tr>
         </form>
@@ -91,7 +93,9 @@
             <a href="{% url 'recycling_weight_update' item.id %}"></a>
           </td>
           <td class="itemcard-action">
-            <a href="{% url 'recycling_weight_update' item.id %}" class="btn closed-lock"></a>
+            <a href="{% url 'recycling_weight_update' item.id %}" class="btn btn btn-lock">
+              <img src="{% static 'icons/lock-icon.svg' %}">
+            </a>
           </td>
         </tr>
         {% endif %}

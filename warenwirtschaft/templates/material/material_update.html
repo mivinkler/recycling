@@ -37,37 +37,41 @@
 
         <div class="table-cell checkbox-circle">
           {% if item.id == edit_material.id %}
-            <input type="checkbox" name="delivery" {% if item.delivery %}checked{% endif %}>
+            <input type="checkbox" id="delivery" name="delivery" {% if item.delivery %}checked{% endif %}>
           {% else %}
-            <input type="checkbox" disabled {% if item.delivery %}checked{% endif %}>
+            <input type="checkbox" id="delivery" {% if item.delivery %}checked{% endif %} disabled>
           {% endif %}
         </div>
 
 
         <div class="table-cell checkbox-circle">
           {% if item.id == edit_material.id %}
-            <input type="checkbox" name="unload" {% if item.unload %}checked{% endif %}>
+            <input type="checkbox" id="unload" name="unload" {% if item.unload %}checked{% endif %}>
           {% else %}
-            <input type="checkbox" disabled {% if item.unload %}checked{% endif %}>
+            <input type="checkbox" id="unload" {% if item.unload %}checked{% endif %} disabled>
           {% endif %}
         </div>
 
 
         <div class="table-cell checkbox-circle">
           {% if item.id == edit_material.id %}
-            <input type="checkbox" name="recycling" {% if item.recycling %}checked{% endif %}>
+            <input type="checkbox" id="recycling" name="recycling" {% if item.recycling %}checked{% endif %}>
           {% else %}
-            <input type="checkbox" disabled {% if item.recycling %}checked{% endif %}>
+            <input type="checkbox" id="recycling" {% if item.recycling %}checked{% endif %} disabled>
           {% endif %}
         </div>
 
-        <div class="lock-wrapper">
+        <div class="itemcard-action">
           {{ item_form.id }}
           {% if item.id == edit_material.id %}
-            <a href="{% url 'material_create' %}" class="btn open-lock"></a>
-            <button type="submit" class="btn btn-lock-save">Speichern</button>
+            <a href="{% url 'material_create' %}" class="btn btn-lock">
+              <img src="{% static 'icons/lock-open-icon.svg' %}">
+            </a>
+            <button type="submit" class="btn btn-main">Speichern</button>
           {% else %}
-            <a href="{% url 'material_update' item.id %}" class="btn closed-lock"></a>
+            <a href="{% url 'material_update' item.id %}" class="btn btn-lock">
+              <img src="{% static 'icons/lock-icon.svg' %}">
+            </a>
           {% endif %}
         </div>
       </div>
@@ -82,17 +86,19 @@
     <div class="table-cell">...</div>
 
     <div class="table-cell checkbox-circle">
-      <input type="checkbox" disabled>
+      <input type="checkbox" id="material-delivery" disabled>
     </div>
     <div class="table-cell checkbox-circle">
-      <input type="checkbox" disabled>
+      <input type="checkbox" id="material-unload" disabled>
     </div>
     <div class="table-cell checkbox-circle">
-      <input type="checkbox" disabled>
+      <input type="checkbox" id="material-recycling" disabled>
     </div>
 
-    <div class="lock-wrapper">
-      <div class="btn closed-lock"></div>
+    <div class="itemcard-action">
+      <div class="btn btn-lock">
+        <img src="{% static 'icons/lock-icon.svg' %}">
+      </div>
     </div>
   </div>
 </a>

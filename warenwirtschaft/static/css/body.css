@@ -1,34 +1,36 @@
-.table[data-type="supplier-list"] {
+/* ================ Table ================ */
+
+.table {
+  display: grid;
+  width: 100%;
+}
+
+.table[data-type="supplier"] {
   grid-template-columns: minmax(33px, max-content) 1fr 2fr 2fr 1fr 2fr 1fr 2fr 1fr 4fr;
 }
 
-.table[data-type="deliveryunits-list"] {
+.table[data-type="deliveryunits"] {
   grid-template-columns: minmax(33px, max-content) repeat(8, 1fr) 2fr;
 }
 
-.table[data-type="unload-list"] {
+.table[data-type="unload"] {
   grid-template-columns: repeat(3, auto) 2fr 3fr repeat(6, 1fr);
 }
 
-.table[data-type="recycling-list"] {
+.table[data-type="recycling"] {
   grid-template-columns: minmax(33px, max-content) repeat(6, 1fr) 2fr;
 }
 
-.table[data-type="shippingunits-list"] {
+.table[data-type="shippingunits"] {
   grid-template-columns: minmax(33px, max-content) repeat(8, 1fr) 2fr;
 }
 
-.table[data-type="barcode-list"] {
+.table[data-type="barcode"] {
   grid-template-columns: minmax(33px, max-content) repeat(7, 1fr);
 }
 
 .table[data-type="material"] {
   grid-template-columns: minmax(33px, max-content) 200px repeat(3, 40px) auto;
-}
-
-.table {
-  display: grid;
-  width: 100%;
 }
 
 .table-header {
@@ -130,19 +132,28 @@
 }
 
 .itemcard-topbox-row div {
-  border: 1px solid var(--color-gray-300);
-}
-
-.itemcard-topbox-row div:last-child {
-  width: 75%;
-  min-width: 360px;
+  border: 1px solid var(--color-gray-400);
 }
 
 .itemcard-topbox-row label,
 .itemcard-topbox-row span {
   width: 25%;
-  min-width: 120px;
+  min-width: 160px;
+  line-height: 27px;
   font-weight: 500;
+}
+
+.itemcard-topbox-row p,
+.itemcard-topbox-row div:last-child {
+  width: 75%;
+  min-width: 400px;
+  line-height: 27px;
+}
+
+.itemcard-topbox-row p {
+  font-weight: 500;
+  font-size: 1.1em;
+  color: var(--color-gray-900);
 }
 
 .itemcard-topbox-row textarea {
@@ -206,11 +217,16 @@ td.itemcard-id {
 }
 
 .itemcard-action {
-  max-width: 106px;
+  width: 106px;
   margin-left: 6px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 6px;
+}
+
+.itemcard-action.add-buttons {
+  margin-left: 0;
+  gap: 2px
 }
 
 .itemcard-row-delete {
@@ -228,18 +244,7 @@ td.itemcard-id {
   margin-left: 23px;
 }
 
-
-/* ================ column-action / Buttons ================ */
-
-.column-action button {
-  text-align: right;
-}
-
-.button-form-save {
-  display: flex;
-  justify-content: flex-end;
-  gap: 20px;
-}
+/* ================ Buttons ================ */
 
 .btn {
   background-color: var(--color-gray-50);
@@ -249,7 +254,9 @@ td.itemcard-id {
   -moz-outline-radius: 2px;
   outline-offset: -2px;
   cursor: pointer;
-  font-size: 0.9em;
+  height: 24px;
+  display: flex;
+  align-items: center;
 }
 
 .btn:hover {
@@ -260,6 +267,16 @@ td.itemcard-id {
 .btn:active {
   background-color: var(--color-gray-300);
   box-shadow: none;
+}
+
+.btn-main {
+  padding: 0 6px;
+  font-weight: 500;
+  box-shadow: 0 1px 3px var(--color-gray-350);
+}
+
+.btn-lock {
+  padding: 0 5px;
 }
 
 .btn-row-add {
@@ -273,52 +290,8 @@ td.itemcard-id {
   background-color: var(--color-gray-100);
 }
 
-.lock-wrapper {
-  width: 100px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  width: max-content;
-  margin-left: 6px;
-  background-color: transparent;
-}
-
-.open-lock,
-.closed-lock {
-  background-position: center;
-  background-repeat: no-repeat;
-  transition: background-image 0.3s ease, transform 0.3s ease;
-  height: 25px;
-  width: 25px;
-}
-
-.closed-lock {
-  background-image: url('/static/icons/lock-icon.svg');
-}
-
-.open-lock {
-  background-image: url('/static/icons/lock-open-icon.svg');
-}
-
-.table-row:hover > .lock-wrapper {
+.table-row:hover > .itemcard-action {
   background-color: #fff;
-}
-
-.btn-lock-save {
-  height: 25px;
-  padding: 0 6px;
-  font-weight: 500;
-}
-
-.btn-weight {
-  padding: 4px 6px;
-  font-weight: 500;
-}
-
-.btn-save {
-  padding: 5px 8px;
-  font-weight: 500;
-  box-shadow: 0 1px 3px var(--color-gray-350);
 }
 
 .material-delete {
@@ -333,6 +306,12 @@ td.itemcard-id {
 .delete-btn {
   width: 14px;
   height: 14px;
+}
+
+.buttons-form-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
 }
 
 /* ================ Detail / Barcode ================ */

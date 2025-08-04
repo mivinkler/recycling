@@ -56,7 +56,7 @@
           <td class="itemcard-target">{{ form.target }}</td>
           <td class="itemcard-weight">{{ form.weight }}</td>
           <td class="itemcard-action-alone">
-            <button type="button" class="btn btn-weight">wiegen</button>
+            <button type="button" class="btn btn-main">wiegen</button>
           </td>
         </tr>
         {% endfor %}
@@ -71,7 +71,7 @@
         <td class="itemcard-target">{{ empty_form.target }}</td>
         <td class="itemcard-weight">{{ empty_form.weight }}</td>
         <td class="itemcard-action-alone">
-          <button type="button" class="btn btn-weight">wiegen</button>
+          <button type="button" class="btn btn-main">wiegen</button>
         </td>
       </tr>
     </template>
@@ -81,8 +81,8 @@
       <button class="btn btn-row-add" type="button" id="form-remove-btn">–</button>
     </div>
 
-    <div class="button-form-save">
-      <button type="submit" name="save" class="btn btn-save">Speichern</button>
+    <div class="buttons-form-footer">
+      <button type="submit" name="save" class="btn btn-main">Speichern</button>
     </div>
   </div>
 </form>
