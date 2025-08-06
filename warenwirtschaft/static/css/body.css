@@ -180,21 +180,26 @@ td p {
   padding: 2px 2px 2px 6px;
 }
 
-td.itemcard-id {
-  width: 33px;
+.itemcard-id {
   text-align: center;
+  width: 28px;
 }
 
 .active-border {
   border: 1px solid var(--color-hero);
 }
 
+.itemcard-area,
 .itemcard-status,
 .itemcard-weight {
   width: 100px;
 }
 
 .itemcard-boxtype {
+  width: 120px;
+}
+
+.itemcard-material {
   width: 200px;
 }
 
@@ -241,7 +246,7 @@ td.itemcard-id {
 }
 
 .itemcard-margin-left {
-  margin-left: 23px;
+  margin-left: 28px;
 }
 
 /* ================ Buttons ================ */
@@ -254,7 +259,7 @@ td.itemcard-id {
   -moz-outline-radius: 2px;
   outline-offset: -2px;
   cursor: pointer;
-  height: 24px;
+  height: 26px;
   display: flex;
   align-items: center;
 }
@@ -270,9 +275,13 @@ td.itemcard-id {
 }
 
 .btn-main {
-  padding: 0 6px;
+  padding: 0 7px;
   font-weight: 500;
   box-shadow: 0 1px 3px var(--color-gray-350);
+}
+
+.btn-margin-top {
+  margin-top: 10px;
 }
 
 .btn-lock {
@@ -280,7 +289,7 @@ td.itemcard-id {
 }
 
 .btn-row-add {
-  padding: 0 11px;
+  padding: 0 9px;
   margin-top: 4px;
   font-weight: bold;
   font-size: 16px;
