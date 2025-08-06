@@ -1,31 +1,41 @@
 header {
-    padding: 0 35px;
-    height: 1px;
-    background-color: var(--color-gray-400);
-    color: #fff;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    overflow: hidden; 
-    transition: height 0.3s ease-in-out;
-    font-size: 12px;
+    background-color: var(--color-gray-100);
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid var(--color-gray-300);
+    position: relative;
+    padding: 0 20px;
 }
 
-/* ============ Icons =============*/
+.header-menu {
+    display: flex;
+    align-items: flex-end;
+    gap: 46px;
+}
 
-.top-icon a {
-    font-size: 13px;
+.header-menu-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 105px;
+    padding: 6px 0 30px;
+}
+
+.header-user {
+    padding-top: 8px;
+    cursor: pointer;
+}
+
+.header-menu-title {
+    padding-bottom: 3px;
+    border-bottom: 3px solid transparent;
     transition: border-color 0.2s ease-in-out;
     font-weight: 500;
 }
 
-.header-list-title {
-    border-bottom: 3px solid transparent;
-    padding-bottom: 3px;
-}
-
-.header-list-title:hover, 
-.top-icon .selected {
+.header-menu-title:hover, 
+.title-selected {
     border-color: var(--color-hero);
 }
 
@@ -33,160 +43,105 @@ header {
     fill: var(--color-hero);
     filter: brightness(85%);
 }
-  
-.top-icons-wrapper {
-    display: flex;
-    position: relative;
-    font-size: 13px;
-    height: 105px;
-    background-color: var(--color-gray-100);
-    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
-    border-bottom: 1px solid var(--color-gray-300);
-}
-  
-.top-icon {
-    display: flex;
-    align-items: flex-end;
-    text-align: center;
-    gap: 46px;
-    padding: 0 35px;
-    margin: 10px 0 25px;
-}
 
-.top-icon-border {
+.header-menu-splitter {
     border-right: 1px solid var(--color-gray-300);
+    height: 80%;
+    align-self: center;
 }
 
-.top-icon > div {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 76px;
-}
-
-.top-icon-detail {
+.header-menu-icon {
     position: relative;
-}
-  
-summary {
-    list-style: none;
-}
-  
-summary::-webkit-details-marker {
-    display: none; /* Entfernt das Dreieck im Browser */
+    align-self: center;
 }
 
-.top-icon-detail > div {
+.header-menu-icon svg {
+    vertical-align: bottom;
+}
+
+/* ============ Details element ============*/
+
+.header-details {
+    position: relative;
+    background-color: var(--color-gray-100);
+}
+
+.header-details-disclosure {
     position: absolute;
     top: 38px;
     left: 0;
     z-index: 100;
     min-width: 150px;
     padding: 10px;
-    border: 1px solid var(--color-gray-400);
-    background-color: #fff;
+    border: 1px solid var(--color-gray-500);
+    background-color: var(--color-gray-50);
     box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
-    display: none;
-}
-
-.top-icon-detail[open] > div {
-    display: block;
 }
 
 /*  ============ tooltip  ============ */
 
-.tooltip-wrapper {
-    position: relative;
-  }
-
-.tooltip-wrapper > img {
-    vertical-align: bottom;
-  }
-.tooltip-wrapper .tooltip-text-reset, 
-.tooltip-wrapper .tooltip-text {
-    opacity: 0;
-    visibility: hidden;
+.tooltip-text,
+.tooltip-reset {
     position: absolute;
-    transition: opacity 0.3s ease-in-out, visibility 0s linear;
-    transition-delay: 0s;
+    bottom: -18px;
+    font-size: 10px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 1000;
-    font-size: 10px;
-    text-align: center;
-    bottom: -14px;
+}
+
+.tooltip-text {
+    opacity: 0;
     width: max-content;
 }
-  
-.tooltip-wrapper:hover .tooltip-text {
+
+.header-menu-icon:hover .tooltip-text,
+.icon-selected .tooltip-text {
     opacity: 1;
-    visibility: visible;
-    transition-delay: 1s;
 }
 
 .icon-selected .tooltip-text {
-    opacity: 1;
-    visibility: visible;
     color: var(--color-hero);
     filter: brightness(50%);
-    font-size: 11px;
 }
-  
-.tooltip-wrapper .tooltip-text-reset {
-    visibility: visible;
+
+.tooltip-reset {
     opacity: 1;
     color: #9f5017;
 }
   
 /* ============ Icon: search =============*/
 
-.tooltip-wrapper > div {
-    box-shadow: 0 1px 3px var(--color-gray-500);
-}
-
-.icon-search {
+.header-search {
     display: flex;
     flex-direction: column;
     gap: 14px;
     width: 240px;
 }
 
-.icon-search-input,
-.icon-search-button,
-.search-date input,
-.search-status select {
+.header-search-text,
+.header-search-btn,
+.header-search-date > div,
+.header-search-status > div {
     height: 28px;
     border: 1px solid var(--color-gray-500);
     color: var(--color-gray-900);
 }
 
-.search-date input:focus {
-    outline: 2px solid var(--color-hero);
-    outline-offset: -1px;
+.header-search-status div {
+    width: 70%;
 }
 
-.search-status,
-.search-date {
+.header-search-status,
+.header-search-date {
     display: flex;
+    align-items: center;
     justify-content: space-between;
     gap: 6px;
 }
 
-.search-status *,
-.search-date * {
-    width: 48%;
-    align-content: center;
-}
-
-.search-status div {
-    text-align: left;
-    margin-left: 10px;
-    font-size: 1.1em;
-    height: 28px;
-}
-
-.icon-search button {
+.header-search-btn {
     box-shadow: 0 0.5px 2px var(--color-gray-500);
+    font-weight: 500;
 }
 
 /* ============ Icon: sort =============*/
@@ -201,18 +156,12 @@ summary::-webkit-details-marker {
 .icon-sort a {
     color: var(--color-gray-900);
     font-size: 12px;
-    transition: all 0.5s ease;
 }
   
 .icon-sort a:hover,
 .icon-sort a.icon-active {
-    color: rgb(2, 141, 2);
     display: inline-block;
-    transform: scale(1.2);
-    text-shadow: 0.5px 0.5px 0 rgba(0, 0, 0, 0.2);
-    fill: rgb(2, 141, 2);;
-}
-  
-.icon-sort a.icon-active {
-    transform: scale(1.3);
+    transform: scale(1.1);
+    color: rgb(2, 141, 2);
+    fill: rgb(2, 141, 2);
 }

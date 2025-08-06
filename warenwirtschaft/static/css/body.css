@@ -14,7 +14,7 @@
 }
 
 .table[data-type="unload"] {
-  grid-template-columns: repeat(3, auto) 2fr 3fr repeat(6, 1fr);
+  grid-template-columns: repeat(3, minmax(33px, max-content)) 2fr 3fr repeat(6, 1fr);
 }
 
 .table[data-type="recycling"] {
@@ -362,35 +362,22 @@ td.itemcard-id {
 .context-menu {
   position: absolute;
   display: none;
+  border-radius: 2px; 
+  background-color: var(--color-gray-500);
   z-index: 1000;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
-  list-style: none;
-  width: 160px;
-  border-radius: 4px;
-  overflow: hidden;
+  min-width: 150px;
+  box-shadow: 0 4px 7px rgba(0,0,0,0.2);
 }
 
 .context-menu li {
+  background-color: var(--color-gray-50);
+  margin: 1px; /* Das ist Border 1px  */
+  outline: 1px solid #fff;
+  outline-offset: -2px;
   padding: 8px 12px;
   cursor: pointer;
-  border-bottom: 1px solid #eee;
-  transition: background-color 0.2s;
-}
-
-.context-menu li:last-child {
-  border-bottom: none;
 }
 
 .context-menu li:hover {
-  background-color: #f5f5f5;
+  background-color: var(--color-gray-100);
 }
-
-/* ====== Media ====== */
-
-  @media print {
-    .no-print {
-      display: none !important;
-    }
-  }

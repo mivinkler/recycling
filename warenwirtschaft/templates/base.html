@@ -23,16 +23,15 @@
 </head>
 <body>
     <header class="no-print">
-        <!-- <div class="header-user">
-            ANDERWERK <span style="color: red; font-weight: bold; width: 100px;">❯</span>
+        <div class="header-menu">
+            {% include 'components/top_navi.html' %}
         </div>
+            
         <div class="header-user">
-            <div>Max Musterman</div>
-            <img class="user-white-icon" src="{% static 'icons/user-white-icon.svg' %}">
-        </div> -->
+            <img src="{% static 'icons/user-icon.svg' %}">
+        </div>
     </header>
    
-    {% include 'components/top_navi.html' %}
 
     <main>
         {% block content %}{% endblock %}
