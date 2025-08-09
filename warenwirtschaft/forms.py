@@ -23,22 +23,22 @@ class SupplierForm(forms.ModelForm):
         }
 
 
-Delivery
-class DeliveryForm(forms.ModelForm):
-    class Meta:
-        model = Delivery
-        fields = ['supplier', 'delivery_receipt', 'note']
-        widgets = {
-            'note': forms.Textarea(attrs={'rows': 3}),
-        }
+# Delivery
+# class DeliveryForm(forms.ModelForm):
+#     class Meta:
+#         model = Delivery
+#         fields = ['supplier', 'delivery_receipt', 'note']
+#         widgets = {
+#             'note': forms.Textarea(attrs={'rows': 3}),
+#         }
         
-DeliveryUnitFormSet = inlineformset_factory(
-    parent_model=Delivery,
-    model=DeliveryUnit,
-    fields=['box_type', 'material', 'weight', 'note'],
-    extra=0,
-    can_delete=True
-)
+# DeliveryUnitFormSet = inlineformset_factory(
+#     parent_model=Delivery,
+#     model=DeliveryUnit,
+#     fields=['box_type', 'material', 'weight', 'note'],
+#     extra=0,
+#     can_delete=True
+# )
 
 # Liefereinheit-Auswahl (z.B. in CreateView)
 class DeliveryUnitForm(forms.Form):

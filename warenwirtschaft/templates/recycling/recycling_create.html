@@ -5,7 +5,7 @@
 
 {% block content %}
 <!-- TODO:  "recycling_update"??? -->
-<form method="post" action="{% if unload and unload.pk %}{% url 'recycling_update' pk=unload.pk %}{% endif %}">
+<form method="post" action="">
   {% csrf_token %}
 
   <div class="itemcard">
@@ -49,33 +49,64 @@
       <tbody class="itemcard-tbody">
         {{ formset.non_form_errors }}
         {% for form in vorhandene_forms %}
-        <tr class="itemcard-table-row"
+          <tr class="itemcard-table-row"
           data-id="{{ form.instance.pk }}"
           data-url-detail-barcode="{% url 'recycling_detail' pk=form.instance.pk %}"
           data-url-update="{% url 'recycling_update' pk=form.instance.pk %}">
 
           <td hidden>{{ form.id }}</td>
-          <td class="checkbox-circle itemcard-action-left">
+            <td class="checkbox-circle itemcard-action-left">
             <input type="checkbox" name="selected_recycling" value="{{ form.instance.pk }}" title="Fraktion verknüpfen" checked>
-          </td>
-          <td class="itemcard-id">{{ forloop.counter }}</td>
+            </td>
+            <td class="itemcard-id">{{ forloop.counter }}</td>
           <td class="itemcard-material"><p>{{ form.instance.material }}</p></td>
           <td class="itemcard-boxtype"><p>{{ form.instance.get_box_type_display }}</p></td>
           <td class="itemcard-weight"><p>{{ form.instance.weight }}</p></td>
-        </tr>
+          </tr>
         {% endfor %}
       </tbody>
     </table>
 
+    {{ formset.non_form_errors }}
+    {% for form in formset.forms %}
+      {% for field in form.visible_fields %}
+        {% for error in field.errors %}
+          <div class="error">{{ field.name }}: {{ error }}</div>
+        {% endfor %}
+      {% endfor %}
+      {% for error in form.non_field_errors %}
+        <div class="error">{{ error }}</div>
+      {% endfor %}
+    {% endfor %}
+    
     <template id="table-row-template">
       <tr class="itemcard-table-row dynamic-row">
-        <td hidden>{{ empty_form.id }}</td>
+        <td hidden>
+          <input type="hidden" name="new-__prefix__-id" id="id_new-__prefix__-id">
+        </td>
         <td class="checkbox-circle itemcard-action-left"></td>
         <td class="itemcard-id">__index__</td>
-        <td class="itemcard-material"><p>{{ empty_form.material }}</p></td>
-        <td class="itemcard-boxtype"><p>{{ empty_form.box_type }}</p></td>
-        <td class="itemcard-weight"><p>{{ empty_form.weight }}</p></td>
-      </div>
+
+        <td class="itemcard-material">
+          <select name="new-__prefix__-material" id="id_new-__prefix__-material">
+            {% for value, label in formset.empty_form.fields.material.choices %}
+              <option value="{{ value }}">{{ label }}</option>
+            {% endfor %}
+          </select>
+        </td>
+
+        <td class="itemcard-boxtype">
+          <select name="new-__prefix__-box_type" id="id_new-__prefix__-box_type">
+            {% for value, label in formset.empty_form.fields.box_type.choices %}
+              <option value="{{ value }}">{{ label }}</option>
+            {% endfor %}
+          </select>
+        </td>
+
+        <td class="itemcard-weight">
+          <input type="number" name="new-__prefix__-weight" id="id_new-__prefix__-weight" step="0.01" min="0">
+        </td>
+      </tr>
     </template>
 
     <div class="itemcard-action add-buttons">
