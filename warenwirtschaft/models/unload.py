@@ -32,6 +32,7 @@ class Unload(models.Model):
     note = models.CharField(max_length=255, null=True, blank=True)
     barcode = models.CharField(max_length=64, blank=True, null=True)
     barcode_image = models.ImageField(upload_to='barcodes/unload/', blank=True, null=True)
+    shipping = models.ForeignKey('warenwirtschaft.Shipping', on_delete=models.SET_NULL, null=True, blank=True, related_name='unload_for_shipping')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(null=True, blank=True, default=None)
     deleted_at = models.DateTimeField(null=True, blank=True, default=None)

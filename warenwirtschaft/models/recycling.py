@@ -1,6 +1,7 @@
 from django.db import models
 from warenwirtschaft.models.material import Material
 
+
 class Recycling(models.Model):
     BOX_TYPE_CHOICES = [
         (1, "Gitterbox"),
@@ -29,6 +30,7 @@ class Recycling(models.Model):
     target = models.PositiveSmallIntegerField(choices=TARGET_CHOICES)
     status = models.PositiveSmallIntegerField(choices=STATUS_CHOICES, default=1)
     note = models.CharField(max_length=255, null=True, blank=True)
+    shipping = models.ForeignKey('warenwirtschaft.Shipping', on_delete=models.SET_NULL, null=True, blank=True, related_name='recycling_for_shipping')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(null=True, blank=True, default=None)
     deleted_at = models.DateTimeField(null=True, blank=True, default=None)

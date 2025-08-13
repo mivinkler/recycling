@@ -11,10 +11,9 @@ class UnloadChoiceForm(forms.Form):
 class RecyclingForm(forms.ModelForm):
     class Meta:
         model = Recycling
-        # ✨ «unloads» убираем из формы — это M2M, ты его выставляешь в view
         fields = ["box_type", "material", "weight"]
 
-# ✨ extra=0, чтобы пустой formset был валиден, если пользователь ничего не добавлял
+# extra=0, sodass ein leeres Formset gültig ist, wenn der Benutzer nichts hinzugefügt hat
 RecyclingFormSet = modelformset_factory(
     Recycling,
     form=RecyclingForm,

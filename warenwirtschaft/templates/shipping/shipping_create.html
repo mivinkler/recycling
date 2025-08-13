@@ -1,16 +1,15 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Abholung erstellen{% endblock %}
+{% block title %}{% if mode == "create" %}Abholung erstellen{% else %}Abholung bearbeiten{% endif %}{% endblock %}
 
 {% block content %}
-
-<form method="post" action="{% url 'shipping_create' %}" id="eingang-form">
-{% csrf_token %}
+<form method="post" action="">
+  {% csrf_token %}
 
   <div class="itemcard">
     <div class="itemcard-title itemcard-margin-left">
-      <h2>Abholung erstellen</h2>
+      <h2>{% if mode == "create" %}Abholung erstellen{% else %}Abholung bearbeiten{% endif %}</h2>
     </div>
 
     <section class="itemcard-topbox itemcard-margin-left">
@@ -37,45 +36,47 @@
       </div>
     </section>
 
-    <div class="itemcard-table-title itemcard-margin-left">Abholbereit:</div>
+    <div class="itemcard-table-title itemcard-margin-left">Zur Abholung auswählen (target={{ TARGET_FOR_SHIPPING|default:"3" }}):</div>
 
     <table class="itemcard-table">
-      {{ formset.management_form }}
       <thead class="itemcard-thead">
         <tr>
           <th class="checkbox-circle itemcard-action-left"></th>
           <th class="itemcard-id">№</th>
-          <th class="itemcard-area">Abteilung</th>
-          <th class="itemcard-weight">Gewicht</th>
-          <th class="itemcard-boxtype">Behälter</th>
           <th class="itemcard-material">Material</th>
+          <th class="itemcard-boxtype">Behälter</th>
+          <th class="itemcard-weight">Gewicht</th>
           <th class="itemcard-status">Status</th>
         </tr>
       </thead>
 
-      <tbody class="itemcard-tbody"></tbody>
-        {{ formset.non_form_errors }}
-        {% for item_form in formset %}
-          <tr class="itemcard-table-row">
-            <td hidden>{{ form.id }}</td>
+      <tbody class="itemcard-tbody">
+        {% for rec in recyclings %}
+          <tr class="itemcard-table-row"
+              data-id="{{ rec.pk }}"
+              data-url-detail="{% url 'recycling_detail' pk=rec.pk %}">
             <td class="checkbox-circle itemcard-action-left">
-              <input type="checkbox" name="selected_shipping" value="{{ form.instance.pk }}" title="Zur Abholung hinzufügen">
+              <input type="checkbox"
+                     name="selected_recycling"
+                     value="{{ rec.pk }}"
+                     title="Zur Abholung hinzufügen"
+                     {% if rec.pk in preselected_ids %}checked{% endif %}>
             </td>
             <td class="itemcard-id">{{ forloop.counter }}</td>
-            <td class="itemcard-area"></td>
-            <td class="itemcard-weight">{{ item_form.weight }}</td>
-            <td class="itemcard-boxtype">{{ item_form.box_type }}</td>
-            <td class="itemcard-material">{{ item_form.material }}</td>
-            <td class="itemcard-status">{{ item_form.status }}</td>
+            <td class="itemcard-material"><p>{{ rec.material|default:rec.material_other }}</p></td>
+            <td class="itemcard-boxtype"><p>{{ rec.get_box_type_display }}</p></td>
+            <td class="itemcard-weight"><p>{{ rec.weight }}</p></td>
+            <td class="itemcard-status"><p>{{ rec.get_status_display }}</p></td>
           </tr>
+        {% empty %}
+          <tr><td colspan="6" class="itemcard-empty">Keine passenden Recycling-Einträge gefunden.</td></tr>
         {% endfor %}
       </tbody>
-    </table>  
+    </table>
 
     <div class="buttons-form-footer">
       <button type="submit" name="save" class="btn btn-main btn-margin-top">Speichern</button>
     </div>
   </div>
 </form>
-
 {% endblock %}

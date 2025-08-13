@@ -13,7 +13,7 @@ class RecyclingCreateView(View):
 
     def get(self, request):
         form = UnloadChoiceForm()
-        # ✨ префикс обязателен — ты сам генеришь имена полей в JS
+        # prefix="new" für JS
         formset = RecyclingFormSet(queryset=Recycling.objects.none(), prefix="new")
         unload = None
 
@@ -34,11 +34,11 @@ class RecyclingCreateView(View):
         if unload_form.is_valid():
             unload = unload_form.cleaned_data["unload"]
 
-            # есть ли вообще строки в formset?
+            # wenn es überhaupt Zeilen im Formset gibt?
             has_new_rows = formset.total_form_count() > 0
 
             if has_new_rows and not formset.is_valid():
-                # есть ошибки в новых строках — перерисовываем страницу с ошибками
+                # Wenn gibt es Fehler in den neuen Zeilen, die Seite mit den Fehlern zegen.
                 vorhandene_forms = [
                     RecyclingForm(instance=obj, prefix=f"recycling_{obj.pk}")
                     for obj in Recycling.objects.filter(status=1)
@@ -58,8 +58,8 @@ class RecyclingCreateView(View):
                     new_instances = formset.save(commit=False)
                     for instance in new_instances:
                         # 🇩🇪 Pflichtfelder setzen, weil sie nicht im Formular sind
-                        instance.status = 1                 # z.B. „aktiv“ – поставь твой код статуса
-                        instance.target = unload.target     # или фиксированное значение, например 2
+                        instance.status = 1
+                        instance.target = unload.target
                         instance.save()
                         instance.unloads.add(unload)
 
@@ -69,7 +69,7 @@ class RecyclingCreateView(View):
 
             return redirect("recycling_update", pk=unload.pk)
 
-        # Если Unload невалиден — просто перерисовать
+        # Wenn „Unload“ ungültig ist, einfach neu zeigen
         vorhandene_forms = [
             RecyclingForm(instance=obj, prefix=f"recycling_{obj.pk}")
             for obj in Recycling.objects.filter(status=1)
