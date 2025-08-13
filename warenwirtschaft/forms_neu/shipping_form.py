@@ -12,13 +12,13 @@ class ShippingHeaderForm(forms.ModelForm):
 
 class UnloadChoiceForm(forms.Form):
     unload = forms.ModelChoiceField(
-        queryset=Unload.objects.filter(status=1, target=2),
+        queryset=Unload.objects.filter(status=1),
         label="Vorsortierung wählen"
     )
 
 class RecyclingChoiceForm(forms.Form):
     recycling = forms.ModelChoiceField(
-        queryset=Recycling.objects.filter(status=1, target=3),
+        queryset=Recycling.objects.filter(status=1),
         label="Aufbereitung wählen"
     )
 

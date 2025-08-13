@@ -4,7 +4,7 @@ from warenwirtschaft.models import Recycling, Unload
 
 class UnloadChoiceForm(forms.Form):
     unload = forms.ModelChoiceField(
-        queryset=Unload.objects.filter(status=1, target=2),
+        queryset=Unload.objects.filter(status=1),
         label="Vorsortierung wählen"
     )
 

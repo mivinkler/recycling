@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}{% if mode == "create" %}Abholung erstellen{% else %}Abholung bearbeiten{% endif %}{% endblock %}
+{% block title %}Abholung erstellen{% endblock %}
 
 {% block content %}
 <form method="post" action="">
@@ -9,7 +9,7 @@
 
   <div class="itemcard">
     <div class="itemcard-title itemcard-margin-left">
-      <h2>{% if mode == "create" %}Abholung erstellen{% else %}Abholung bearbeiten{% endif %}</h2>
+      <h2>Abholung erstellen</h2>
     </div>
 
     <section class="itemcard-topbox itemcard-margin-left">
@@ -21,7 +21,7 @@
       </div>
 
       <div class="itemcard-topbox-row">
-        <label>Begleitdokument:</label>
+        <label>Begleitdokumente:</label>
         <div>{{ form.certificate }}</div>
       </div>
 
@@ -36,7 +36,7 @@
       </div>
     </section>
 
-    <div class="itemcard-table-title itemcard-margin-left">Zur Abholung auswählen (target={{ TARGET_FOR_SHIPPING|default:"3" }}):</div>
+    <div class="itemcard-table-title itemcard-margin-left">Abholbereit:</div>
 
     <table class="itemcard-table">
       <thead class="itemcard-thead">
@@ -46,7 +46,7 @@
           <th class="itemcard-material">Material</th>
           <th class="itemcard-boxtype">Behälter</th>
           <th class="itemcard-weight">Gewicht</th>
-          <th class="itemcard-status">Status</th>
+          <th class="itemcard-status">Bereich</th>
         </tr>
       </thead>
 
@@ -66,11 +66,30 @@
             <td class="itemcard-material"><p>{{ rec.material|default:rec.material_other }}</p></td>
             <td class="itemcard-boxtype"><p>{{ rec.get_box_type_display }}</p></td>
             <td class="itemcard-weight"><p>{{ rec.weight }}</p></td>
-            <td class="itemcard-status"><p>{{ rec.get_status_display }}</p></td>
+            <td class="itemcard-status"><p>Aufbereitung</p></td>
           </tr>
-        {% empty %}
-          <tr><td colspan="6" class="itemcard-empty">Keine passenden Recycling-Einträge gefunden.</td></tr>
         {% endfor %}
+
+        {% for unload in unloads %}
+          <tr class="itemcard-table-row"
+              data-id="{{ unload.pk }}"
+              data-url-detail="{% url 'unload_detail_barcode' pk=unload.pk %}">
+            <td class="checkbox-circle itemcard-action-left">
+              <input type="checkbox"
+                     name="selected_unload"
+                     value="{{ unload.pk }}"
+                     title="Zur Abholung hinzufügen"
+                     {% if unload.pk in preselected_ids %}checked{% endif %}>
+            </td>
+            <td class="itemcard-id">{{ forloop.counter }}</td>
+            <td class="itemcard-material"><p>{{ unload.material|default:unload.material_other }}</p></td>
+            <td class="itemcard-boxtype"><p>{{ unload.get_box_type_display }}</p></td>
+            <td class="itemcard-weight"><p>{{ unload.weight }}</p></td>
+            <td class="itemcard-status"><p>Vorsortierung</p></td>
+          </tr>
+        {% endfor %}
+
+
       </tbody>
     </table>
 

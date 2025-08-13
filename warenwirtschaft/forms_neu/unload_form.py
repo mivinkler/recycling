@@ -13,7 +13,7 @@ class DeliveryUnitForm(forms.Form):
 class UnloadForm(forms.ModelForm):
     class Meta:
         model = Unload
-        fields = ['box_type', 'material', 'weight', 'target', 'note']
+        fields = ['box_type', 'material', 'weight', 'note']
 
 def get_unload_formset(extra=0):
     return inlineformset_factory(

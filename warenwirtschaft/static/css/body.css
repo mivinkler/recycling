@@ -120,6 +120,8 @@
   width: fit-content;
 }
 
+/* ================ Itemcard Header ================ */
+
 .itemcard-topbox {
   margin-bottom: 20px;
 }
@@ -161,7 +163,7 @@
   box-sizing: border-box;
 }
 
-/* ================ Itemcard Table ================ */
+/* ================ Itemcard Body ================ */
 
 .itemcard-title {
   display: flex;

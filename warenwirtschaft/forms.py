@@ -52,7 +52,7 @@ class DeliveryUnitForm(forms.Form):
 class UnloadForm(forms.ModelForm):
     class Meta:
         model = Unload
-        fields = ['box_type', 'material', 'weight', 'target', 'note']
+        fields = ['box_type', 'material', 'weight', 'note']
 
 
 # Inline-FormSet für die Bearbeitung von mehreren Unloads
@@ -60,7 +60,7 @@ UnloadFormSet = inlineformset_factory(
     parent_model=DeliveryUnit,
     model=Unload,
     form=UnloadForm,  # ← теперь это твоя основная форма
-    fields=['id', 'box_type', 'material', 'weight', 'target', 'note'],
+    fields=['id', 'box_type', 'material', 'weight', 'note'],
     extra=1,
     can_delete=True
 )
@@ -82,7 +82,7 @@ class RecyclingForm(forms.ModelForm):
 
     class Meta:
         model = Recycling
-        fields = ["box_type", "material", "weight", "target", "status", "unloads"]
+        fields = ["box_type", "material", "weight", "status", "unloads"]
         widgets = {
             "unloads": forms.CheckboxSelectMultiple,
         }
