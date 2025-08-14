@@ -1,4 +1,4 @@
-from .shipping_units_list_view import ShippingUnitsListView
+from .shipping_list_view import ShippingListView
 from .shipping_detail_view import ShippingDetailView
 from .shipping_create_view import ShippingCreateView
 from .shipping_update_view import ShippingUpdateView

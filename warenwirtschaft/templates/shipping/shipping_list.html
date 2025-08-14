@@ -24,14 +24,14 @@
   {% for item in page_obj %}
     <div class="table-row js-select-row"
       data-id="{{ item.id }}"
-      data-url-detail="{% url 'shipping_detail' pk=item.shipping.id %}"
-      data-url-update="{% url 'shipping_update' pk=item.shipping.id %}">
+      data-url-detail="{% url 'shipping_detail' pk=item.id %}"
+      data-url-update="{% url 'shipping_update' pk=item.id %}">
     
-      <div class="table-cell table-cell-id">{{ item.shipping.id }}</div>
-      <div class="table-cell">{{ item.shipping.customer.name }}</div>
-      <div class="table-cell">{{ item.shipping.certificate }}</div>
+      <div class="table-cell table-cell-id">{{ item.id }}</div>
+      <div class="table-cell">{{ item.customer.name }}</div>
+      <div class="table-cell">{{ item.certificate }}</div>
       <div class="table-cell">{{ item.get_box_type_display }}</div>
-      <div class="table-cell">{{ item.shipping.get_transport_display }}</div>
+      <div class="table-cell">{{ item.get_transport_display }}</div>
       <div class="table-cell">{{ item.material }}</div>
       <div class="table-cell">{{ item.weight }}</div>
       <div class="table-cell">{{ item.get_status_display }}</div>

@@ -9,7 +9,7 @@ from warenwirtschaft.views.delivery import DeliveryListView, DeliveryDetailBarco
 from warenwirtschaft.views.unload import UnloadListView, UnloadCreateView, UnloadUpdateView, UnloadDeleteView, UnloadDetailBarcodeView, UnloadDetailWeightView
 from warenwirtschaft.views.recycling import RecyclingListView, RecyclingCreateView, RecyclingUpdateView, RecyclingDeleteView, RecyclingDetailView
 from warenwirtschaft.views.recycling_weight import RecyclingWeightUpdateView, RecyclingWeightListView
-from warenwirtschaft.views.shipping import ShippingUnitsListView, ShippingDetailView, ShippingCreateView, ShippingUpdateView, ShippingDeleteView
+from warenwirtschaft.views.shipping import ShippingListView, ShippingDetailView, ShippingCreateView, ShippingUpdateView, ShippingDeleteView
 from warenwirtschaft.views.barcode import ReusableBarcodeListView, ReusableBarcodeDetailView, ReusableBarcodeCreateView, ReusableBarcodeUpdateView, ReusableBarcodeDeleteView, BarcodePrintView
 
 
@@ -50,7 +50,7 @@ urlpatterns = [
     path('recycling-weight/list', RecyclingWeightListView.as_view(), name='recycling_weight_list'),
     path('recycling-weight/update/<int:pk>/', RecyclingWeightUpdateView.as_view(), name='recycling_weight_update'),
 
-    path('shipping/list/', ShippingUnitsListView.as_view(), name='shipping_units_list'),
+    path('shipping/list/', ShippingListView.as_view(), name='shipping_list'),
     path('shipping/detail/<int:pk>/', ShippingDetailView.as_view(), name='shipping_detail'),
     path('shipping/create/', ShippingCreateView.as_view(), name='shipping_create'),
     path('shipping/update/<int:pk>/', ShippingUpdateView.as_view(), name='shipping_update'),
