@@ -59,7 +59,6 @@ class RecyclingCreateView(View):
                     for instance in new_instances:
                         # 🇩🇪 Pflichtfelder setzen, weil sie nicht im Formular sind
                         instance.status = 1
-                        instance.target = unload.target
                         instance.save()
                         instance.unloads.add(unload)
 

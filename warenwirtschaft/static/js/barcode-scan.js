@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         deliverySelect.value = delivery_unit_id;
       } else if (data.type === "reusable") {
-        const { box_type, material, target } = data;
+        const { box_type, material } = data;
 
         const addBtn = document.getElementById('add-form-btn');
         addBtn?.click();
@@ -36,7 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         lastRow.querySelector('select[name$="-box_type"]').value = box_type;
         lastRow.querySelector('select[name$="-material"]').value = material;
-        lastRow.querySelector('select[name$="-target"]').value = target;
       }
 
       barcodeInput.value = '';
@@ -44,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
       alert("Barcode nicht erkannt oder Fehler beim Verarbeiten.");
     }
   });
-
+    // TODO: Target löschen
     document.querySelector('.table')?.addEventListener('click', async (e) => {
     if (!e.target.matches('.fetch-weight-btn')) return;
 

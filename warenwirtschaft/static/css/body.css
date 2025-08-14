@@ -10,15 +10,15 @@
 }
 
 .table[data-type="deliveryunits"] {
-  grid-template-columns: minmax(33px, max-content) repeat(8, 1fr) 2fr;
+  grid-template-columns: minmax(33px, max-content) repeat(7, 1fr) 2fr;
 }
 
 .table[data-type="unload"] {
-  grid-template-columns: repeat(3, minmax(33px, max-content)) 2fr 3fr repeat(6, 1fr);
+  grid-template-columns: repeat(3, minmax(33px, max-content)) 2fr 3fr repeat(5, 1fr);
 }
 
 .table[data-type="recycling"] {
-  grid-template-columns: minmax(33px, max-content) repeat(6, 1fr) 2fr;
+  grid-template-columns: minmax(33px, max-content) repeat(5, 1fr) 2fr;
 }
 
 .table[data-type="shippingunits"] {
@@ -26,7 +26,7 @@
 }
 
 .table[data-type="barcode"] {
-  grid-template-columns: minmax(33px, max-content) repeat(7, 1fr);
+  grid-template-columns: minmax(33px, max-content) repeat(6, 1fr);
 }
 
 .table[data-type="material"] {

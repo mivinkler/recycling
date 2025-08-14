@@ -39,7 +39,6 @@
           <th class="itemcard-id">№</th>
           <th class="itemcard-material">Material</th>
           <th class="itemcard-boxtype">Behälter</th>
-          <th class="itemcard-target">Zweck</th>
           <th class="itemcard-weight">Gewicht</th>
           <th class="itemcard-action-alone"></th>
         </tr>
@@ -53,7 +52,6 @@
           <td class="itemcard-id">{{ forloop.counter }}</td>
           <td class="itemcard-material">{{ form.material }}</td>
           <td class="itemcard-boxtype">{{ form.box_type }}</td>
-          <td class="itemcard-target">{{ form.target }}</td>
           <td class="itemcard-weight">{{ form.weight }}</td>
           <td class="itemcard-action-alone">
             <button type="button" class="btn btn-main">wiegen</button>
@@ -68,7 +66,6 @@
         <td class="itemcard-id">__index__</td>
         <td class="itemcard-material">{{ empty_form.material }}</td>
         <td class="itemcard-boxtype">{{ empty_form.box_type }}</td>
-        <td class="itemcard-target">{{ empty_form.target }}</td>
         <td class="itemcard-weight">{{ empty_form.weight }}</td>
         <td class="itemcard-action-alone">
           <button type="button" class="btn btn-main">wiegen</button>

@@ -18,7 +18,6 @@ class UnloadListView(ListView):
         ("box_type", "Behälter"),
         ("material__name", "Material"),
         ("weight", "Gewicht"),
-        ("target", "Ziel"),
         ("status", "Status"),
         ("created_at", "Datum"),
         ("note", "Anmerkung"),
@@ -32,7 +31,6 @@ class UnloadListView(ListView):
         choices_fields={
             "box_type": Unload.BOX_TYPE_CHOICES,
             "status": Unload.STATUS_CHOICES,
-            "target": Unload.TARGET_CHOICES,
         }
 
         search_service = SearchService(self.request, fields, choices_fields)

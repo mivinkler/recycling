@@ -13,8 +13,8 @@ class Unload(models.Model):
 
     STATUS_CHOICES = [
         (1, "Aktiv"),
-        (2, "Behandlung"),
-        (3, "Abholung"),
+        (2, "Bereit für Zerlegung"),
+        (3, "Bereit für Abholung"),
         (4, "Erledigt"),
     ]
 

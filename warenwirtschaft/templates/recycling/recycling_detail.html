@@ -24,7 +24,6 @@
         <div class="table-header">Material</div>
         <div class="table-header">Gewicht</div>
         <div class="table-header">Status</div>
-        <div class="table-header">Zweck</div>
         <div class="table-header">Anmerkung</div>
 
         {% for recycling in recycling_units %}
@@ -34,7 +33,6 @@
             <div>{{ recycling.material }}</div>
             <div>{{ recycling.weight }}</div>
             <div>{{ recycling.get_status_display }}</div>
-            <div>{{ recycling.get_target_display }}</div>
             <div>{{ recycling.note }}</div>
           </div>
         {% empty %}

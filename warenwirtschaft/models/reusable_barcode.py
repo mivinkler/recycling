@@ -17,12 +17,6 @@ class ReusableBarcode(models.Model):
         (2, "Vorsortierung"),
         (3, "Abholung"),
     ]
-    
-    TARGET_CHOICES = [
-        (1, "Aufbereitung"),
-        (2, "Abholung"),
-        (3, "Entsorgung"),
-    ]
 
 
     code = models.CharField(max_length=64, unique=True)
@@ -33,7 +27,6 @@ class ReusableBarcode(models.Model):
     material = models.ForeignKey(Material, on_delete=models.SET_NULL, null=True, blank=True, related_name='material_for_barcode')
     weight = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     area = models.PositiveSmallIntegerField(choices=AREA_CHOICES, blank=True, null=True)
-    target = models.PositiveSmallIntegerField(choices=TARGET_CHOICES, blank=True, null=True)
     barcode_image = models.ImageField(upload_to='barcodes/reusable', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(null=True, blank=True, default=None)

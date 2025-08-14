@@ -26,7 +26,6 @@ class UnloadInputAPI(View):
                     'code': reuse.code,
                     'box_type': reuse.box_type or None,
                     'material': reuse.material_id or None,
-                    # 'target': reuse.target or None,
                 })
             except ReusableBarcode.DoesNotExist:
                 return JsonResponse({'error': 'ReusableBarcode nicht gefunden'}, status=404)

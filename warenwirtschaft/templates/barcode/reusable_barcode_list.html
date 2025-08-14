@@ -16,7 +16,6 @@
   <div class="table-header">{% sort_header "supplier" "Supplier" %}</div>
   <div class="table-header">{% sort_header "typ" "Behälter" %}</div>
   <div class="table-header">{% sort_header "material" "Material" %}</div>
-  <div class="table-header">{% sort_header "target" "Weitergabe" %}</div>
   <div class="table-header">{% sort_header "datum" "Datum" %}</div>
 
   {% for barcode in barcodes %}
@@ -31,7 +30,6 @@
     <div class="table-cell">{{ barcode.supplier }}</div>
     <div class="table-cell">{{ barcode.get_box_type_display }}</div>
     <div class="table-cell">{{ barcode.material }}</div>
-    <div class="table-cell">{{ barcode.get_target_display }}</div>
     <div class="table-cell">{{ barcode.created_at|date:"d.m.Y H:i" }}</div>
   </div>
   {% endfor %}

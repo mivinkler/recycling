@@ -1,94 +1,101 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Abholung ändern{% endblock %}
+{% block title %}Abholung bearbeiten{% endblock %}
 
 {% block content %}
-
-<form class="itemcard-small" method="post" action="{% url 'shipping_update' shipping.pk %}" id="eingang-form">
+<form method="post" action="">
   {% csrf_token %}
-  
-  <div class="itemcard-title">
-    <h2>Abholung ändern</h2>
-    <a href="{% url 'shipping_delete' shipping.pk %}" class="delete-btn" title="Lieferung löschen">
-      <img src="{% static 'icons/delete-icon.svg' %}">
-    </a>
-  </div>
 
-    <section class="itemcard-topbox">
+  <div class="itemcard">
+    <div class="itemcard-title itemcard-margin-left">
+      <h2>Abholung bearbeiten</h2>
+    </div>
+
+    <section class="itemcard-topbox itemcard-margin-left">
       {{ form.non_field_errors }}
 
-      <div class="itemcard-row">
-        <div>Abholer:</div>
+      <div class="itemcard-topbox-row">
+        <label>Abholer:</label>
         <div>{{ form.customer }}</div>
       </div>
 
-      <div class="itemcard-row">
-        <div>Begleit-/Übernahmeschein:</div>
+      <div class="itemcard-topbox-row">
+        <label>Begleitdokumente:</label>
         <div>{{ form.certificate }}</div>
       </div>
 
-      <div class="itemcard-row">
-        <div>Transport:</div>
+      <div class="itemcard-topbox-row">
+        <label>Transport:</label>
         <div>{{ form.transport }}</div>
       </div>
 
-      <div class="itemcard-row">
-        <div>Anmerkung:</div>
+      <div class="itemcard-topbox-row">
+        <label>Anmerkung:</label>
         <div>{{ form.note }}</div>
       </div>
     </section>
 
-    <section class="itemcard-table">
-      <div class="itemcard-title">Abholung-Einheiten:</div>
-      {{ formset.management_form }}
+  <div class="itemcard-table-title itemcard-margin-left">Abholbereit:</div>
 
-      <div class="table add-row-js" data-type="shipping-update-shippingunits">
-        <div class="table-header">№</div>
-        <div class="table-header">Gewicht</div>
-        <div class="table-header">Behälter</div>
-        <div class="table-header">Material</div>
-        <div class="table-header">Anmerkung</div>
-        <div class="table-header">
-            <img class="itemcard-delete-icon" title="Löschen" src="/static/icons/delete-icon.svg">
-        </div>
+    <table class="itemcard-table">
+      <thead class="itemcard-thead">
+        <tr>
+          <th class="checkbox-circle itemcard-action-left"></th>
+          <th class="itemcard-id">№</th>
+          <th class="itemcard-material">Material</th>
+          <th class="itemcard-boxtype">Behälter</th>
+          <th class="itemcard-weight">Gewicht</th>
+          <th class="itemcard-status">Bereich</th>
+        </tr>
+      </thead>
 
-        {{ formset.non_form_errors }}
-        {% for item_form in formset %}
-        <div class="table-row">
-            {{ item_form.id }}
-            <div>{{ forloop.counter }}</div>
-            <div>{{ item_form.weight }}</div>
-            <div>{{ item_form.box_type }}</div>
-            <div>{{ item_form.material }}</div>
-            <div>{{ item_form.note }}</div>
-            <div class="itemcard-row-delete">{{ item_form.DELETE }}</div>
-          </div>
+      <tbody class="itemcard-tbody">
+        {# 🇩🇪 Recycling #}
+        {% for rec in recyclings %}
+          <tr class="itemcard-table-row"
+              data-id="{{ rec.pk }}"
+              data-url-detail="{% url 'recycling_detail' pk=rec.pk %}">
+            <td class="checkbox-circle itemcard-action-left">
+              <input type="checkbox"
+                     name="selected_recycling"
+                     value="{{ rec.pk }}"
+                     title="Zur Abholung hinzufügen"
+                     {% if rec.pk in preselected_recycling_ids %}checked{% endif %}>
+            </td>
+            <td class="itemcard-id">{{ forloop.counter }}</td>
+            <td class="itemcard-material"><p>{{ rec.material|default:rec.material_other }}</p></td>
+            <td class="itemcard-boxtype"><p>{{ rec.get_box_type_display }}</p></td>
+            <td class="itemcard-weight"><p>{{ rec.weight }}</p></td>
+            <td class="itemcard-status"><p>Aufbereitung</p></td>
+          </tr>
         {% endfor %}
-        
-        <template id="table-row-template">
-          <div class="table-row">
-            {{ empty_form.id }}
-            <div>__index__</div>
-            <div>{{ empty_form.weight }}</div>
-            <div>{{ empty_form.box_type }}</div>
-            <div>{{ empty_form.material }}</div>
-            <div>{{ item_form.note }}</div>
-            <div class="itemcard-row-delete">{{ empty_form.DELETE }}</div>
-          </div>
-        </template>
-      </div>
-    </section>
-    <button class="btn btn-row-add" type="button" id="add-form-btn">+</button>
+
+        {# 🇩🇪 Unload #}
+        {% for unload in unloads %}
+          <tr class="itemcard-table-row"
+              data-id="{{ unload.pk }}"
+              data-url-detail="{% url 'unload_detail_barcode' pk=unload.pk %}">
+            <td class="checkbox-circle itemcard-action-left">
+              <input type="checkbox"
+                     name="selected_unload"
+                     value="{{ unload.pk }}"
+                     title="Zur Abholung hinzufügen"
+                     {% if unload.pk in preselected_unload_ids %}checked{% endif %}>
+            </td>
+            <td class="itemcard-id">{{ forloop.counter }}</td>
+            <td class="itemcard-material"><p>{{ unload.material|default:unload.material_other }}</p></td>
+            <td class="itemcard-boxtype"><p>{{ unload.get_box_type_display }}</p></td>
+            <td class="itemcard-weight"><p>{{ unload.weight }}</p></td>
+            <td class="itemcard-status"><p>Vorsortierung</p></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
 
     <div class="buttons-form-footer">
-      <button type="submit" name="save" class="btn btn-main">Speichern</button>
+      <button type="submit" name="save" class="btn btn-main btn-margin-top">Speichern</button>
     </div>
+  </div>
 </form>
-
 {% endblock %}
-
-{% block extra_js %}
-  <script src="{% static 'js/add-table-row.js' %}"></script>
-{% endblock %}
-

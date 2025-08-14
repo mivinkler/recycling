@@ -14,7 +14,6 @@ class RecyclingListView(ListView):
         ("id", "ID"),
         ("box_type", "Behälter"),
         ("weight", "Gewicht"),
-        ("target", "Zweck"),
         ("status", "Status"),
         ("material__name", "Material"),
         ("created_at", "Datum"),
@@ -29,7 +28,6 @@ class RecyclingListView(ListView):
         choices_fields = {
             "box_type": Recycling.BOX_TYPE_CHOICES,
             "status": Recycling.STATUS_CHOICES,
-            "target": Recycling.TARGET_CHOICES,
         }
 
         search_service = SearchService(self.request, fields, choices_fields)

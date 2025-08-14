@@ -5,7 +5,7 @@ from warenwirtschaft.models.material import Material
 class DeliveryUnit(models.Model):
     STATUS_CHOICES = [
         (1, "Aktiv"),
-        (2, "Erledigt"),
+        (4, "Erledigt"),
     ]
 
     BOX_TYPE_CHOICES = [

@@ -12,7 +12,7 @@ class Recycling(models.Model):
 
     STATUS_CHOICES = [
         (1, "Aktiv"),
-        (3, "Abholung"),
+        (3, "Bereit für Abholung"),
         (4, "Erledigt"),
     ]
 

@@ -52,13 +52,6 @@
             <div>{{ barcode.material.name }}</div>
         </div>
         {% endif %}
-
-        {% if barcode.target %}
-        <div class="detail-row">
-            <div>Behälter-Zweck:</div>
-            <div>{{ barcode.get_target_display }}</div>
-        </div>
-        {% endif %}
     </section>
 
     <section class="print-btn-wrapper no-print">

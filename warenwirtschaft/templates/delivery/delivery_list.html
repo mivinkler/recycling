@@ -18,7 +18,6 @@
   <div class="table-header">{% sort_header "material__name" "Material" %}</div>
   <div class="table-header">{% sort_header "weight" "Gewicht" %}</div>
   <div class="table-header">{% sort_header "delivery__created_at" "Datum" %}</div>
-  <div class="table-header">{% sort_header "target" "Zweck" %}</div>
   <div class="table-header">{% sort_header "status" "Status" %}</div>
   <div class="table-header">{% sort_header "note" "Notiz" %}</div>
 
@@ -37,7 +36,6 @@
     <div class="table-cell">{{ item.material.name|default:"-" }}</div>
     <div class="table-cell">{{ item.weight }}</div>
     <div class="table-cell">{{ item.created_at|date:'d.m.Y' }}</div>
-    <div class="table-cell">{{ item.get_target_display }}</div>
     <div class="table-cell">{{ item.get_status_display }}</div>
     <div class="table-cell" title="{{ item.note }}">{{ item.note }}</div>
   </div>

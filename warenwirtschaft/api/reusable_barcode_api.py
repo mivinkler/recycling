@@ -13,7 +13,6 @@ class ReusableBarcodeAPI(View):
             return JsonResponse({
                 'box_type': barcode.box_type,
                 'material': barcode.material_id,
-                'target': barcode.target,
             })
         except ReusableBarcode.DoesNotExist:
             return JsonResponse({'error': 'Nicht gefunden'}, status=404)
