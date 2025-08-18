@@ -56,14 +56,14 @@ class UnloadForm(forms.ModelForm):
 
 
 # Inline-FormSet für die Bearbeitung von mehreren Unloads
-UnloadFormSet = inlineformset_factory(
-    parent_model=DeliveryUnit,
-    model=Unload,
-    form=UnloadForm,  # ← теперь это твоя основная форма
-    fields=['id', 'box_type', 'material', 'weight', 'note'],
-    extra=1,
-    can_delete=True
-)
+# UnloadFormSet = inlineformset_factory(
+#     parent_model=DeliveryUnit,
+#     model=Unload,
+#     form=UnloadForm, 
+#     fields=['id', 'box_type', 'material', 'weight', 'note'],
+#     extra=1,
+#     can_delete=True
+# )
 
 
 # Auswahl-Formular für Recycling (nur eine Unload wählen)
