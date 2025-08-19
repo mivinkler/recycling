@@ -18,7 +18,7 @@ class Unload(models.Model):
         (4, "Erledigt"),
     ]
 
-    delivery_unit = models.ManyToManyField("warenwirtschaft.DeliveryUnit", related_name="unload_for_delivery_unit")
+    delivery_units = models.ManyToManyField("warenwirtschaft.DeliveryUnit", related_name="unload_for_delivery_unit")
     box_type = models.PositiveSmallIntegerField(choices=BOX_TYPE_CHOICES)
     material = models.ForeignKey(Material, on_delete=models.CASCADE, null=True, blank=True, related_name="material_for_unload")
     material_other = models.CharField(max_length=50, null=True, blank=True)

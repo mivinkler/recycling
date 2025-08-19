@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.db import transaction
 from django.urls import reverse_lazy
 
-from warenwirtschaft.forms_neu.unload_form import DeliveryUnitForm, get_unload_formset
+from warenwirtschaft.forms_neu.unload_form import DeliveryUnitChoiceForm, get_unload_formset
 from warenwirtschaft.services.barcode_service import BarcodeGenerator
 
 
@@ -13,7 +13,7 @@ class UnloadCreateView(View):
     success_url = reverse_lazy('unload_list')
 
     def get(self, request, *args, **kwargs):
-        form = DeliveryUnitForm()
+        form = DeliveryUnitChoiceForm()
         formset_class = get_unload_formset(extra=1)
         formset = formset_class(prefix='unload')
 
@@ -25,7 +25,7 @@ class UnloadCreateView(View):
         })
 
     def post(self, request, *args, **kwargs):
-        form = DeliveryUnitForm(request.POST)
+        form = DeliveryUnitChoiceForm(request.POST)
         formset_class = get_unload_formset(extra=1)
         formset = formset_class(request.POST, prefix='unload')
 

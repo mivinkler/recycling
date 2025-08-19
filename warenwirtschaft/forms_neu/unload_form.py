@@ -1,10 +1,11 @@
 from django import forms
-from django.forms import inlineformset_factory
-from warenwirtschaft.models.unload import Unload
-from warenwirtschaft.models.delivery_unit import DeliveryUnit
+from django.forms import modelformset_factory, inlineformset_factory
+from warenwirtschaft.models import Unload, DeliveryUnit, Delivery
 
 
-class DeliveryUnitForm(forms.Form):
+
+class DeliveryUnitChoiceForm(forms.Form):
+    # DE: Auswahl EINER Liefereinheit, zu der Unloads zugeordnet/erstellt werden
     delivery_unit = forms.ModelChoiceField(
         queryset=DeliveryUnit.objects.filter(status=1),
         label="Liefereinheit"
@@ -16,11 +17,12 @@ class UnloadForm(forms.ModelForm):
         fields = ['box_type', 'material', 'weight', 'note']
 
 def get_unload_formset(extra=0):
-    return inlineformset_factory(
-        parent_model=DeliveryUnit,
-        model=Unload,
+    # DE: Wie bei deinem Recycling-Beispiel – ohne FK-Zwang
+    return modelformset_factory(
+        Unload,
         form=UnloadForm,
-        fields=UnloadForm.Meta.fields,  # Meta aus UnloadForm
-        extra=extra, # Leere Felder. UnloadCreateView hat extra=1 und UnloadUpdateView hat extra=0, s.a. view "formset_class"
-        can_delete=True
+        extra=extra,      # z.B. Create: 1, Update: 0
+        can_delete=True,
+        validate_min=False,
+        validate_max=False,
     )
