@@ -88,7 +88,7 @@ input[type="number"],
 textarea {
   padding-left: 4px;
 }
-
+input[type="radio"],
 input[type="checkbox"] {
   appearance: none;
   -webkit-appearance: none;
@@ -100,6 +100,7 @@ input[type="checkbox"] {
   margin: 0 auto;
 }
 
+.checkbox-circle > input[type="radio"],
 .checkbox-circle > input[type="checkbox"] {
   border-radius: 50%;
   width: 12px;
@@ -107,6 +108,7 @@ input[type="checkbox"] {
   margin: 0 auto;
 }
 
+.checkbox-circle > input[type="radio"]:checked::before,
 .checkbox-circle > input[type="checkbox"]:checked::before {
   content: '';
   position: absolute;

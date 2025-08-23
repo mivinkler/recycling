@@ -43,9 +43,8 @@ class RecyclingListView(ListView):
 
         paginator = PaginationService(self.request, self.paginate_by)
         page_obj = paginator.get_paginated_queryset(self.get_queryset())
+        
         context["page_obj"] = page_obj
-
-
         context["active_fields"] = self.active_fields
         context["search_query"] = self.request.GET.get("search", "")
         context["sort_param"] = self.request.GET.get("sort", "")

@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
   const addButton = document.getElementById('form-add-btn');
   const removeButton = document.getElementById('form-remove-btn');
-  const tableBody = document.querySelector('.itemcard-tbody');
+  const tableBody = document.querySelector('.add-row-js');
   const template = document.getElementById('table-row-template');
   const totalFormsInput = document.querySelector('input[name$="-TOTAL_FORMS"]');
 

@@ -14,7 +14,7 @@
 }
 
 .table[data-type="unload"] {
-  grid-template-columns: repeat(3, minmax(33px, max-content)) 2fr 3fr repeat(5, 1fr);
+  grid-template-columns: minmax(33px, max-content) repeat(6, 1fr);
 }
 
 .table[data-type="recycling"] {
@@ -264,6 +264,7 @@ td p {
   height: 26px;
   display: flex;
   align-items: center;
+  justify-content: center
 }
 
 .btn:hover {

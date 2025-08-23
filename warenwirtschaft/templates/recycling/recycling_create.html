@@ -4,7 +4,6 @@
 {% block title %}Aufbereitung erfassen{% endblock %}
 
 {% block content %}
-<!-- TODO:  "recycling_update"??? -->
 <form method="post" action="">
   {% csrf_token %}
 
@@ -50,34 +49,22 @@
         {{ formset.non_form_errors }}
         {% for form in vorhandene_forms %}
           <tr class="itemcard-table-row"
-          data-id="{{ form.instance.pk }}"
-          data-url-detail-barcode="{% url 'recycling_detail' pk=form.instance.pk %}"
-          data-url-update="{% url 'recycling_update' pk=form.instance.pk %}">
+            data-id="{{ form.instance.pk }}"
+            data-url-detail-barcode="{% url 'recycling_detail' pk=form.instance.pk %}"
+            data-url-update="{% url 'recycling_update' pk=form.instance.pk %}">
 
-          <td hidden>{{ form.id }}</td>
+            <td hidden>{{ form.id }}</td>
             <td class="checkbox-circle itemcard-action-left">
-            <input type="checkbox" name="selected_recycling" value="{{ form.instance.pk }}" title="Fraktion verknüpfen" checked>
+              <input type="checkbox" name="selected_recycling" value="{{ form.instance.pk }}" title="Fraktion verknüpfen" checked>
             </td>
             <td class="itemcard-id">{{ forloop.counter }}</td>
-          <td class="itemcard-material"><p>{{ form.instance.material }}</p></td>
-          <td class="itemcard-boxtype"><p>{{ form.instance.get_box_type_display }}</p></td>
-          <td class="itemcard-weight"><p>{{ form.instance.weight }}</p></td>
+            <td class="itemcard-material"><p>{{ form.instance.material }}</p></td>
+            <td class="itemcard-boxtype"><p>{{ form.instance.get_box_type_display }}</p></td>
+            <td class="itemcard-weight"><p>{{ form.instance.weight }}</p></td>
           </tr>
         {% endfor %}
       </tbody>
     </table>
-
-    {{ formset.non_form_errors }}
-    {% for form in formset.forms %}
-      {% for field in form.visible_fields %}
-        {% for error in field.errors %}
-          <div class="error">{{ field.name }}: {{ error }}</div>
-        {% endfor %}
-      {% endfor %}
-      {% for error in form.non_field_errors %}
-        <div class="error">{{ error }}</div>
-      {% endfor %}
-    {% endfor %}
     
     <template id="table-row-template">
       <tr class="itemcard-table-row dynamic-row">

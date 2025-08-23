@@ -13,8 +13,7 @@ class RecyclingCreateView(View):
 
     def get(self, request):
         form = UnloadChoiceForm()
-        # prefix="new" für JS
-        formset = RecyclingFormSet(queryset=Recycling.objects.none(), prefix="new")
+        formset = RecyclingFormSet(queryset=Recycling.objects.none(), prefix="new")  # prefix="new" für JS
         unload = None
 
         vorhandene_forms = [
@@ -29,7 +28,7 @@ class RecyclingCreateView(View):
         formset = RecyclingFormSet(request.POST, queryset=Recycling.objects.none(), prefix="new")
         selected_ids = request.POST.getlist("selected_recycling")
 
-        # 🇩🇪 Erst die Auswahl des Unload prüfen, dann bestehende Verknüpfungen setzen,
+        # Erst die Auswahl des Unload prüfen, dann bestehende Verknüpfungen setzen,
         # und NUR wenn neue Zeilen vorhanden sind, den FormSet validieren.
         if unload_form.is_valid():
             unload = unload_form.cleaned_data["unload"]

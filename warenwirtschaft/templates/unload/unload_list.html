@@ -10,42 +10,42 @@
 {% block content %}
 <div class="table-border"></div>
 <div class="table" data-type="unload">
-  <div class="table-header">{% sort_header "id" "ID" %}</div>
-  <div class="table-header">{% sort_header "delivery__id" "LD" %}</div>
-  <div class="table-header">{% sort_header "delivery__deliveryunits__id" "LED" %}</div>
-  <div class="table-header">{% sort_header "delivery_unit__delivery__supplier__name" "Lieferant" %}</div>
-  <div class="table-header">Liefereinheit</div>
+  <div class="table-header">№</div>
+  <div class="table-header">{% sort_header "id" "Liefereinheit" %}</div>
   <div class="table-header">{% sort_header "box_type" "Behälter" %}</div>
-  <div class="table-header">{% sort_header "material" "Material" %}</div>
+  <div class="table-header">{% sort_header "material__name" "Material" %}</div>
   <div class="table-header">{% sort_header "weight" "Gewicht" %}</div>
   <div class="table-header">{% sort_header "created_at" "Datum" %}</div>
   <div class="table-header">{% sort_header "status" "Status" %}</div>
 
-
   {% for item in page_obj %}
+    {% with first_du=item.delivery_units.all|first %}
     <div class="table-row js-select-row"
       data-id="{{ item.id }}"
-      {% comment %} data-url-detail-weight="{% url 'unload_detail_weight' pk=item.delivery_unit.id %}" {% endcomment %}
+      {# data-url-detail-weight="{% if first_du %}{% url 'unload_detail_weight' pk=first_du.id %}{% endif %}" #}
       data-url-detail-barcode="{% url 'unload_detail_barcode' pk=item.id %}"
       data-url-update="{% url 'unload_update' pk=item.id %}"
-      data-url-create="{% url 'recycling_create' %}?unit_id={{ item.id }}">
-
+      data-url-create="{% url 'recycling_create' %}?unit_id={{ item.id }}"
+    >
       <div class="table-cell table-cell-id">{{ forloop.counter }}</div>
-      <div class="table-cell">{{ item.delivery_unit.delivery.id }}</div>
-      <div class="table-cell">{{ item.delivery_unit.id }}</div>
-      <div class="table-cell">{{ item.delivery_unit.delivery.supplier.name }}</div>
-      <div class="table-cell">{{ item.delivery_unit }}</div>
+
+      <div class="table-cell">
+        {% for delivery in item.delivery_units.all %}
+          {{ delivery }}
+        {% empty %}-{% endfor %}
+      </div>
+
       <div class="table-cell">{{ item|getattr:"get_box_type_display" }}</div>
       <div class="table-cell">{{ item.material }}</div>
       <div class="table-cell">{{ item.weight }}</div>
       <div class="table-cell">{{ item.created_at|date:'d.m.Y' }}</div>
       <div class="table-cell">{{ item|getattr:"get_status_display" }}</div>
     </div>
+    {% endwith %}
   {% endfor %}
 </div>
 
 {% paginate page_obj %}
-
 {% endblock %}
 
 {% block extra_js %}
@@ -53,4 +53,3 @@
   <script src="{% static 'js/current-date.js' %}"></script>
   <script src="{% static 'js/summary-close.js' %}"></script>
 {% endblock %}
-
