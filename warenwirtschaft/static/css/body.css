@@ -289,6 +289,7 @@ td p {
 
 .btn-lock {
   padding: 0 5px;
+  width: fit-content;
 }
 
 .btn-row-add {

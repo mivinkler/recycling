@@ -57,31 +57,33 @@
           {% for f in formset.forms %}
           <tr>
             <td class="checkbox-circle itemcard-action-left">
-              <input type="radio" checked>
+              <input type="radio" style="visibility: hidden;">
             </td>
             <td class="itemcard-id">{{ forloop.counter }}</td>
             <td class="itemcard-material">{{ f.material }}</td>
             <td class="itemcard-boxtype">{{ f.box_type }}</td>
             <td class="itemcard-status">{{ f.status }}</td>
             <td class="itemcard-weight">{{ f.weight }}</td>
-            <td class="itemcard-action-wrapper"> 
-                <div class="btn btn-main">
+            <td class="itemcard-action-wrapper">
+              <div class="itemcard-action">
+                <div class="btn btn-lock">
                   <img src="{% static 'icons/dashboard-icon.svg' %}">
                 </div>
-                <button type="submit" class="btn btn-main">Speichern</button> 
-              </td>
+                <button type="submit" class="btn btn-main">Speichern</button>
+              </div>
+            </td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
     </section>
 
-  
     {# ====== Vorhandene Wagen ====== #}
 
     <section>
       <div class="itemcard-table-title itemcard-margin-left">Vorhandene Wagen:</div>
 
+      {{ existing_formset.management_form }}
       <table class="itemcard-table">
         <thead class="itemcard-thead">
           <tr>
@@ -96,31 +98,49 @@
         </thead>
 
         <tbody class="itemcard-tbody existing-tbody">
-          {% for u in existing_unloads %}
-            <tr class="itemcard-table-row"
-              data-id="{{ u.pk }}"
-              data-url-detail-barcode="{% url 'unload_detail_barcode' pk=u.pk %}"
-              data-url-update="{% url 'unload_update' pk=u.pk %}">
+          {% for form in existing_formset.forms %}
+            {% with u=form.instance %}
+            <tr class="itemcard-table-row" data-id="{{ u.pk }}">
 
               <td class="checkbox-circle itemcard-action-left">
                 <input type="radio" name="selected_recycling" value="{{ u.pk }}" title="Fraktion verknüpfen">
               </td>
-
               <td class="itemcard-id">{{ forloop.counter }}</td>
               <td class="itemcard-material"><p>{{ u.material }}</p></td>
               <td class="itemcard-boxtype"><p>{{ u.box_type }}</p></td>
-              <td class="itemcard-status"><p>{{ u.status }}</p></td>
-              <td class="itemcard-weight"><p>{{ u.weight }}</p></td>
+
+              <td class="itemcard-status">
+                {{ form.id }}
+                {{ form.status }}
+              </td>
+
+              <td class="itemcard-weight">
+                {{ form.weight }}
+              </td>
 
               <td class="itemcard-action-wrapper">
-                <div class="btn btn-main">
-                  <img src="{% static 'icons/dashboard-icon.svg' %}">
+
+                <!-- Gesperrter Zustand (Standard) -->
+                <div class="state-locked itemcard-action">
+                  <div class="btn btn-lock">
+                    <img src="{% static 'icons/lock-icon.svg' %}">
+                  </div>
                 </div>
-                <button type="submit" class="btn btn-main">Speichern</button>
+
+                <!-- Aktiver Zustand -->
+                <div class="state-active itemcard-action">
+                  <div class="btn btn-lock">
+                    <img src="{% static 'icons/dashboard-icon.svg' %}">
+                  </div>
+                  <button type="submit" class="btn btn-main">Speichern</button>
+                </div>
+
               </td>
             </tr>
+            {% endwith %}
           {% endfor %}
         </tbody>
+
       </table> 
     </section>
   </div>
@@ -132,26 +152,59 @@
       width: 114px;
       background-color: transparent;
       border: none;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-left: 2px;
+
     }
 
-    .itemcard-action-wrapper * {
-      visibility: hidden;
-    }
-  
-    /* In der Zeile mit aktiviertem Checkbox die Aktionszelle anzeigen */
-    .itemcard-tbody tr:has(input[type="radio"]:checked) .itemcard-action-wrapper * {
-      visibility: visible;
+    .state-active {
+      display: none;
     }
   </style>
-
 
 {% endblock %}
 
 {% block extra_js %}
   <script src="{% static 'js/barcode-scan.js' %}"></script>
+  <script>
+document.addEventListener("DOMContentLoaded", function () {
+  const radios = document.querySelectorAll('input[type=radio][name=selected_recycling]');
+
+  function setRowActive(row, active) {
+    const editable = row.querySelectorAll('.editable-field');
+    const stateLocked = row.querySelector('.state-locked');
+    const stateActive = row.querySelector('.state-active');
+
+    editable.forEach(el => {
+      if (active) el.removeAttribute('disabled');
+      else el.setAttribute('disabled', 'disabled');
+    });
+
+    if (active) {
+      row.classList.add('active-row');
+      if (editable.length) editable[0].focus({ preventScroll: true });
+      if (stateLocked) stateLocked.style.display = 'none';
+      if (stateActive) stateActive.style.display = 'flex';
+    } else {
+      row.classList.remove('active-row');
+      if (stateLocked) stateLocked.style.display = 'block';
+      if (stateActive) stateActive.style.display = 'none';
+    }
+  }
+
+  radios.forEach(radio => {
+    radio.addEventListener('click', function () {
+      const row = this.closest('tr');
+      const wasActive = row.classList.contains('active-row');
+
+      document.querySelectorAll('.itemcard-table-row').forEach(r => setRowActive(r, false));
+
+      if (wasActive) { this.checked = false; return; }
+
+      this.checked = true;
+      setRowActive(row, true);
+    });
+  });
+});
+</script>
+
 {% endblock %}
 

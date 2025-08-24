@@ -14,8 +14,11 @@
 
       <section class="itemcard-topbox">
         <div class="itemcard-topbox-row">
-          <span>Liefereinheit:</span>
-          <p>{{ unload.delivery_unit }}</p>
+          <span>Liefereinheiten:</span>
+
+          {% for unit in unload.delivery_units.all %}
+            <p>{{ unit }}</p>
+          {% endfor %}
         </div>
 
         <div class="itemcard-topbox-row">
@@ -31,6 +34,11 @@
         <div class="itemcard-topbox-row">
           <label for="id_weight">Gewicht:</label>
           <div>{{ form.weight }}</div>
+        </div>
+
+        <div class="itemcard-topbox-row">
+          <label for="id_weight">Status:</label>
+          <div>{{ form.status }}</div>
         </div>
       </section>
 
