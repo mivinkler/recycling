@@ -3,10 +3,10 @@ from django.forms import modelformset_factory
 from warenwirtschaft.models import Unload, DeliveryUnit
 
 class DeliveryUnitForm(forms.Form):
-    delivery_units = forms.ModelMultipleChoiceField(
+    delivery_unit = forms.ModelChoiceField(
         queryset=DeliveryUnit.objects.filter(status=1),
         label="Liefereinheiten",
-        widget=forms.SelectMultiple
+        widget=forms.Select
     )
 
 class UnloadForm(forms.ModelForm):

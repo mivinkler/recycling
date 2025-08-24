@@ -6,7 +6,7 @@ from warenwirtschaft.views.material import MaterialListView, MaterialCreateView,
 from warenwirtschaft.views.supplier import SupplierListView, SupplierUpdateView, SupplierDetailView, SupplierCreateView,SupplierDeleteView
 from warenwirtschaft.views.customer import CustomerListView, CustomerUpdateView, CustomerDetailView, CustomerCreateView, CustomerDeleteView
 from warenwirtschaft.views.delivery import DeliveryListView, DeliveryDetailBarcodeView, DeliveryDetailWeightView, DeliveryCreateView, DeliveryUpdateView, DeliveryDeleteView
-from warenwirtschaft.views.unload import UnloadListView, UnloadCreateView, UnloadUpdateView, UnloadDeleteView, UnloadDetailBarcodeView, UnloadDetailWeightView
+from warenwirtschaft.views.unload import UnloadListView, UnloadCreateView, UnloadItemUpdateView, UnloadUpdateView, UnloadDeleteView, UnloadDetailBarcodeView, UnloadDetailWeightView
 from warenwirtschaft.views.recycling import RecyclingListView, RecyclingCreateView, RecyclingUpdateView, RecyclingDeleteView, RecyclingDetailView
 from warenwirtschaft.views.recycling_weight import RecyclingWeightUpdateView, RecyclingWeightListView
 from warenwirtschaft.views.shipping import ShippingListView, ShippingDetailView, ShippingCreateView, ShippingUpdateView, ShippingDeleteView
@@ -37,6 +37,7 @@ urlpatterns = [
     path('unload/list/', UnloadListView.as_view(), name='unload_list'),
     path('unload/create/', UnloadCreateView.as_view(), name='unload_create'),
     path('unload/update/<int:pk>/', UnloadUpdateView.as_view(), name='unload_update'),
+    path('unload/item/update/<int:pk>/', UnloadItemUpdateView.as_view(), name='unload_item_update'),
     path('unload/delete/<int:pk>/', UnloadDeleteView.as_view(), name='unload_delete'),
     path('unload/detail/barcode/<int:pk>/', UnloadDetailBarcodeView.as_view(), name='unload_detail_barcode'),
     path('unload/detail/weight/<int:pk>/', UnloadDetailWeightView.as_view(), name='unload_detail_weight'),

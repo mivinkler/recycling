@@ -15,7 +15,7 @@
     {# ======  Head  ======= #}
 
     <section class="itemcard-topbox itemcard-margin-left">
-      {{ form.delivery_unit.errors }}
+      {{ form.delivery_units.errors }}
       {{ form.non_field_errors }}
 
       <div class="itemcard-topbox-row">
@@ -26,7 +26,8 @@
       </div>
 
       <div class="itemcard-topbox-row">
-        <label for="id_delivery_unit">Liefereinheit:</label>
+        {# DE: Label korrekt mit dem Feld verknüpfen #}
+        <label for="{{ form.delivery_units.id_for_label }}">Liefereinheiten:</label>
         <div>{{ form.delivery_unit }}</div>
       </div>
     </section>
@@ -163,48 +164,45 @@
 {% endblock %}
 
 {% block extra_js %}
-  <script src="{% static 'js/barcode-scan.js' %}"></script>
-  <script>
-document.addEventListener("DOMContentLoaded", function () {
-  const radios = document.querySelectorAll('input[type=radio][name=selected_recycling]');
+<script src="{% static 'js/barcode-scan.js' %}"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const radios = document.querySelectorAll('input[type=radio][name=selected_recycling]');
 
-  function setRowActive(row, active) {
-    const editable = row.querySelectorAll('.editable-field');
-    const stateLocked = row.querySelector('.state-locked');
-    const stateActive = row.querySelector('.state-active');
+    function setRowActive(row, active) {
+      const editable = row.querySelectorAll('.editable-field');
+      const stateLocked = row.querySelector('.state-locked');
+      const stateActive = row.querySelector('.state-active');
 
-    editable.forEach(el => {
-      if (active) el.removeAttribute('disabled');
-      else el.setAttribute('disabled', 'disabled');
-    });
+      editable.forEach(el => {
+        if (active) el.removeAttribute('disabled');
+        else el.setAttribute('disabled', 'disabled');
+      });
 
-    if (active) {
-      row.classList.add('active-row');
-      if (editable.length) editable[0].focus({ preventScroll: true });
-      if (stateLocked) stateLocked.style.display = 'none';
-      if (stateActive) stateActive.style.display = 'flex';
-    } else {
-      row.classList.remove('active-row');
-      if (stateLocked) stateLocked.style.display = 'block';
-      if (stateActive) stateActive.style.display = 'none';
+      if (active) {
+        if (editable.length) editable[1].focus({ preventScroll: true });
+        if (stateLocked) stateLocked.style.display = 'none';
+        if (stateActive) stateActive.style.display = 'flex';
+      } else {
+        if (stateLocked) stateLocked.style.display = 'block';
+        if (stateActive) stateActive.style.display = 'none';
+      }
     }
-  }
 
-  radios.forEach(radio => {
-    radio.addEventListener('click', function () {
-      const row = this.closest('tr');
-      const wasActive = row.classList.contains('active-row');
+    radios.forEach(radio => {
+      radio.addEventListener('click', function () {
+        const row = this.closest('tr');
+        const wasActive = row.classList.contains('active-row');
 
-      document.querySelectorAll('.itemcard-table-row').forEach(r => setRowActive(r, false));
+        document.querySelectorAll('.itemcard-table-row').forEach(r => setRowActive(r, false));
 
-      if (wasActive) { this.checked = false; return; }
+        if (wasActive) { this.checked = false; return; }
 
-      this.checked = true;
-      setRowActive(row, true);
+        this.checked = true;
+        setRowActive(row, true);
+      });
     });
   });
-});
 </script>
-
 {% endblock %}
 

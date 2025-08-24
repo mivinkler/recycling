@@ -1,51 +1,195 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Fraktion bearbeiten{% endblock %}
+{% block title %}Vorsortierung bearbeiten{% endblock %}
 
 {% block content %}
-  <form method="post">
-    {% csrf_token %}
+<form method="post" action="" id="unload-form">
+  {% csrf_token %}
 
-    <div class="itemcard">
-      <div class="itemcard-title">
-        <h2>Vorsortierung-Wagen bearbeiten</h2>
-      </div>
-
-      <section class="itemcard-topbox">
-        <div class="itemcard-topbox-row">
-          <span>Liefereinheiten:</span>
-
-          {% for unit in unload.delivery_units.all %}
-            <p>{{ unit }}</p>
-          {% endfor %}
-        </div>
-
-        <div class="itemcard-topbox-row">
-          <label for="id_box_type">Behälter:</label>
-          <div>{{ form.box_type }}</div>
-        </div>
-
-        <div class="itemcard-topbox-row">
-          <label for="id_material">Material:</label>
-          <div>{{ form.material }}</div>
-        </div>
-
-        <div class="itemcard-topbox-row">
-          <label for="id_weight">Gewicht:</label>
-          <div>{{ form.weight }}</div>
-        </div>
-
-        <div class="itemcard-topbox-row">
-          <label for="id_weight">Status:</label>
-          <div>{{ form.status }}</div>
-        </div>
-      </section>
-
-      <div class="buttons-form-footer">
-        <button type="submit" name="save" class="btn btn-main">Speichern</button>
-      </div>
+  <div class="itemcard">
+    <div class="itemcard-title itemcard-margin-left">
+      <h2>Vorsortierung bearbeiten</h2>
     </div>
-  </form>
 
+    {# ======  Head  ======= #}
+    <section class="itemcard-topbox itemcard-margin-left">
+      {{ form.delivery_unit.errors }}
+      {{ form.non_field_errors }}
+
+      <div class="itemcard-topbox-row">
+        <label for="barcode">Barcode:</label>
+        <div>
+          <input type="text" id="barcode" name="barcode" autofocus autocomplete="off" placeholder="Scannen..." />
+        </div>
+      </div>
+
+      <div class="itemcard-topbox-row">
+        <label for="{{ form.delivery_unit.id_for_label }}">Liefereinheit:</label>
+        <div>{{ form.delivery_unit }}</div>
+      </div>
+    </section>
+
+    {# ====== Neue Unloads  ====== #}
+    <section class="itemcard-topbox">
+      <div class="itemcard-table-title itemcard-margin-left">Neue Wagen:</div>
+
+      <table class="itemcard-table">
+        {{ formset.management_form }}
+
+        <thead class="itemcard-thead">
+          <tr>
+            <th class="checkbox-circle itemcard-action-left"></th>
+            <th class="itemcard-id">№</th>
+            <th class="itemcard-material">Material</th>
+            <th class="itemcard-boxtype">Behälter</th>
+            <th class="itemcard-status">Status</th>
+            <th class="itemcard-weight">Gewicht</th>
+            <th class="itemcard-action-alone"></th>
+          </tr>
+        </thead>
+
+        <tbody class="itemcard-tbody">
+          {{ formset.non_form_errors }}
+
+          {% for f in formset.forms %}
+          <tr>
+            <td class="checkbox-circle itemcard-action-left">
+              <input type="radio" style="visibility: hidden;">
+            </td>
+            <td class="itemcard-id">{{ forloop.counter }}</td>
+            <td class="itemcard-material">{{ f.material }}</td>
+            <td class="itemcard-boxtype">{{ f.box_type }}</td>
+            <td class="itemcard-status">{{ f.status }}</td>
+            <td class="itemcard-weight">{{ f.weight }}</td>
+            <td class="itemcard-action-wrapper">
+              <div class="itemcard-action">
+                <div class="btn btn-lock">
+                  <img src="{% static 'icons/dashboard-icon.svg' %}">
+                </div>
+                <button type="submit" class="btn btn-main">Speichern</button>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+
+    {# ====== Vorhandene Wagen ====== #}
+    <section>
+      <div class="itemcard-table-title itemcard-margin-left">Vorhandene Wagen:</div>
+
+      {{ existing_formset.management_form }}
+      <table class="itemcard-table">
+        <thead class="itemcard-thead">
+          <tr>
+            <th class="checkbox-circle itemcard-action-left"></th>
+            <th class="itemcard-id">№</th>
+            <th class="itemcard-material">Material</th>
+            <th class="itemcard-boxtype">Behälter</th>
+            <th class="itemcard-status">Status</th>
+            <th class="itemcard-weight">Gewicht</th>
+            <th class="itemcard-action"></th>
+          </tr>
+        </thead>
+
+        <tbody class="itemcard-tbody existing-tbody">
+          {% for form in existing_formset.forms %}
+            {% with u=form.instance %}
+            <tr class="itemcard-table-row" data-id="{{ u.pk }}">
+              <td class="checkbox-circle itemcard-action-left">
+                <input type="checkbox"
+                      class="row-checkbox"
+                      name="selected_unloads"
+                      value="{{ u.pk }}"
+                      {% if u.pk in prechecked_ids %}checked{% endif %}
+                      title="Mit ausgewählter Liefereinheit verknüpfen & bearbeiten">
+              </td>
+
+              <td class="itemcard-id">{{ u.id }}</td>
+              <td class="itemcard-material"><p>{{ u.material }}</p></td>
+              <td class="itemcard-boxtype"><p>{{ u.box_type }}</p></td>
+
+              <td class="itemcard-status">
+                {{ form.id }}
+                {{ form.status }}
+              </td>
+
+              <td class="itemcard-weight">
+                {{ form.weight }}
+              </td>
+
+              <td class="itemcard-action-wrapper">
+                <!-- Gesperrter Zustand (Standard) -->
+                <div class="state-locked itemcard-action">
+                  <div class="btn btn-lock">
+                    <img src="{% static 'icons/lock-icon.svg' %}">
+                  </div>
+                </div>
+
+                <!-- Aktiver Zustand -->
+                <div class="state-active itemcard-action">
+                  <div class="btn btn-lock">
+                    <img src="{% static 'icons/dashboard-icon.svg' %}">
+                  </div>
+                  <button type="submit" class="btn btn-main">Speichern</button>
+                </div>
+              </td>
+            </tr>
+            {% endwith %}
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+  </div>
+</form>
+
+<style>
+  .itemcard-action-wrapper { width:114px; background:transparent; border:none; }
+  .state-active { display:none; }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/barcode-scan.js' %}"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const checkboxes = document.querySelectorAll('input.row-checkbox');
+
+    function setRowActive(row, active) {
+      const editable = row.querySelectorAll('.editable-field');
+      const stateLocked = row.querySelector('.state-locked');
+      const stateActive = row.querySelector('.state-active');
+
+      editable.forEach(el => {
+        if (active) el.removeAttribute('disabled');
+        else el.setAttribute('disabled', 'disabled');
+      });
+
+      if (active) {
+        if (editable.length) editable[1]?.focus?.({ preventScroll: true });
+        if (stateLocked) stateLocked.style.display = 'none';
+        if (stateActive) stateActive.style.display = 'flex';
+      } else {
+        if (stateLocked) stateLocked.style.display = 'block';
+        if (stateActive) stateActive.style.display = 'none';
+      }
+    }
+
+    // Инициализация состояния по предустановленным галочкам
+    document.querySelectorAll('.itemcard-table-row').forEach(row => {
+      const cb = row.querySelector('input.row-checkbox');
+      setRowActive(row, cb?.checked);
+    });
+
+    // Переключение активного состояния при клике на чекбокс
+    checkboxes.forEach(cb => {
+      cb.addEventListener('change', function () {
+        const row = this.closest('tr');
+        setRowActive(row, this.checked);
+      });
+    });
+  });
+</script>
 {% endblock %}

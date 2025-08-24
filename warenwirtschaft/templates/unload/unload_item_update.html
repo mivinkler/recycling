@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Fraktion bearbeiten{% endblock %}
+
+{% block content %}
+  <form method="post">
+    {% csrf_token %}
+
+    <div class="itemcard">
+      <div class="itemcard-title">
+        <h2>Vorsortierung-Wagen bearbeiten</h2>
+      </div>
+
+      <section class="itemcard-topbox">
+        <div class="itemcard-topbox-row">
+          <span>Liefereinheiten:</span>
+
+          {% for unit in unload.delivery_units.all %}
+            <p>{{ unit }}</p>
+          {% endfor %}
+        </div>
+
+        <div class="itemcard-topbox-row">
+          <label for="id_box_type">Behälter:</label>
+          <div>{{ form.box_type }}</div>
+        </div>
+
+        <div class="itemcard-topbox-row">
+          <label for="id_material">Material:</label>
+          <div>{{ form.material }}</div>
+        </div>
+
+        <div class="itemcard-topbox-row">
+          <label for="id_weight">Gewicht:</label>
+          <div>{{ form.weight }}</div>
+        </div>
+
+        <div class="itemcard-topbox-row">
+          <label for="id_weight">Status:</label>
+          <div>{{ form.status }}</div>
+        </div>
+      </section>
+
+      <div class="buttons-form-footer">
+        <button type="submit" name="save" class="btn btn-main">Speichern</button>
+      </div>
+    </div>
+  </form>
+
+{% endblock %}
