@@ -115,27 +115,22 @@
                 {{ form.status }}
               </td>
 
-              <td class="itemcard-weight">
-                {{ form.weight }}
+              <td class="itemcard-weight itemcard-weight-action">
+                <div class="flex-container">
+                  {{ form.weight }}
+                  <button class="btn btn-lock">
+                    <img src="{% static 'icons/dashboard-icon.svg' %}">
+                  </button>
+                </div>
               </td>
 
               <td class="itemcard-action-wrapper">
-
-                <!-- Gesperrter Zustand (Standard) -->
-                <div class="state-locked itemcard-action">
+                <div class="itemcard-action">
                   <div class="btn btn-lock">
                     <img src="{% static 'icons/lock-icon.svg' %}">
                   </div>
-                </div>
-
-                <!-- Aktiver Zustand -->
-                <div class="state-active itemcard-action">
-                  <div class="btn btn-lock">
-                    <img src="{% static 'icons/dashboard-icon.svg' %}">
-                  </div>
                   <button type="submit" class="btn btn-main">Speichern</button>
                 </div>
-
               </td>
             </tr>
             {% endwith %}
@@ -149,11 +144,23 @@
 
 
   <style>
+    .flex-container {
+      display: flex;
+      align-items: center; /* если нужно вертикальное выравнивание */
+      gap: 0.5rem;         /* промежуток между инпутом и кнопкой */
+    }
+
+
+    .itemcard-weight-action input {
+      border: none;
+      outline: none
+    }
+
+
     .itemcard-action-wrapper {
       width: 114px;
       background-color: transparent;
       border: none;
-
     }
 
     .state-active {
@@ -165,7 +172,7 @@
 
 {% block extra_js %}
 <script src="{% static 'js/barcode-scan.js' %}"></script>
-<script>
+{% comment %} <script>
   document.addEventListener("DOMContentLoaded", function () {
     const radios = document.querySelectorAll('input[type=radio][name=selected_recycling]');
 
@@ -203,6 +210,6 @@
       });
     });
   });
-</script>
+</script> {% endcomment %}
 {% endblock %}
 

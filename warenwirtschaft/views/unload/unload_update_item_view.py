@@ -4,10 +4,10 @@ from warenwirtschaft.models import Unload
 from warenwirtschaft.forms_neu.unload_form import UnloadForm
 
 
-class UnloadItemUpdateView(UpdateView):
+class UnloadUpdateItemView(UpdateView):
     model = Unload
     form_class = UnloadForm
-    template_name = 'unload/unload_item_update.html'
+    template_name = 'unload/unload_update_item.html'
     context_object_name = 'unload'
     success_url = reverse_lazy('unload_list')
 
