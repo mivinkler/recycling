@@ -27,7 +27,7 @@
 
       <div class="itemcard-topbox-row">
         {# DE: Label korrekt mit dem Feld verknüpfen #}
-        <label for="{{ form.delivery_units.id_for_label }}">Liefereinheiten:</label>
+        <label for="{{ form.delivery_unit.id_for_label }}">Liefereinheiten:</label>
         <div>{{ form.delivery_unit }}</div>
       </div>
     </section>
@@ -118,16 +118,23 @@
               <td class="itemcard-weight itemcard-weight-action">
                 <div class="flex-container">
                   {{ form.weight }}
-                  <button class="btn btn-lock">
+                  <button type="button" class="btn btn-weight">
                     <img src="{% static 'icons/dashboard-icon.svg' %}">
                   </button>
                 </div>
               </td>
 
+
               <td class="itemcard-action-wrapper">
-                <div class="itemcard-action">
+                <div class="itemcard-action state-locked">
                   <div class="btn btn-lock">
                     <img src="{% static 'icons/lock-icon.svg' %}">
+                  </div>
+                </div>
+
+                <div class="itemcard-action state-unlocked">
+                  <div class="btn btn-lock">
+                    <img src="{% static 'icons/lock-open-icon.svg' %}">
                   </div>
                   <button type="submit" class="btn btn-main">Speichern</button>
                 </div>
@@ -144,10 +151,19 @@
 
 
   <style>
+
+    .btn-weight {
+      padding: 0 5px;
+      height: 26px;
+      border: none;
+      border-left: 1px solid #ccc;
+      border-radius: 0;
+    }
+
     .flex-container {
       display: flex;
-      align-items: center; /* если нужно вертикальное выравнивание */
-      gap: 0.5rem;         /* промежуток между инпутом и кнопкой */
+      align-items: center;
+      gap: 0.5rem;
     }
 
 
@@ -166,50 +182,100 @@
     .state-active {
       display: none;
     }
-  </style>
+
+
+
+
+  /* offen standardmäßig verstecken */
+  .itemcard-action-wrapper .state-unlocked { display: none !important; }
+
+  /* wenn Zeile geöffnet, offen zeigen */
+  .itemcard-table-row.is-open .itemcard-action-wrapper .state-locked { display: none !important; }
+  .itemcard-table-row.is-open .itemcard-action-wrapper .state-unlocked { display: flex !important; }
+
+  /* Eingaben in geschlossenen Zeilen blockieren */
+  .itemcard-table-row:not(.is-open) input,
+  .itemcard-table-row:not(.is-open) select,
+  .itemcard-table-row:not(.is-open) textarea,
+  .itemcard-table-row:not(.is-open) input[type="radio"],
+  .itemcard-table-row:not(.is-open) input[type="checkbox"] {
+    pointer-events: none;
+    opacity: 0.6;
+  }
+  .itemcard-table-row.is-open input,
+  .itemcard-table-row.is-open select,
+  .itemcard-table-row.is-open textarea {
+    pointer-events: auto;
+    opacity: 1;
+  }
+
+  /* optional, nur für Cursor bei :disabled */
+  .itemcard-table-row :disabled { cursor: not-allowed; }
+
+</style>
 
 {% endblock %}
 
 {% block extra_js %}
 <script src="{% static 'js/barcode-scan.js' %}"></script>
-{% comment %} <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const radios = document.querySelectorAll('input[type=radio][name=selected_recycling]');
+<script>
+// Helfer zum (de-)aktivieren der Felder in einer Tabellenzeile
+function setRowLockState(row, open) {
+  // Nur sichtbare, bearbeitbare Felder anpacken (keine hidden inputs)
+  const controls = row.querySelectorAll(
+    'input:not([type="hidden"]), select, textarea, button.btn-weight'
+  );
 
-    function setRowActive(row, active) {
-      const editable = row.querySelectorAll('.editable-field');
-      const stateLocked = row.querySelector('.state-locked');
-      const stateActive = row.querySelector('.state-active');
-
-      editable.forEach(el => {
-        if (active) el.removeAttribute('disabled');
-        else el.setAttribute('disabled', 'disabled');
-      });
-
-      if (active) {
-        if (editable.length) editable[1].focus({ preventScroll: true });
-        if (stateLocked) stateLocked.style.display = 'none';
-        if (stateActive) stateActive.style.display = 'flex';
-      } else {
-        if (stateLocked) stateLocked.style.display = 'block';
-        if (stateActive) stateActive.style.display = 'none';
-      }
+  controls.forEach(el => {
+    // "disabled" und "readonly" je nach Zustand setzen
+    if (open) {
+      el.disabled = false;
+      el.readOnly = false;
+      el.setAttribute('aria-disabled', 'false');
+    } else {
+      el.disabled = true;
+      el.readOnly = true;
+      el.setAttribute('aria-disabled', 'true');
     }
-
-    radios.forEach(radio => {
-      radio.addEventListener('click', function () {
-        const row = this.closest('tr');
-        const wasActive = row.classList.contains('active-row');
-
-        document.querySelectorAll('.itemcard-table-row').forEach(r => setRowActive(r, false));
-
-        if (wasActive) { this.checked = false; return; }
-
-        this.checked = true;
-        setRowActive(row, true);
-      });
-    });
   });
-</script> {% endcomment %}
+}
+
+// Initial alle Zeilen schließen (außer если хочешь одну открытую по умолчанию)
+function lockAllRows() {
+  document.querySelectorAll('.itemcard-table-row').forEach(row => {
+    row.classList.remove('is-open');
+    setRowLockState(row, /*open=*/false);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Beim Laden alles закрыть
+  lockAllRows();
+});
+
+// Akkordeon-Logik + (de)aktivieren Felder
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('.btn-lock');
+  if (!btn) return;
+
+  const row = btn.closest('.itemcard-table-row');
+  if (!row) return;
+
+  // Zuerst alle anderen Zeilen schließen
+  document.querySelectorAll('.itemcard-table-row.is-open')
+    .forEach(r => {
+      if (r !== row) {
+        r.classList.remove('is-open');
+        setRowLockState(r, /*open=*/false);
+      }
+    });
+
+  // Aktuelle Zeile umschalten
+  const willOpen = !row.classList.contains('is-open');
+  row.classList.toggle('is-open', willOpen);
+  setRowLockState(row, /*open=*/willOpen);
+});
+</script>
+
 {% endblock %}
 
