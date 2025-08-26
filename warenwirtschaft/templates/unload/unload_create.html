@@ -12,8 +12,7 @@
       <h2>Vorsortierung erstellen</h2>
     </div>
 
-    {# ======  Head  ======= #}
-
+    {# ====== Kopfbereich ====== #}
     <section class="itemcard-topbox itemcard-margin-left">
       {{ form.delivery_units.errors }}
       {{ form.non_field_errors }}
@@ -31,16 +30,15 @@
       </div>
     </section>
 
-    {# ====== Neue Unloads ====== #}
-
+    {# ====== Neue Wagen ====== #}
     <section class="itemcard-topbox">
       <div class="itemcard-table-title itemcard-margin-left">Neue Wagen:</div>
 
       <table class="itemcard-table">
         {{ formset.management_form }}
-        
+
         <thead class="itemcard-thead">
-          <tr>       
+          <tr>
             <th class="checkbox-circle itemcard-action-left"></th>
             <th class="itemcard-id">№</th>
             <th class="itemcard-material">Material</th>
@@ -50,44 +48,51 @@
             <th class="itemcard-action-alone"></th>
           </tr>
         </thead>
-        
+
         <tbody class="itemcard-tbody">
           {{ formset.non_form_errors }}
 
           {% for f in formset.forms %}
-          <tr>
+          {# Deutsch: Für neue Formen identifizieren wir die Zeile mit dem Formset-Prefix #}
+          <tr class="itemcard-table-row" data-kind="new" data-key="{{ f.prefix }}">
             <td class="checkbox-circle itemcard-action-left">
-              <input type="radio" style="visibility: hidden;">
+              {# Deutsch: Radio analog zu vorhandenen Wagen; aktiv nur wenn die Zeile offen ist #}
+              <input type="radio"
+                     name="selected_recycling"
+                     value="new:{{ f.prefix }}"
+                     title="Fraktion verknüpfen (neue Zeile)">
             </td>
+
             <td class="itemcard-id">{{ forloop.counter }}</td>
+
             <td class="itemcard-material">{{ f.material }}</td>
             <td class="itemcard-boxtype">{{ f.box_type }}</td>
-            <td class="itemcard-status">{{ f.status }}</td>
+
+            <td class="itemcard-status">
+              {# Deutsch: Falls das Form einen id-Field hat (ModelFormSet), wird es hier gerendert #}
+              {% if f.id %}{{ f.id }}{% endif %}
+              {{ f.status }}
+            </td>
+
             <td class="itemcard-weight itemcard-weight-action">
               <div class="flex-container">
                 {{ f.weight }}
-                <button type="button" class="btn btn-weight">
-                  <img src="{% static 'icons/dashboard-icon.svg' %}">
+                <button type="button" class="btn btn-weight" title="Waage öffnen">
+                  <img src="{% static 'icons/dashboard-icon.svg' %}" alt="">
                 </button>
               </div>
             </td>
 
-
             <td class="itemcard-action-wrapper">
-              <div class="itemcard-action state-locked">
-                <div class="btn btn-lock">
-                  <img src="{% static 'icons/lock-icon.svg' %}">
-                </div>
-              </div>
-
-              <div class="itemcard-action state-unlocked">
-                <div class="btn btn-lock">
-                  <img src="{% static 'icons/lock-open-icon.svg' %}">
-                </div>
-                <button type="submit" class="btn btn-main">Speichern</button>
+              <div class="itemcard-action">
+                {# Deutsch: Ein einziger Lock-Button; Icon wechselt per Zustand der Zeile #}
+                <button type="button" class="btn btn-lock" aria-pressed="false" title="Zeile bearbeiten">
+                  <img class="icon-lock-closed" src="{% static 'icons/lock-icon.svg' %}" alt="">
+                  <img class="icon-lock-open"   src="{% static 'icons/lock-open-icon.svg' %}" alt="">
+                </button>
+                <button type="submit" class="btn btn-main btn-save">Speichern</button>
               </div>
             </td>
-
           </tr>
           {% endfor %}
         </tbody>
@@ -95,7 +100,6 @@
     </section>
 
     {# ====== Vorhandene Wagen ====== #}
-
     <section>
       <div class="itemcard-table-title itemcard-margin-left">Vorhandene Wagen:</div>
 
@@ -116,12 +120,16 @@
         <tbody class="itemcard-tbody existing-tbody">
           {% for form in existing_formset.forms %}
             {% with u=form.instance %}
-            <tr class="itemcard-table-row" data-id="{{ u.pk }}">
-
+            <tr class="itemcard-table-row" data-kind="existing" data-key="{{ u.pk }}">
               <td class="checkbox-circle itemcard-action-left">
-                <input type="radio" name="selected_recycling" value="{{ u.pk }}" title="Fraktion verknüpfen">
+                <input type="radio"
+                       name="selected_recycling"
+                       value="{{ u.pk }}"
+                       title="Fraktion verknüpfen">
               </td>
+
               <td class="itemcard-id">{{ forloop.counter }}</td>
+
               <td class="itemcard-material"><p>{{ u.material }}</p></td>
               <td class="itemcard-boxtype"><p>{{ u.get_box_type_display }}</p></td>
 
@@ -133,101 +141,78 @@
               <td class="itemcard-weight itemcard-weight-action">
                 <div class="flex-container">
                   {{ form.weight }}
-                  <button type="button" class="btn btn-weight">
-                    <img src="{% static 'icons/dashboard-icon.svg' %}">
+                  <button type="button" class="btn btn-weight" title="Waage öffnen">
+                    <img src="{% static 'icons/dashboard-icon.svg' %}" alt="">
                   </button>
                 </div>
               </td>
 
-
               <td class="itemcard-action-wrapper">
-                <div class="itemcard-action state-locked">
-                  <div class="btn btn-lock">
-                    <img src="{% static 'icons/lock-icon.svg' %}">
-                  </div>
-                </div>
-
-                <div class="itemcard-action state-unlocked">
-                  <div class="btn btn-lock">
-                    <img src="{% static 'icons/lock-open-icon.svg' %}">
-                  </div>
-                  <button type="submit" class="btn btn-main">Speichern</button>
+                <div class="itemcard-action">
+                  <button type="button" class="btn btn-lock" aria-pressed="false" title="Zeile bearbeiten">
+                    <img class="icon-lock-closed" src="{% static 'icons/lock-icon.svg' %}" alt="">
+                    <img class="icon-lock-open"   src="{% static 'icons/lock-open-icon.svg' %}" alt="">
+                  </button>
+                  <button type="submit" class="btn btn-main btn-save">Speichern</button>
                 </div>
               </td>
             </tr>
             {% endwith %}
           {% endfor %}
         </tbody>
-
-      </table> 
+      </table>
     </section>
   </div>
 </form>
 
+<style>
+  /* ===== Allgemeines Layout ===== */
+  .flex-container { display: flex; align-items: center; gap: 0.5rem; }
 
-  <style>
+  .btn-weight {
+    padding: 0 5px;
+    height: 26px;
+    border: none;
+    border-left: 1px solid #ccc;
+    border-radius: 0;
+    background: transparent;
+  }
 
-    .btn-weight {
-      padding: 0 5px;
-      height: 26px;
-      border: none;
-      border-left: 1px solid #ccc;
-      border-radius: 0;
-    }
+  .itemcard-weight-action input { border: none; outline: none; }
 
-    .flex-container {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
+  .itemcard-action-wrapper { width: 114px; background: transparent; border: none; }
 
+  /* ===== Sichtbarkeit: Speichern-Button nur in offener Zeile ===== */
+  .itemcard-table-row .btn-save { display: none; }
+  .itemcard-table-row.is-open .btn-save { display: inline-flex; }
 
-    .itemcard-weight-action input {
-      border: none;
-      outline: none
-    }
+  /* ===== Lock-Icon je nach Zustand ===== */
+  .btn-lock .icon-lock-open { display: none; }
+  .itemcard-table-row.is-open .btn-lock .icon-lock-closed { display: none; }
+  .itemcard-table-row.is-open .btn-lock .icon-lock-open { display: inline; }
 
-
-    .itemcard-action-wrapper {
-      width: 114px;
-      background-color: transparent;
-      border: none;
-    }
-
-    .state-active {
-      display: none;
-    }
-
-  /* Offene Zeillen standardmäßig verstecken */
-  .itemcard-action-wrapper .state-unlocked { display: none; }
-
-  /* Wenn Zeile geöffnet, offen zeigen */
-  .itemcard-table-row.is-open .itemcard-action-wrapper .state-locked { display: none; }
-  .itemcard-table-row.is-open .itemcard-action-wrapper .state-unlocked { display: flex; }
-
-  /* Eingaben in geschlossenen Zeilen blockieren */
+  /* ===== Interaktion sperren bei geschlossener Zeile ===== */
   .itemcard-table-row:not(.is-open) input,
   .itemcard-table-row:not(.is-open) select,
-  .itemcard-table-row:not(.is-open) input[type="checkbox"] {
+  .itemcard-table-row:not(.is-open) textarea,
+  .itemcard-table-row:not(.is-open) button.btn-weight {
     pointer-events: none;
     opacity: 0.6;
   }
   .itemcard-table-row.is-open input,
   .itemcard-table-row.is-open select,
-  .itemcard-table-row.is-open textarea {
+  .itemcard-table-row.is-open textarea,
+  .itemcard-table-row.is-open button.btn-weight {
     pointer-events: auto;
     opacity: 1;
   }
 
-  /* optional, nur für Cursor bei :disabled */
+  /* Deutsch: Radio darf auch disabled werden -> Cursor-Hinweis */
   .itemcard-table-row :disabled { cursor: not-allowed; }
-
 </style>
-
 {% endblock %}
 
 {% block extra_js %}
 <script src="{% static 'js/barcode-scan.js' %}"></script>
 <script src="{% static 'js/close-open.js' %}"></script>
 {% endblock %}
-

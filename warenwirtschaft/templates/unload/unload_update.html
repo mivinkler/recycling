@@ -4,7 +4,7 @@
 {% block title %}Vorsortierung bearbeiten{% endblock %}
 
 {% block content %}
-<form method="post" action="" id="unload-form">
+<form method="post" action="" id="unload-form" data-mode="update">
   {% csrf_token %}
 
   <div class="itemcard">
@@ -12,25 +12,18 @@
       <h2>Vorsortierung bearbeiten</h2>
     </div>
 
-    {# ======  Head  ======= #}
+    {# ====== Kopfbereich ====== #}
     <section class="itemcard-topbox itemcard-margin-left">
-      {{ form.delivery_unit.errors }}
+      {{ form.delivery_units.errors }}
       {{ form.non_field_errors }}
 
       <div class="itemcard-topbox-row">
-        <label for="barcode">Barcode:</label>
-        <div>
-          <input type="text" id="barcode" name="barcode" autofocus autocomplete="off" placeholder="Scannen..." />
-        </div>
-      </div>
-
-      <div class="itemcard-topbox-row">
-        <label for="{{ form.delivery_unit.id_for_label }}">Liefereinheit:</label>
-        <div>{{ form.delivery_unit }}</div>
+        <label>Liefereinheiten:</label>
+        <div>{{ delivery_unit }}</div>
       </div>
     </section>
 
-    {# ====== Neue Unloads  ====== #}
+    {# ====== Neue Wagen ====== #}
     <section class="itemcard-topbox">
       <div class="itemcard-table-title itemcard-margin-left">Neue Wagen:</div>
 
@@ -53,21 +46,39 @@
           {{ formset.non_form_errors }}
 
           {% for f in formset.forms %}
-          <tr>
+          <tr class="itemcard-table-row" data-kind="new" data-key="{{ f.prefix }}">
             <td class="checkbox-circle itemcard-action-left">
-              <input type="radio" style="visibility: hidden;">
+              <input type="checkbox"
+                     name="selected_recycling"
+                     value="new:{{ f.prefix }}"
+                     title="Fraktion verknüpfen (neue Zeile)">
             </td>
+
             <td class="itemcard-id">{{ forloop.counter }}</td>
             <td class="itemcard-material">{{ f.material }}</td>
             <td class="itemcard-boxtype">{{ f.box_type }}</td>
-            <td class="itemcard-status">{{ f.status }}</td>
-            <td class="itemcard-weight">{{ f.weight }}</td>
+
+            <td class="itemcard-status">
+              {% if f.id %}{{ f.id }}{% endif %}
+              {{ f.status }}
+            </td>
+
+            <td class="itemcard-weight itemcard-weight-action">
+              <div class="flex-container">
+                {{ f.weight }}
+                <button type="button" class="btn btn-weight" title="Waage öffnen">
+                  <img src="{% static 'icons/dashboard-icon.svg' %}" alt="">
+                </button>
+              </div>
+            </td>
+
             <td class="itemcard-action-wrapper">
               <div class="itemcard-action">
-                <div class="btn btn-lock">
-                  <img src="{% static 'icons/dashboard-icon.svg' %}">
-                </div>
-                <button type="submit" class="btn btn-main">Speichern</button>
+                <button type="button" class="btn btn-lock" aria-pressed="false" title="Zeile bearbeiten">
+                  <img class="icon-lock-closed" src="{% static 'icons/lock-icon.svg' %}" alt="">
+                  <img class="icon-lock-open"   src="{% static 'icons/lock-open-icon.svg' %}" alt="">
+                </button>
+                <button type="submit" class="btn btn-main btn-save">Speichern</button>
               </div>
             </td>
           </tr>
@@ -87,7 +98,7 @@
             <th class="checkbox-circle itemcard-action-left"></th>
             <th class="itemcard-id">№</th>
             <th class="itemcard-material">Material</th>
-            <th class="itemcard-boxtype">Behälter</th>
+            <th class="itemcard-boxtype">Behälтер</th>
             <th class="itemcard-status">Status</th>
             <th class="itemcard-weight">Gewicht</th>
             <th class="itemcard-action"></th>
@@ -97,43 +108,45 @@
         <tbody class="itemcard-tbody existing-tbody">
           {% for form in existing_formset.forms %}
             {% with u=form.instance %}
-            <tr class="itemcard-table-row" data-id="{{ u.pk }}">
+            {# 🇩🇪 Bereits verknüpfte Zeilen bleiben aktiv; Lock bleibt geschlossen #}
+            <tr class="itemcard-table-row"
+                data-kind="existing"
+                data-key="{{ u.pk }}"
+                {% if u.pk in linked_ids %}data-keep-enabled-row="true"{% endif %}>
               <td class="checkbox-circle itemcard-action-left">
                 <input type="checkbox"
-                      class="row-checkbox"
-                      name="selected_unloads"
-                      value="{{ u.pk }}"
-                      {% if u.pk in prechecked_ids %}checked{% endif %}
-                      title="Mit ausgewählter Liefereinheit verknüpfen & bearbeiten">
+                       name="selected_recycling"
+                       value="{{ u.pk }}"
+                       title="Fraktion verknüpfen"
+                       {% if u.pk in linked_ids %}checked data-keep-enabled="true"{% endif %}>
               </td>
 
-              <td class="itemcard-id">{{ u.id }}</td>
+              <td class="itemcard-id">{{ forloop.counter }}</td>
+
               <td class="itemcard-material"><p>{{ u.material }}</p></td>
-              <td class="itemcard-boxtype"><p>{{ u.box_type }}</p></td>
+              <td class="itemcard-boxtype"><p>{{ u.get_box_type_display }}</p></td>
 
               <td class="itemcard-status">
                 {{ form.id }}
                 {{ form.status }}
               </td>
 
-              <td class="itemcard-weight">
-                {{ form.weight }}
+              <td class="itemcard-weight itemcard-weight-action">
+                <div class="flex-container">
+                  {{ form.weight }}
+                  <button type="button" class="btn btn-weight" title="Waage öffnen">
+                    <img src="{% static 'icons/dashboard-icon.svg' %}" alt="">
+                  </button>
+                </div>
               </td>
 
               <td class="itemcard-action-wrapper">
-                <!-- Gesperrter Zustand (Standard) -->
-                <div class="state-locked itemcard-action">
-                  <div class="btn btn-lock">
-                    <img src="{% static 'icons/lock-icon.svg' %}">
-                  </div>
-                </div>
-
-                <!-- Aktiver Zustand -->
-                <div class="state-active itemcard-action">
-                  <div class="btn btn-lock">
-                    <img src="{% static 'icons/dashboard-icon.svg' %}">
-                  </div>
-                  <button type="submit" class="btn btn-main">Speichern</button>
+                <div class="itemcard-action">
+                  <button type="button" class="btn btn-lock" aria-pressed="false" title="Zeile bearbeiten">
+                    <img class="icon-lock-closed" src="{% static 'icons/lock-icon.svg' %}" alt="">
+                    <img class="icon-lock-open"   src="{% static 'icons/lock-open-icon.svg' %}" alt="">
+                  </button>
+                  <button type="submit" class="btn btn-main btn-save">Speichern</button>
                 </div>
               </td>
             </tr>
@@ -146,50 +159,61 @@
 </form>
 
 <style>
-  .itemcard-action-wrapper { width:114px; background:transparent; border:none; }
-  .state-active { display:none; }
+  /* ===== Allgemeines Layout ===== */
+  .flex-container { display: flex; align-items: center; gap: 0.5rem; }
+
+  .btn-weight {
+    padding: 0 5px;
+    height: 26px;
+    border: none;
+    border-left: 1px solid #ccc;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .itemcard-weight-action input { border: none; outline: none; }
+
+  .itemcard-action-wrapper { width: 114px; background: transparent; border: none; }
+
+  /* ===== Sichtbarkeit: Speichern-Button nur in offener Zeile ===== */
+  .itemcard-table-row .btn-save { display: none; }
+  .itemcard-table-row.is-open .btn-save { display: inline-flex; }
+
+  /* ===== Lock-Icon je nach Zustand ===== */
+  .btn-lock .icon-lock-open { display: none; }
+  .itemcard-table-row.is-open .btn-lock .icon-lock-closed { display: none; }
+  .itemcard-table-row.is-open .btn-lock .icon-lock-open { display: inline; }
+
+  /* ===== Interaktion sperren bei geschlossener Zeile ===== */
+  .itemcard-table-row:not(.is-open) input,
+  .itemcard-table-row:not(.is-open) select,
+  .itemcard-table-row:not(.is-open) textarea,
+  .itemcard-table-row:not(.is-open) button.btn-weight {
+    pointer-events: none;
+    opacity: 0.6;
+  }
+  .itemcard-table-row.is-open input,
+  .itemcard-table-row.is-open select,
+  .itemcard-table-row.is-open textarea,
+  .itemcard-table-row.is-open button.btn-weight {
+    pointer-events: auto;
+    opacity: 1;
+  }
+
+  /* 🇩🇪 Update-Sonderfall: verknüpfte Zeilen bleiben aktiv, obwohl der Lock zu ist */
+  .itemcard-table-row[data-keep-enabled-row]:not(.is-open) input,
+  .itemcard-table-row[data-keep-enabled-row]:not(.is-open) select,
+  .itemcard-table-row[data-keep-enabled-row]:not(.is-open) textarea,
+  .itemcard-table-row[data-keep-enabled-row]:not(.is-open) button.btn-weight {
+    pointer-events: auto;
+    opacity: 1;
+  }
+
+  .itemcard-table-row :disabled { cursor: not-allowed; }
 </style>
 {% endblock %}
 
 {% block extra_js %}
 <script src="{% static 'js/barcode-scan.js' %}"></script>
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const checkboxes = document.querySelectorAll('input.row-checkbox');
-
-    function setRowActive(row, active) {
-      const editable = row.querySelectorAll('.editable-field');
-      const stateLocked = row.querySelector('.state-locked');
-      const stateActive = row.querySelector('.state-active');
-
-      editable.forEach(el => {
-        if (active) el.removeAttribute('disabled');
-        else el.setAttribute('disabled', 'disabled');
-      });
-
-      if (active) {
-        if (editable.length) editable[1]?.focus?.({ preventScroll: true });
-        if (stateLocked) stateLocked.style.display = 'none';
-        if (stateActive) stateActive.style.display = 'flex';
-      } else {
-        if (stateLocked) stateLocked.style.display = 'block';
-        if (stateActive) stateActive.style.display = 'none';
-      }
-    }
-
-    // Инициализация состояния по предустановленным галочкам
-    document.querySelectorAll('.itemcard-table-row').forEach(row => {
-      const cb = row.querySelector('input.row-checkbox');
-      setRowActive(row, cb?.checked);
-    });
-
-    // Переключение активного состояния при клике на чекбокс
-    checkboxes.forEach(cb => {
-      cb.addEventListener('change', function () {
-        const row = this.closest('tr');
-        setRowActive(row, this.checked);
-      });
-    });
-  });
-</script>
+<script src="{% static 'js/close-open.js' %}"></script>
 {% endblock %}

@@ -1,9 +1,8 @@
 # warenwirtschaft/views/unload_create.py
 from django.views import View
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.db import transaction
-from django.contrib import messages
 import uuid
 
 from warenwirtschaft.models import Unload
@@ -14,146 +13,99 @@ from warenwirtschaft.services.barcode_service import BarcodeGenerator
 
 
 class UnloadCreateView(View):
-    template_name = 'unload/unload_create.html'
-    success_url = reverse_lazy('unload_list')
+    template_name = "unload/unload_create.html"
+    success_url = reverse_lazy("unload_list")
 
-    # GET – leere neue Zeile + vorhandene (Status=1)
+    # ---------- Hilfsabfragen ----------
+
+    def _existing_queryset(self):
+        # Nur offene Unloads (Status=1) für den Block 'Vorhandene Wagen'.
+        return Unload.objects.filter(status=1).order_by("pk")
+
+    # ---------- GET ----------
+
     def get(self, request):
         form = DeliveryUnitForm()
-        formset = UnloadFormSet(queryset=Unload.objects.none(), prefix="new")
+        new_fs = UnloadFormSet(queryset=Unload.objects.none(), prefix="new")
+        exist_fs = ExistingEditFormSet(queryset=self._existing_queryset(), prefix="exist")
+        return self.render_page(form, new_fs, exist_fs)
 
-        existing_qs = Unload.objects.filter(status=1).order_by('pk')
-        existing_formset = ExistingEditFormSet(queryset=existing_qs, prefix="exist")
+    # ---------- POST ----------
 
-        return render(request, self.template_name, {
-            "form": form,
-            "formset": formset,
-            "empty_form": formset.empty_form,
-            "existing_formset": existing_formset,
-        })
-
-    # POST – speichern genau EINE Zeile: entweder eine neue ODER eine bestehende
     def post(self, request):
         form = DeliveryUnitForm(request.POST)
-        # Формсеты бадним, но валидируем только нужную форму
-        new_formset = UnloadFormSet(request.POST, queryset=Unload.objects.none(), prefix="new")
-        existing_qs = Unload.objects.filter(status=1).order_by('pk')
-        exist_formset = ExistingEditFormSet(request.POST, queryset=existing_qs, prefix="exist")
+        new_fs = UnloadFormSet(request.POST, queryset=Unload.objects.none(), prefix="new")
+        exist_fs = ExistingEditFormSet(request.POST, queryset=self._existing_queryset(), prefix="exist")
 
-        # HINWEIS: In deinem Template heißt das Radio noch "selected_recycling"
-        selected_pk = request.POST.get("selected_recycling")
-
-        # Kopf (Liefereinheit) muss stimmen
+        # Kopf (Liefereinheit) muss gültig sein
         if not form.is_valid():
-            return render(request, self.template_name, {
-                "form": form,
-                "formset": new_formset,
-                "empty_form": new_formset.empty_form,
-                "existing_formset": exist_formset,
-            })
+            return self.render_page(form, new_fs, exist_fs)
 
         delivery_unit = form.cleaned_data["delivery_unit"]
 
-        # herausfinden, ob Nutzer eine NEUE oder eine BESTEHENDE gewählt hat
-        changed_new_forms = []
-        for f in new_formset.forms:
-            # валидируем только реально заполненные формы
-            if f.has_changed():
-                if f.is_valid():
-                    changed_new_forms.append(f)
-                else:
-                    # показать ошибки этой конкретной новой формы
-                    for field, errs in f.errors.items():
-                        for err in errs:
-                            new_formset._non_form_errors = new_formset.non_form_errors()  # no-op, just consistency
-                    messages.error(request, "Bitte füllen Sie die neue Zeile korrekt aus.")
-                    return render(request, self.template_name, {
-                        "form": form,
-                        "formset": new_formset,
-                        "empty_form": new_formset.empty_form,
-                        "existing_formset": exist_formset,
-                    })
+        # Ohne Radio keine Speicherung – fertig.
+        selection = request.POST.get("selected_recycling")  # Name wie im Template
+        if not selection:
+            return self.render_page(form, new_fs, exist_fs)
 
-        has_one_new = (len(changed_new_forms) == 1)
-        has_existing = bool(selected_pk)
+        # -------- Fall A: Neue Wagen ("new:<prefix>") --------
+        if str(selection).startswith("new:"):
+            sel_prefix = selection.split(":", 1)[1]
+            target = next((f for f in new_fs.forms if f.prefix == sel_prefix), None)
 
-        # Exklusivität prüfen
-        if has_one_new and has_existing:
-            messages.error(request, "Bitte wählen Sie entweder eine bestehende Zeile ODER erfassen Sie genau eine neue Zeile.")
-            return render(request, self.template_name, {
-                "form": form,
-                "formset": new_formset,
-                "empty_form": new_formset.empty_form,
-                "existing_formset": exist_formset,
-            })
-        if not has_one_new and not has_existing:
-            messages.error(request, "Bitte wählen Sie genau eine Option: bestehende Zeile oder neue Zeile.")
-            return render(request, self.template_name, {
-                "form": form,
-                "formset": new_formset,
-                "empty_form": new_formset.empty_form,
-                "existing_formset": exist_formset,
-            })
-        if len(changed_new_forms) > 1:
-            messages.error(request, "Bitte erfassen Sie nur eine neue Zeile gleichzeitig.")
-            return render(request, self.template_name, {
-                "form": form,
-                "formset": new_formset,
-                "empty_form": new_formset.empty_form,
-                "existing_formset": exist_formset,
-            })
+            # Muss existieren, geändert und valide sein
+            if not target or not target.has_changed() or not target.is_valid():
+                return self.render_page(form, new_fs, exist_fs)
+
+            with transaction.atomic():
+                instance = target.save(commit=False)
+                self._ensure_barcode(instance)       # Barcode setzen, falls leer
+                instance.save()
+                self._link_delivery_unit(instance, delivery_unit)
+                self._generate_barcode_image(instance)
+
+            return redirect(self.success_url)
+
+        # -------- Fall B: Vorhandene Wagen: ("<pk>") --------
+        target = next((f for f in exist_fs.forms if str(f.instance.pk) == str(selection)), None)
+        if not target or not target.is_valid():
+            return self.render_page(form, new_fs, exist_fs)
 
         with transaction.atomic():
-            if has_one_new:
-                f = changed_new_forms[0]
-                unload = f.save(commit=False)
-
-                suffix = uuid.uuid4().hex[:8].upper()
-                barcode = f"U{suffix}"
-                if hasattr(unload, "barcode"):
-                    unload.barcode = barcode
-
-                unload.save()           # Erst speichern, dann M2M
-                # Liefereinheit aus dem Kopf verknüpfen
-                if hasattr(unload, "delivery_units"):
-                    unload.delivery_units.add(delivery_unit)
-
-                # Barcode-Bild erzeugen
-                try:
-                    BarcodeGenerator(unload, barcode, 'barcodes/unload').generate_image()
-                except Exception:
-                    # Fehler beim Bild – nicht kritisch für die Transaktion
-                    pass
-
-            else:
-                # Vorhandene Wagen
-                target_form = None
-                for f in exist_formset.forms:
-                    if str(f.instance.pk) == str(selected_pk):
-                        target_form = f
-                        break
-
-                if not target_form:
-                    messages.error(request, "Ausgewählter Wagen wurde nicht gefunden.")
-                    return render(request, self.template_name, {
-                        "form": form,
-                        "formset": new_formset,
-                        "empty_form": new_formset.empty_form,
-                        "existing_formset": exist_formset,
-                    })
-
-                # ein Form (ohne .is_valid() )
-                if not target_form.is_valid():
-                    messages.error(request, "Bitte füllen Sie die ausgewählte bestehende Zeile korrekt aus.")
-                    return render(request, self.template_name, {
-                        "form": form,
-                        "formset": new_formset,
-                        "empty_form": new_formset.empty_form,
-                        "existing_formset": exist_formset,
-                    })
-
-                instance = target_form.save(commit=True)  # Status & Gewicht übernommen
-                if hasattr(instance, "delivery_units"):
-                    instance.delivery_units.add(delivery_unit)
+            instance = target.save()  # speichert Änderungen (falls vorhanden)
+            self._link_delivery_unit(instance, delivery_unit)
 
         return redirect(self.success_url)
+
+    # ---------- Hilfsmethoden ----------
+
+    def _ensure_barcode(self, unload: Unload) -> None:
+        # Falls kein Barcode gesetzt ist, generieren wir einen simplen Code "U<8HEX>".
+        if not getattr(unload, "barcode", None):
+            suffix = uuid.uuid4().hex[:8].upper()
+            unload.barcode = f"U{suffix}"
+
+    def _generate_barcode_image(self, unload: Unload) -> None:
+        code = getattr(unload, "barcode", None)
+        if not code:
+            return
+        try:
+            BarcodeGenerator(unload, code, "barcodes/unload").generate_image()
+        except Exception:
+            pass
+
+    def _link_delivery_unit(self, unload: Unload, delivery_unit) -> None:
+        # M2M-Verknüpfung: Unload der gewählten Liefereinheit zuordnen.
+        if hasattr(unload, "delivery_units"):
+            unload.delivery_units.add(delivery_unit)
+
+    # ---------- Rendering ----------
+
+    def render_page(self, form, new_fs, exist_fs):
+        return render(self.request, self.template_name, {
+            "form": form,
+            "formset": new_fs,
+            "empty_form": new_fs.empty_form,
+            "existing_formset": exist_fs,
+            "selected_menu": "unload_create",
+        })
