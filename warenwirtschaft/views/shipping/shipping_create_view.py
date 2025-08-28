@@ -1,4 +1,4 @@
-# 🇩🇪 Views für Shipping: Kopf + Auswahl vorhandener Recycling-/Unload-Einheiten
+# Views für Shipping: Kopf + Auswahl vorhandener Recycling-/Unload-Einheiten
 from django.views import View
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db import transaction
@@ -12,7 +12,7 @@ from warenwirtschaft.forms_neu.shipping_form import ShippingHeaderForm
 class ShippingCreateView(View):
     template_name = "shipping/shipping_create.html"
 
-    # 🇩🇪 Abhol-bereite QuerySets (Status=3)
+    # Abhol-bereite QuerySets (Status=3)
     def _recycling_queryset(self):
         return Recycling.objects.filter(status=3, shipping__isnull=True)
 
@@ -26,6 +26,7 @@ class ShippingCreateView(View):
             "unloads": self._unload_queryset(),
             "preselected_recycling_ids": set(),
             "preselected_unload_ids": set(),
+            "selected_menu": "shipping_create",
         })
 
     def post(self, request):
@@ -45,7 +46,7 @@ class ShippingCreateView(View):
         with transaction.atomic():
             shipping = form.save()
 
-            # 🇩🇪 Sicherheitsfilter: nur erlaubte IDs aus den QuerySets
+            # Sicherheitsfilter: nur erlaubte IDs aus den QuerySets
             allowed_rec_ids = set(self._recycling_queryset().values_list("id", flat=True))
             allowed_unl_ids = set(self._unload_queryset().values_list("id", flat=True))
 
@@ -55,13 +56,13 @@ class ShippingCreateView(View):
             if attach_rec_ids:
                 Recycling.objects.filter(pk__in=attach_rec_ids).update(
                     shipping=shipping,
-                    status=4  # 🇩🇪 Erledigt
+                    status=4  # Erledigt
                 )
 
             if attach_unl_ids:
                 Unload.objects.filter(pk__in=attach_unl_ids).update(
                     shipping=shipping,
-                    status=4  # 🇩🇪 Erledigt
+                    status=4  # Erledigt
                 )
 
         return redirect(reverse("shipping_update", kwargs={"pk": shipping.pk}))

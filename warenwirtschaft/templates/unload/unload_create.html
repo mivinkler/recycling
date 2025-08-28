@@ -53,10 +53,10 @@
           {{ formset.non_form_errors }}
 
           {% for f in formset.forms %}
-          {# Deutsch: Für neue Formen identifizieren wir die Zeile mit dem Formset-Prefix #}
+          {# Für neue Formen identifizieren wir die Zeile mit dem Formset-Prefix #}
           <tr class="itemcard-table-row" data-kind="new" data-key="{{ f.prefix }}">
             <td class="checkbox-circle itemcard-action-left">
-              {# Deutsch: Radio analog zu vorhandenen Wagen; aktiv nur wenn die Zeile offen ist #}
+              {# Radio analog zu vorhandenen Wagen; aktiv nur wenn die Zeile offen ist #}
               <input type="radio"
                      name="selected_recycling"
                      value="new:{{ f.prefix }}"
@@ -69,7 +69,7 @@
             <td class="itemcard-boxtype">{{ f.box_type }}</td>
 
             <td class="itemcard-status">
-              {# Deutsch: Falls das Form einen id-Field hat (ModelFormSet), wird es hier gerendert #}
+              {# Falls das Form einen id-Field hat (ModelFormSet), wird es hier gerendert #}
               {% if f.id %}{{ f.id }}{% endif %}
               {{ f.status }}
             </td>
@@ -85,7 +85,7 @@
 
             <td class="itemcard-action-wrapper">
               <div class="itemcard-action">
-                {# Deutsch: Ein einziger Lock-Button; Icon wechselt per Zustand der Zeile #}
+                {# Ein einziger Lock-Button; Icon wechselt per Zustand der Zeile #}
                 <button type="button" class="btn btn-lock" aria-pressed="false" title="Zeile bearbeiten">
                   <img class="icon-lock-closed" src="{% static 'icons/lock-icon.svg' %}" alt="">
                   <img class="icon-lock-open"   src="{% static 'icons/lock-open-icon.svg' %}" alt="">
@@ -129,10 +129,8 @@
               </td>
 
               <td class="itemcard-id">{{ forloop.counter }}</td>
-
               <td class="itemcard-material"><p>{{ u.material }}</p></td>
               <td class="itemcard-boxtype"><p>{{ u.get_box_type_display }}</p></td>
-
               <td class="itemcard-status">
                 {{ form.id }}
                 {{ form.status }}
@@ -179,7 +177,6 @@
   }
 
   .itemcard-weight-action input { border: none; outline: none; }
-
   .itemcard-action-wrapper { width: 114px; background: transparent; border: none; }
 
   /* ===== Sichtbarkeit: Speichern-Button nur in offener Zeile ===== */
@@ -207,7 +204,7 @@
     opacity: 1;
   }
 
-  /* Deutsch: Radio darf auch disabled werden -> Cursor-Hinweis */
+  /* Radio darf auch disabled werden -> Cursor-Hinweis */
   .itemcard-table-row :disabled { cursor: not-allowed; }
 </style>
 {% endblock %}

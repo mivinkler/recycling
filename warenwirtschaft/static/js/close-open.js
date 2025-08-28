@@ -1,5 +1,5 @@
 // ============================================
-// Zeilensteuerung (Create + Update)
+// Zeilensteuerung Unload (Create + Update)
 // ============================================
 
 function getMode() {
@@ -7,12 +7,12 @@ function getMode() {
   return (form && form.dataset && form.dataset.mode) ? form.dataset.mode : 'create';
 }
 
-// 🇩🇪 Editierbare Controls einer Zeile auswählen (ohne Hidden)
+// Editierbare Controls einer Zeile auswählen (ohne Hidden)
 function getEditableControls(row) {
   return row.querySelectorAll('input:not([type="hidden"]), select, textarea, button.btn-weight');
 }
 
-// 🇩🇪 Ursprungswerte einmalig merken (für Reset bei Schließen)
+// Ursprungswerte einmalig merken (für Reset bei Schließen)
 function snapshotRow(row) {
   if (row.dataset.snapshotted === '1') return;
   getEditableControls(row).forEach(el => {
@@ -27,7 +27,7 @@ function snapshotRow(row) {
   row.dataset.snapshotted = '1';
 }
 
-// 🇩🇪 Werte auf Ursprungszustand zurücksetzen (wenn nicht gespeichert)
+// Werte auf Ursprungszustand zurücksetzen (wenn nicht gespeichert)
 function restoreRow(row) {
   getEditableControls(row).forEach(el => {
     if (el.type === 'checkbox' || el.type === 'radio') {
@@ -40,7 +40,7 @@ function restoreRow(row) {
   });
 }
 
-// 🇩🇪 Felder (de)aktivieren + Radio behandeln
+// Felder (de)aktivieren + Radio behandeln
 function setRowLockState(row, open) {
   const mode = getMode();
   const keepRow = row.hasAttribute('data-keep-enabled-row'); // Update: verknüpft => aktiv lassen
@@ -51,7 +51,7 @@ function setRowLockState(row, open) {
     const isRadio = el.matches('input[type="radio"][name="selected_recycling"]');
     const keepRadio = isRadio && el.hasAttribute('data-keep-enabled');
 
-    // 🇩🇪 Update: verknüpfte Zeilen bleiben bedienbar (auch bei geschlossenem Schloss)
+    // Update: verknüpfte Zeilen bleiben bedienbar (auch bei geschlossenem Schloss)
     if (keepRow) {
       el.disabled = false;
       if (!(el instanceof HTMLButtonElement)) el.readOnly = false;
@@ -59,7 +59,7 @@ function setRowLockState(row, open) {
       return;
     }
 
-    // 🇩🇪 Update: Radio-checked NIE automatisch ändern
+    // Update: Radio-checked NIE automatisch ändern
     if (mode === 'update' && isRadio) {
       if (!keepRadio) {
         el.disabled = !open;
@@ -71,13 +71,13 @@ function setRowLockState(row, open) {
       return;
     }
 
-    // 🇩🇪 Standard (Create + andere Inputs)
+    // Standard (Create + andere Inputs)
     el.disabled = !open;
     if (!(el instanceof HTMLButtonElement)) el.readOnly = !open;
     el.setAttribute('aria-disabled', String(!open));
   });
 
-  // 🇩🇪 Auto-Check NUR im Create-Modus
+  // Auto-Check NUR im Create-Modus
   if (getMode() === 'create' && !row.hasAttribute('data-keep-enabled-row')) {
     const radio = row.querySelector('input[type="radio"][name="selected_recycling"]:not([data-keep-enabled])');
     if (radio) {
@@ -90,7 +90,7 @@ function setRowLockState(row, open) {
   if (lockBtn) lockBtn.setAttribute('aria-pressed', String(!!open));
 }
 
-// 🇩🇪 Alle Zeilen schließen (Startzustand)
+// Alle Zeilen schließen (Startzustand)
 function lockAllRows() {
   document.querySelectorAll('.itemcard-table-row').forEach(row => {
     row.classList.remove('is-open');
@@ -102,14 +102,14 @@ function lockAllRows() {
 document.addEventListener('DOMContentLoaded', () => {
   lockAllRows();
 
-  // 🇩🇪 Create: ersten "Neue Wagen"-Lock automatisch öffnen
+  // Create: ersten "Neue Wagen"-Lock automatisch öffnen
   if (getMode() === 'create') {
     const firstNewLockBtn = document.querySelector('tbody .itemcard-table-row[data-kind="new"] .btn-lock');
     if (firstNewLockBtn) firstNewLockBtn.click();
   }
 });
 
-// 🇩🇪 Akkordeon – immer nur eine Zeile offen (über beide Tabellen hinweg)
+// Akkordeon – immer nur eine Zeile offen (über beide Tabellen hinweg)
 document.addEventListener('click', (e) => {
   const btn = e.target.closest('.btn-lock');
   if (!btn) return;
@@ -138,7 +138,7 @@ document.addEventListener('click', (e) => {
     setRowLockState(row, /*open=*/false);
   }
 
-  // 🇩🇪 Hidden "active_row" setzen (für Update: Unlink)
+  // Hidden "active_row" setzen (für Update: Unlink)
   const hidden = document.getElementById('active_row');
   if (hidden) {
     const value = row.dataset.kind === 'new' ? ('new:' + row.dataset.key) : String(row.dataset.key || '');
@@ -147,7 +147,7 @@ document.addEventListener('click', (e) => {
 });
 
 // =====================================================
-// 🇩🇪 Update: verknüpfte Radio-Zeile aktiv abwählbar machen
+// Update: verknüpfte Radio-Zeile aktiv abwählbar machen
 // - Nur wenn Zeile offen ist
 // - Klick auf Radio toggelt es AUS (unchecked)
 // - Beim Submit setzen wir unlink_pk für den Server
@@ -173,7 +173,7 @@ document.addEventListener('click', (e) => {
   if (hiddenActive) hiddenActive.value = String(row.dataset.key || '');
 });
 
-// 🇩🇪 Vor dem Submit: falls offene verknüpfte Zeile ohne Haken -> unlink_pk setzen
+// Vor dem Submit: falls offene verknüpfte Zeile ohne Haken -> unlink_pk setzen
 document.getElementById('unload-form')?.addEventListener('submit', () => {
   if (getMode() !== 'update') return;
 

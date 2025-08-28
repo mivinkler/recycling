@@ -18,8 +18,8 @@
       {{ form.non_field_errors }}
 
       <div class="itemcard-topbox-row">
-        <label>Liefereinheiten:</label>
-        <div>{{ delivery_unit }}</div>
+        <span>Liefereinheiten:</span>
+        <p>{{ delivery_unit }}</p>
       </div>
     </section>
 
@@ -98,7 +98,7 @@
             <th class="checkbox-circle itemcard-action-left"></th>
             <th class="itemcard-id">№</th>
             <th class="itemcard-material">Material</th>
-            <th class="itemcard-boxtype">Behälтер</th>
+            <th class="itemcard-boxtype">Behälter</th>
             <th class="itemcard-status">Status</th>
             <th class="itemcard-weight">Gewicht</th>
             <th class="itemcard-action"></th>
@@ -111,8 +111,7 @@
             {# 🇩🇪 Bereits verknüpfte Zeilen bleiben aktiv; Lock bleibt geschlossen #}
             <tr class="itemcard-table-row"
                 data-kind="existing"
-                data-key="{{ u.pk }}"
-                {% if u.pk in linked_ids %}data-keep-enabled-row="true"{% endif %}>
+                data-key="{{ u.pk }}">
               <td class="checkbox-circle itemcard-action-left">
                 <input type="checkbox"
                        name="selected_recycling"
