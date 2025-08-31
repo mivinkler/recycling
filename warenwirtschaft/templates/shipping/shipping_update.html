@@ -21,7 +21,7 @@
       </div>
 
       <div class="itemcard-topbox-row">
-        <label>Begleitdokumente:</label>
+        <label>Abholschein:</label>
         <div>{{ form.certificate }}</div>
       </div>
 
@@ -51,45 +51,54 @@
       </thead>
 
       <tbody class="itemcard-tbody">
-        {# 🇩🇪 Recycling #}
-        {% for rec in recyclings %}
-          <tr class="itemcard-table-row"
-              data-id="{{ rec.pk }}"
-              data-url-detail="{% url 'recycling_detail' pk=rec.pk %}">
-            <td class="checkbox-circle itemcard-action-left">
-              <input type="checkbox"
-                     name="selected_recycling"
-                     value="{{ rec.pk }}"
-                     title="Zur Abholung hinzufügen"
-                     {% if rec.pk in preselected_recycling_ids %}checked{% endif %}>
-            </td>
-            <td class="itemcard-id">{{ forloop.counter }}</td>
-            <td class="itemcard-material"><p>{{ rec.material|default:rec.material_other }}</p></td>
-            <td class="itemcard-boxtype"><p>{{ rec.get_box_type_display }}</p></td>
-            <td class="itemcard-weight"><p>{{ rec.weight }}</p></td>
-            <td class="itemcard-status"><p>Aufbereitung</p></td>
-          </tr>
-        {% endfor %}
+        {% if recyclings or unloads %}
+          {% for rec in recyclings %}
+            <tr class="itemcard-table-row"
+                data-id="{{ rec.pk }}"
+                data-url-detail="{% url 'recycling_detail' pk=rec.pk %}">
+              <td class="checkbox-circle itemcard-action-left">
+                <input type="checkbox"
+                      name="selected_recycling"
+                      value="{{ rec.pk }}"
+                      title="Zur Abholung hinzufügen"
+                      {% if rec.pk in preselected_recycling_ids %}checked{% endif %}>
+              </td>
+              <td class="itemcard-id">{{ forloop.counter }}</td>
+              <td class="itemcard-material"><p>{{ rec.material|default:rec.material_other }}</p></td>
+              <td class="itemcard-boxtype"><p>{{ rec.get_box_type_display }}</p></td>
+              <td class="itemcard-weight"><p>{{ rec.weight }}</p></td>
+              <td class="itemcard-status"><p>Aufbereitung</p></td>
+            </tr>
+          {% endfor %}
 
-        {# 🇩🇪 Unload #}
-        {% for unload in unloads %}
-          <tr class="itemcard-table-row"
-              data-id="{{ unload.pk }}"
-              data-url-detail="{% url 'unload_detail_barcode' pk=unload.pk %}">
-            <td class="checkbox-circle itemcard-action-left">
-              <input type="checkbox"
-                     name="selected_unload"
-                     value="{{ unload.pk }}"
-                     title="Zur Abholung hinzufügen"
-                     {% if unload.pk in preselected_unload_ids %}checked{% endif %}>
-            </td>
-            <td class="itemcard-id">{{ forloop.counter }}</td>
-            <td class="itemcard-material"><p>{{ unload.material|default:unload.material_other }}</p></td>
-            <td class="itemcard-boxtype"><p>{{ unload.get_box_type_display }}</p></td>
-            <td class="itemcard-weight"><p>{{ unload.weight }}</p></td>
-            <td class="itemcard-status"><p>Vorsortierung</p></td>
-          </tr>
-        {% endfor %}
+          {% for unload in unloads %}
+            <tr class="itemcard-table-row"
+                data-id="{{ unload.pk }}"
+                data-url-detail="{% url 'unload_detail_barcode' pk=unload.pk %}">
+              <td class="checkbox-circle itemcard-action-left">
+                <input type="checkbox"
+                      name="selected_unload"
+                      value="{{ unload.pk }}"
+                      title="Zur Abholung hinzufügen"
+                      {% if unload.pk in preselected_unload_ids %}checked{% endif %}>
+              </td>
+              <td class="itemcard-id">{{ forloop.counter }}</td>
+              <td class="itemcard-material"><p>{{ unload.material|default:unload.material_other }}</p></td>
+              <td class="itemcard-boxtype"><p>{{ unload.get_box_type_display }}</p></td>
+              <td class="itemcard-weight"><p>{{ unload.weight }}</p></td>
+              <td class="itemcard-status"><p>Vorsortierung</p></td>
+            </tr>
+          {% endfor %}
+           {% else %}
+           <tr class="itemcard-table-row">
+              <td class="checkbox-circle itemcard-action-left">
+                  <input type="radio" name="selected_unload" title="Keine Daten">
+                </td>
+              <td colspan="5" class="text-center">
+                Keine Daten vorhanden
+              </td>
+            </tr>
+        {% endif %}
       </tbody>
     </table>
 

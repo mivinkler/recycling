@@ -3,8 +3,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 from warenwirtschaft.views.material import MaterialListView, MaterialCreateView, MaterialUpdateView, MaterialDeleteView
-from warenwirtschaft.views.supplier import SupplierListView, SupplierUpdateView, SupplierDetailView, SupplierCreateView,SupplierDeleteView
-from warenwirtschaft.views.customer import CustomerListView, CustomerUpdateView, CustomerDetailView, CustomerCreateView, CustomerDeleteView
+from warenwirtschaft.views.customer import CustomerListView, CustomerUpdateView, CustomerDetailView, CustomerCreateView,CustomerDeleteView
 from warenwirtschaft.views.delivery import DeliveryListView, DeliveryDetailBarcodeView, DeliveryDetailWeightView, DeliveryCreateView, DeliveryUpdateView, DeliveryDeleteView
 from warenwirtschaft.views.unload import UnloadListView, UnloadCreateView, UnloadUpdateItemView, UnloadUpdateView, UnloadDeleteView, UnloadDetailBarcodeView, UnloadDetailWeightView
 from warenwirtschaft.views.recycling import RecyclingListView, RecyclingCreateView, RecyclingUpdateView, RecyclingDeleteView, RecyclingDetailView
@@ -15,12 +14,6 @@ from warenwirtschaft.views.barcode import ReusableBarcodeListView, ReusableBarco
 
 
 urlpatterns = [
-    path('supplier/list/', SupplierListView.as_view(), name='supplier_list'),
-    path('supplier/detail/<int:pk>/', SupplierDetailView.as_view(), name='supplier_detail'),
-    path('supplier/create/', SupplierCreateView.as_view(), name='supplier_create'),
-    path('supplier/update/<int:pk>/', SupplierUpdateView.as_view(), name='supplier_update'),
-    path('supplier/delete/<int:pk>/', SupplierDeleteView.as_view(), name='supplier_delete'),
-
     path('customer/list/', CustomerListView.as_view(), name='customer_list'),
     path('customer/detail/<int:pk>/', CustomerDetailView.as_view(), name='customer_detail'),
     path('customer/create/', CustomerCreateView.as_view(), name='customer_create'),

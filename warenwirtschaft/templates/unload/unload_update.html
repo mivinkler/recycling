@@ -12,13 +12,13 @@
       <h2>Vorsortierung bearbeiten</h2>
     </div>
 
-    {# ====== Kopfbereich ====== #}
+    {# ====== Wareneingang ====== #}
     <section class="itemcard-topbox itemcard-margin-left">
       {{ form.delivery_units.errors }}
       {{ form.non_field_errors }}
 
       <div class="itemcard-topbox-row">
-        <span>Liefereinheiten:</span>
+        <span>Wareneingang:</span>
         <p>{{ delivery_unit }}</p>
       </div>
     </section>
@@ -87,9 +87,9 @@
       </table>
     </section>
 
-    {# ====== Vorhandene Wagen ====== #}
+    {# ====== Aktive Wagen ====== #}
     <section>
-      <div class="itemcard-table-title itemcard-margin-left">Vorhandene Wagen:</div>
+      <div class="itemcard-table-title itemcard-margin-left">Aktive Wagen:</div>
 
       {{ existing_formset.management_form }}
       <table class="itemcard-table">
@@ -106,51 +106,58 @@
         </thead>
 
         <tbody class="itemcard-tbody existing-tbody">
-          {% for form in existing_formset.forms %}
-            {% with u=form.instance %}
-            {# 🇩🇪 Bereits verknüpfte Zeilen bleiben aktiv; Lock bleibt geschlossen #}
-            <tr class="itemcard-table-row"
-                data-kind="existing"
-                data-key="{{ u.pk }}">
+          {% if existing_formset.forms %}
+            {% for form in existing_formset.forms %}
+              <tr class="itemcard-table-row" data-kind="existing" data-key="{{ form.instance.pk }}">
+                <td class="checkbox-circle itemcard-action-left">
+                  <input type="checkbox"
+                    name="selected_recycling"
+                    value="{{ form.instance.pk }}"
+                    title="Fraktion verknüpfen"
+                    {% if form.instance.pk in linked_ids %}checked data-keep-enabled="true"{% endif %}>
+                </td>
+
+                <td class="itemcard-id">{{ forloop.counter }}</td>
+
+                <td class="itemcard-material"><p>{{ form.instance.material }}</p></td>
+                <td class="itemcard-boxtype"><p>{{ form.instance.get_box_type_display }}</p></td>
+
+                <td class="itemcard-status">
+                  {{ form.id }}
+                  {{ form.status }}
+                </td>
+
+                <td class="itemcard-weight itemcard-weight-action">
+                  <div class="flex-container">
+                    {{ form.weight }}
+                    <button type="button" class="btn btn-weight" title="Waage öffnen">
+                      <img src="{% static 'icons/dashboard-icon.svg' %}" alt="">
+                    </button>
+                  </div>
+                </td>
+
+                <td class="itemcard-action-wrapper">
+                  <div class="itemcard-action">
+                    <button type="button" class="btn btn-lock" aria-pressed="false" title="Zeile bearbeiten">
+                      <img class="icon-lock-closed" src="{% static 'icons/lock-icon.svg' %}" alt="">
+                      <img class="icon-lock-open"   src="{% static 'icons/lock-open-icon.svg' %}" alt="">
+                    </button>
+                    <button type="submit" class="btn btn-main btn-save">Speichern</button>
+                  </div>
+                </td>
+              </tr>
+            {% endfor %}
+
+            {% else %}
+            <tr class="itemcard-table-row">
               <td class="checkbox-circle itemcard-action-left">
-                <input type="checkbox"
-                       name="selected_recycling"
-                       value="{{ u.pk }}"
-                       title="Fraktion verknüpfen"
-                       {% if u.pk in linked_ids %}checked data-keep-enabled="true"{% endif %}>
-              </td>
-
-              <td class="itemcard-id">{{ forloop.counter }}</td>
-
-              <td class="itemcard-material"><p>{{ u.material }}</p></td>
-              <td class="itemcard-boxtype"><p>{{ u.get_box_type_display }}</p></td>
-
-              <td class="itemcard-status">
-                {{ form.id }}
-                {{ form.status }}
-              </td>
-
-              <td class="itemcard-weight itemcard-weight-action">
-                <div class="flex-container">
-                  {{ form.weight }}
-                  <button type="button" class="btn btn-weight" title="Waage öffnen">
-                    <img src="{% static 'icons/dashboard-icon.svg' %}" alt="">
-                  </button>
-                </div>
-              </td>
-
-              <td class="itemcard-action-wrapper">
-                <div class="itemcard-action">
-                  <button type="button" class="btn btn-lock" aria-pressed="false" title="Zeile bearbeiten">
-                    <img class="icon-lock-closed" src="{% static 'icons/lock-icon.svg' %}" alt="">
-                    <img class="icon-lock-open"   src="{% static 'icons/lock-open-icon.svg' %}" alt="">
-                  </button>
-                  <button type="submit" class="btn btn-main btn-save">Speichern</button>
-                </div>
+                  <input type="radio" name="selected_recycling" title="Keine Daten">
+                </td>
+              <td colspan="5" class="text-center">
+                Keine Daten vorhanden
               </td>
             </tr>
-            {% endwith %}
-          {% endfor %}
+          {% endif %}
         </tbody>
       </table>
     </section>

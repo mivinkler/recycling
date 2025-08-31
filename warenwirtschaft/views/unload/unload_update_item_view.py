@@ -1,7 +1,7 @@
 from django.views.generic.edit import UpdateView
 from django.urls import reverse_lazy
 from warenwirtschaft.models import Unload
-from warenwirtschaft.forms_neu.unload_form import UnloadForm
+from warenwirtschaft.forms.unload_form import UnloadForm
 
 
 class UnloadUpdateItemView(UpdateView):

@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const table = document.querySelector('.table');
   const addBtn = document.getElementById('add-form-btn');
 
-  const supplierSelect = document.querySelector('select[name="supplier"]');
+  const customerSelect = document.querySelector('select[name="customer"]');
   const receiptInput = document.querySelector('input[name="delivery_receipt"]');
 
   // Suche die erste leere Zeile (nach Gewicht-Feld)
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!res.ok) throw new Error(data.error || 'Fehler beim Barcode');
 
       // Geben Sie den Lieferanten und ggf. die Lieferschein ein.
-      if (data.supplier && supplierSelect) supplierSelect.value = data.supplier;
+      if (data.customer && customerSelect) customerSelect.value = data.customer;
       if (data.delivery_receipt && receiptInput) receiptInput.value = data.delivery_receipt;
 
       // Suchen nach der ersten leere Zeile

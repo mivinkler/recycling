@@ -1,8 +1,8 @@
 from django.views.generic import ListView
-from warenwirtschaft.models import ReusableBarcode
+from warenwirtschaft.models import BarcodeGenerator
 
 class ReusableBarcodeListView(ListView):
-    model = ReusableBarcode
+    model = BarcodeGenerator
     template_name = 'barcode/reusable_barcode_list.html'
     context_object_name = 'barcodes'
 

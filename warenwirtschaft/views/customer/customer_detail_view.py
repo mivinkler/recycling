@@ -4,7 +4,7 @@ from warenwirtschaft.services.sorting_service import SortingService
 from warenwirtschaft.services.pagination_service import PaginationService
 
 from warenwirtschaft.models.customer import Customer
-from warenwirtschaft.models.shipping_unit import ShippingUnit
+from warenwirtschaft.models.delivery_unit import DeliveryUnit
 
 
 class CustomerDetailView(DetailView):
@@ -14,10 +14,9 @@ class CustomerDetailView(DetailView):
     paginate_by = 14
 
     sortable_fields = [
-        ("shipping__id", "LID"),
-        ("shipping__certificate", "Begleit-/Übernahmeschein"),
+        ("delivery__id", "LID"),
+        ("delivery__delivery_receipt", "Lieferschein"),
         ("weight", "Gewicht"),
-        ("transport", "Transport"),
         ("note", "Anmerkung"),
         ("created_at", "Datum"),
     ]
@@ -25,11 +24,11 @@ class CustomerDetailView(DetailView):
     def get_queryset(self):
         return super().get_queryset()
 
-    def get_shippingunits_queryset(self):
+    def get_deliveryunits_queryset(self):
         sort_fields = [field[0] for field in self.sortable_fields]
         customer = self.get_object()
 
-        queryset = ShippingUnit.objects.select_related("shipping", "shipping__customer", "material").filter(shipping__customer=customer)
+        queryset = DeliveryUnit.objects.select_related("delivery", "delivery__customer", "material").filter(delivery__customer=customer)
 
         queryset = SearchService(self.request, sort_fields).apply_search(queryset)
         queryset = SortingService(self.request, sort_fields).apply_sorting(queryset)
@@ -39,15 +38,15 @@ class CustomerDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        shippingunits = self.get_shippingunits_queryset()
-        page_obj = PaginationService(self.request, self.paginate_by).get_paginated_queryset(shippingunits)
+        deliveryunits = self.get_deliveryunits_queryset()
+        page_obj = PaginationService(self.request, self.paginate_by).get_paginated_queryset(deliveryunits)
 
         context.update({
             "page_obj": page_obj,
-            "shippingunits": page_obj,
+            "deliveryunits": page_obj,
             "search_query": self.request.GET.get("search", ""),
             "sort_param": self.request.GET.get("sort", ""),
             "sortable_fields": self.sortable_fields,
-            "selected_menu": "shipping_list",
+            "selected_menu": "customer_list",
         })
         return context

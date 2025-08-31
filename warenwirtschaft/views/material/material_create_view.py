@@ -1,7 +1,7 @@
 from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
 from warenwirtschaft.models.material import Material
-from warenwirtschaft.forms import MaterialForm
+from warenwirtschaft.forms.material_form import MaterialForm
 
 class MaterialCreateView(CreateView):
     model = Material

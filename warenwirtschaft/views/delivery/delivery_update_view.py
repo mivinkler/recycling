@@ -3,7 +3,7 @@ from django.db import transaction
 from django.urls import reverse_lazy
 
 from warenwirtschaft.models.delivery import Delivery
-from warenwirtschaft.forms_neu.delivery_form import DeliveryForm, get_delivery_unit_formset
+from warenwirtschaft.forms.delivery_form import DeliveryForm, get_delivery_unit_formset
 
 class DeliveryUpdateView(UpdateView):
     model = Delivery

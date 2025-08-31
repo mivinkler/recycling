@@ -5,14 +5,14 @@
 {% load custom_filters %}
 {% load pagination %}
 
-{% block title %}Abholer{% endblock %}
+{% block title %}Lieferanten{% endblock %}
 
 {% block content %}
 <div class="table-border"></div>
-<div class="table" data-type="supplier">
+<div class="table" data-type="customer">
   <div class="table-header">{% sort_header "id" "ID" %}</div>
   <div class="table-header">{% sort_header "avv_number" "AVV" %}</div>
-  <div class="table-header">{% sort_header "name" "Abholer" %}</div>
+  <div class="table-header">{% sort_header "name" "Lieferant" %}</div>
   <div class="table-header">{% sort_header "street" "Straße" %}</div>
   <div class="table-header">{% sort_header "postal_code" "PLZ" %}</div>
   <div class="table-header">{% sort_header "city" "Stadt" %}</div>
@@ -47,4 +47,6 @@
 
 {% block extra_js %}
   <script src="{% static 'js/selectable-row.js' %}"></script>
+  <script src="{% static 'js/current-date.js' %}"></script>
+  <script src="{% static 'js/summary-close.js' %}"></script>
 {% endblock %}

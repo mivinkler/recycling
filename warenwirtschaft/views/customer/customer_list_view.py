@@ -1,3 +1,4 @@
+from django.shortcuts import render
 from django.views.generic import ListView
 from warenwirtschaft.services.search_service import SearchService
 from warenwirtschaft.services.sorting_service import SortingService
@@ -12,13 +13,14 @@ class CustomerListView(ListView):
 
     active_fields = [
         ("id", "ID"),
+        ("avv_number", "AVV-Nummer"),
         ("name", "Kunde"),
         ("street", "Straße"),
         ("postal_code", "PLZ"),
         ("city", "Stadt"),
         ("phone", "Telefon"),
         ("email", "Email"),
-        ("created_at", "Erstellt am"),
+        ("created_at", "Datum"),
         ("note", "Anmerkung"),
     ]
 
@@ -34,6 +36,9 @@ class CustomerListView(ListView):
 
         return queryset
 
+    def dashboard(request):
+        return render(request, 'dashboard.html', {'show_dashboard_menu': True})
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
@@ -41,11 +46,12 @@ class CustomerListView(ListView):
         page_obj = paginator.get_paginated_queryset(self.get_queryset())
 
         context["page_obj"] = page_obj
-        context["sort_param"] = self.request.GET.get("sort", "")
-        context["search_query"] = self.request.GET.get("search", "")
+
         context["active_fields"] = self.active_fields
-        context["dashboard"] = True
+        context["search_query"] = self.request.GET.get("search", "")
+        context["sort_param"] = self.request.GET.get("sort", "")
         context["selected_menu"] = "customer_list"
+        context["dashboard"] = True
 
         return context
 

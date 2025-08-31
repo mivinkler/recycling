@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.db.models import Q
 
 from warenwirtschaft.models import Shipping, Recycling, Unload
-from warenwirtschaft.forms_neu.shipping_form import ShippingHeaderForm
+from warenwirtschaft.forms.shipping_form import ShippingHeaderForm
 
 
 class ShippingCreateView(View):

@@ -7,7 +7,7 @@ from warenwirtschaft.models.delivery_unit import DeliveryUnit
 class DeliveryForm(forms.ModelForm):
     class Meta:
         model = Delivery
-        fields = ['supplier', 'delivery_receipt', 'note']
+        fields = ['customer', 'delivery_receipt', 'note']
         widgets = {
             'note': forms.Textarea(attrs={'rows': 3}),
         }

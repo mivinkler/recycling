@@ -1,55 +1,57 @@
 {% extends 'base.html' %}
 
-{% block title %}Abholer erstellen{% endblock %}
+{% block title %}Lieferant erstellen{% endblock %}
 
 {% block content %}
 
-<div class="itemcard-small">
-  <form method="post">
-    {% csrf_token %}
+<form method="post">
+  {% csrf_token %}
 
-    <h2>Abholer erstellen</h2>
+  <div class="itemcard">
+    <div class="itemcard-title">
+      <h2>Kunde erstellen</h2>
+    </div>
 
-    <section class="itemcard-topbox ">
+    <section class="itemcard-topbox">
       {{ form.non_field_errors }}
 
-      <div class="itemcard-row">
-        <div>Name:</div>
+      <div class="itemcard-topbox-row">
+        <label for="id_name">Name:</label>
         <div>{{ form.name }}</div>
       </div>
 
-      <div class="itemcard-row">
-        <div>AVV-Nummer:</div>
+      <div class="itemcard-topbox-row">
+        <label for="id_avv_number">AVV-Nummer:</label>
         <div>{{ form.avv_number }}</div>
       </div>
 
-      <div class="itemcard-row">
-        <div>Straße:</div>
+      <div class="itemcard-topbox-row">
+        <label for="id_street">Straße:</label>
         <div>{{ form.street }}</div>
       </div>
 
-      <div class="itemcard-row">
-        <div>PLZ:</div>
+      <div class="itemcard-topbox-row">
+        <label class="id_postal_code">PLZ:</label>
         <div>{{ form.postal_code }}</div>
       </div>
 
-      <div class="itemcard-row">
-        <div>Ort:</div>
+      <div class="itemcard-topbox-row">
+        <label for="id_city">Ort:</label>
         <div>{{ form.city }}</div>
       </div>
 
-      <div class="itemcard-row">
-        <div>Telefon:</div>
+      <div class="itemcard-topbox-row">
+        <label for="id_phone">Telefon:</label>
         <div>{{ form.phone }}</div>
       </div>
 
-      <div class="itemcard-row">
-        <div>E-Mail:</div>
+      <div class="itemcard-topbox-row">
+        <label class="id_email">E-Mail:</label>
         <div>{{ form.email }}</div>
       </div>
 
-      <div class="itemcard-row">
-        <div>Anmerkung:</div>
+      <div class="itemcard-topbox-row">
+        <label class="id_note">Anmerkung:</label>
         <div>{{ form.note }}</div>
       </div>
     </section>

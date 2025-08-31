@@ -2,6 +2,7 @@ from django.db import models
 
 class Customer(models.Model):
     name = models.CharField(max_length=100, unique=True)
+    avv_number = models.PositiveIntegerField(null=True, blank=True)
     street = models.CharField(max_length=100, null=True, blank=True)
     postal_code = models.CharField(max_length=20, null=True, blank=True)
     city = models.CharField(max_length=50, null=True, blank=True)
@@ -14,7 +15,7 @@ class Customer(models.Model):
 
     class Meta:
         indexes = [
-            models.Index(fields=["name"])
+            models.Index(fields=["name"]),
         ]
 
     def __str__(self):

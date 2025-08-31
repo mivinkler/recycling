@@ -4,14 +4,14 @@
 {% load custom_filters %}
 {% load pagination %}
 
-{% block title %}Abholer: Detail{% endblock %}
+{% block title %}Lieferant: Detail{% endblock %}
 
 {% block content %}
 <section class="info-table-wrapper">
-    <h2 class="info-table-title">Abholer: Details</h2>
+    <h2 class="info-table-title">Lieferant: Details</h2>
     <div class="info-table">
         <div class="info-table-row">
-            <div>Abholer:</div>
+            <div>Lieferant:</div>
             <div>{{ customer.name }}</div>
         </div>
         <div class="info-table-row">
@@ -27,6 +27,10 @@
             <div>{{ customer.email }}</div>
         </div>
         <div class="info-table-row">
+            <div>AVV-Nummer:</div>
+            <div>{{ customer.avv_number }}</div>
+        </div>
+        <div class="info-table-row">
             <div>Erstellt am:</div>
             <div>{{ customer.created_at|date:'d.m.Y' }}</div>
         </div>
@@ -38,35 +42,34 @@
 </section>
 
 <section>
-    <div class="table" data-type="customer-detail__shippingunits">
-        <div class="table-header">№</div>
-        <div class="table-header" title="Shipping-ID">SID</div>
-        <div class="table-header" title="Shipping-Unit-ID">SUID</div>
-        <div class="table-header">Übernahmeschein</div>
+    <div class="table" data-type="customer-detail-deliveryunits">
+        <div class="table-header">ID</div>
+        <div class="table-header">Lieferschein</div>
         <div class="table-header">Datum</div>
+        <div class="table-header">Anmerkung</div>
+        <div class="table-header">Unit-ID</div>
         <div class="table-header">Behälter</div>
         <div class="table-header">Material</div>
         <div class="table-header">Gewicht</div>
-        <div class="table-header">Transport</div>
-        <div class="table-header">Anmerkung</div>
+        <div class="table-header">Status</div>
     
         <!-- Данные -->
-        {% for item in shippingunits %}
-        <div class="table-row js-select-row"
-            data-id="{{ item.shipping.id }}"
-            data-url-detail="{% url 'shipping_detail' pk=item.shipping.id %}"
-            data-url-update="{% url 'shipping_update' pk=item.shipping.id %}">
+        {% for unit in deliveryunits %}
+            <div class="table-row js-select-row"
+            data-id="{{ unit.delivery.id }}"
+            data-url-detail="{% url 'delivery_detail' pk=unit.delivery.id %}"
+            data-url-update="{% url 'delivery_update' pk=unit.delivery.id %}">
+    
             <div>{{ forloop.counter }}</div>
-            <div>{{ item.shipping.id }}</div>
-            <div>{{ item.id }}</div>
-            <div>{{ item.shipping.certificate }}</div>
-            <div>{{ item.shipping.created_at|date:"d.m.Y" }}</div>
-            <div>{{ item.get_box_type_display }}</div>
-            <div>{{ item.material.name }}</div>
-            <div>{{ item.weight }}</div>
-            <div>{{ item.shipping.get_transport_display }}</div>
-            <div title="{{ item.note }}">{{ item.note }}</div>
-        </div>
+            <div>{{ unit.delivery.delivery_receipt }}</div>
+            <div>{{ unit.delivery.created_at|date:"d.m.Y" }}</div>
+            <div title="{{ unit.delivery.note }}">{{ unit.delivery.note }}</div>
+            <div>{{ unit.id }}</div>
+            <div>{{ unit.get_box_type_display }}</div>
+            <div>{{ unit.material.name }}</div>
+            <div>{{ unit.weight }}</div>
+            <div>{{ unit.get_status_display }}</div>
+            </div>
         {% endfor %}
     </div>
 </section>

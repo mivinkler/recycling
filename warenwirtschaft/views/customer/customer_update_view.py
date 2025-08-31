@@ -1,6 +1,6 @@
 from django.views.generic.edit import UpdateView
 from django.urls import reverse_lazy
-from warenwirtschaft.forms import CustomerForm
+from warenwirtschaft.forms.customer_form import CustomerForm
 from warenwirtschaft.models.customer import Customer
 
 class CustomerUpdateView(UpdateView):

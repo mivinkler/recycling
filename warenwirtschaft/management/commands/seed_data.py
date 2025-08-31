@@ -5,7 +5,7 @@ from django.utils import timezone
 from django.core.management.base import BaseCommand
 from django_seed import Seed
 from warenwirtschaft.models import (
-    Material, Supplier, Delivery, DeliveryUnit, Unload,
+    Material, Customer, Delivery, DeliveryUnit, Unload,
     Recycling, Shipping, ShippingUnit, Customer
 )
 
@@ -20,7 +20,7 @@ class Command(BaseCommand):
         Unload.objects.all().delete()
         DeliveryUnit.objects.all().delete()
         Delivery.objects.all().delete()
-        Supplier.objects.all().delete()
+        Customer.objects.all().delete()
         Material.objects.all().delete()
         Shipping.objects.all().delete()
         ShippingUnit.objects.all().delete()
@@ -62,7 +62,7 @@ class Command(BaseCommand):
 
         # === Lieferanten ===
         for name in company_names:
-            Supplier.objects.get_or_create(
+            Customer.objects.get_or_create(
                 name=name,
                 defaults={
                     'street': f'{random.choice(street_names)} {random.randint(1, 300)}',
@@ -92,11 +92,11 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS("Abholer erstellt!"))
 
         # === Eingang + Versand vorbereiten ===
-        suppliers = list(Supplier.objects.all())
+        customers = list(Customer.objects.all())
         customers = list(Customer.objects.all())
 
         seed.add_entity(Delivery, 50, {
-            'supplier': lambda x: random.choice(suppliers),
+            'customer': lambda x: random.choice(customers),
             'delivery_receipt': lambda x: f"{random.randint(100000, 999999)}",
             'note': lambda x: generate_note(),
             'created_at': lambda x: timezone.now() - timedelta(days=random.randint(0, 730)),

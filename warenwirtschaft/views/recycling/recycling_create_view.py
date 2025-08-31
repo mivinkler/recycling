@@ -2,14 +2,14 @@ from django.views import View
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.db import transaction
+from django.urls import reverse
 
-from warenwirtschaft.forms_neu.recycling_form import UnloadChoiceForm, RecyclingFormSet, RecyclingForm
+from warenwirtschaft.forms.recycling_form import UnloadChoiceForm, RecyclingFormSet, RecyclingForm
 from warenwirtschaft.models import Unload, Recycling
 
 
 class RecyclingCreateView(View):
     template_name = "recycling/recycling_create.html"
-    success_url = reverse_lazy("recycling_list")
 
     def get(self, request):
         form = UnloadChoiceForm()
@@ -65,7 +65,8 @@ class RecyclingCreateView(View):
                 unload.status = 2
                 unload.save()
 
-            return redirect("recycling_update", pk=unload.pk)
+            # Nach dem Speichern zur Recycling-Update springen
+            return redirect(reverse("recycling_update", kwargs={"pk": unload.pk}))
 
         # Wenn „Unload“ ungültig ist, einfach neu zeigen
         vorhandene_forms = [

@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from django.views import View
-from warenwirtschaft.models import ReusableBarcode
+from warenwirtschaft.models import BarcodeGenerator
 
 
 class DeliveryInputAPI(View):
@@ -12,7 +12,7 @@ class DeliveryInputAPI(View):
             return JsonResponse({'error': 'Nur Barcodes mit L-Präfix sind für Wareneingang gültig.'}, status=400)
 
         try:
-            reuse = ReusableBarcode.objects.get(code__iexact=code)
+            reuse = BarcodeGenerator.objects.get(code__iexact=code)
 
             return JsonResponse({
                 'type': 'delivery_unit_reuse',
@@ -20,9 +20,9 @@ class DeliveryInputAPI(View):
                 'box_type': reuse.box_type or None,
                 'material': reuse.material_id or None,
                 'area': reuse.area or None,
-                'supplier': reuse.supplier_id if reuse.supplier_id else None,
+                'customer': reuse.customer_id if reuse.customer_id else None,
                 'delivery_receipt': reuse.delivery_receipt or None,
             })
-        except ReusableBarcode.DoesNotExist:
-            return JsonResponse({'error': 'ReusableBarcode nicht gefunden'}, status=404)
+        except BarcodeGenerator.DoesNotExist:
+            return JsonResponse({'error': 'BarcodeGenerator nicht gefunden'}, status=404)
 

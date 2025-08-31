@@ -47,22 +47,54 @@
 
       <tbody class="itemcard-tbody">
         {{ formset.non_form_errors }}
-        {% for form in vorhandene_forms %}
-          <tr class="itemcard-table-row"
-            data-id="{{ form.instance.pk }}"
-            data-url-detail-barcode="{% url 'recycling_detail' pk=form.instance.pk %}"
-            data-url-update="{% url 'recycling_update' pk=form.instance.pk %}">
+        {% if vorhandene_forms %}
+          {% for form in vorhandene_forms %}
+            <tr class="itemcard-table-row"
+              data-id="{{ form.instance.pk }}"
+              data-url-detail-barcode="{% url 'recycling_detail' pk=form.instance.pk %}"
+              data-url-update="{% url 'recycling_update' pk=unload.pk %}">
 
-            <td hidden>{{ form.id }}</td>
+              <td hidden>{{ form.id }}</td>
+              <td class="checkbox-circle itemcard-action-left">
+                <input type="checkbox" name="selected_recycling" value="{{ form.instance.pk }}" title="Fraktion verknüpfen" checked>
+              </td>
+              <td class="itemcard-id">{{ forloop.counter }}</td>
+              <td class="itemcard-material"><p>{{ form.instance.material }}</p></td>
+              <td class="itemcard-boxtype"><p>{{ form.instance.get_box_type_display }}</p></td>
+              <td class="itemcard-weight"><p>{{ form.instance.weight }}</p></td>
+            </tr>
+          {% endfor %}
+        {% else %}
+          <tr class="itemcard-table-row dynamic-row">
+            <td hidden>
+              <input type="hidden" name="new-0-id" id="id_new-0-id">
+            </td>
             <td class="checkbox-circle itemcard-action-left">
               <input type="checkbox" name="selected_recycling" value="{{ form.instance.pk }}" title="Fraktion verknüpfen" checked>
             </td>
             <td class="itemcard-id">{{ forloop.counter }}</td>
-            <td class="itemcard-material"><p>{{ form.instance.material }}</p></td>
-            <td class="itemcard-boxtype"><p>{{ form.instance.get_box_type_display }}</p></td>
-            <td class="itemcard-weight"><p>{{ form.instance.weight }}</p></td>
+
+            <td class="itemcard-material">
+              <select name="new-0-material" id="id_new-0-material">
+                {% for value, label in formset.empty_form.fields.material.choices %}
+                  <option value="{{ value }}">{{ label }}</option>
+                {% endfor %}
+              </select>
+            </td>
+
+            <td class="itemcard-boxtype">
+              <select name="new-0-box_type" id="id_new-0-box_type">
+                {% for value, label in formset.empty_form.fields.box_type.choices %}
+                  <option value="{{ value }}">{{ label }}</option>
+                {% endfor %}
+              </select>
+            </td>
+
+            <td class="itemcard-weight">
+              <input type="number" name="new-0-weight" id="id_new-0-weight" step="0.01" min="0">
+            </td>
           </tr>
-        {% endfor %}
+        {% endif %}
       </tbody>
     </table>
     

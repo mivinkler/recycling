@@ -1,6 +1,5 @@
 from django.views.generic import DetailView
 from warenwirtschaft.models.shipping import Shipping
-from warenwirtschaft.models.shipping_unit import ShippingUnit
 
 class ShippingDetailView(DetailView):
     model = Shipping
@@ -16,6 +15,5 @@ class ShippingDetailView(DetailView):
         context["shipping_units"] = self.object.units_for_shipping.all()
         context["search_query"] = self.request.GET.get("search", "")
         context["sort_param"] = self.request.GET.get("sort", "")
-        context["box_type"] = ShippingUnit.BOX_TYPE_CHOICES
         
         return context

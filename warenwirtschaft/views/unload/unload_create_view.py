@@ -1,12 +1,12 @@
 # warenwirtschaft/views/unload_create.py
 from django.views import View
 from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
+from django.urls import reverse
 from django.db import transaction
 import uuid
 
 from warenwirtschaft.models import Unload
-from warenwirtschaft.forms_neu.unload_form import (
+from warenwirtschaft.forms.unload_form import (
     DeliveryUnitForm, UnloadFormSet, ExistingEditFormSet
 )
 from warenwirtschaft.services.barcode_service import BarcodeGenerator
@@ -14,7 +14,6 @@ from warenwirtschaft.services.barcode_service import BarcodeGenerator
 
 class UnloadCreateView(View):
     template_name = "unload/unload_create.html"
-    success_url = reverse_lazy("unload_list")
 
     # ---------- Hilfsabfragen ----------
 
@@ -44,7 +43,7 @@ class UnloadCreateView(View):
         delivery_unit = form.cleaned_data["delivery_unit"]
 
         # Ohne Radio keine Speicherung – fertig.
-        selection = request.POST.get("selected_recycling")  # Name wie im Template
+        selection = request.POST.get("selected_recycling")
         if not selection:
             return self.render_page(form, new_fs, exist_fs)
 
@@ -64,7 +63,8 @@ class UnloadCreateView(View):
                 self._link_delivery_unit(instance, delivery_unit)
                 self._generate_barcode_image(instance)
 
-            return redirect(self.success_url)
+            # --- Deutsch: Nach dem Speichern auf die Update-Seite der gewählten Liefereinheit weiterleiten ---
+            return redirect(reverse("unload_update", kwargs={"delivery_unit_pk": delivery_unit.pk}))
 
         # -------- Fall B: Vorhandene Wagen: ("<pk>") --------
         target = next((f for f in exist_fs.forms if str(f.instance.pk) == str(selection)), None)
@@ -75,7 +75,8 @@ class UnloadCreateView(View):
             instance = target.save()  # speichert Änderungen (falls vorhanden)
             self._link_delivery_unit(instance, delivery_unit)
 
-        return redirect(self.success_url)
+        # --- Deutsch: Nach dem Speichern auf die Update-Seite der gewählten Liefereinheit weiterleiten ---
+        return redirect(reverse("unload_update", kwargs={"delivery_unit_pk": delivery_unit.pk}))
 
     # ---------- Hilfsmethoden ----------
 

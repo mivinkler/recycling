@@ -5,7 +5,7 @@ from django.db import transaction
 from django.urls import reverse
 
 from warenwirtschaft.models import Shipping, Recycling, Unload
-from warenwirtschaft.forms_neu.shipping_form import ShippingHeaderForm
+from warenwirtschaft.forms.shipping_form import ShippingHeaderForm
 
 
 class ShippingUpdateView(View):

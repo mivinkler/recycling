@@ -2,16 +2,16 @@
     <summary>+ Lieferant wählen</summary>
     <!-- TODO Attribute "style" umschreiben in css -->
     <table style="position: absolute; right: 0; background-color: #fff;">
-        {% for supplier in suppliers %}
+        {% for customer in customers %}
         <tr>
-          <td class="text-center">
-            <input class="inputField" type="radio" name="supplier" value="{{ supplier.id }}" data-supplier="{{ supplier }}"></td>
-          <td class="text-center">{{ supplier.id }}</td>
-          <td>{{ supplier.avv_number }}</td>
-          <td>{{ supplier.name }}</td>
-          <td>{{ supplier.street }}</td>
-          <td>{{ supplier.postal_code }}</td>
-          <td>{{ supplier.city }}</td>
+          <td>
+            <input class="inputField" type="radio" name="customer" value="{{ customer.id }}" data-customer="{{ customer }}"></td>
+          <td>{{ customer.id }}</td>
+          <td>{{ customer.avv_number }}</td>
+          <td>{{ customer.name }}</td>
+          <td>{{ customer.street }}</td>
+          <td>{{ customer.postal_code }}</td>
+          <td>{{ customer.city }}</td>
         </tr>
         {% endfor %}
     </table>

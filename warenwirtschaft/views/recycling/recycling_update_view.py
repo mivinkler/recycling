@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.db import transaction
 from django.contrib import messages
 
-from warenwirtschaft.forms import UnloadChoiceForm, RecyclingFormSet, RecyclingForm
+from warenwirtschaft.forms.recycling_form import UnloadChoiceForm, RecyclingFormSet, RecyclingForm
 from warenwirtschaft.models import Unload, Recycling
 
 

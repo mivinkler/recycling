@@ -1,11 +1,11 @@
 from django.views.generic.edit import UpdateView
 from django.urls import reverse
-from warenwirtschaft.models import ReusableBarcode
-from warenwirtschaft.forms import ReusableBarcodeForm
+from warenwirtschaft.models import BarcodeGenerator
+from warenwirtschaft.forms.barcode_generator_form import BarcodeGeneratorForm
 
 class ReusableBarcodeUpdateView(UpdateView):
-    model = ReusableBarcode
-    form_class = ReusableBarcodeForm
+    model = BarcodeGenerator
+    form_class = BarcodeGeneratorForm
     template_name = 'barcode/reusable_barcode_update.html'
 
     def get_context_data(self, **kwargs):

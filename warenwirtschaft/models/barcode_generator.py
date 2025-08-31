@@ -1,9 +1,9 @@
 from django.db import models
 from warenwirtschaft.models.material import Material
-from warenwirtschaft.models.supplier import Supplier
 from warenwirtschaft.models.customer import Customer
 
-class ReusableBarcode(models.Model):
+
+class BarcodeGenerator(models.Model):
     BOX_TYPE_CHOICES = [
         (1, "Container"),              
         (2, "Gitterbox"),
@@ -20,7 +20,6 @@ class ReusableBarcode(models.Model):
 
 
     code = models.CharField(max_length=64, unique=True)
-    supplier = models.ForeignKey(Supplier, on_delete=models.SET_NULL, blank=True, null=True, related_name='supplier_for_barcode')
     delivery_receipt = models.CharField(max_length=100, blank=True, null=True)
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank=True, null=True, related_name='customer_for_barcode')
     box_type = models.PositiveSmallIntegerField(choices=BOX_TYPE_CHOICES, blank=True, null=True)

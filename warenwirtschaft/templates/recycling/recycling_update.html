@@ -38,24 +38,35 @@
 
       <tbody class="itemcard-tbody">
         {{ formset.non_form_errors }}
-        {% for form, selected in vorhandene_forms %}
-          <input type="hidden" name="{{ form.id.html_name }}" value="{{ form.id.value }}">
-          <tr class="itemcard-table-row"
-              data-id="{{ form.instance.pk }}"
-              data-url-detail-barcode="{% if form.instance.pk %}{% url 'recycling_detail' pk=form.instance.pk %}{% endif %}"
-              data-url-update="{% if form.instance.pk %}{% url 'recycling_update' pk=form.instance.pk %}{% else %}#{% endif %}">
+        {% if vorhandene_forms %}
+          {% for form, selected in vorhandene_forms %}
+            <input type="hidden" name="{{ form.id.html_name }}" value="{{ form.id.value }}">
+            <tr class="itemcard-table-row"
+                data-id="{{ form.instance.pk }}"
+                data-url-detail-barcode="{% if form.instance.pk %}{% url 'recycling_detail' pk=form.instance.pk %}{% endif %}"
+                data-url-update="{% if form.instance.pk %}{% url 'recycling_update' pk=form.instance.pk %}{% else %}#{% endif %}">
 
 
-            <td hidden>{{ form.id }}</td>
+              <td hidden>{{ form.id }}</td>
+              <td class="checkbox-circle itemcard-action-left">
+                <input type="checkbox" name="selected_recycling" value="{{ form.instance.pk }}" {% if selected %}checked{% endif %}>
+              </td>
+              <td class="itemcard-id">{{ forloop.counter }}</td>
+              <td class="itemcard-material"><p>{{ form.instance.material }}</p></td>
+              <td class="itemcard-boxtype"><p>{{ form.instance.get_box_type_display }}</p></td>
+              <td class="itemcard-weight"><p>{{ form.instance.weight }}</p></td>
+            </tr>
+          {% endfor %}
+        {% else %}
+          <tr class="itemcard-table-row">
             <td class="checkbox-circle itemcard-action-left">
-              <input type="checkbox" name="selected_recycling" value="{{ form.instance.pk }}" {% if selected %}checked{% endif %}>
+              <input type="radio" name="selected_recycling" title="Keine Daten">
             </td>
-            <td class="itemcard-id">{{ forloop.counter }}</td>
-            <td class="itemcard-material"><p>{{ form.instance.material }}</p></td>
-            <td class="itemcard-boxtype"><p>{{ form.instance.get_box_type_display }}</p></td>
-            <td class="itemcard-weight"><p>{{ form.instance.weight }}</p></td>
+            <td colspan="4" class="text-center">
+              Keine Daten vorhanden
+            </td>
           </tr>
-        {% endfor %}
+        {% endif %}
       </tbody>
 
       <template id="table-row-template">

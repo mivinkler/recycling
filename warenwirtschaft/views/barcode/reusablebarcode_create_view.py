@@ -3,14 +3,14 @@ from django.views.generic.edit import CreateView
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 
-from warenwirtschaft.models import ReusableBarcode
-from warenwirtschaft.forms import ReusableBarcodeForm
+from warenwirtschaft.models import BarcodeGenerator
+from warenwirtschaft.forms.barcode_generator_form import BarcodeGeneratorForm
 from warenwirtschaft.services.barcode_service import BarcodeGenerator
 
 
 class ReusableBarcodeCreateView(CreateView):
-    model = ReusableBarcode
-    form_class = ReusableBarcodeForm
+    model = BarcodeGenerator
+    form_class = BarcodeGeneratorForm
     template_name = 'barcode/reusable_barcode_create.html'
 
     AREA_PREFIX = {
