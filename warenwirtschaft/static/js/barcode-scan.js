@@ -43,6 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
       alert("Barcode nicht erkannt oder Fehler beim Verarbeiten.");
     }
   });
+    // Gewicht Anfrage
     // TODO: Target löschen
     document.querySelector('.table')?.addEventListener('click', async (e) => {
     if (!e.target.matches('.fetch-weight-btn')) return;

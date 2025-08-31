@@ -52,7 +52,7 @@
             <tr class="itemcard-table-row"
               data-id="{{ form.instance.pk }}"
               data-url-detail-barcode="{% url 'recycling_detail' pk=form.instance.pk %}"
-              data-url-update="{% url 'recycling_update' pk=unload.pk %}">
+              data-url-update="{% url 'recycling_update' pk=form.instance.pk %}">
 
               <td hidden>{{ form.id }}</td>
               <td class="checkbox-circle itemcard-action-left">

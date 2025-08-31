@@ -68,7 +68,6 @@
             <td class="itemcard-boxtype">{{ f.box_type }}</td>
 
             <td class="itemcard-status">
-              {# Falls das Form einen id-Field hat (ModelFormSet), wird es hier gerendert #}
               {% if f.id %}{{ f.id }}{% endif %}
               {{ f.status }}
             </td>
@@ -76,7 +75,7 @@
             <td class="itemcard-weight itemcard-weight-action">
               <div class="flex-container">
                 {{ f.weight }}
-                <button type="button" class="btn btn-weight" title="Waage öffnen">
+                <button type="button" class="btn btn-weight" title="Gewicht anfragen" data-weight-url="{% url 'weight_input_api' %}">>
                   <img src="{% static 'icons/dashboard-icon.svg' %}">
                 </button>
               </div>
@@ -218,4 +217,5 @@
 {% block extra_js %}
 <script src="{% static 'js/barcode-scan.js' %}"></script>
 <script src="{% static 'js/close-open.js' %}"></script>
+<script src="{% static 'js/weight.js' %}"></script>
 {% endblock %}

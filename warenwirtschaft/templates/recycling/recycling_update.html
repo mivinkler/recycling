@@ -16,6 +16,14 @@
       {{ form.non_field_errors }}
 
       <div class="itemcard-topbox-row itemcard-margin-left">
+        <label for="barcode">Barcode:</label>
+        <div>
+          <!-- TODO:  "/api/unload-input/"??? -->
+          <input type="text" id="barcode" data-api="/api/unload-input/" autofocus autocomplete="off" placeholder="Barcode scannen..." />
+        </div>
+      </div>
+
+      <div class="itemcard-topbox-row itemcard-margin-left">
         <span for="id_unload">Vorsortierung:</span>
         <p>{{ unload }}</p>
       </div>

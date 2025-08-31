@@ -62,5 +62,8 @@ urlpatterns = [
     path("material/update/<int:pk>/", MaterialUpdateView.as_view(), name="material_update"),
     path('material/delete/<int:pk>/', MaterialDeleteView.as_view(), name='material_delete'),
 
-    path('api/', include('warenwirtschaft.api.urls')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path(
+        "warenwirtschaft/api/",
+        include(("warenwirtschaft.api.urls", "warenwirtschaft_api"), namespace="warenwirtschaft_api"),
+    ),
+]

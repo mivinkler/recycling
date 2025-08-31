@@ -64,7 +64,7 @@ class UnloadCreateView(View):
                 self._generate_barcode_image(instance)
 
             # --- Deutsch: Nach dem Speichern auf die Update-Seite der gewählten Liefereinheit weiterleiten ---
-            return redirect(reverse("unload_update", kwargs={"delivery_unit_pk": delivery_unit.pk}))
+            return redirect(reverse("unload_update", kwargs={"pk": delivery_unit.pk}))
 
         # -------- Fall B: Vorhandene Wagen: ("<pk>") --------
         target = next((f for f in exist_fs.forms if str(f.instance.pk) == str(selection)), None)
