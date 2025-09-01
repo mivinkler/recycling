@@ -1,80 +1,77 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Das Template-Element mit dem Kontextmenü holen
-  const template = document.getElementById("context-menu-template");
-  if (!template) return;
+  const tpl = document.getElementById("context-menu-template");
+  if (!tpl) return;
 
-  // Menü aus dem Template klonen und zum Dokument hinzufügen
-  const menu = template.content.firstElementChild.cloneNode(true);
+  document.getElementById("context-menu")?.remove();
+
+  const menu = tpl.content.firstElementChild.cloneNode(true);
   document.body.appendChild(menu);
 
-  let currentRow = null;        // Aktuell ausgewählte Tabellenzeile
-  let hideTimeout = null;       // Timeout zum Ausblenden des Menüs
+  if (!menu.querySelector('li[data-action="url-unload-create"]')) {
+    const li = document.createElement("li");
+    li.dataset.action = "url-unload-create";
+    li.dataset.requireStatus = "1";
+    li.textContent = "In Vorsortierung übergeben";
+    menu.appendChild(li);
+  }
 
-  // Rechtsklick auf Tabellenzeilen mit Kontextmenü aktivieren
-  document.querySelectorAll(".js-select-row").forEach(row => {
-    row.addEventListener("contextmenu", e => {
-      e.preventDefault();       // Standard-Rechtsklick deaktivieren
-      currentRow = row;
+  let currentRow = null;
+  let hideTimer = null;
+  const toCamel = s => s.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
 
-      // Nur Menüeinträge anzeigen, wenn die URL vorhanden ist
-      menu.querySelectorAll("li").forEach(li => {
-        const key = toCamel(li.dataset.action);
-        li.style.display = currentRow.dataset[key] ? "block" : "none";
-      });
+  const hideMenu = () => {
+    clearTimeout(hideTimer);
+    menu.style.display = "none";
+    currentRow = null;
+  };
 
-      // Menü an Mausposition anzeigen
-      menu.style.top = `${e.pageY}px`;
-      menu.style.left = `${e.pageX}px`;
-      menu.style.display = "block";
+  function showMenu(row, x, y) {
+    menu.querySelectorAll("li").forEach(li => {
+      const k = toCamel(li.dataset.action || "");
+      const need = li.dataset.requireStatus;
+      const ok = !!row.dataset[k] && (!need || row.dataset.status === need);
+      li.style.display = ok ? "block" : "none";
     });
+
+    menu.style.display = "block";
+    const r = menu.getBoundingClientRect();
+    const vw = document.documentElement.clientWidth;
+    const vh = document.documentElement.clientHeight;
+    let left = x, top = y;
+    if (left + r.width > vw) left = vw - r.width - 8;
+    if (top + r.height > vh) top = vh - r.height - 8;
+    if (left < 0) left = 0;
+    if (top < 0) top = 0;
+    menu.style.left = `${left + window.scrollX}px`;
+    menu.style.top = `${top + window.scrollY}px`;
+
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(hideMenu, 3000); // in 3 sek wird geschlossen
+  }
+
+  document.addEventListener("contextmenu", e => {
+    const row = e.target.closest(".js-select-row");
+    if (!row) return;
+    e.preventDefault();
+    currentRow = row;
+    showMenu(row, e.clientX, e.clientY);
   });
 
-  // Klick auf einen Menüeintrag: zur Ziel-URL weiterleiten
   menu.addEventListener("click", e => {
     const li = e.target.closest("li");
     if (!li || !currentRow) return;
-
-    const key = toCamel(li.dataset.action);
-    const url = currentRow.dataset[key];
-
-    if (url) {
-      window.location.href = url;
-    }
-
+    const url = currentRow.dataset[toCamel(li.dataset.action || "")];
+    if (url) window.location.href = url;
     hideMenu();
   });
 
-  // Wenn Maus das Menü verlässt: Menü nach kurzer Zeit ausblenden
-  menu.addEventListener("mouseleave", () => {
-    hideTimeout = setTimeout(hideMenu, 1000);
+  document.addEventListener("mousedown", e => {
+    if (!menu.contains(e.target)) hideMenu();
   });
 
-  // Wenn Maus zurück ins Menü kommt: Ausblenden abbrechen
-  menu.addEventListener("mouseenter", () => {
-    clearTimeout(hideTimeout);
-  });
-
-  // Klick außerhalb des Menüs: Menü ausblenden
-  document.addEventListener("click", e => {
-    if (!menu.contains(e.target)) {
-      hideMenu();
-    }
-  });
-
-  // ESC-Taste: Menü ausblenden
   document.addEventListener("keydown", e => {
-    if (e.key === "Escape") {
-      hideMenu();
-    }
+    if (e.key === "Escape") hideMenu();
   });
 
-  // Menü ausblenden
-  function hideMenu() {
-    menu.style.display = "none";
-  }
-
-  // Hilfsfunktion: konvertiert kebab-case in camelCase
-  function toCamel(str) {
-    return str.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
-  }
+  menu.addEventListener("contextmenu", e => e.preventDefault());
 });

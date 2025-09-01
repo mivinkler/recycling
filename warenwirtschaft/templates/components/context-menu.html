@@ -1,4 +1,9 @@
-<ul id="context-menu" class="context-menu">
-  <li data-action="url-detail-barcode">Barcode drücken</li>
-  <li data-action="url-update">Inhalt ändern</li>
-</ul>
+<template id="context-menu-template">
+  <ul id="context-menu" class="context-menu">
+    <li data-action="url-detail-barcode">Barcode drücken</li>
+    <li data-action="url-update">Inhalt ändern</li>
+    <li data-action="url-unload-create" data-require-status="1">
+      In Vorsortierung übergeben
+    </li>
+  </ul>
+</template>

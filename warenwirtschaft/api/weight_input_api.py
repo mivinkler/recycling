@@ -5,8 +5,12 @@ from django.views import View
 
 class WeightInputAPI(View):
     def get(self, request):
+        # Testen ohne Waage
+        if request.GET.get('mock') == '1':
+            return JsonResponse({'weight': 12.34})
+
+        url = 'http://192.168.2.230/waage/waage/stillwiegen'
         try:
-            url = 'http://192.168.2.230/waage/waage/stillwiegen'
             with urllib.request.urlopen(url, timeout=3) as response:
                 data = json.load(response)
                 netto = data.get("netto")
