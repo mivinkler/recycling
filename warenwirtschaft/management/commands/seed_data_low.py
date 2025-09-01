@@ -84,7 +84,6 @@ class Command(BaseCommand):
                 flags = random_material_flags()
                 materials.append(Material(name=name, **flags))
             Material.objects.bulk_create(materials)
-            self.stdout.write(self.style.SUCCESS("Materialien erstellt!"))
 
             # Eindeutige Firmennamen + Kunden (bulk_create)
             company_names = [fake.unique.company() for _ in range(40)]
@@ -104,5 +103,5 @@ class Command(BaseCommand):
             Customer.objects.bulk_create(customers)
 
             # Abschluss: kleine Statistiken
-            self.stdout.write(self.style.SUCCESS(f"Materialien: {Material.objects.count()}"))
-            self.stdout.write(self.style.SUCCESS(f"Kunden: {Customer.objects.count()}"))
+            self.stdout.write(self.style.SUCCESS(f"Materialien erstellt: {Material.objects.count()}"))
+            self.stdout.write(self.style.SUCCESS(f"Kunden erstellt: {Customer.objects.count()}"))

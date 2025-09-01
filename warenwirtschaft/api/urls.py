@@ -4,7 +4,6 @@ from .unload_input_api import UnloadInputAPI
 from .weight_input_api import WeightInputAPI
 from .reusable_barcode_api import ReusableBarcodeAPI
 
-app_name = "warenwirtschaft_api"
 
 urlpatterns = [
     path('unload-input/', UnloadInputAPI.as_view(), name='unload_input_api'),

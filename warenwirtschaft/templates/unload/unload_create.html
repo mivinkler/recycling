@@ -55,15 +55,13 @@
           {% for f in formset.forms %}
           <tr class="itemcard-table-row" data-kind="new" data-key="{{ f.prefix }}">
             <td class="checkbox-circle itemcard-action-left">
-              {# Radio analog zu vorhandenen Wagen; aktiv nur wenn die Zeile offen ist #}
+              {# Radio aktiv nur wenn die Zeile offen ist #}
               <input type="radio"
                      name="selected_recycling"
                      value="new:{{ f.prefix }}"
                      title="Fraktion verknüpfen (neue Zeile)">
             </td>
-
             <td class="itemcard-id">{{ forloop.counter }}</td>
-
             <td class="itemcard-material">{{ f.material }}</td>
             <td class="itemcard-boxtype">{{ f.box_type }}</td>
 
@@ -75,7 +73,7 @@
             <td class="itemcard-weight itemcard-weight-action">
               <div class="flex-container">
                 {{ f.weight }}
-                <button type="button" class="btn btn-weight" title="Gewicht anfragen" data-weight-url="{% url 'weight_input_api' %}">>
+                <button type="button" class="btn btn-weight" title="Gewicht anfragen" data-weight-url="{% url 'warenwirtschaft_api:weight_input_api' %}">
                   <img src="{% static 'icons/dashboard-icon.svg' %}">
                 </button>
               </div>
