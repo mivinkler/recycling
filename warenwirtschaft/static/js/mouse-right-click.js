@@ -7,9 +7,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const menu = tpl.content.firstElementChild.cloneNode(true);
   document.body.appendChild(menu);
 
-  if (!menu.querySelector('li[data-action="url-unload-create"]')) {
+  if (!menu.querySelector('li[data-action="url-nextstep-create"]')) {
     const li = document.createElement("li");
-    li.dataset.action = "url-unload-create";
+    li.dataset.action = "url-nextstep-create";
     li.dataset.requireStatus = "1";
     li.textContent = "In Vorsortierung übergeben";
     menu.appendChild(li);

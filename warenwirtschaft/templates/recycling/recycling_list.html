@@ -22,7 +22,8 @@
     <div class="table-row js-select-row"
       data-id="{{ item.id }}"
       data-url-detail="{% url 'recycling_detail' pk=item.id %}"
-      data-url-update="{% url 'recycling_update' pk=item.id %}">
+      data-url-update="{% url 'recycling_update' pk=item.id %}"
+      data-url-detail-barcode="{% url 'recycling_detail' pk=item.id %}">
 
       <div class="table-cell table-cell-id">{{ item.id }}</div>
       <div class="table-cell">{{ item|getattr:"get_box_type_display" }}</div>
@@ -36,6 +37,14 @@
 </div>
 
 {% paginate page_obj %}
+
+<template id="context-menu-template">
+  <ul id="context-menu" class="context-menu">
+    <li data-action="url-detail">Detail</li>
+    <li data-action="url-detail-barcode">Barcode drücken</li>
+    <li data-action="url-update">Inhalt ändern</li>
+  </ul>
+</template>
 
 {% endblock %}
 

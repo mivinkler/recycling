@@ -22,10 +22,11 @@
     {% with first_du=item.delivery_units.all|first %}
     <div class="table-row js-select-row"
       data-id="{{ item.id }}"
-      {# data-url-detail-weight="{% if first_du %}{% url 'unload_detail_weight' pk=first_du.id %}{% endif %}" #}
-      data-url-detail-barcode="{% url 'unload_detail_barcode' pk=item.id %}"
+      data-status="{{ item.status }}"
+      data-url-unload-create="{% url 'recycling_create' %}?unit_id={{ item.id }}"
       data-url-update="{% url 'unload_update' pk=item.id %}"
-      data-url-create="{% url 'recycling_create' %}?unit_id={{ item.id }}"
+      data-url-detail-barcode="{% url 'unload_detail_barcode' pk=item.id %}"
+      {% comment %} data-url-detail-weight="{% if first_du %}{% url 'unload_detail_weight' pk=first_du.id %}{% endif %}" {% endcomment %}
     >
       <div class="table-cell table-cell-id">{{ forloop.counter }}</div>
 
@@ -46,10 +47,18 @@
 </div>
 
 {% paginate page_obj %}
+
+<template id="context-menu-template">
+  <ul id="context-menu" class="context-menu">
+    <li data-action="url-detail-barcode">Barcode drücken</li>
+    <li data-action="url-update">Inhalt ändern</li>
+  </ul>
+</template>
+
 {% endblock %}
 
 {% block extra_js %}
-  <script src="{% static 'js/mouse-left-click.js' %}"></script>
+  <script src="{% static 'js/mouse-right-click.js' %}"></script>
   <script src="{% static 'js/current-date.js' %}"></script>
   <script src="{% static 'js/summary-close.js' %}"></script>
 {% endblock %}

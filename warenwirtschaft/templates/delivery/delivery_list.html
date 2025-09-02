@@ -25,11 +25,11 @@
   <div class="table-row js-select-row"
     data-id="{{ item.id }}"
     data-status="{{ item.status }}"
-    data-url-detail-weight="{% url 'delivery_detail_weight' pk=item.delivery.id %}"
+    data-url-nextstep-create="{% url 'unload_create' %}?unit_id={{ item.id }}"
+    data-url-update="{% url 'delivery_update' pk=item.delivery.id %}"
     data-url-detail-barcode="{% url 'delivery_detail_barcode' pk=item.id %}"
-    data-url-unload-create="{% url 'unload_create' %}?unit_id={{ item.id }}"
-    data-url-update="{% url 'delivery_update' pk=item.delivery.id %}">
-  
+    {% comment %} data-url-detail-weight="{% url 'delivery_detail_weight' pk=item.delivery.id %}" {% endcomment %}
+  >
     <div class="table-cell table-cell-id">{{ item.delivery.id }}</div>
     <div class="table-cell">{{ item.delivery.customer.name }}</div>
     <div class="table-cell">{{ item.delivery.delivery_receipt }}</div>
@@ -58,7 +58,7 @@
 {% block extra_js %}
   <!-- <script src="{% static 'js/selectable-row.js' %}"></script> -->
   <script src="{% static 'js/mouse-right-click.js' %}"></script>
-  <script src="{% static 'js/mouse-left-click.js' %}"></script>
+  {% comment %} <script src="{% static 'js/mouse-left-click.js' %}"></script> {% endcomment %}
   <script src="{% static 'js/current-date.js' %}"></script>
   <script src="{% static 'js/summary-close.js' %}"></script>
 {% endblock %}
