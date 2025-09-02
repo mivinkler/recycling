@@ -18,8 +18,15 @@
       {{ form.non_field_errors }}
 
       <div class="itemcard-topbox-row">
+        <label for="barcode">Barcode:</label>
+        <div>
+          <input type="text" id="barcode" name="barcode" autofocus autocomplete="off" placeholder="Scannen..." />
+        </div>
+      </div>
+
+      <div class="itemcard-topbox-row">
         <span>Wareneingang:</span>
-        <p>{{ delivery_unit }}</p>
+        <div>{{ delivery_unit }}</div>
       </div>
     </section>
 
@@ -51,9 +58,8 @@
               <input type="checkbox"
                      name="selected_recycling"
                      value="new:{{ f.prefix }}"
-                     title="Fraktion verknüpfen (neue Zeile)">
+                     title="Fraktion verknüpfen">
             </td>
-
             <td class="itemcard-id">{{ forloop.counter }}</td>
             <td class="itemcard-material">{{ f.material }}</td>
             <td class="itemcard-boxtype">{{ f.box_type }}</td>
@@ -151,7 +157,7 @@
             {% else %}
             <tr class="itemcard-table-row">
               <td class="checkbox-circle itemcard-action-left">
-                  <input type="radio" name="selected_recycling" title="Keine Daten">
+                  <input type="checkbox" name="selected_recycling" title="Keine Daten">
                 </td>
               <td colspan="5" class="text-center">
                 Keine Daten vorhanden

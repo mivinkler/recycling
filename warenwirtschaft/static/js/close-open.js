@@ -16,7 +16,7 @@ function getEditableControls(row) {
 function snapshotRow(row) {
   if (row.dataset.snapshotted === '1') return;
   getEditableControls(row).forEach(el => {
-    if (el.type === 'checkbox' || el.type === 'radio') {
+    if (el.type === 'checkbox' || el.type === 'checkbox') {
       el.dataset.initialChecked = String(el.checked);
     } else if (el instanceof HTMLButtonElement) {
       // Buttons haben keinen Wert – überspringen
@@ -30,7 +30,7 @@ function snapshotRow(row) {
 // Werte auf Ursprungszustand zurücksetzen (wenn nicht gespeichert)
 function restoreRow(row) {
   getEditableControls(row).forEach(el => {
-    if (el.type === 'checkbox' || el.type === 'radio') {
+    if (el.type === 'checkbox' || el.type === 'checkbox') {
       if (el.dataset.initialChecked !== undefined) {
         el.checked = (el.dataset.initialChecked === 'true');
       }
@@ -40,7 +40,7 @@ function restoreRow(row) {
   });
 }
 
-// Felder (de)aktivieren + Radio behandeln
+// Felder (de)aktivieren + checkbox behandeln
 function setRowLockState(row, open) {
   const mode = getMode();
   const keepRow = row.hasAttribute('data-keep-enabled-row'); // Update: verknüpft => aktiv lassen
@@ -48,8 +48,8 @@ function setRowLockState(row, open) {
   getEditableControls(row).forEach(el => {
     if (el.classList.contains('btn-lock')) return;
 
-    const isRadio = el.matches('input[type="radio"][name="selected_recycling"]');
-    const keepRadio = isRadio && el.hasAttribute('data-keep-enabled');
+    const ischeckbox = el.matches('input[type="checkbox"][name="selected_recycling"]');
+    const keepcheckbox = ischeckbox && el.hasAttribute('data-keep-enabled');
 
     // Update: verknüpfte Zeilen bleiben bedienbar (auch bei geschlossenem Schloss)
     if (keepRow) {
@@ -59,9 +59,9 @@ function setRowLockState(row, open) {
       return;
     }
 
-    // Update: Radio-checked NIE automatisch ändern
-    if (mode === 'update' && isRadio) {
-      if (!keepRadio) {
+    // Update: checkbox-checked NIE automatisch ändern
+    if (mode === 'update' && ischeckbox) {
+      if (!keepcheckbox) {
         el.disabled = !open;
         el.setAttribute('aria-disabled', String(!open));
       } else {
@@ -79,10 +79,10 @@ function setRowLockState(row, open) {
 
   // Auto-Check NUR im Create-Modus
   if (getMode() === 'create' && !row.hasAttribute('data-keep-enabled-row')) {
-    const radio = row.querySelector('input[type="radio"][name="selected_recycling"]:not([data-keep-enabled])');
-    if (radio) {
-      radio.disabled = !open;
-      radio.checked  = !!open;
+    const checkbox = row.querySelector('input[type="checkbox"][name="selected_recycling"]:not([data-keep-enabled])');
+    if (checkbox) {
+      checkbox.disabled = !open;
+      checkbox.checked  = !!open;
     }
   }
 
@@ -147,22 +147,22 @@ document.addEventListener('click', (e) => {
 });
 
 // =====================================================
-// Update: verknüpfte Radio-Zeile aktiv abwählbar machen
+// Update: verknüpfte checkbox-Zeile aktiv abwählbar machen
 // - Nur wenn Zeile offen ist
-// - Klick auf Radio toggelt es AUS (unchecked)
+// - Klick auf checkbox toggelt es AUS (unchecked)
 // - Beim Submit setzen wir unlink_pk für den Server
 // =====================================================
 document.addEventListener('click', (e) => {
-  const radio = e.target.closest('input[type="radio"][name="selected_recycling"][data-keep-enabled]');
-  if (!radio) return;
+  const checkbox = e.target.closest('input[type="checkbox"][name="selected_recycling"][data-keep-enabled]');
+  if (!checkbox) return;
   if (getMode() !== 'update') return;
 
-  const row = radio.closest('.itemcard-table-row');
+  const row = checkbox.closest('.itemcard-table-row');
   if (!row || !row.classList.contains('is-open')) return;
 
-  // Radio explizit abwählen
+  // checkbox explizit abwählen
   e.preventDefault();
-  radio.checked = false;
+  checkbox.checked = false;
 
   // Merken, wen wir entfernen wollen
   const hiddenUnlink = document.getElementById('unlink_pk');
@@ -180,8 +180,8 @@ document.getElementById('unload-form')?.addEventListener('submit', () => {
   const openLinked = document.querySelector('.itemcard-table-row.is-open[data-kind="existing"][data-keep-enabled-row]');
   if (!openLinked) return;
 
-  const radio = openLinked.querySelector('input[type="radio"][name="selected_recycling"][data-keep-enabled]');
-  if (radio && !radio.checked) {
+  const checkbox = openLinked.querySelector('input[type="checkbox"][name="selected_recycling"][data-keep-enabled]');
+  if (checkbox && !checkbox.checked) {
     const hiddenUnlink = document.getElementById('unlink_pk');
     if (hiddenUnlink) hiddenUnlink.value = String(openLinked.dataset.key || '');
     const hiddenActive = document.getElementById('active_row');

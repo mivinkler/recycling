@@ -55,11 +55,10 @@
           {% for f in formset.forms %}
           <tr class="itemcard-table-row" data-kind="new" data-key="{{ f.prefix }}">
             <td class="checkbox-circle itemcard-action-left">
-              {# Radio aktiv nur wenn die Zeile offen ist #}
-              <input type="radio"
+              <input type="checkbox"
                      name="selected_recycling"
                      value="new:{{ f.prefix }}"
-                     title="Fraktion verknüpfen (neue Zeile)">
+                     title="Fraktion verknüpfen">
             </td>
             <td class="itemcard-id">{{ forloop.counter }}</td>
             <td class="itemcard-material">{{ f.material }}</td>
@@ -117,7 +116,10 @@
             {% for form in existing_formset.forms %}
               <tr class="itemcard-table-row" data-kind="existing" data-key="{{ u.pk }}">
                 <td class="checkbox-circle itemcard-action-left">
-                  <input type="radio" name="selected_recycling" value="{{ u.pk }}" title="Fraktion verknüpfen">
+                  <input type="checkbox" 
+                    name="selected_recycling" 
+                    value="{{ u.pk }}" 
+                    title="Fraktion verknüpfen">
                 </td>
 
                 <td class="itemcard-id">{{ forloop.counter }}</td>
