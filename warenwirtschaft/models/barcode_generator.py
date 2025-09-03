@@ -13,8 +13,8 @@ class BarcodeGenerator(models.Model):
     ]
 
     AREA_CHOICES = [
-        (1, "Eingang"),
-        (2, "Vorsortierung"),
+        (1, "Wareneingang"),
+        (2, "Behälter"),
         (3, "Abholung"),
     ]
 
