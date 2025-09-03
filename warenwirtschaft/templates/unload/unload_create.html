@@ -14,7 +14,7 @@
 
     {# ====== Wareneingang ====== #}
     <section class="itemcard-topbox itemcard-margin-left">
-      {{ form.delivery_units.errors }}
+      {{ form.delivery_unit.errors }}
       {{ form.non_field_errors }}
 
       <div class="itemcard-topbox-row">
@@ -114,11 +114,11 @@
         <tbody class="itemcard-tbody existing-tbody">
           {% if existing_formset.forms %}
             {% for form in existing_formset.forms %}
-              <tr class="itemcard-table-row" data-kind="existing" data-key="{{ u.pk }}">
+              <tr class="itemcard-table-row" data-kind="existing" data-key="{{ form.instance.pk }}">
                 <td class="checkbox-circle itemcard-action-left">
                   <input type="checkbox" 
                     name="selected_recycling" 
-                    value="{{ u.pk }}" 
+                    value="{{ form.instance.pk }}" 
                     title="Fraktion verknüpfen">
                 </td>
 
@@ -154,7 +154,7 @@
             {% else %}
             <tr class="itemcard-table-row">
               <td class="checkbox-circle itemcard-action-left">
-                  <input type="radio" name="selected_recycling" title="Keine Daten">
+                  <input type="checkbox" name="selected_recycling" title="Keine Daten">
                 </td>
               <td colspan="5" class="text-center">
                 Keine Daten vorhanden
