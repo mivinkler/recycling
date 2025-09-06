@@ -12,7 +12,6 @@ class DeliveryUnitForm(forms.Form):
 class UnloadForm(forms.ModelForm):
     class Meta:
         model = Unload
-        # WICHTIG: 'material' ohne Komma!
         fields = ['box_type', 'material', 'weight', 'status', 'note']
         labels = {
             'weight': 'Gewicht',

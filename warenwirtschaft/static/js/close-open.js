@@ -1,190 +1,126 @@
-// ============================================
-// Zeilensteuerung Unload (Create + Update)
-// ============================================
+// 🇩🇪 Minimalistische Lock/Unlock-Logik für beide Tabellen
+// - Alle Zeilen starten gesperrt (per Init).
+// - Klick auf Schloss öffnet genau diese Zeile, schließt alle anderen.
+// - Beim Öffnen wird der Zeilen-Checkbox gesetzt (checked) und bei anderen entfernt.
+// - Solange gesperrt: alle Eingaben disabled (keine Änderungen möglich).
+(function () {
+  "use strict";
 
-function getMode() {
-  const form = document.getElementById('unload-form');
-  return (form && form.dataset && form.dataset.mode) ? form.dataset.mode : 'create';
-}
+  const ROW = "tr.itemcard-table-row";
+  const BTN_LOCK = ".btn.btn-lock";
+  const ICON_LOCK_CLOSED = ".icon-lock-closed";
+  const ICON_LOCK_OPEN = ".icon-lock-open";
 
-// Editierbare Controls einer Zeile auswählen (ohne Hidden)
-function getEditableControls(row) {
-  return row.querySelectorAll('input:not([type="hidden"]), select, textarea, button.btn-weight');
-}
+  // 🇩🇪 Hilfen: geschlossene/ offene Aktionszelle der Zeile finden
+  function getCells(row) {
+    const closed = row.querySelector(ICON_LOCK_CLOSED)?.closest("td");
+    const open   = row.querySelector(ICON_LOCK_OPEN)?.closest("td");
+    return { closedCell: closed || null, openCell: open || null };
+  }
 
-// Ursprungswerte einmalig merken (für Reset bei Schließen)
-function snapshotRow(row) {
-  if (row.dataset.snapshotted === '1') return;
-  getEditableControls(row).forEach(el => {
-    if (el.type === 'checkbox' || el.type === 'checkbox') {
-      el.dataset.initialChecked = String(el.checked);
-    } else if (el instanceof HTMLButtonElement) {
-      // Buttons haben keinen Wert – überspringen
-    } else {
-      el.dataset.initialValue = el.value;
-    }
-  });
-  row.dataset.snapshotted = '1';
-}
+  // 🇩🇪 Alle Formular-Controls einer Zeile (außer den Lock-Buttons) sammeln
+  function getControls(row) {
+    const all = row.querySelectorAll("input, select, textarea, button");
+    return [...all].filter(el => {
+      // Lock-Buttons bleiben immer bedienbar
+      if (el.closest(".itemcard-action") && el.matches(BTN_LOCK)) return false;
+      return true;
+    });
+  }
 
-// Werte auf Ursprungszustand zurücksetzen (wenn nicht gespeichert)
-function restoreRow(row) {
-  getEditableControls(row).forEach(el => {
-    if (el.type === 'checkbox' || el.type === 'checkbox') {
-      if (el.dataset.initialChecked !== undefined) {
-        el.checked = (el.dataset.initialChecked === 'true');
-      }
-    } else if (!(el instanceof HTMLButtonElement) && el.dataset.initialValue !== undefined) {
-      el.value = el.dataset.initialValue;
-    }
-  });
-}
+  // 🇩🇪 Zeile sperren: offene Aktionszelle verbergen, geschlossene zeigen, Controls deaktivieren
+  function lockRow(row) {
+    const { closedCell, openCell } = getCells(row);
+    if (closedCell) closedCell.hidden = false;
+    if (openCell)   openCell.hidden = true;
 
-// Felder (de)aktivieren + checkbox behandeln
-function setRowLockState(row, open) {
-  const mode = getMode();
-  const keepRow = row.hasAttribute('data-keep-enabled-row'); // Update: verknüpft => aktiv lassen
+    getControls(row).forEach(el => {
+      // Inputs/Selects komplett sperren
+      el.disabled = true;
+      if ("readOnly" in el) el.readOnly = true;
+      el.setAttribute("aria-disabled", "true");
+      el.tabIndex = -1;
+    });
+  }
 
-  getEditableControls(row).forEach(el => {
-    if (el.classList.contains('btn-lock')) return;
+  // 🇩🇪 Zeile entsperren: geschlossene Aktionszelle verbergen, offene zeigen, Controls aktivieren
+  function unlockRow(row) {
+    const { closedCell, openCell } = getCells(row);
+    if (closedCell) closedCell.hidden = true;
+    if (openCell)   openCell.hidden = false;
 
-    const ischeckbox = el.matches('input[type="checkbox"][name="selected_recycling"]');
-    const keepcheckbox = ischeckbox && el.hasAttribute('data-keep-enabled');
-
-    // Update: verknüpfte Zeilen bleiben bedienbar (auch bei geschlossenem Schloss)
-    if (keepRow) {
+    getControls(row).forEach(el => {
       el.disabled = false;
-      if (!(el instanceof HTMLButtonElement)) el.readOnly = false;
-      el.setAttribute('aria-disabled', 'false');
-      return;
-    }
+      if ("readOnly" in el) el.readOnly = false;
+      el.removeAttribute("aria-disabled");
+      el.removeAttribute("tabindex");
+    });
+  }
 
-    // Update: checkbox-checked NIE automatisch ändern
-    if (mode === 'update' && ischeckbox) {
-      if (!keepcheckbox) {
-        el.disabled = !open;
-        el.setAttribute('aria-disabled', String(!open));
-      } else {
-        el.disabled = false;
-        el.setAttribute('aria-disabled', 'false');
+  // 🇩🇪 Checkbox der Zeile (erste Spalte) finden
+  function getRowCheckbox(row) {
+    return row.querySelector('td input[type="checkbox"]');
+  }
+
+  // 🇩🇪 Initial: alle Zeilen sperren, offene Blöcke verstecken
+  function initLockedState() {
+    document.querySelectorAll(ROW).forEach(lockRow);
+  }
+
+  // 🇩🇪 Klick-Handler: nur eine Zeile offen, Checkbox dieser Zeile aktiv
+  function onClick(e) {
+    const btn = e.target.closest(BTN_LOCK);
+    if (!btn) return;
+
+    const row = btn.closest(ROW);
+    if (!row) return;
+
+    const rows = [...document.querySelectorAll(ROW)];
+
+    // 1) Alle anderen schließen + Checkboxen entfernen
+    rows.forEach(r => {
+      if (r !== row) {
+        lockRow(r);
+        const cb = getRowCheckbox(r);
+        if (cb) cb.checked = false;
       }
-      return;
-    }
+    });
 
-    // Standard (Create + andere Inputs)
-    el.disabled = !open;
-    if (!(el instanceof HTMLButtonElement)) el.readOnly = !open;
-    el.setAttribute('aria-disabled', String(!open));
-  });
+    // 2) Aktuelle Zeile toggeln
+    const { closedCell, openCell } = getCells(row);
+    const isLockedNow = !openCell || openCell.hidden === true; // offen = openCell sichtbar
 
-  // Auto-Check NUR im Create-Modus
-  if (getMode() === 'create' && !row.hasAttribute('data-keep-enabled-row')) {
-    const checkbox = row.querySelector('input[type="checkbox"][name="selected_recycling"]:not([data-keep-enabled])');
-    if (checkbox) {
-      checkbox.disabled = !open;
-      checkbox.checked  = !!open;
+    if (isLockedNow) {
+      unlockRow(row);
+      // Checkbox setzen
+      const cb = getRowCheckbox(row);
+      if (cb) cb.checked = true;
+      // Optional: ersten sinnvollen Input fokussieren
+      const focusEl =
+        row.querySelector('input[type="number"]:not([disabled])') ||
+        row.querySelector('input[type="text"]:not([disabled])') ||
+        row.querySelector("select:not([disabled])") ||
+        row.querySelector("textarea:not([disabled])");
+      if (focusEl) {
+        focusEl.focus({ preventScroll: false });
+        if (focusEl.select) { try { focusEl.select(); } catch(_) {} }
+      }
+    } else {
+      // war offen -> wieder schließen + Checkbox dieser Zeile entfernen
+      lockRow(row);
+      const cb = getRowCheckbox(row);
+      if (cb) cb.checked = false;
     }
   }
 
-  const lockBtn = row.querySelector('.btn-lock');
-  if (lockBtn) lockBtn.setAttribute('aria-pressed', String(!!open));
-}
-
-// Alle Zeilen schließen (Startzustand)
-function lockAllRows() {
-  document.querySelectorAll('.itemcard-table-row').forEach(row => {
-    row.classList.remove('is-open');
-    snapshotRow(row);
-    setRowLockState(row, /*open=*/false);
-  });
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  lockAllRows();
-
-  // Create: ersten "Neue Wagen"-Lock automatisch öffnen
-  if (getMode() === 'create') {
-    const firstNewLockBtn = document.querySelector('tbody .itemcard-table-row[data-kind="new"] .btn-lock');
-    if (firstNewLockBtn) firstNewLockBtn.click();
+  function init() {
+    initLockedState();
+    document.addEventListener("click", onClick, { passive: true });
   }
-});
 
-// Akkordeon – immer nur eine Zeile offen (über beide Tabellen hinweg)
-document.addEventListener('click', (e) => {
-  const btn = e.target.closest('.btn-lock');
-  if (!btn) return;
-
-  const row = btn.closest('.itemcard-table-row');
-  if (!row) return;
-
-  const willOpen = !row.classList.contains('is-open');
-
-  // 1) Andere offene Zeilen schließen + zurücksetzen
-  document.querySelectorAll('.itemcard-table-row.is-open').forEach(other => {
-    if (other === row) return;
-    restoreRow(other);
-    other.classList.remove('is-open');
-    setRowLockState(other, /*open=*/false);
-  });
-
-  // 2) Aktuelle Zeile toggeln
-  if (willOpen) {
-    snapshotRow(row);
-    row.classList.add('is-open');
-    setRowLockState(row, /*open=*/true);
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
   } else {
-    restoreRow(row);
-    row.classList.remove('is-open');
-    setRowLockState(row, /*open=*/false);
+    init();
   }
-
-  // Hidden "active_row" setzen (für Update: Unlink)
-  const hidden = document.getElementById('active_row');
-  if (hidden) {
-    const value = row.dataset.kind === 'new' ? ('new:' + row.dataset.key) : String(row.dataset.key || '');
-    hidden.value = value;
-  }
-});
-
-// =====================================================
-// Update: verknüpfte checkbox-Zeile aktiv abwählbar machen
-// - Nur wenn Zeile offen ist
-// - Klick auf checkbox toggelt es AUS (unchecked)
-// - Beim Submit setzen wir unlink_pk für den Server
-// =====================================================
-document.addEventListener('click', (e) => {
-  const checkbox = e.target.closest('input[type="checkbox"][name="selected_recycling"][data-keep-enabled]');
-  if (!checkbox) return;
-  if (getMode() !== 'update') return;
-
-  const row = checkbox.closest('.itemcard-table-row');
-  if (!row || !row.classList.contains('is-open')) return;
-
-  // checkbox explizit abwählen
-  e.preventDefault();
-  checkbox.checked = false;
-
-  // Merken, wen wir entfernen wollen
-  const hiddenUnlink = document.getElementById('unlink_pk');
-  if (hiddenUnlink) hiddenUnlink.value = String(row.dataset.key || '');
-
-  // Auch active_row setzen (на всякий случай)
-  const hiddenActive = document.getElementById('active_row');
-  if (hiddenActive) hiddenActive.value = String(row.dataset.key || '');
-});
-
-// Vor dem Submit: falls offene verknüpfte Zeile ohne Haken -> unlink_pk setzen
-document.getElementById('unload-form')?.addEventListener('submit', () => {
-  if (getMode() !== 'update') return;
-
-  const openLinked = document.querySelector('.itemcard-table-row.is-open[data-kind="existing"][data-keep-enabled-row]');
-  if (!openLinked) return;
-
-  const checkbox = openLinked.querySelector('input[type="checkbox"][name="selected_recycling"][data-keep-enabled]');
-  if (checkbox && !checkbox.checked) {
-    const hiddenUnlink = document.getElementById('unlink_pk');
-    if (hiddenUnlink) hiddenUnlink.value = String(openLinked.dataset.key || '');
-    const hiddenActive = document.getElementById('active_row');
-    if (hiddenActive) hiddenActive.value = String(openLinked.dataset.key || '');
-  }
-});
+})();

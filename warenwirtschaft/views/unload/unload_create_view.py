@@ -1,4 +1,3 @@
-# warenwirtschaft/views/unload_create.py
 from __future__ import annotations
 
 import uuid
@@ -7,148 +6,110 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.db import transaction
 
+from warenwirtschaft.forms.unload_form import DeliveryUnitForm, ExistingEditFormSet, UnloadFormSet
 from warenwirtschaft.models import Unload
-from warenwirtschaft.forms.unload_form import (
-    DeliveryUnitForm, UnloadFormSet, ExistingEditFormSet
-)
 from warenwirtschaft.services.barcode_service import BarcodeGenerator
 
 
 class UnloadCreateView(View):
     template_name = "unload/unload_create.html"
-    OPEN_STATUS = 1  # Lesbarkeit: magischer Wert -> Konstante
-
-    # ---------- Datenbeschaffung ----------
-
-    def _existing_queryset(self):
-        """
-        Nur offene Unloads für den Block „Aktive Wagen“ laden.
-        .only(...) reduziert die übertragenen Felder und DB-Last.
-        """
-        return (
-            Unload.objects
-            .filter(status=self.OPEN_STATUS)
-            .only("pk", "material", "box_type", "status", "weight")
-            .order_by("pk")
-        )
-
-    # ---------- Form-Fabrik ----------
-
-    def _build_forms(self, data=None):
-        """
-        Erzeugt Kopf-Form und beide Formsets einheitlich.
-        So vermeiden wir Wiederholung in GET/POST.
-        """
-        form = DeliveryUnitForm(data=data)
-        new_fs = UnloadFormSet(data=data, queryset=Unload.objects.none(), prefix="new")
-        exist_fs = ExistingEditFormSet(data=data, queryset=self._existing_queryset(), prefix="exist")
-        return form, new_fs, exist_fs
-
-    # ---------- GET ----------
 
     def get(self, request):
-        form, new_fs, exist_fs = self._build_forms()
-        return self._render(form, new_fs, exist_fs)
+        # 🇩🇪 Kopf-Form + leeres FormSet für neue Unloads
+        form = DeliveryUnitForm()
+        formset = UnloadFormSet(queryset=Unload.objects.none(), prefix="new")
 
-    # ---------- POST ----------
+        # 🇩🇪 Aktive Wagen (vorhandene Unloads) + FormSet für deren Edit
+        vorhandene_unloads = Unload.objects.filter(status=1).order_by("pk")
+        existing_formset = ExistingEditFormSet(
+            queryset=vorhandene_unloads, prefix="exist"
+        )
+
+        return self.render_page(form, formset, vorhandene_unloads, existing_formset)
 
     def post(self, request):
-        form, new_fs, exist_fs = self._build_forms(data=request.POST)
+        delivery_form = DeliveryUnitForm(request.POST)
+        formset = UnloadFormSet(request.POST, queryset=Unload.objects.none(), prefix="new")
 
-        # Kopf (Liefereinheit) muss gültig sein – ohne sie speichern wir nichts.
-        if not form.is_valid():
-            return self._render(form, new_fs, exist_fs)
+        # 🇩🇪 Für bestehende Zeilen den Edit-FormSet binden
+        vorhandene_unloads_qs = Unload.objects.filter(status=1).order_by("pk")
+        existing_formset = ExistingEditFormSet(
+            request.POST, queryset=vorhandene_unloads_qs, prefix="exist"
+        )
 
-        delivery_unit = form.cleaned_data["delivery_unit"]
+        selected_ids = request.POST.getlist("selected_unload")
 
-        # Checkboxen: alle markierten Tokens einlesen; keine Auswahl => Seite neu.
-        tokens = request.POST.getlist("selected_recycling")
-        if not tokens:
-            return self._render(form, new_fs, exist_fs)
+        if delivery_form.is_valid():
+            delivery_unit = delivery_form.cleaned_data["delivery_unit"]
 
-        # Für O(1)-Zugriff Form-Maps bauen. Unbekannte Tokens werden einfach ignoriert.
-        new_map = {f.prefix: f for f in new_fs.forms}
-        exist_map = {str(f.instance.pk): f for f in exist_fs.forms}
+            has_new_rows = formset.total_form_count() > 0
+            # 🇩🇪 Validierung nur dort, wo es Eingaben gibt
+            if has_new_rows and not formset.is_valid():
+                return self.render_page(delivery_form, formset, vorhandene_unloads_qs, existing_formset)
 
-        # Auswahl in „neu“ und „bestehend“ aufteilen.
-        selected_new = []
-        selected_exist = []
-        for t in tokens:
-            if t.startswith("new:"):
-                selected_new.append(new_map.get(t.split(":", 1)[1]))
-            else:
-                selected_exist.append(exist_map.get(str(t)))
+            if not existing_formset.is_valid():
+                # 🇩🇪 Fehler in bestehenden Zeilen anzeigen
+                return self.render_page(delivery_form, formset, vorhandene_unloads_qs, existing_formset)
 
-        # None (unbekannte Tokens) herausfiltern, neue, nicht veränderte Zeilen überspringen.
-        selected_new = [f for f in selected_new if f and f.has_changed()]
-        selected_exist = [f for f in selected_exist if f]
+            with transaction.atomic():
+                # 1) 🇩🇪 Bestehende Unloads mit Liefereinheit VERKNÜPFEN (nur hinzufügen)
+                if selected_ids:
+                    selected_pks = []
+                    for pk in selected_ids:
+                        try:
+                            selected_pks.append(int(pk))
+                        except (TypeError, ValueError):
+                            pass
+                    for unload in Unload.objects.filter(status=1, pk__in=selected_pks):
+                        unload.delivery_units.add(delivery_unit)  # idempotent
 
-        # Validieren nur der ausgewählten Formulare – schneller und klarer.
-        if not all(f.is_valid() for f in [*selected_new, *selected_exist]):
-            return self._render(form, new_fs, exist_fs)
+                # 2) 🇩🇪 Bestehende Unloads (Status/Gewicht) speichern
+                #     Nur die beiden Felder sind im Form; M2M bleibt unberührt.
+                existing_formset.save()
 
-        # Atomar speichern: entweder alles oder nichts.
-        with transaction.atomic():
-            for f in selected_new:
-                instance: Unload = f.save(commit=False)
-                self._ensure_barcode(instance)   # Barcode setzen, falls leer
-                instance.save()
-                self._link_delivery_unit(instance, delivery_unit)
-                self._generate_barcode_image(instance)
+                # 3) 🇩🇪 Neue Unloads speichern + mit Liefereinheit verknüpfen
+                if has_new_rows:
+                    new_instances = formset.save(commit=False)
+                    for instance in new_instances:
+                        if not instance.status:
+                            instance.status = 1
+                        if not getattr(instance, "barcode", None):
+                            instance.barcode = self._gen_barcode()
+                        instance.save()
+                        instance.delivery_units.add(delivery_unit)
+                        self._generate_barcode_image(instance)
 
-            for f in selected_exist:
-                instance: Unload = f.save()      # speichert Änderungen (falls vorhanden)
-                self._link_delivery_unit(instance, delivery_unit)
+            return redirect(reverse("unload_update", kwargs={"pk": delivery_unit.pk}))
 
-        # Einheitlicher Redirect (passt den kwarg an eure URL an, falls nötig).
-        return self._redirect_to_update(delivery_unit.pk)
+        # 🇩🇪 Ungültige Liefereinheit -> Seite neu anzeigen
+        vorhandene_unloads = Unload.objects.filter(status=1).order_by("pk")
+        return self.render_page(delivery_form, formset, vorhandene_unloads, existing_formset)
 
     # ---------- Hilfsmethoden ----------
 
-    def _redirect_to_update(self, delivery_unit_pk: int):
-        """
-        Nach erfolgreichem Speichern zur Detail-/Update-Seite der gewählten Liefereinheit.
-        """
-        return redirect(reverse("unload_update", kwargs={"pk": delivery_unit_pk}))
+    def render_page(self, form, formset, vorhandene_unloads, existing_formset):
+        # 🇩🇪 Zentrales Rendering – jetzt inkl. existing_formset
+        return render(self.request, self.template_name, {
+            "form": form,
+            "formset": formset,
+            "empty_form": formset.empty_form,
+            "vorhandene_unloads": vorhandene_unloads,  # für Anzeige (Material/Behälter)
+            "existing_formset": existing_formset,      # für Status/Gewicht-Inputs
+            "selected_menu": "unload_create",
+        })
+    
+    @staticmethod
+    def _gen_barcode() -> str:
+        # 🇩🇪 Einfaches Muster „U<8HEX>“
+        return f"U{uuid.uuid4().hex[:8].upper()}"
 
-    def _ensure_barcode(self, unload: Unload) -> None:
-        """
-        Falls kein Barcode gesetzt ist, generieren wir ein einfaches Muster „U<8HEX>“.
-        """
-        if not getattr(unload, "barcode", None):
-            suffix = uuid.uuid4().hex[:8].upper()
-            unload.barcode = f"U{suffix}"
-
-    def _generate_barcode_image(self, unload: Unload) -> None:
-        """
-        Bildgenerierung ist „best effort“ – Fehler hier sollen den Speichervorgang nicht blockieren.
-        """
+    @staticmethod
+    def _generate_barcode_image(unload: Unload) -> None:
+        # 🇩🇪 „Best effort“ – Fehler beim Bild sollen den Vorgang nicht stoppen
         code = getattr(unload, "barcode", None)
         if not code:
             return
         try:
             BarcodeGenerator(unload, code, "barcodes/unload").generate_image()
         except Exception:
-            # Optional: Logging einführen, wenn nötig.
             pass
-
-    def _link_delivery_unit(self, unload: Unload, delivery_unit) -> None:
-        """
-        M2M-Verknüpfung: Unload der gewählten Liefereinheit zuordnen.
-        """
-        if hasattr(unload, "delivery_units"):
-            unload.delivery_units.add(delivery_unit)
-
-    # ---------- Rendering ----------
-
-    def _render(self, form, new_fs, exist_fs):
-        """
-        Zentrales Rendering – vermeidet Duplikate und hält GET/POST schlank.
-        """
-        return render(self.request, self.template_name, {
-            "form": form,
-            "formset": new_fs,
-            "empty_form": new_fs.empty_form,
-            "existing_formset": exist_fs,
-            "selected_menu": "unload_create",
-        })
