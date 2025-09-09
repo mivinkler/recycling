@@ -79,5 +79,21 @@
   (document.readyState === "loading")
     ? document.addEventListener("DOMContentLoaded", init)
     : init();
+
+  document.querySelectorAll('.existing-tbody tr').forEach(function(row) {
+    const cb = row.querySelector('.js-link-toggle');
+    const toggleRow = () => {
+      row.classList.toggle('is-locked', !cb.checked);
+      row.querySelectorAll('select, input[type="number"]').forEach(function(el) {
+        if (el.name.endsWith('-status') || el.name.endsWith('-weight')) {
+          el.disabled = !cb.checked;
+        }
+      });
+    };
+    if (cb) {
+      cb.addEventListener('change', toggleRow);
+      toggleRow();
+    }
+  });
 })();
 
