@@ -30,10 +30,10 @@ class UnloadUpdateView(View):
     def get(self, request, delivery_unit_pk: int):
         delivery_unit = get_object_or_404(DeliveryUnit, pk=delivery_unit_pk)
 
-        # 🇩🇪 Nur NEUE Wagen im FormSet (wie beim Recycling-Vorbild)
+        #Nur NEUE Wagen im FormSet (wie beim Recycling-Vorbild)
         formset = UnloadFormSet(queryset=Unload.objects.none(), prefix="new")
 
-        # 🇩🇪 Vorhandene aktive Wagen als einzelne Forms + Auswahlmarkierung
+        #Vorhandene aktive Wagen als einzelne Forms + Auswahlmarkierung
         vorhandene_forms = self.build_vorhandene_forms(delivery_unit)
 
         return self.render_page(formset, vorhandene_forms, delivery_unit)
@@ -45,10 +45,10 @@ class UnloadUpdateView(View):
         formset = UnloadFormSet(request.POST, queryset=Unload.objects.none(), prefix="new")
         vorhandene_forms = self.build_vorhandene_forms(delivery_unit, data=request.POST)
 
-        # 🇩🇪 Ausgewählte Wagen-IDs (Checkboxen)
+        #Ausgewählte Wagen-IDs (Checkboxen)
         selected_ids = set(request.POST.getlist("selected_unload"))
 
-        # 🇩🇪 Validierung: neue + geänderte bestehende
+        #Validierung: neue + geänderte bestehende
         valid_new = formset.is_valid()
         changed_existing = [f for f, _ in vorhandene_forms if f.has_changed()]
         valid_existing = all(f.is_valid() for f in changed_existing)
@@ -118,12 +118,12 @@ class UnloadUpdateView(View):
 
     @staticmethod
     def _gen_barcode() -> str:
-        # 🇩🇪 Einfaches Barcode-Muster U<8HEX>
+        #Einfaches Barcode-Muster U<8HEX>
         return f"U{uuid.uuid4().hex[:8].upper()}"
 
     @staticmethod
     def _generate_barcode_image(unload: Unload) -> None:
-        # 🇩🇪 Fehler beim Bild sollen den Vorgang nicht stoppen
+        #Fehler beim Bild sollen den Vorgang nicht stoppen
         code = getattr(unload, "barcode", None)
         if not code:
             return
@@ -133,5 +133,5 @@ class UnloadUpdateView(View):
             pass
 
     def _success_url(self, delivery_unit_pk: int) -> str:
-        # 🇩🇪 Zurück auf dieselbe Update-Seite
+        #Zurück auf dieselbe Update-Seite
         return reverse("unload_update", kwargs={"delivery_unit_pk": delivery_unit_pk})

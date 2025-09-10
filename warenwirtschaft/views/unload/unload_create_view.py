@@ -15,11 +15,11 @@ class UnloadCreateView(View):
     template_name = "unload/unload_create.html"
 
     def get(self, request):
-        # 🇩🇪 Kopf-Form + leeres FormSet für neue Unloads
+        # Kopf-Form + leeres FormSet für neue Unloads
         form = DeliveryUnitForm()
         formset = UnloadFormSet(queryset=Unload.objects.none(), prefix="new")
 
-        # 🇩🇪 Aktive Wagen (vorhandene Unloads) + FormSet für deren Edit
+        # Aktive Wagen (vorhandene Unloads) + FormSet für deren Edit
         vorhandene_unloads = Unload.objects.filter(status=1).order_by("pk")
         existing_formset = ExistingEditFormSet(
             queryset=vorhandene_unloads, prefix="exist"
@@ -31,7 +31,7 @@ class UnloadCreateView(View):
         delivery_form = DeliveryUnitForm(request.POST)
         formset = UnloadFormSet(request.POST, queryset=Unload.objects.none(), prefix="new")
 
-        # 🇩🇪 Für bestehende Zeilen den Edit-FormSet binden
+        # Für bestehende Zeilen den Edit-FormSet binden
         vorhandene_unloads_qs = Unload.objects.filter(status=1).order_by("pk")
         existing_formset = ExistingEditFormSet(
             request.POST, queryset=vorhandene_unloads_qs, prefix="exist"
@@ -43,12 +43,12 @@ class UnloadCreateView(View):
             delivery_unit = delivery_form.cleaned_data["delivery_unit"]
 
             has_new_rows = formset.total_form_count() > 0
-            # 🇩🇪 Validierung nur dort, wo es Eingaben gibt
+            # Validierung nur dort, wo es Eingaben gibt
             if has_new_rows and not formset.is_valid():
                 return self.render_page(delivery_form, formset, vorhandene_unloads_qs, existing_formset)
 
             if not existing_formset.is_valid():
-                # 🇩🇪 Fehler in bestehenden Zeilen anzeigen
+                # Fehler in bestehenden Zeilen anzeigen
                 return self.render_page(delivery_form, formset, vorhandene_unloads_qs, existing_formset)
 
             with transaction.atomic():
@@ -79,16 +79,16 @@ class UnloadCreateView(View):
                         instance.delivery_units.add(delivery_unit)
                         self._generate_barcode_image(instance)
 
-            return redirect(reverse("unload_update", kwargs={"pk": delivery_unit.pk}))
+            return redirect(reverse("unload_update", kwargs={"delivery_unit_pk": delivery_unit.pk}))
 
-        # 🇩🇪 Ungültige Liefereinheit -> Seite neu anzeigen
+        # Ungültige Liefereinheit -> Seite neu anzeigen
         vorhandene_unloads = Unload.objects.filter(status=1).order_by("pk")
         return self.render_page(delivery_form, formset, vorhandene_unloads, existing_formset)
 
     # ---------- Hilfsmethoden ----------
 
     def render_page(self, form, formset, vorhandene_unloads, existing_formset):
-        # 🇩🇪 Zentrales Rendering – jetzt inkl. existing_formset
+        # Zentrales Rendering – jetzt inkl. existing_formset
         return render(self.request, self.template_name, {
             "form": form,
             "formset": formset,
@@ -100,12 +100,12 @@ class UnloadCreateView(View):
     
     @staticmethod
     def _gen_barcode() -> str:
-        # 🇩🇪 Einfaches Muster „U<8HEX>“
+        # Einfaches Muster „U<8HEX>“
         return f"U{uuid.uuid4().hex[:8].upper()}"
 
     @staticmethod
     def _generate_barcode_image(unload: Unload) -> None:
-        # 🇩🇪 „Best effort“ – Fehler beim Bild sollen den Vorgang nicht stoppen
+        # „Best effort“ – Fehler beim Bild sollen den Vorgang nicht stoppen
         code = getattr(unload, "barcode", None)
         if not code:
             return

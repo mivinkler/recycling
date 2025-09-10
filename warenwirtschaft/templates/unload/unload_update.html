@@ -21,10 +21,7 @@
     <section class="itemcard-topbox itemcard-margin-left">
       <div class="itemcard-topbox-row">
         <label>Wareneingang:</label>
-        <div style="width: 75%; height: 27px; display: flex; align-items: center;">
-          <strong>#{{ delivery_unit.pk }}</strong>
-          <span style="margin-left: .5rem;">{{ delivery_unit }}</span>
-        </div>
+        <p style="width: 75%;">{{ delivery_unit }}</p>
 
         <section style="width: 130px; justify-items: right;">
           <button title="Entladung abschließen" type="button" class="btn btn-main" style="height: 40px; font-size: 0.9em;">
@@ -221,24 +218,8 @@
 
 {% block extra_js %}
 <script src="{% static 'js/barcode-scan.js' %}"></script>
-<!-- <script src="{% static 'js/close-open.js' %}"></script> -->
+<script src="{% static 'js/close-open.js' %}"></script>
 <script src="{% static 'js/weight.js' %}"></script>
 
-<script>
-  document.querySelectorAll('.existing-tbody tr').forEach(function(row) {
-    const cb = row.querySelector('.js-link-toggle');
-    const toggleRow = () => {
-      row.classList.toggle('is-locked', !cb.checked);
-      row.querySelectorAll('select, input[type="number"]').forEach(function(el) {
-        if (el.name.endsWith('-status') || el.name.endsWith('-weight')) {
-          el.disabled = !cb.checked;
-        }
-      });
-    };
-    if (cb) {
-      cb.addEventListener('change', toggleRow);
-      toggleRow();
-    }
-  });
-</script>
+
 {% endblock %}

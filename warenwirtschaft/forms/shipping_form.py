@@ -6,7 +6,7 @@ from warenwirtschaft.models import Shipping, Recycling, Unload
 class ShippingHeaderForm(forms.ModelForm):
     class Meta:
         model = Shipping
-        # 🇩🇪 Nur Kopffelder – ohne Recycling-Referenzen
+        #Nur Kopffelder – ohne Recycling-Referenzen
         fields = ["customer", "certificate", "transport", "note"]
 
 

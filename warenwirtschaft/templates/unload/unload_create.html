@@ -128,7 +128,7 @@
           {{ existing_formset.management_form }}
 
           {% if vorhandene_unloads %}
-            {# 🇩🇪 Gleiches Ordering für Forms & Daten annehmen #}
+            {#Gleiches Ordering für Forms & Daten annehmen #}
             {% for f in existing_formset.forms %}
               {% with u=f.instance %}
               <tr class="itemcard-table-row" data-kind="existing" data-key="{{ u.pk }}">

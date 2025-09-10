@@ -56,7 +56,7 @@ class RecyclingCreateView(View):
                 if has_new_rows:
                     new_instances = formset.save(commit=False)
                     for instance in new_instances:
-                        # 🇩🇪 Pflichtfelder setzen, weil sie nicht im Formular sind
+                        #Pflichtfelder setzen, weil sie nicht im Formular sind
                         instance.status = 1
                         instance.save()
                         instance.unloads.add(unload)
