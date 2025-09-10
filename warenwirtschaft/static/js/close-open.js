@@ -1,4 +1,4 @@
-/* 🇩🇪 Einfache Lock/Unlock-Logik ohne "disabled"
+/* Einfache Lock/Unlock-Logik ohne "disabled"
    - Alle Zeilen starten gesperrt (.is-locked).
    - Klick auf Schloss öffnet genau diese Zeile, alle anderen bleiben/werden gesperrt.
    - "Gesperrt" bedeutet: keine Interaktion (pointer-events), aber Werte werden im POST gesendet.
@@ -11,14 +11,14 @@
   const ICON_LOCK_CLOSED = ".icon-lock-closed";
   const ICON_LOCK_OPEN = ".icon-lock-open";
 
-  // 🇩🇪 Aktionszellen (geschlossen/offen) einer Zeile ermitteln
+  // Aktionszellen (geschlossen/offen) einer Zeile ermitteln
   function getActionCells(row) {
     const closed = row.querySelector(ICON_LOCK_CLOSED)?.closest("td") || null;
     const open   = row.querySelector(ICON_LOCK_OPEN)?.closest("td") || null;
     return { closed, open };
   }
 
-  // 🇩🇪 Zeile sperren (keine Bearbeitung, aber alles wird gesendet)
+  // Zeile sperren (keine Bearbeitung, aber alles wird gesendet)
   function lockRow(row) {
     row.classList.add("is-locked");
     const { closed, open } = getActionCells(row);
@@ -30,7 +30,7 @@
     if (cb) cb.checked = false;
   }
 
-  // 🇩🇪 Zeile entsperren (Bearbeitung zulassen)
+  // Zeile entsperren (Bearbeitung zulassen)
   function unlockRow(row) {
     row.classList.remove("is-locked");
     const { closed, open } = getActionCells(row);
@@ -50,12 +50,12 @@
     if (focusEl) { try { focusEl.focus(); if (focusEl.select) focusEl.select(); } catch(_){} }
   }
 
-  // 🇩🇪 Initial: alle Zeilen sperren
+  // Initial: alle Zeilen sperren
   function initLocked() {
     document.querySelectorAll(ROW_SELECTOR).forEach(lockRow);
   }
 
-  // 🇩🇪 Delegierter Klick-Handler für Lock-Buttons
+  // Delegierter Klick-Handler für Lock-Buttons
   function onClick(e) {
     const btn = e.target.closest(LOCK_BTN);
     if (!btn) return;
@@ -70,7 +70,7 @@
     rows.forEach(r => (r === row && willOpen) ? unlockRow(r) : lockRow(r));
   }
 
-  // 🇩🇪 Start
+  // Start
   function init() {
     initLocked();
     document.addEventListener("click", onClick, { passive: true });

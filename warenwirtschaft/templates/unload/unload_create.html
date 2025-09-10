@@ -84,23 +84,23 @@
               </div>
             </td>
 
-            <td class="itemcard-action-wrapper" hidden>
-            <div class="itemcard-action">
-              <button type="button" class="btn btn-lock">
-                <img class="icon-lock-closed" src="{% static 'icons/lock-icon.svg' %}">
-              </button>
-            </div>
-          </td>
+            <td class="itemcard-action-wrapper">
+              <div class="itemcard-action">
+                <button type="button" class="btn btn-lock">
+                  <img class="icon-lock-closed" src="{% static 'icons/lock-icon.svg' %}">
+                </button>
+              </div>
+            </td>
 
-          <td class="itemcard-action-wrapper">
-            <div class="itemcard-action">
-              <button type="button" class="btn btn-lock">
-                <img class="icon-lock-open" src="{% static 'icons/lock-open-icon.svg' %}">
-              </button>
+            <td class="itemcard-action-wrapper" style="display: none">
+              <div class="itemcard-action">
+                <button type="button" class="btn btn-lock">
+                  <img class="icon-lock-open" src="{% static 'icons/lock-open-icon.svg' %}">
+                </button>
 
-              <button type="submit" class="btn btn-main btn-save">Speichern</button>
-            </div>
-          </td>
+                <button type="submit" class="btn btn-main btn-save">Speichern</button>
+              </div>
+            </td>
           </tr>
           {% endfor %}
         </tbody>
@@ -158,7 +158,7 @@
                   </div>
                 </td>
 
-                <td class="itemcard-action-wrapper" hidden>
+                <td class="itemcard-action-wrapper">
                   <div class="itemcard-action">
                     <button type="button" class="btn btn-lock">
                       <img class="icon-lock-closed" src="{% static 'icons/lock-icon.svg' %}">

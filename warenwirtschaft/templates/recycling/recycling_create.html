@@ -66,34 +66,32 @@
           {% endfor %}
         {% else %}
           <tr class="itemcard-table-row dynamic-row">
-            <td hidden>
-              <input type="hidden" name="new-0-id" id="id_new-0-id">
-            </td>
-            <td class="checkbox-circle itemcard-action-left">
-              <input type="checkbox" name="selected_recycling" value="{{ form.instance.pk }}" title="Fraktion verknüpfen" checked>
-            </td>
-            <td class="itemcard-id">{{ forloop.counter }}</td>
+        <td hidden>
+          <input type="hidden" name="new-__prefix__-id" id="id_new-__prefix__-id">
+        </td>
+        <td class="checkbox-circle itemcard-action-left"></td>
+        <td class="itemcard-id">__index__</td>
 
-            <td class="itemcard-material">
-              <select name="new-0-material" id="id_new-0-material">
-                {% for value, label in formset.empty_form.fields.material.choices %}
-                  <option value="{{ value }}">{{ label }}</option>
-                {% endfor %}
-              </select>
-            </td>
+        <td class="itemcard-material">
+          <select name="new-__prefix__-material" id="id_new-__prefix__-material">
+            {% for value, label in formset.empty_form.fields.material.choices %}
+              <option value="{{ value }}">{{ label }}</option>
+            {% endfor %}
+          </select>
+        </td>
 
-            <td class="itemcard-boxtype">
-              <select name="new-0-box_type" id="id_new-0-box_type">
-                {% for value, label in formset.empty_form.fields.box_type.choices %}
-                  <option value="{{ value }}">{{ label }}</option>
-                {% endfor %}
-              </select>
-            </td>
+        <td class="itemcard-boxtype">
+          <select name="new-__prefix__-box_type" id="id_new-__prefix__-box_type">
+            {% for value, label in formset.empty_form.fields.box_type.choices %}
+              <option value="{{ value }}">{{ label }}</option>
+            {% endfor %}
+          </select>
+        </td>
 
-            <td class="itemcard-weight">
-              <input type="number" name="new-0-weight" id="id_new-0-weight" step="0.01" min="0">
-            </td>
-          </tr>
+        <td class="itemcard-weight">
+          <input type="number" name="new-__prefix__-weight" id="id_new-__prefix__-weight" step="0.01" min="0">
+        </td>
+      </tr>
         {% endif %}
       </tbody>
     </table>
