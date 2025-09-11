@@ -62,9 +62,10 @@
           <tr class="itemcard-table-row" data-kind="new" data-key="{{ f.prefix }}">
             <td class="checkbox-circle itemcard-action-left">
               <input type="checkbox"
-                     name="selected_recycling"
+                     name="selected_unload"
                      value="new:{{ f.prefix }}"
-                     title="Fraktion verknüpfen">
+                     title="Fraktion verknüpfen"
+                     checked>
             </td>
             <td class="itemcard-id">{{ forloop.counter }}</td>
             <td class="itemcard-material">{{ f.material }}</td>
@@ -92,7 +93,7 @@
               </div>
             </td>
 
-            <td class="itemcard-action-wrapper" style="display: none">
+            <td class="itemcard-action-wrapper">
               <div class="itemcard-action">
                 <button type="button" class="btn btn-lock">
                   <img class="icon-lock-open" src="{% static 'icons/lock-open-icon.svg' %}">

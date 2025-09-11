@@ -20,11 +20,11 @@ class UnloadForm(forms.ModelForm):
         }
 
 class ExistingEditForm(forms.ModelForm):
-    # 🇩🇪 Anzeige-/Steuerfeld für M2M-Auswahl (wird NICHT gespeichert)
+    # Anzeige-/Steuerfeld für M2M-Auswahl (wird NICHT gespeichert)
     selected = forms.BooleanField(required=False, label="verknüpft")
 
     def __init__(self, *args, **kwargs):
-        # 🇩🇪 Initialwert von außen übergeben (aus DB)
+        # Initialwert von außen übergeben (aus DB)
         selected_initial = kwargs.pop("selected_initial", False)
         super().__init__(*args, **kwargs)
         self.fields["selected"].initial = selected_initial

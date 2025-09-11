@@ -1,4 +1,4 @@
-/* 🇩🇪 Lock/Unlock-Logik mit respektierter Server-Auswahl:
+/* Lock/Unlock-Logik mit respektierter Server-Auswahl:
    - "Neue Wagen" (einzige new-Zeile) beim Laden offen.
    - "Existing": beim Laden gesperrt; Checkboxen, die vom Server checked kamen, sind "geschützt".
    - Klick aufs Schloss:
@@ -30,7 +30,7 @@
     if (open)   open.hidden   = locked;  // offenes Icon nur bei unlocked
   }
 
-  // 🇩🇪 Checkbox setzen; initial geschützte nur dann abwählen, wenn force=true
+  // Checkbox setzen; initial geschützte nur dann abwählen, wenn force=true
   function setRowCheckbox(row, value, { force = false } = {}) {
     const cb = row.querySelector('td input[type="checkbox"]');
     if (!cb) return;
@@ -88,11 +88,11 @@
     const row = cb.closest(ROW_SELECTOR);
     if (!row) return;
 
-    // 🇩🇪 Exklusiv öffnen – unabhängig davon, ob checked oder nicht
+    // Exklusiv öffnen – unabhängig davon, ob checked oder nicht
     document.querySelectorAll(ROW_SELECTOR).forEach(r => setLocked(r, r !== row));
     setLocked(row, false);
 
-    // 🇩🇪 WICHTIG: Checkbox-Zustand nicht anfassen – Nutzer hat ihn gerade gesetzt.
+    // WICHTIG: Checkbox-Zustand nicht anfassen – Nutzer hat ihn gerade gesetzt.
     //             (Damit kann man auch eine "initial geschützte" abwählen und speichern.)
   }
 
