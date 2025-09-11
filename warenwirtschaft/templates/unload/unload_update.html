@@ -59,7 +59,8 @@
               <input type="checkbox"
                      name="selected_unload"
                      value="new:{{ f.prefix }}"
-                     title="Fraktion verknüpfen">
+                     title="Fraktion verknüpfen"
+                     checked>
             </td>
             <td class="itemcard-id">{{ forloop.counter }}</td>
             <td class="itemcard-material">{{ f.material }}</td>
@@ -120,38 +121,31 @@
         </thead>
 
         <tbody class="itemcard-tbody existing-tbody">
-
         {% if vorhandene_forms %}
-          {% for form, selected in vorhandene_forms %}
-            <input type="hidden" name="{{ form.id.html_name }}" value="{{ form.id.value }}">
+          {% for pair in vorhandene_forms %}
+            {% with form=pair.0 %}
+              <tr class="itemcard-table-row" data-kind="existing" data-key="{{ form.instance.pk }}">
+                <td class="checkbox-circle itemcard-action-left">
+                  {{ form.selected }}  {# checked/unchecked übernimmt Django, s.a. Forms #}
+                </td>
 
-            <tr class="itemcard-table-row" data-kind="existing" data-key="{{ form.instance.pk }}">
-              <td class="checkbox-circle itemcard-action-left">
-                <input type="checkbox"
-                      class="js-link-toggle"
-                      name="selected_unload"
-                      value="{{ form.instance.pk }}"
-                      title="Fraktion verknüpfen"
-                      {% if selected %}checked{% endif %}>
-              </td>
+                <td class="itemcard-id">{{ forloop.counter }}</td>
+                <td class="itemcard-material"><p>{{ form.instance.material }}</p></td>
+                <td class="itemcard-boxtype"><p>{{ form.instance.get_box_type_display }}</p></td>
 
-              <td class="itemcard-id">{{ forloop.counter }}</td>
-              <td class="itemcard-material"><p>{{ form.instance.material }}</p></td>
-              <td class="itemcard-boxtype"><p>{{ form.instance.get_box_type_display }}</p></td>
+                <td class="itemcard-status">
+                  {{ form.id }}  {# verstecktes PK-Feld #}
+                  {{ form.status }}
+                </td>
 
-              <td class="itemcard-status">
-                {{ form.id }} {# verstecktes PK-Feld #}
-                {{ form.status }}
-              </td>
-
-              <td class="itemcard-weight itemcard-weight-action">
-                <div class="flex-container">
-                  {{ form.weight }}
-                  <button type="button" class="btn btn-weight" title="Waage öffnen" data-weight-url="{% url 'warenwirtschaft_api:weight_input_api' %}">
-                    <img src="{% static 'icons/dashboard-icon.svg' %}" alt="">
-                  </button>
-                </div>
-              </td>
+                <td class="itemcard-weight itemcard-weight-action">
+                  <div class="flex-container">
+                    {{ form.weight }}
+                    <button type="button" class="btn btn-weight" title="Waage öffnen" data-weight-url="{% url 'warenwirtschaft_api:weight_input_api' %}">
+                      <img src="{% static 'icons/dashboard-icon.svg' %}" alt="">
+                    </button>
+                  </div>
+                </td>
 
               <td class="itemcard-action-wrapper" hidden>
                 <div class="itemcard-action">
@@ -171,6 +165,7 @@
                 </div>
               </td>
             </tr>
+            {% endwith %}
           {% endfor %}
         {% else %}
           <tr class="itemcard-table-row">
@@ -213,6 +208,7 @@
   .itemcard-table-row.is-locked button:not(.btn-lock) {
     pointer-events: none;
   }
+  
 </style>
 {% endblock %}
 

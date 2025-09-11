@@ -1,7 +1,13 @@
-/* Einfache Lock/Unlock-Logik ohne "disabled"
-   - Alle Zeilen starten gesperrt (.is-locked).
-   - Klick auf Schloss öffnet genau diese Zeile, alle anderen bleiben/werden gesperrt.
-   - "Gesperrt" bedeutet: keine Interaktion (pointer-events), aber Werte werden im POST gesendet.
+/* 🇩🇪 Lock/Unlock-Logik mit respektierter Server-Auswahl:
+   - "Neue Wagen" (einzige new-Zeile) beim Laden offen.
+   - "Existing": beim Laden gesperrt; Checkboxen, die vom Server checked kamen, sind "geschützt".
+   - Klick aufs Schloss:
+       * geklickte Zeile exklusiv öffnen,
+       * ihre Checkbox beim Öffnen setzen (checked=true),
+       * andere Zeilen visuell sperren, deren Checkboxen nur abwählen, wenn sie NICHT initial geschützt sind,
+       * beim Schließen der geklickten Zeile Checkbox NICHT automatisch ändern (Benutzer entscheidet manuell).
+   - Manueller Klick auf Checkbox:
+       * öffnet/schließt nur die eigene Zeile; erlaubt auch das Abwählen eines initial geschützten Kästchens.
 */
 (function () {
   "use strict";
@@ -9,91 +15,102 @@
   const ROW_SELECTOR = "tr.itemcard-table-row";
   const LOCK_BTN = ".btn.btn-lock";
   const ICON_LOCK_CLOSED = ".icon-lock-closed";
-  const ICON_LOCK_OPEN = ".icon-lock-open";
+  const ICON_LOCK_OPEN   = ".icon-lock-open";
 
-  // Aktionszellen (geschlossen/offen) einer Zeile ermitteln
   function getActionCells(row) {
     const closed = row.querySelector(ICON_LOCK_CLOSED)?.closest("td") || null;
-    const open   = row.querySelector(ICON_LOCK_OPEN)?.closest("td") || null;
+    const open   = row.querySelector(ICON_LOCK_OPEN)?.closest("td")   || null;
     return { closed, open };
   }
 
-  // Zeile sperren (keine Bearbeitung, aber alles wird gesendet)
-  function lockRow(row) {
-    row.classList.add("is-locked");
+  function setLocked(row, locked) {
+    row.classList.toggle("is-locked", locked);
     const { closed, open } = getActionCells(row);
-    if (closed) closed.hidden = false;
-    if (open)   open.hidden = true;
+    if (closed) closed.hidden = !locked; // geschlossenes Icon nur bei locked
+    if (open)   open.hidden   = locked;  // offenes Icon nur bei unlocked
+  }
 
-    // Checkbox in der ersten Spalte abwählen (falls vorhanden)
+  // 🇩🇪 Checkbox setzen; initial geschützte nur dann abwählen, wenn force=true
+  function setRowCheckbox(row, value, { force = false } = {}) {
     const cb = row.querySelector('td input[type="checkbox"]');
-    if (cb) cb.checked = false;
+    if (!cb) return;
+    const isInitial = row.dataset.initialChecked === "1";
+    if (isInitial && value === false && !force) return;
+    cb.checked = !!value;
   }
 
-  // Zeile entsperren (Bearbeitung zulassen)
-  function unlockRow(row) {
-    row.classList.remove("is-locked");
-    const { closed, open } = getActionCells(row);
-    if (closed) closed.hidden = true;
-    if (open)   open.hidden = false;
+  function initFromDOM() {
+    const rows = document.querySelectorAll(ROW_SELECTOR);
+    rows.forEach(row => {
+      const kind = row.dataset.kind; // "new" | "existing"
+      const cb = row.querySelector('td input[type="checkbox"]');
+      const serverChecked = !!(cb && cb.checked);
 
-    // Checkbox der aktiven Zeile markieren
-    const cb = row.querySelector('td input[type="checkbox"]');
-    if (cb) cb.checked = true;
-
-    // Fokus auf erstes sinnvolles Eingabefeld setzen
-    const focusEl =
-      row.querySelector('input[type="number"]') ||
-      row.querySelector('input[type="text"]')   ||
-      row.querySelector("select")               ||
-      row.querySelector("textarea");
-    if (focusEl) { try { focusEl.focus(); if (focusEl.select) focusEl.select(); } catch(_){} }
+      if (kind === "new") {
+        row.dataset.initialChecked = "0"; // nicht geschützt
+        setLocked(row, false);            // Neue Wagen offen anzeigen
+        // Wenn du neue Zeile auch vorselektieren willst:
+        // setRowCheckbox(row, true);
+      } else {
+        row.dataset.initialChecked = serverChecked ? "1" : "0";
+        setLocked(row, true);             // Existing initial gesperrt anzeigen
+      }
+    });
   }
 
-  // Initial: alle Zeilen sperren
-  function initLocked() {
-    document.querySelectorAll(ROW_SELECTOR).forEach(lockRow);
+  function toggleByLock(row) {
+    const willOpen = row.classList.contains("is-locked"); // wenn gesperrt -> öffnen
+    const rows = Array.from(document.querySelectorAll(ROW_SELECTOR));
+
+    // alle visuell sperren
+    rows.forEach(r => setLocked(r, true));
+
+    if (willOpen) {
+      // geklickte öffnen + Checkbox setzen
+      setLocked(row, false);
+      setRowCheckbox(row, true);
+      // andere abwählen, aber initial geschützte in Ruhe lassen
+      rows.forEach(r => { if (r !== row) setRowCheckbox(r, false); });
+    } else {
+      // geklickte schließen, Checkbox NICHT automatisch ändern:
+      // Benutzer kann sie manuell abwählen, um die Verknüpfung zu entfernen.
+      setLocked(row, true);
+
+      // 👉 Если хочешь также автовыключать при закрытии — раскомментируй:
+      // setRowCheckbox(row, false, { force: true });
+    }
   }
 
-  // Delegierter Klick-Handler für Lock-Buttons
+  function onCheckboxChange(e) {
+    const cb = e.target;
+    if (!cb.matches('input[type="checkbox"]')) return;
+
+    const row = cb.closest(ROW_SELECTOR);
+    if (!row) return;
+
+    // 🇩🇪 Exklusiv öffnen – unabhängig davon, ob checked oder nicht
+    document.querySelectorAll(ROW_SELECTOR).forEach(r => setLocked(r, r !== row));
+    setLocked(row, false);
+
+    // 🇩🇪 WICHTIG: Checkbox-Zustand nicht anfassen – Nutzer hat ihn gerade gesetzt.
+    //             (Damit kann man auch eine "initial geschützte" abwählen und speichern.)
+  }
+
   function onClick(e) {
     const btn = e.target.closest(LOCK_BTN);
     if (!btn) return;
-
     const row = btn.closest(ROW_SELECTOR);
     if (!row) return;
-
-    // Wenn die Zeile aktuell gesperrt ist -> nur diese entsperren, alle anderen sperren
-    const rows = Array.from(document.querySelectorAll(ROW_SELECTOR));
-    const willOpen = row.classList.contains("is-locked");
-
-    rows.forEach(r => (r === row && willOpen) ? unlockRow(r) : lockRow(r));
+    toggleByLock(row);
   }
 
-  // Start
   function init() {
-    initLocked();
+    initFromDOM();
     document.addEventListener("click", onClick, { passive: true });
+    document.addEventListener("change", onCheckboxChange, { passive: true });
   }
 
   (document.readyState === "loading")
     ? document.addEventListener("DOMContentLoaded", init)
     : init();
-
-  document.querySelectorAll('.existing-tbody tr').forEach(function(row) {
-    const cb = row.querySelector('.js-link-toggle');
-    const toggleRow = () => {
-      row.classList.toggle('is-locked', !cb.checked);
-      row.querySelectorAll('select, input[type="number"]').forEach(function(el) {
-        if (el.name.endsWith('-status') || el.name.endsWith('-weight')) {
-          el.disabled = !cb.checked;
-        }
-      });
-    };
-    if (cb) {
-      cb.addEventListener('change', toggleRow);
-      toggleRow();
-    }
-  });
 })();
-
