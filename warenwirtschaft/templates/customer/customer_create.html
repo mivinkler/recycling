@@ -17,49 +17,49 @@
 
       <div class="itemcard-topbox-row">
         <label for="id_name">Name:</label>
-        <div>{{ form.name }}</div>
+        <div class="itemcard-topbox-content">{{ form.name }}</div>
       </div>
 
       <div class="itemcard-topbox-row">
         <label for="id_avv_number">AVV-Nummer:</label>
-        <div>{{ form.avv_number }}</div>
+        <div class="itemcard-topbox-content">{{ form.avv_number }}</div>
       </div>
 
       <div class="itemcard-topbox-row">
         <label for="id_street">Straße:</label>
-        <div>{{ form.street }}</div>
+        <div class="itemcard-topbox-content">{{ form.street }}</div>
       </div>
 
       <div class="itemcard-topbox-row">
-        <label class="id_postal_code">PLZ:</label>
-        <div>{{ form.postal_code }}</div>
+        <label for="id_postal_code">PLZ:</label>
+        <div class="itemcard-topbox-content">{{ form.postal_code }}</div>
       </div>
 
       <div class="itemcard-topbox-row">
         <label for="id_city">Ort:</label>
-        <div>{{ form.city }}</div>
+        <div class="itemcard-topbox-content">{{ form.city }}</div>
       </div>
 
       <div class="itemcard-topbox-row">
         <label for="id_phone">Telefon:</label>
-        <div>{{ form.phone }}</div>
+        <div class="itemcard-topbox-content">{{ form.phone }}</div>
       </div>
 
       <div class="itemcard-topbox-row">
-        <label class="id_email">E-Mail:</label>
-        <div>{{ form.email }}</div>
+        <label for="id_email">E-Mail:</label>
+        <div class="itemcard-topbox-content">{{ form.email }}</div>
       </div>
 
       <div class="itemcard-topbox-row">
-        <label class="id_note">Anmerkung:</label>
-        <div>{{ form.note }}</div>
+        <label for="id_note">Anmerkung:</label>
+        <div class="itemcard-topbox-textarea">{{ form.note }}</div>
       </div>
     </section>
 
     <div class="buttons-form-footer">
       <button type="submit" name="save" class="btn btn-main">Speichern</button>
     </div>
-  </form>
-</div>
+  </div>
+</form>
 
 {% endblock %}

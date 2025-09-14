@@ -4,3 +4,4 @@ from .delivery_update_view import DeliveryUpdateView
 from .delivery_detail_weight_view import DeliveryDetailWeightView
 from .delivery_detail_barcode_view import DeliveryDetailBarcodeView
 from .delivery_delete_view import DeliveryDeleteView
+from .delivery_update_status_view import DeliveryUpdateStatusView

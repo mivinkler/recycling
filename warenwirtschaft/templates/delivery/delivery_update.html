@@ -21,17 +21,17 @@
 
       <div class="itemcard-topbox-row">
         <label for="id_customer">Lieferant:</label>
-        <div>{{ form.customer }}</div>
+        <div class="itemcard-topbox-content">{{ form.customer }}</div>
       </div>
 
       <div class="itemcard-topbox-row">
         <label for="id_delivery_receipt">Lieferschein:</label>
-        <div>{{ form.delivery_receipt }}</div>
+        <div class="itemcard-topbox-content">{{ form.delivery_receipt }}</div>
       </div>
 
       <div class="itemcard-topbox-row">
         <label for="id_note">Anmerkung:</label>
-        <div>{{ form.note }}</div>
+        <div class="itemcard-topbox-textarea">{{ form.note }}</div>
       </div>
     </section>
 
@@ -46,8 +46,7 @@
           <th class="itemcard-boxtype">Behälter</th>
           <th class="itemcard-material">Material</th>
           <th class="itemcard-weight">Gewicht</th>
-          <th class="itemcard-note">Anmerkung</th>
-          <th class="itemcard-action-alone"><img src="/static/icons/delete-icon.svg" title="Zeile löschen"></th>
+          <th class="itemcard-row-delete"><img src="/static/icons/delete-icon.svg" title="Zeile löschen"></th>
         </tr>
       </thead>
 
@@ -62,8 +61,7 @@
           <td class="itemcard-material">{{ item_form.material }}</td>
           <td class="itemcard-boxtype">{{ item_form.box_type }}</td>
           <td class="itemcard-weight">{{ item_form.weight }}</td>
-          <td class="itemcard-note">{{ item_form.note }}</td>
-          <td class="itemcard-action-alone">
+          <td class="itemcard-row-delete">
             <label class="checkbox-square">
               {{ item_form.DELETE }}
               <span data-name="cross"></span>
@@ -81,8 +79,7 @@
         <td class="itemcard-material">{{ empty_form.material }}</td>
         <td class="itemcard-boxtype">{{ empty_form.box_type }}</td>
         <td class="itemcard-weight">{{ empty_form.weight }}</td>
-        <td class="itemcard-note">{{ empty_form.note }}</td>
-        <td class="itemcard-action-alone">
+        <td class="itemcard-row-delete">
           <label class="checkbox-square">
             {{ empty_form.DELETE }}
             <span data-name="cross"></span>

@@ -128,40 +128,70 @@
 
 .itemcard-topbox-row {
   display: flex;
-  gap: 16px;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 12px;
-  min-height: 27px;
-  
-}
-
-.itemcard-topbox-row div {
-  border: 1px solid var(--color-gray-400);
 }
 
 .itemcard-topbox-row label,
 .itemcard-topbox-row span {
-  width: 25%;
-  min-width: 160px;
-  line-height: 27px;
+  height: 27px;
   font-weight: 500;
-}
-
-.itemcard-topbox-row p,
-.itemcard-topbox-row div:last-child {
-  width: 75%;
-  min-width: 400px;
-  line-height: 27px;
+  font-size: 1.05em;
+  width: 140px;
+  align-content: center;
 }
 
 .itemcard-topbox-row p {
   font-weight: 500;
-  font-size: 1.1em;
+  font-size: 1.05em;
   color: var(--color-gray-900);
+  width: 402px;
 }
 
 .itemcard-topbox-row textarea {
   resize: vertical;
   box-sizing: border-box;
+  width: 402px;
+  border: 1px solid var(--color-gray-400);
+  min-height: 29px;
+}
+
+.weight-container { 
+  display: flex; 
+  align-items: center; 
+  gap: 0.5rem; 
+}
+
+.itemcard-topbox-content {
+  width: 402px;
+  height: 27px;
+  border: 1px solid var(--color-gray-400);
+}
+
+.btn-weight {
+  padding: 0 5px;
+  height: 26px;
+  border: none;
+  border-left: 1px solid #ccc;
+  border-radius: 0;
+  background: transparent;
+}
+
+.itemcard-action-wrapper { 
+  width: 114px; 
+  background: transparent; 
+  border: none;
+}
+
+.itemcard-table-row.is-locked * { 
+  color: var(--color-gray-800); 
+}
+
+.itemcard-table-row.is-locked input:not([type="hidden"]),
+.itemcard-table-row.is-locked select,
+.itemcard-table-row.is-locked button:not(.btn-lock) {
+  pointer-events: none;
 }
 
 /* ================ Itemcard Body ================ */
@@ -207,16 +237,10 @@ td p {
 }
 
 .itemcard-action,
-.itemcard-action-alone,
 .itemcard-action-left {
   background-color: transparent;
   border: none;
   text-align: center;
-}
-
-.itemcard-action-alone {
-  padding-left: 10px;
-  width: 0;
 }
 
 .itemcard-action-left {
@@ -237,10 +261,16 @@ td p {
   gap: 2px
 }
 
-.itemcard-row-delete {
+.itemcard-content {
   margin-bottom: 20px;
   max-width: 540px;
   line-height: 1.8;
+}
+
+.itemcard-row-delete {
+  background-color: transparent;
+  border: none;
+  padding-left: 6px;
 }
 
 .table-cell.checkbox-circle {
@@ -369,6 +399,13 @@ td p {
 .print-btn {
   width: 70px;
   height: 26px;
+}
+
+.itemcard-topbox-btn {
+  height: 40px; 
+  font-size: 0.9em; 
+  text-align: center; 
+  width: 114px;
 }
 
 /* ====== Сontext Menu ====== */

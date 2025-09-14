@@ -53,7 +53,7 @@
         // setRowCheckbox(row, true);
       } else {
         row.dataset.initialChecked = serverChecked ? "1" : "0";
-        setLocked(row, true);             // Existing initial gesperrt anzeigen
+        setLocked(row, true);             
       }
     });
   }
@@ -76,8 +76,6 @@
       // Benutzer kann sie manuell abwählen, um die Verknüpfung zu entfernen.
       setLocked(row, true);
 
-      // 👉 Если хочешь также автовыключать при закрытии — раскомментируй:
-      // setRowCheckbox(row, false, { force: true });
     }
   }
 

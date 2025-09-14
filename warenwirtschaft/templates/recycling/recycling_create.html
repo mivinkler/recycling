@@ -26,7 +26,7 @@
 
       <div class="itemcard-topbox-row">
         <label for="id_unload">Vorsortierung:</label>
-        <div>{{ form.unload }}</div>
+        <div class="itemcard-topbox-content">{{ form.unload }}</div>
       </div>
     </section>
 
@@ -41,6 +41,7 @@
           <th class="itemcard-id">№</th>
           <th class="itemcard-material">Material</th>
           <th class="itemcard-boxtype">Behälter</th>
+          <th class="itemcard-status">Status</th>
           <th class="itemcard-weight">Gewicht</th>
         </tr>
       </thead>
@@ -61,37 +62,38 @@
               <td class="itemcard-id">{{ forloop.counter }}</td>
               <td class="itemcard-material"><p>{{ form.instance.material }}</p></td>
               <td class="itemcard-boxtype"><p>{{ form.instance.get_box_type_display }}</p></td>
+              <td class="itemcard-boxtype"><p>{{ form.instance.get_status_display }}</p></td>
               <td class="itemcard-weight"><p>{{ form.instance.weight }}</p></td>
             </tr>
           {% endfor %}
         {% else %}
-          <tr class="itemcard-table-row dynamic-row">
-        <td hidden>
-          <input type="hidden" name="new-__prefix__-id" id="id_new-__prefix__-id">
-        </td>
-        <td class="checkbox-circle itemcard-action-left"></td>
-        <td class="itemcard-id">__index__</td>
+        <tr class="itemcard-table-row dynamic-row">
+          <td hidden>
+            <input type="hidden" name="new-__prefix__-id" id="id_new-__prefix__-id">
+          </td>
+          <td class="checkbox-circle itemcard-action-left"></td>
+          <td class="itemcard-id">__index__</td>
 
-        <td class="itemcard-material">
-          <select name="new-__prefix__-material" id="id_new-__prefix__-material">
-            {% for value, label in formset.empty_form.fields.material.choices %}
-              <option value="{{ value }}">{{ label }}</option>
-            {% endfor %}
-          </select>
-        </td>
+          <td class="itemcard-material">
+            <select name="new-__prefix__-material" id="id_new-__prefix__-material">
+              {% for value, label in formset.empty_form.fields.material.choices %}
+                <option value="{{ value }}">{{ label }}</option>
+              {% endfor %}
+            </select>
+          </td>
 
-        <td class="itemcard-boxtype">
-          <select name="new-__prefix__-box_type" id="id_new-__prefix__-box_type">
-            {% for value, label in formset.empty_form.fields.box_type.choices %}
-              <option value="{{ value }}">{{ label }}</option>
-            {% endfor %}
-          </select>
-        </td>
+          <td class="itemcard-boxtype">
+            <select name="new-__prefix__-box_type" id="id_new-__prefix__-box_type">
+              {% for value, label in formset.empty_form.fields.box_type.choices %}
+                <option value="{{ value }}">{{ label }}</option>
+              {% endfor %}
+            </select>
+          </td>
 
-        <td class="itemcard-weight">
-          <input type="number" name="new-__prefix__-weight" id="id_new-__prefix__-weight" step="0.01" min="0">
-        </td>
-      </tr>
+          <td class="itemcard-weight">
+            <input type="number" name="new-__prefix__-weight" id="id_new-__prefix__-weight" step="0.01" min="0">
+          </td>
+        </tr>
         {% endif %}
       </tbody>
     </table>
@@ -127,7 +129,8 @@
     </template>
 
     <div class="itemcard-action add-buttons">
-      <button class="btn btn-row-add itemcard-margin-left" type="button" id="form-add-btn">+</button>
+      <div style="width: 20px;"></div>
+      <button class="btn btn-row-add" type="button" id="form-add-btn">+</button>
       <button class="btn btn-row-add" type="button" id="form-remove-btn">–</button>
     </div>
 

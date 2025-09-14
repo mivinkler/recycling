@@ -1,4 +1,3 @@
-# warenwirtschaft/views/unload_update_view.py
 from __future__ import annotations
 
 import uuid
@@ -15,7 +14,6 @@ from warenwirtschaft.models import Unload, DeliveryUnit
 from warenwirtschaft.services.barcode_service import BarcodeGenerator
 
 
-# warenwirtschaft/views/unload_update_view.py  (фрагменты)
 
 class UnloadUpdateView(View):
     template_name = "unload/unload_update.html"

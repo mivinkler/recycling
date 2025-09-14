@@ -90,6 +90,7 @@ input::-webkit-inner-spin-button {
 
 input[type="text"],
 input[type="number"],
+input[type="email"],
 textarea {
   padding-left: 4px;
 }

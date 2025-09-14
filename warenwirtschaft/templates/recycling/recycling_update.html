@@ -90,7 +90,8 @@
     </table>
 
     <div class="itemcard-action add-buttons">
-      <button class="btn btn-row-add itemcard-margin-left" type="button" id="form-add-btn">+</button>
+      <div style="width: 20px;"></div>
+      <button class="btn btn-row-add" type="button" id="form-add-btn">+</button>
       <button class="btn btn-row-add" type="button" id="form-remove-btn">–</button>
     </div>
 
@@ -108,5 +109,4 @@
 {% block extra_js %}
   <script src="{% static 'js/add-table-row.js' %}"></script>
   <script src="{% static 'js/mouse-right-click.js' %}"></script>
-
 {% endblock %}

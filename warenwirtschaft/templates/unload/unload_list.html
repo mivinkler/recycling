@@ -19,15 +19,15 @@
   <div class="table-header">{% sort_header "status" "Status" %}</div>
 
   {% for item in page_obj %}
-    {% with first_du=item.delivery_units.all|first %}
+    {% with delivery_unit=item.delivery_units.all|first %}
     <div class="table-row js-select-row"
       data-id="{{ item.id }}"
       data-status="{{ item.status }}"
       data-url-unload-create="{% url 'recycling_create' %}?unit_id={{ item.id }}"
-      data-url-update="{% url 'unload_update' delivery_unit_pk=item.id %}"
+      data-url-update="{% if delivery_unit %}{% url 'unload_update' delivery_unit_pk=delivery_unit.id %}{% endif %}"
       data-url-detail-barcode="{% url 'unload_detail_barcode' pk=item.id %}"
-      {% comment %} data-url-detail-weight="{% if first_du %}{% url 'unload_detail_weight' pk=first_du.id %}{% endif %}" {% endcomment %}
-    >
+      {% comment %} data-url-detail-weight="{% if delivery_unit %}{% url 'unload_detail_weight' pk=delivery_unit.id %}{% endif %}" {% endcomment %}
+      >
       <div class="table-cell table-cell-id">{{ forloop.counter }}</div>
 
       <div class="table-cell">
