@@ -72,7 +72,7 @@
             <input type="hidden" name="new-__prefix__-id" id="id_new-__prefix__-id">
           </td>
           <td class="checkbox-circle itemcard-action-left"></td>
-          <td class="itemcard-id">__index__</td>
+          <td class="itemcard-id">{{ forloop.counter }}</td>
 
           <td class="itemcard-material">
             <select name="new-__prefix__-material" id="id_new-__prefix__-material">
@@ -85,6 +85,14 @@
           <td class="itemcard-boxtype">
             <select name="new-__prefix__-box_type" id="id_new-__prefix__-box_type">
               {% for value, label in formset.empty_form.fields.box_type.choices %}
+                <option value="{{ value }}">{{ label }}</option>
+              {% endfor %}
+            </select>
+          </td>
+
+          <td class="itemcard-boxtype">
+            <select name="new-__prefix__-status" id="id_new-__prefix__-status">
+              {% for value, label in formset.empty_form.fields.status.choices %}
                 <option value="{{ value }}">{{ label }}</option>
               {% endfor %}
             </select>
@@ -117,6 +125,14 @@
         <td class="itemcard-boxtype">
           <select name="new-__prefix__-box_type" id="id_new-__prefix__-box_type">
             {% for value, label in formset.empty_form.fields.box_type.choices %}
+              <option value="{{ value }}">{{ label }}</option>
+            {% endfor %}
+          </select>
+        </td>
+
+        <td class="itemcard-boxtype">
+          <select name="new-__prefix__-status" id="id_new-__prefix__-status">
+            {% for value, label in formset.empty_form.fields.status.choices %}
               <option value="{{ value }}">{{ label }}</option>
             {% endfor %}
           </select>

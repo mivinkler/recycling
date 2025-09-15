@@ -11,19 +11,14 @@ class UnloadChoiceForm(forms.Form):
 class RecyclingForm(forms.ModelForm):
     class Meta:
         model = Recycling
-        fields = ["box_type", "material", "weight"]
+        fields = ["box_type", "material", "status", "weight"]
 
 # extra=0, sodass ein leeres Formset gültig ist, wenn der Benutzer nichts hinzugefügt hat
 RecyclingFormSet = modelformset_factory(
     Recycling,
     form=RecyclingForm,
-    extra=0,
+    extra=1,
     can_delete=True,
     validate_min=False,
     validate_max=False,
 )
-
-class RecyclingUpdateForm(forms.ModelForm):
-    class Meta:
-        model = Recycling
-        fields = ["box_type", "material", "weight"]
