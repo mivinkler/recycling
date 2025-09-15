@@ -1,38 +1,31 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Aufbereitung erfassen{% endblock %}
+{% block title %}Aufbereitung bearbeiten{% endblock %}
 
 {% block content %}
-<form method="post" action="{% if unload and unload.pk %}{% url 'recycling_update' pk=unload.pk %}{% endif %}">
+<form method="post" action="">
   {% csrf_token %}
 
   <div class="itemcard">
     <div class="itemcard-title itemcard-margin-left">
-      <h2>Aufbereitung ändern</h2>
+      <h2>Vorsortierung bearbeiten</h2>
     </div>
 
-    <section class="itemcard-topbox">
-      {{ form.non_field_errors }}
-
-      <div class="itemcard-topbox-row itemcard-margin-left">
-        <label for="barcode">Barcode:</label>
-        <div>
-          <!-- TODO:  "/api/unload-input/"??? -->
-          <input type="text" id="barcode" data-api="/api/unload-input/" autofocus autocomplete="off" placeholder="Barcode scannen..." />
+    <section class="itemcard-topbox itemcard-margin-left">
+      <div class="itemcard-topbox-row">
+        <label>Vorsortierung:</label>
+        <div class="itemcard-topbox-content">
+          {# 🇩🇪 Anzeige des Unload; falls du ein bestimmtes Feld möchtest, hier anpassen #}
+          <strong>{{ unload }}</strong>
         </div>
-      </div>
-
-      <div class="itemcard-topbox-row itemcard-margin-left">
-        <span for="id_unload">Vorsortierung:</span>
-        <p>{{ unload }}</p>
       </div>
     </section>
 
     <div class="itemcard-table-title itemcard-margin-left">Aktive Fraktionen:</div>
 
     <table class="itemcard-table add-row-js">
-      {{ formset.management_form }}
+      {{ new_formset.management_form }}
 
       <thead class="itemcard-thead">
         <tr>
@@ -40,54 +33,71 @@
           <th class="itemcard-id">№</th>
           <th class="itemcard-material">Material</th>
           <th class="itemcard-boxtype">Behälter</th>
+          <th class="itemcard-status">Status</th>
           <th class="itemcard-weight">Gewicht</th>
         </tr>
       </thead>
 
-      <tbody class="itemcard-tbody">
-        {{ formset.non_form_errors }}
-        {% if vorhandene_forms %}
-          {% for form, selected in vorhandene_forms %}
-            <input type="hidden" name="{{ form.id.html_name }}" value="{{ form.id.value }}">
+      <tbody class="itemcard-tbody" id="new-formset-tbody">
+
+        {# 🇩🇪 Bestehende aktive Fraktionen (Checkboxen; "checked" falls bereits verknüpft) #}
+        {% if active_qs %}
+          {% for obj in active_qs %}
             <tr class="itemcard-table-row"
-                data-id="{{ form.instance.pk }}"
-                data-url-detail-barcode="{% if form.instance.pk %}{% url 'recycling_detail' pk=form.instance.pk %}{% endif %}"
-                data-url-update="{% if form.instance.pk %}{% url 'recycling_update' pk=form.instance.pk %}{% else %}#{% endif %}">
-
-
-              <td hidden>{{ form.id }}</td>
+                data-id="{{ obj.pk }}"
+                data-url-detail-barcode="{% url 'recycling_detail' pk=obj.pk %}"
+                data-url-update="{% url 'recycling_update' pk=unload.pk %}">
+              <td hidden></td>
               <td class="checkbox-circle itemcard-action-left">
-                <input type="checkbox" name="selected_recycling" value="{{ form.instance.pk }}" {% if selected %}checked{% endif %}>
+                <input type="checkbox"
+                       name="existing"
+                       value="{{ obj.pk }}"
+                       title="Fraktion verknüpfen"
+                       {% if obj.pk|stringformat:'s' in existing_selected_ids %}checked{% endif %}>
               </td>
               <td class="itemcard-id">{{ forloop.counter }}</td>
-              <td class="itemcard-material"><p>{{ form.instance.material }}</p></td>
-              <td class="itemcard-boxtype"><p>{{ form.instance.get_box_type_display }}</p></td>
-              <td class="itemcard-weight"><p>{{ form.instance.weight }}</p></td>
+              <td class="itemcard-material"><p>{{ obj.material }}</p></td>
+              <td class="itemcard-boxtype"><p>{{ obj.get_box_type_display }}</p></td>
+              <td class="itemcard-boxtype"><p>{{ obj.get_status_display }}</p></td>
+              <td class="itemcard-weight"><p>{{ obj.weight }}</p></td>
             </tr>
           {% endfor %}
-        {% else %}
-          <tr class="itemcard-table-row">
-            <td class="checkbox-circle itemcard-action-left">
-              <input type="radio" name="selected_recycling" title="Keine Daten">
-            </td>
-            <td colspan="4" class="text-center">
-              Keine Daten vorhanden
-            </td>
-          </tr>
         {% endif %}
-      </tbody>
 
-      <template id="table-row-template">
-        <tr class="itemcard-table-row dynamic-row">
-          <td hidden>{{ empty_form.id }}</td>
-          <td class="checkbox-circle"></td>
-          <td class="itemcard-id">__index__</td>
-          <td class="itemcard-material">{{ empty_form.material }}</td>
-          <td class="itemcard-boxtype">{{ empty_form.box_type }}</td>
-          <td class="itemcard-weight">{{ empty_form.weight }}</td>
-        </tr>
-      </template>
+        {# 🇩🇪 Bereits vom Server zurückgegebene NEUE Zeilen (z.B. bei Validierungsfehlern) #}
+        {{ new_formset.non_form_errors }}
+        {% for form in new_formset %}
+          <tr class="itemcard-table-row">
+            <td hidden></td>
+            <td class="checkbox-circle itemcard-action-left"></td>
+            {# Hinweis: Nummerierung kann bei Bedarf über existing_count berechnet werden #}
+            <td class="itemcard-id">{{ forloop.counter0|add:existing_count|add:1 }}</td>
+            <td class="itemcard-material">{{ form.material.errors }}{{ form.material }}</td>
+            <td class="itemcard-boxtype">{{ form.box_type.errors }}{{ form.box_type }}</td>
+            <td class="itemcard-boxtype">{{ form.status.errors }}{{ form.status }}</td>
+            <td class="itemcard-weight">{{ form.weight.errors }}{{ form.weight }}</td>
+          </tr>
+        {% empty %}
+          {# Keine initialen neuen Zeilen – werden via Template+JS hinzugefügt #}
+        {% endfor %}
+      </tbody>
     </table>
+
+    {# 🇩🇪 Template für NEUE Zeilen; __prefix__ wird vom JS ersetzt; __index__ ist die Anzeige-Nummer #}
+    <template id="table-row-template">
+      <tr class="itemcard-table-row dynamic-row">
+        <td hidden>
+          <input type="hidden" name="new-__prefix__-id" id="id_new-__prefix__-id">
+        </td>
+        <td class="checkbox-circle itemcard-action-left"></td>
+        <td class="itemcard-id">__index__</td>
+
+        <td class="itemcard-material">{{ empty_form.material }}</td>
+        <td class="itemcard-boxtype">{{ empty_form.box_type }}</td>
+        <td class="itemcard-boxtype">{{ empty_form.status }}</td>
+        <td class="itemcard-weight">{{ empty_form.weight }}</td>
+      </tr>
+    </template>
 
     <div class="itemcard-action add-buttons">
       <div style="width: 20px;"></div>
@@ -100,10 +110,6 @@
     </div>
   </div>
 </form>
-
-{% include "components/message.html" %}
-
-
 {% endblock %}
 
 {% block extra_js %}
