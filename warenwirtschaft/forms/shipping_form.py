@@ -8,7 +8,9 @@ class ShippingHeaderForm(forms.ModelForm):
         model = Shipping
         #Nur Kopffelder – ohne Recycling-Referenzen
         fields = ["customer", "certificate", "transport", "note"]
-
+        widgets = {
+            'note': forms.Textarea(attrs={'rows': 3}),
+        }
 
 class UnloadChoiceForm(forms.Form):
     unload = forms.ModelChoiceField(

@@ -17,18 +17,15 @@
 </head>
 <body>
     {% if obj.barcode_image %}
-    <img src="{{ obj.barcode_image.url }}" alt="Barcode">
+        {% with svg=BarcodeGenerator(object.barcode).render_svg_str %}
+            {{ svg|safe }}
+        {% endwith %}
     {% else %}
-    <p>Kein Barcode verfügbar.</p>
+        <p>Kein Barcode verfügbar.</p>
     {% endif %}
     
     <table>
-        {% if obj.area %}
-        <tr>
-            <td><strong>Bereich:</strong></td>
-            <td>{{ obj.area }}</td>
-        </tr>
-        {% endif %}
+       
 
         {% if obj.delivery.customer %}
         <tr>

@@ -1,21 +1,27 @@
-
-import barcode
+# warenwirtschaft/services/barcode_service.py
 from io import BytesIO
-from barcode.writer import ImageWriter
-from django.core.files.base import ContentFile
+import barcode
+from barcode.writer import SVGWriter
+
+DEFAULT_WRITER_OPTS = {
+    "module_width": 0.25,
+    "module_height": 15,
+    "font_size": 10,
+    "text_distance": 2,
+    "quiet_zone": 2,
+    "write_text": True,  # показывать номер под штрихкодом
+}
 
 class BarcodeGenerator:
-    """
-    Generiert ein Barcode-Bild und speichert es im angegebenen Verzeichnis.
-    """
-    def __init__(self, obj, code, upload_to):
-        self.obj = obj
-        self.code = code
-        self.upload_to = upload_to
+    def __init__(self, code: str, *, writer_opts: dict | None = None):
+        self.barcode = code
+        self.writer_opts = {**DEFAULT_WRITER_OPTS, **(writer_opts or {})}
 
-    def generate_image(self):
-        ean = barcode.get('code128', self.code, writer=ImageWriter())
-        buffer = BytesIO()
-        ean.write(buffer)
-        file_name = f"{self.upload_to}/{self.code}.png"
-        self.obj.barcode_image.save(file_name, ContentFile(buffer.getvalue()), save=False)
+    def render_svg_bytes(self) -> bytes:
+        ean = barcode.get("code128", self.barcode, writer=SVGWriter())
+        buf = BytesIO()
+        ean.write(buf, self.writer_opts)
+        return buf.getvalue()
+
+    def render_svg_str(self) -> str:
+        return self.render_svg_bytes().decode("utf-8")

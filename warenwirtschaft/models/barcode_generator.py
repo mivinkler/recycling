@@ -12,20 +12,19 @@ class BarcodeGenerator(models.Model):
         (5, "Ohne Behälter"),
     ]
 
-    AREA_CHOICES = [
-        (1, "Wareneingang"),
-        (2, "Behälter"),
-        (3, "Abholung"),
+    TRANSPORT_CHOICES = [
+        (1, "Kunde"),
+        (2, "Eigen"),
     ]
 
 
-    code = models.CharField(max_length=64, unique=True)
-    delivery_receipt = models.CharField(max_length=100, blank=True, null=True)
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, blank=True, null=True, related_name='customer_for_barcode')
-    box_type = models.PositiveSmallIntegerField(choices=BOX_TYPE_CHOICES, blank=True, null=True)
+    receipt = models.CharField(max_length=100, blank=True, null=True)
     material = models.ForeignKey(Material, on_delete=models.SET_NULL, null=True, blank=True, related_name='material_for_barcode')
+    box_type = models.PositiveSmallIntegerField(choices=BOX_TYPE_CHOICES, blank=True, null=True)
+    transport = models.PositiveSmallIntegerField(choices=TRANSPORT_CHOICES, default=1)
     weight = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-    area = models.PositiveSmallIntegerField(choices=AREA_CHOICES, blank=True, null=True)
+    barcode = models.CharField(max_length=64, blank=True, null=True)
     barcode_image = models.ImageField(upload_to='barcodes/reusable', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(null=True, blank=True, default=None)

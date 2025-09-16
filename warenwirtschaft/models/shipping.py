@@ -13,6 +13,7 @@ class Shipping(models.Model):
     certificate = models.PositiveIntegerField(null=True, blank=True)
     transport = models.PositiveSmallIntegerField(choices=TRANSPORT_CHOICES)
     note = models.CharField(max_length=255, null=True, blank=True)
+    barcode = models.CharField(max_length=64, unique=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(null=True, blank=True, default=None)
     deleted_at = models.DateTimeField(null=True, blank=True, default=None)

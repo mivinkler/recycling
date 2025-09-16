@@ -12,7 +12,7 @@
 <div class="table" data-type="barcode">
   <div class="table-header">{% sort_header "id" "ID" %}</div>
   <div class="table-header">{% sort_header "barcode" "Barcode" %}</div>
-  <div class="table-header">{% sort_header "area" "Bereich" %}</div>
+  <div class="table-header">{% sort_header "transport" "Transport" %}</div>
   <div class="table-header">{% sort_header "customer" "Customer" %}</div>
   <div class="table-header">{% sort_header "typ" "Behälter" %}</div>
   <div class="table-header">{% sort_header "material" "Material" %}</div>
@@ -26,7 +26,7 @@
     >
     <div class="table-cell table-cell-id">{{ barcode.id }}</div>
     <div class="table-cell">{{ barcode.code }}</div>
-    <div class="table-cell">{{ barcode.get_area_display }}</div>
+    <div class="table-cell">{{ barcode.get_transport_display }}</div>
     <div class="table-cell">{{ barcode.customer }}</div>
     <div class="table-cell">{{ barcode.get_box_type_display }}</div>
     <div class="table-cell">{{ barcode.material }}</div>

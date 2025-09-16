@@ -15,163 +15,48 @@
   <section class="itemcard-topbox">
     {{ form.non_field_errors }}
 
-    <!-- Bereich -->
-    <div class="itemcard-topbox-row">
-      <label for="id_area">Bereich wählen:</label>
-      <div>{{ form.area }}</div>
-    </div>
-
-
-    <!-- Eingang -->
-    <div id="fields-delivery" style="display: none;">
+    <div id="fields-delivery">
       <div class="itemcard-topbox-row">
         <label for="id_customer">Kunde:</label>
-        <div>{{ form.customer }}</div>
-      </div>
-
-      <div class="itemcard-topbox-row">
-        <h4 style="margin-top: 16px;" title="Eine Liefereinheit verknüpfen">Liefereinheit <span>(optional)*</span>:<h4>
+        <div class="itemcard-topbox-content">
+          {{ form.customer }}
+        </div>
       </div>
 
       <div class="itemcard-topbox-row">
         <label>Behälter-Art:</label>
-        <div>
-          {% with field=form.box_type %}
-            <select name="{{ field.name }}">
-              {% for val, label in field.field.choices %}
-                <option value="{{ val }}" {% if field.value == val %}selected{% endif %}>{{ label }}</option>
-              {% endfor %}
-            </select>
-          {% endwith %}
+        <div class="itemcard-topbox-content">
+          {{ form.box_type }}
         </div>
       </div>
+
+      <div class="itemcard-topbox-row">
+        <label for="{{ form.transport.id_for_label }}">Transport:</label>
+        <div class="itemcard-topbox-content">
+          {{ form.transport }}
+        </div>
+      </div>
+
       <div class="itemcard-topbox-row">
         <label>Material:</label>
-        <div>
-          {% with field=form.material %}
-            <select name="{{ field.name }}">
-              {% for val, label in field.field.choices %}
-                <option value="{{ val }}" {% if field.value == val %}selected{% endif %}>{{ label }}</option>
-              {% endfor %}
-            </select>
-          {% endwith %}
+        <div class="itemcard-topbox-content">
+          {{ form.material }}
         </div>
       </div>
-      <div class="buttons-form-footer">
-        <button type="submit" name="save" class="btn btn-main">Speichern</button>
-      </div>
-    </div>
 
-    <!-- Behälter -->
-    <div id="fields-unload" style="display: none;">
-      <div class="itemcard-topbox-row">
-        <label>Behälter-Art:</label>
-        <div>
-          {% with field=form.box_type %}
-            <select name="{{ field.name }}">
-              {% for val, label in field.field.choices %}
-                <option value="{{ val }}" {% if field.value == val %}selected{% endif %}>{{ label }}</option>
-              {% endfor %}
-            </select>
-          {% endwith %}
-        </div>
-      </div>
-      <div class="itemcard-topbox-row">
-        <label>Material:</label>
-        <div>
-          {% with field=form.material %}
-            <select name="{{ field.name }}">
-              {% for val, label in field.field.choices %}
-                <option value="{{ val }}" {% if field.value == val %}selected{% endif %}>{{ label }}</option>
-              {% endfor %}
-            </select>
-          {% endwith %}
-        </div>
-      </div>
-      <div class="buttons-form-footer">
-        <button type="submit" name="save" class="btn btn-main">Speichern</button>
-      </div>
-    </div>
-
-    <!-- Abholung -->
-    <div id="fields-shipping" style="display: none;">
-      <div class="itemcard-topbox-row">
-        <label for="id_customer">Abholer:</label>
-        <div>{{ form.customer }}</div>
-      </div>
-
-
-      <!--  TODO: zu body.css  -->
-      <div class="itemcard-topbox-row">
-        <h4 style="margin-top: 16px;" title="Neuen Behälter ohne Herkunft anlegen">Abholung-Einheit <span>(optional)*</span>:<h4>
-      </div>
-
-      <div class="itemcard-topbox-row">
-        <label>Behälter-Art:</label>
-        <div>
-          {% with field=form.box_type %}
-            <select name="{{ field.name }}">
-              {% for val, label in field.field.choices %}
-                <option value="{{ val }}" {% if field.value == val %}selected{% endif %}>{{ label }}</option>
-              {% endfor %}
-            </select>
-          {% endwith %}
-        </div>
-      </div>
-      <div class="itemcard-topbox-row">
-        <label>Material:</label>
-        <div>
-          {% with field=form.material %}
-            <select name="{{ field.name }}">
-              {% for val, label in field.field.choices %}
-                <option value="{{ val }}" {% if field.value == val %}selected{% endif %}>{{ label }}</option>
-              {% endfor %}
-            </select>
-          {% endwith %}
-        </div>
-      </div>
       <div class="itemcard-topbox-row">
         <label>Gewicht:</label>
-        <div>
-          {% with field=form.weight %}
-            <input type="number" step="0.01" name="{{ field.name }}" value="{{ field.value|default_if_none:'' }}">
-          {% endwith %}
+        <div class="itemcard-topbox-content">
+          {{ form.weight }}
         </div>
       </div>
+
       <div class="buttons-form-footer">
         <button type="submit" name="save" class="btn btn-main">Speichern</button>
       </div>
     </div>
+    
   </section>
 </form>
 
-
-
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const bereichField = document.querySelector('select[name="area"]');
-
-    const fieldBlocks = {
-      '1': 'fields-delivery',
-      '2': 'fields-unload',
-      '3': 'fields-shipping',
-    };
-
-    function updateFields() {
-      Object.values(fieldBlocks).forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.style.display = 'none';
-      });
-
-      const selected = fieldBlocks[bereichField.value];
-      if (selected) {
-        const el = document.getElementById(selected);
-        if (el) el.style.display = 'block';
-      }
-    }
-
-    bereichField.addEventListener('change', updateFields);
-    updateFields();
-  });
-</script>
 {% endblock %}

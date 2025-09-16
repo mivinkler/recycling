@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% load static %}
+{% load barcodes %}
 
 {% block title %}Reusable Barcode{% endblock %}
 
@@ -8,15 +9,7 @@
 {% block content %}
 <div class="detail">
     <section id="print-area">
-        <img src="{{ barcode.barcode_image.url }}" alt="Barcode">
-      
-        {% if barcode.area %}
-        <div class="detail-row">
-            <div>Barcode-Bereich:</div>
-            <div>{{ barcode.get_area_display }}</div>
-        </div>
-        {% endif %}
-
+        <div class="barcode">{{ object.barcode|barcode_svg }}</div>
         
         {% if barcode.customer %}
         <div class="detail-row">
