@@ -3,14 +3,14 @@ from django.urls import reverse
 from warenwirtschaft.models import BarcodeGenerator
 from warenwirtschaft.forms.barcode_generator_form import BarcodeGeneratorForm
 
-class ReusableBarcodeUpdateView(UpdateView):
+class BarcodeGeneratorUpdateView(UpdateView):
     model = BarcodeGenerator
     form_class = BarcodeGeneratorForm
-    template_name = 'barcode/reusable_barcode_update.html'
+    template_name = 'barcode/barcode_generator_update.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['selected_menu'] = 'reusable_barcode_update'
+        context['selected_menu'] = 'barcode_generator_update'
         return context
 
     def form_valid(self, form):
@@ -18,4 +18,4 @@ class ReusableBarcodeUpdateView(UpdateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('reusable_barcode_detail', kwargs={'pk': self.object.pk})
+        return reverse('barcode_generator_detail', kwargs={'pk': self.object.pk})

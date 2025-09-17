@@ -21,8 +21,8 @@
   {% for barcode in barcodes %}
   <div class="table-row js-select-row"
     data-id="{{ barcode.id }}"
-    data-url-detail-barcode="{% url 'reusable_barcode_detail' pk=barcode.id %}"
-    data-url-update="{% url 'reusable_barcode_update' pk=barcode.id %}"
+    data-url-detail-barcode="{% url 'barcode_generator_detail' pk=barcode.id %}"
+    data-url-update="{% url 'barcode_generator_update' pk=barcode.id %}"
     >
     <div class="table-cell table-cell-id">{{ barcode.id }}</div>
     <div class="table-cell">{{ barcode.code }}</div>
@@ -39,7 +39,7 @@
 {% endblock %}
 
 {% block extra_js %}
-  <script src="{% static 'js/mouse-left-click.js' %}"></script>
+  <script src="{% static 'js/mouse-right-click.js' %}"></script>
   <script src="{% static 'js/current-date.js' %}"></script>
   <script src="{% static 'js/summary-close.js' %}"></script>
 {% endblock %}

@@ -1,9 +1,9 @@
 from django.views.generic import DetailView
-from warenwirtschaft.models import DeliveryUnit, Unload
+from warenwirtschaft.models import Unload
 
 class UnloadDetailBarcodeView(DetailView):
     model = Unload
-    template_name = 'unload/unload_detail_barcode.html'
+    template_name = 'unload/unload_detail.html'
     context_object_name = 'unload'
 
     def get_context_data(self, **kwargs):

@@ -1,46 +1,55 @@
 {% extends 'base.html' %}
-{% load static %}
 
-{% block title %}Aufbereitung Detail{% endblock %}
+{% load custom_filters %}
+{% load static %}
+{% load barcode %}
+
+{% block title %}Vorsortierung detail{% endblock %}
 
 {% block content %}
+<div class="detail">
+  <section id="print-area">
 
-  <div class="itemcard-large">
-    <h2>Aufbereitung Detail</h2>
+    <div class="barcode">{{ object.barcode|barcode_svg }}</div>
 
-    <section class="itemcard-topbox">
-      <div class="itemcard-row">
-        <div>Vorsortierung-Einheit:</div>
-        <div>{{ recycling  }}</div>
-      </div>
-    </section>
+    <div class="detail-row">
+      <div>Eingang-ID:</div>
+      <div>{{ recycling.id }}</div>
+    </div>
 
-    <section class="itemcard-table">
-      <div class="itemcard-title">Aufbereitung-Einheit:</div>
+    <div class="detail-row">
+        <div>Material:</div>
+        <div>{{ recycling.material.name }}</div>
+    </div>
+    
+    <div class="detail-row">
+        <div>Gewicht:</div>
+        <div>{{ recycling.weight }} kg</div>
+    </div>
+    
+    <div class="detail-row">
+        <div>Behälter:</div>
+        <div>{{ recycling.get_box_type_display }}</div>
+    </div>
+    
+    <div class="detail-row">
+        <div>Status:</div>
+        <div>{{ recycling.get_status_display }}</div>
+    </div>
+    
+    <div class="detail-row">
+      <div>Datum:</div>
+      <div>{{ recycling.created_at|date:"d.m.Y" }}</div>
+    </div>
 
-      <div class="table" data-type="recycling-detail">
-        <div class="table-header">№</div>
-        <div class="table-header">Behälter</div>
-        <div class="table-header">Material</div>
-        <div class="table-header">Gewicht</div>
-        <div class="table-header">Status</div>
-        <div class="table-header">Anmerkung</div>
-
-        {% for recycling in recycling_units %}
-        <div class="table-row" data-type="recycling-detail">
-            <div>{{ forloop.counter }}</div>
-            <div>{{ recycling.get_box_type_display }}</div>
-            <div>{{ recycling.material }}</div>
-            <div>{{ recycling.weight }}</div>
-            <div>{{ recycling.get_status_display }}</div>
-            <div>{{ recycling.note }}</div>
-          </div>
-        {% empty %}
-        <div class="table-row">
-          <div colspan="6">Keine Daten vorhanden.</div>
-        </div>
-        {% endfor %}
-      </div>
-    </section>
-  </div>
+    
+  </section>
+  <section class="print-btn-wrapper no-print">
+    <button class="print-btn btn" onclick="window.print()">Drucken</button>
+    <button class="print-btn btn"><a href="{% url 'recycling_update' pk=recycling.id %}">Ändern</a></button>
+    <button class="print-btn btn"><a href="{% url 'recycling_list' %}">Zurück</a></button>
+  </section>
+</div>
 {% endblock %}
+
+

@@ -1,11 +1,12 @@
 from django.views.generic.detail import DetailView
-from warenwirtschaft.models import BarcodeGenerator
 from django.conf import settings
 
+from warenwirtschaft.models import BarcodeGenerator
 
-class ReusableBarcodeDetailView(DetailView):
+
+class BarcodeGeneratorDetailView(DetailView):
     model = BarcodeGenerator
-    template_name = "barcode/reusable_barcode_detail.html"
+    template_name = "barcode/barcode_generator_detail.html"
     context_object_name = "barcode"
 
     def get_context_data(self, **kwargs):

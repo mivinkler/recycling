@@ -1,4 +1,4 @@
-# views/reusable_barcode_create.py
+# views/barcode_generator_create.py
 import uuid
 from django.views.generic.edit import CreateView
 from django.urls import reverse
@@ -9,16 +9,16 @@ from warenwirtschaft.models.barcode_generator import BarcodeGenerator
 from warenwirtschaft.forms.barcode_generator_form import BarcodeGeneratorForm
 
 
-class ReusableBarcodeCreateView(CreateView):
+class BarcodeGeneratorCreateView(CreateView):
     model = BarcodeGenerator
     form_class = BarcodeGeneratorForm
-    template_name = 'barcode/reusable_barcode_create.html'
+    template_name = 'barcode/barcode_generator_create.html'
 
     BARCODE_FIELD = "barcode"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['selected_menu'] = 'reusable_barcode_create'
+        context['selected_menu'] = 'barcode_generator_create'
         return context
 
     def _new_code(self) -> str:
@@ -43,4 +43,4 @@ class ReusableBarcodeCreateView(CreateView):
         return self.form_invalid(form)
 
     def get_success_url(self):
-        return reverse('reusable_barcode_detail', kwargs={'pk': self.object.pk})
+        return reverse('barcode_generator_detail', kwargs={'pk': self.object.pk})

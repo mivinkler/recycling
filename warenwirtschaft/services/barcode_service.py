@@ -1,18 +1,17 @@
-# warenwirtschaft/services/barcode_service.py
 from io import BytesIO
 import barcode
 from barcode.writer import SVGWriter
 
 DEFAULT_WRITER_OPTS = {
-    "module_width": 0.25,
-    "module_height": 15,
-    "font_size": 10,
-    "text_distance": 2,
+    "module_width": 0.7,
+    "module_height": 40,
+    "font_size": 24,
+    "text_distance": 10,
     "quiet_zone": 2,
-    "write_text": True,  # показывать номер под штрихкодом
+    "write_text": True,
 }
 
-class BarcodeGenerator:
+class BarcodeService:
     def __init__(self, code: str, *, writer_opts: dict | None = None):
         self.barcode = code
         self.writer_opts = {**DEFAULT_WRITER_OPTS, **(writer_opts or {})}

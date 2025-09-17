@@ -5,12 +5,12 @@
 
 {% block content %}
 
-<form class="itemcard-small" method="post" action="{% url 'reusable_barcode_update' form.instance.pk %}">
+<form class="itemcard-small" method="post" action="{% url 'barcode_generator_update' form.instance.pk %}">
     {% csrf_token %}
 
     <div class="itemcard-title">
         <h2>Barcode bearbeiten</h2>
-        <a href="{% url 'reusable_barcode_delete' form.instance.pk %}" class="delete-btn" title="Barcode löschen">
+        <a href="{% url 'barcode_generator_delete' form.instance.pk %}" class="delete-btn" title="Barcode löschen">
             <img src="{% static 'icons/delete-icon.svg' %}">
         </a>
     </div>

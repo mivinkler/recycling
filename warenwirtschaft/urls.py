@@ -9,7 +9,7 @@ from warenwirtschaft.views.unload import UnloadListView, UnloadCreateView, Unloa
 from warenwirtschaft.views.recycling import RecyclingListView, RecyclingCreateView, RecyclingUpdateView, RecyclingDeleteView, RecyclingDetailView
 from warenwirtschaft.views.recycling_weight import RecyclingWeightUpdateView, RecyclingWeightListView
 from warenwirtschaft.views.shipping import ShippingListView, ShippingDetailView, ShippingCreateView, ShippingUpdateView, ShippingDeleteView
-from warenwirtschaft.views.barcode import ReusableBarcodeListView, ReusableBarcodeDetailView, ReusableBarcodeCreateView, ReusableBarcodeUpdateView, ReusableBarcodeDeleteView, BarcodePrintView
+from warenwirtschaft.views.barcode import BarcodeGeneratorListView, BarcodeGeneratorDetailView, BarcodeGeneratorCreateView, BarcodeGeneratorUpdateView, BarcodeGeneratorDeleteView
 
 
 
@@ -39,8 +39,8 @@ urlpatterns = [
     path('recycling/list/', RecyclingListView.as_view(), name='recycling_list'),
     path('recycling/create/', RecyclingCreateView.as_view(), name='recycling_create'),
     path('recycling/update/<int:pk>/', RecyclingUpdateView.as_view(), name='recycling_update'),
-    path('recycling/delete/<int:pk>/', RecyclingDeleteView.as_view(), name='recycling_delete'),
     path('recycling/detail/<int:pk>/', RecyclingDetailView.as_view(), name='recycling_detail'),
+    path('recycling/delete/<int:pk>/', RecyclingDeleteView.as_view(), name='recycling_delete'),
     
     path('recycling-weight/list', RecyclingWeightListView.as_view(), name='recycling_weight_list'),
     path('recycling-weight/update/<int:pk>/', RecyclingWeightUpdateView.as_view(), name='recycling_weight_update'),
@@ -51,18 +51,16 @@ urlpatterns = [
     path('shipping/update/<int:pk>/', ShippingUpdateView.as_view(), name='shipping_update'),
     path('shipping/delete/<int:pk>/', ShippingDeleteView.as_view(), name='shipping_delete'),
 
-    path('reusable-barcode/list/', ReusableBarcodeListView.as_view(), name='reusable_barcode_list'),
-    path('reusable-barcode/detail/<int:pk>/', ReusableBarcodeDetailView.as_view(), name='reusable_barcode_detail'),
-    path('reusable-barcode/create/', ReusableBarcodeCreateView.as_view(), name='reusable_barcode_create'),
-    path('reusable-barcode/update/<int:pk>/', ReusableBarcodeUpdateView.as_view(), name='reusable_barcode_update'),
-    path('reusable-barcode/delete/<int:pk>/', ReusableBarcodeDeleteView.as_view(), name='reusable_barcode_delete'),
-    path('barcode/<str:model>/<int:pk>/print/', BarcodePrintView.as_view(), name='barcode_print'),
+    path('barcode-generator/list/', BarcodeGeneratorListView.as_view(), name='barcode_generator_list'),
+    path('barcode-generator/detail/<int:pk>/', BarcodeGeneratorDetailView.as_view(), name='barcode_generator_detail'),
+    path('barcode-generator/create/', BarcodeGeneratorCreateView.as_view(), name='barcode_generator_create'),
+    path('barcode-generator/update/<int:pk>/', BarcodeGeneratorUpdateView.as_view(), name='barcode_generator_update'),
+    path('barcode-generator/delete/<int:pk>/', BarcodeGeneratorDeleteView.as_view(), name='barcode_generator_delete'),
 
     path('material/list/', MaterialListView.as_view(), name='material_list'),
     path('material/create/', MaterialCreateView.as_view(), name='material_create'),
     path("material/update/<int:pk>/", MaterialUpdateView.as_view(), name="material_update"),
     path('material/delete/<int:pk>/', MaterialDeleteView.as_view(), name='material_delete'),
-
 
     path("api/", include(("warenwirtschaft.api.urls", "warenwirtschaft_api"), namespace="warenwirtschaft_api")),
 ]

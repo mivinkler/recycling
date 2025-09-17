@@ -25,7 +25,6 @@ class BarcodeGenerator(models.Model):
     transport = models.PositiveSmallIntegerField(choices=TRANSPORT_CHOICES, default=1)
     weight = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     barcode = models.CharField(max_length=64, blank=True, null=True)
-    barcode_image = models.ImageField(upload_to='barcodes/reusable', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(null=True, blank=True, default=None)
     deleted_at = models.DateTimeField(null=True, blank=True, default=None)

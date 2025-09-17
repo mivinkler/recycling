@@ -2,6 +2,7 @@
 
 {% load custom_filters %}
 {% load static %}
+{% load barcode %}
 
 {% block title %}Vorsortierung detail{% endblock %}
 
@@ -9,14 +10,7 @@
 <div class="detail">
   <section id="print-area">
 
-    {% if unload.barcode_image %}
-      <img src="{{ unload.barcode_image.url }}" alt="Barcode">
-    {% else %}
-      <div class="detail-row">
-        <div>Barcode:</div>
-        <div>Kein Barcode verfügbar.</div>
-      </div>
-    {% endif %}
+    <div class="barcode">{{ object.barcode|barcode_svg }}</div>
 
     <div class="detail-row">
       <div>Eingang-ID:</div>
@@ -51,8 +45,8 @@
     
   </section>
   <section class="print-btn-wrapper no-print">
-    <button class="print-btn btn"><a href="{% url 'unload_detail_barcode' pk=unload.pk %}">Drucken</a></button>
-    <button class="print-btn btn"><a href="{% url 'unload_update' pk=unload.id %}">Ändern</a></button>
+    <button class="print-btn btn" onclick="window.print()">Drucken</button>
+    <button class="print-btn btn"><a href="{% url 'unload_update' delivery_unit_pk=unload.id %}">Ändern</a></button>
     <button class="print-btn btn"><a href="{% url 'unload_list' %}">Zurück</a></button>
   </section>
 </div>

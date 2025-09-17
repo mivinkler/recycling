@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 
 from warenwirtschaft.models.delivery import Delivery
 from warenwirtschaft.forms.delivery_form import DeliveryForm, get_delivery_unit_formset
-from warenwirtschaft.services.barcode_service import BarcodeGenerator
+from warenwirtschaft.services.barcode_service import BarcodeService
 
 class DeliveryCreateView(CreateView):
     model = Delivery
@@ -39,7 +39,7 @@ class DeliveryCreateView(CreateView):
                     suffix = uuid.uuid4().hex[:8].upper()
                     code = f"L{suffix}"
                     unit.barcode = code
-                    BarcodeGenerator(unit, code, 'barcodes/delivery').generate_image()
+                    BarcodeService(unit, code, 'barcodes/delivery').generate_image()
                     unit.save()
 
             return super().form_valid(form)

@@ -8,7 +8,7 @@ from django.db import transaction
 
 from warenwirtschaft.forms.unload_form import DeliveryUnitForm, ExistingEditFormSet, UnloadFormSet
 from warenwirtschaft.models import Unload
-from warenwirtschaft.services.barcode_service import BarcodeGenerator
+from warenwirtschaft.services.barcode_service import BarcodeService
 
 
 class UnloadCreateView(View):
@@ -105,11 +105,11 @@ class UnloadCreateView(View):
 
     @staticmethod
     def _generate_barcode_image(unload: Unload) -> None:
-        # „Best effort“ – Fehler beim Bild sollen den Vorgang nicht stoppen
+        # Fehler beim Bild sollen den Vorgang nicht stoppen
         code = getattr(unload, "barcode", None)
         if not code:
             return
         try:
-            BarcodeGenerator(unload, code, "barcodes/unload").generate_image()
+            BarcodeService(unload, code, "barcodes/unload").generate_image()
         except Exception:
             pass

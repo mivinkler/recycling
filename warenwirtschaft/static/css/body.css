@@ -372,6 +372,10 @@ td p {
   line-height: 26px;
 }
 
+.detail-row div {
+  font-size: 1.2em;
+}
+
 .detail-row div:first-child {
   font-weight: bold;
   width: 150px;

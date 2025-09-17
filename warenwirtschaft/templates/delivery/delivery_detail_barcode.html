@@ -2,20 +2,14 @@
 
 {% load custom_filters %}
 {% load static %}
+{% load barcode %}
 
 {% block title %}Wareneingang detail{% endblock %}
 
 {% block content %}
 <div class="detail">
   <section id="print-area">
-    {% if delivery_unit.barcode_image.url %}
-      <img src="{{ delivery_unit.barcode_image.url }}" class="detail-barcode">
-    {% else %}
-      <div class="detail-row">
-        <div>Barcode:</div>
-        <div>keine</div>
-      </div>
-    {% endif %}
+    <div class="barcode">{{ object.barcode|barcode_svg }}</div>
 
     <div class="detail-row">
       <div>Kunde:</div>

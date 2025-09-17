@@ -43,10 +43,17 @@
 
 {% paginate page_obj %}
 
+<template id="context-menu-template">
+  <ul id="context-menu" class="context-menu">
+    <li data-action="url-detail">Barcode drücken</li>
+    <li data-action="url-update">Inhalt ändern</li>
+  </ul>
+</template>
+
 {% endblock %}
 
 {% block extra_js %}
-  <script src="{% static 'js/selectable-row.js' %}"></script>
+  <script src="{% static 'js/mouse-right-click.js' %}"></script>
   <script src="{% static 'js/current-date.js' %}"></script>
   <script src="{% static 'js/summary-close.js' %}"></script>
 {% endblock %}

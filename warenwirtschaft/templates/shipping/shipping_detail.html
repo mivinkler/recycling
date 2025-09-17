@@ -2,72 +2,48 @@
 
 {% load custom_filters %}
 {% load static %}
+{% load barcode %}
 
 {% block title %}Abholung detail{% endblock %}
 
 {% block content %}
-<div class="itemcard-small">
-  <h2>Abholung detail</h2>
+<div class="detail">
+  <section id="print-area">
 
-  <section class="itemcard-topbox">
-    <div class="itemcard-row">
-      <div>Abholer:</div>
-      <div>{{ shipping.customer.name }}</div>
-    </div>
+    <div class="barcode">{{ object.barcode|barcode_svg }}</div>
 
-    <div class="itemcard-row">
-      <div>Adresse:</div>
-      <div>{{ shipping.customer.street }}, {{ shipping.customer.postal_code }} {{ shipping.customer.city }}</div>
-    </div>
-
-    <div class="itemcard-row">
-      <div>Begleit-/Übernahmeschein:</div>
-      <div>{{ shipping.certificate }}</div>
-    </div>
-
-    <div class="itemcard-row">
-      <div>Transport:</div>
-      <div>{{ shipping.get_transport_display }}</div>
-    </div>
-
-    <div class="itemcard-row">
+    <div class="detail-row">
       <div>Eingang-ID:</div>
       <div>{{ shipping.id }}</div>
     </div>
 
-    <div class="itemcard-row">
+    <div class="detail-row">
+      <div>Kunde:</div>
+      <div>{{ shipping.customer.name }}</div>
+    </div>
+
+    <div class="detail-row">
+        <div>Abholschein:</div>
+        <div>{{ shipping.certificate }}</div>
+    </div>
+    
+    
+    <div class="detail-row">
+        <div>Transport:</div>
+        <div>{{ shipping.get_transport_display }}</div>
+    </div>
+    
+    <div class="detail-row">
       <div>Datum:</div>
       <div>{{ shipping.created_at|date:"d.m.Y" }}</div>
     </div>
 
-    <div class="itemcard-row">
-      <div>Anmerkung:</div>
-      <div>{{ shipping.note }}</div>
-    </div>
-  </section>
-
-  <section class="itemcard-table">
-    <div class="itemcard-title">Abholung-Einheiten:</div>
-
-    <div class="table" data-type="shipping-detail-shippingunits">
-      <div class="table-header">№</div>
-      <div class="table-header">Gewicht</div>
-      <div class="table-header">Behälter</div>
-      <div class="table-header">Material</div>
-      <div class="table-header">Anmerkung</div>
-    
-      {% for item in shipping_units %}
-        <div class="table-row">
-          <div>{{ forloop.counter }}</div>
-          <div>{{ item.weight|default:"-" }}</div>
-          <div>{{ item.get_box_type_display }}</div>
-          <div>{{ item.material.name|default:"-" }}</div>
-          <div>{{ item.note }}</div>
-        </div>
-      {% endfor %}
-    </div>
     
   </section>
-
+  <section class="print-btn-wrapper no-print">
+    <button class="print-btn btn" onclick="window.print()">Drucken</button>
+    <button class="print-btn btn"><a href="{% url 'shipping_update' pk=shipping.id %}">Ändern</a></button>
+    <button class="print-btn btn"><a href="{% url 'shipping_list' %}">Zurück</a></button>
+  </section>
 </div>
 {% endblock %}
