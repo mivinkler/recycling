@@ -1,7 +1,7 @@
 # warenwirtschaft/templatetags/barcodes.py
 from django import template
 from django.utils.safestring import mark_safe
-from warenwirtschaft.services.barcode_service import BarcodeService
+from warenwirtschaft.services.barcode_image_service import BarcodeImageService
 
 register = template.Library()
 
@@ -9,12 +9,12 @@ register = template.Library()
 def barcode_svg(code: str) -> str:
     if not code:
         return ""
-    svg = BarcodeService(code).render_svg_str()
+    svg = BarcodeImageService(code).render_svg_str()
     return mark_safe(svg)
 
 @register.simple_tag(name="barcode_svg_tag")  # {% barcode_svg_tag object.barcode %}
 def barcode_svg_tag(code: str) -> str:
     if not code:
         return ""
-    svg = BarcodeService(code).render_svg_str()
+    svg = BarcodeImageService(code).render_svg_str()
     return mark_safe(svg)

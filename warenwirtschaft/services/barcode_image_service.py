@@ -11,7 +11,7 @@ DEFAULT_WRITER_OPTS = {
     "write_text": True,
 }
 
-class BarcodeService:
+class BarcodeImageService:
     def __init__(self, code: str, *, writer_opts: dict | None = None):
         self.barcode = code
         self.writer_opts = {**DEFAULT_WRITER_OPTS, **(writer_opts or {})}

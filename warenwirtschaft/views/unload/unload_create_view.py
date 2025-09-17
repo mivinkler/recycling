@@ -8,7 +8,7 @@ from django.db import transaction
 
 from warenwirtschaft.forms.unload_form import DeliveryUnitForm, ExistingEditFormSet, UnloadFormSet
 from warenwirtschaft.models import Unload
-from warenwirtschaft.services.barcode_service import BarcodeService
+from warenwirtschaft.services.barcode_image_service import BarcodeImageService
 
 
 class UnloadCreateView(View):
@@ -110,6 +110,6 @@ class UnloadCreateView(View):
         if not code:
             return
         try:
-            BarcodeService(unload, code, "barcodes/unload").generate_image()
+            BarcodeImageService(unload, code, "barcodes/unload").generate_image()
         except Exception:
             pass

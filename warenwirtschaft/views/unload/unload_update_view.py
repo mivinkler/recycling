@@ -11,7 +11,7 @@ from django.contrib import messages
 
 from warenwirtschaft.forms.unload_form import UnloadFormSet, ExistingEditFormSet
 from warenwirtschaft.models import Unload, DeliveryUnit
-from warenwirtschaft.services.barcode_service import BarcodeService
+from warenwirtschaft.services.barcode_image_service import BarcodeImageService
 
 
 
@@ -127,7 +127,7 @@ class UnloadUpdateView(View):
         if not code:
             return
         try:
-            BarcodeService(unload, code, "barcodes/unload").generate_image()
+            BarcodeImageService(unload, code, "barcodes/unload").generate_image()
         except Exception:
             pass
 
