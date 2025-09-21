@@ -19,7 +19,7 @@
         <label for="barcode">Barcode:</label>
         <div>
           <!-- TODO:  "/api/unload-input/"??? -->
-          <input type="text" id="barcode" data-api="/api/unload-input/" autofocus autocomplete="off" placeholder="Barcode scannen..." />
+          <input type="text" id="barcode" data-api="{% url 'delivery_input_api' %}"  data-accepted="G" autofocus autocomplete="off" placeholder="Barcode scannen..." />
         </div>
       </div>
       

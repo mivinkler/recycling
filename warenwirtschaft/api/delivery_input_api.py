@@ -1,28 +1,33 @@
-# from django.http import JsonResponse
-# from django.views import View
-# from warenwirtschaft.models import BarcodeGenerator
+from django.http import JsonResponse
+from django.views import View
+from warenwirtschaft.models import BarcodeGenerator
 
+class DeliveryInputAPI(View):
+    def get(self, request):
+        # Barcode aus der URL lesen (Parameter heißt "barcode")
+        barcode = request.GET.get("barcode", "").strip().upper()
+        prefix = barcode[:1]
 
-# class DeliveryInputAPI(View):
-#     def get(self, request):
-#         code = request.GET.get("code", "").strip().upper()
-#         prefix = code[:1]
+        if prefix != "G":
+            return JsonResponse(
+                {'error': 'Nur Barcodes mit G-Präfix sind für Wareneingang gültig.'},
+                status=400
+            )
 
-#         if prefix != "L":
-#             return JsonResponse({'error': 'Nur Barcodes mit L-Präfix sind für Wareneingang gültig.'}, status=400)
+        try:
+            # Suche nach dem Barcode in der Spalte "barcode"
+            generated = BarcodeGenerator.objects.get(barcode__iexact=barcode)
 
-#         try:
-#             reuse = BarcodeGenerator.objects.get(code__iexact=code)
-
-#             return JsonResponse({
-#                 'type': 'delivery_unit_reuse',
-#                 'code': reuse.code,
-#                 'box_type': reuse.box_type or None,
-#                 'material': reuse.material_id or None,
-#                 'area': reuse.area or None,
-#                 'customer': reuse.customer_id if reuse.customer_id else None,
-#                 'delivery_receipt': reuse.delivery_receipt or None,
-#             })
-#         except BarcodeGenerator.DoesNotExist:
-#             return JsonResponse({'error': 'BarcodeGenerator nicht gefunden'}, status=404)
-
+            return JsonResponse({
+                'type': 'generated',
+                'barcode': generated.barcode,
+                'customer': generated.customer_id or None,
+                'delivery_receipt': generated.receipt or None,
+                'box_type': generated.box_type or None,
+                'material': generated.material_id or None,
+            })
+        except BarcodeGenerator.DoesNotExist:
+            return JsonResponse(
+                {'error': 'BarcodeGenerator nicht gefunden'},
+                status=404
+            )

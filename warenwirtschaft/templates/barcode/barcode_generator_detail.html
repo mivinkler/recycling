@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% load static %}
-{% load barcodes %}
+{% load barcode %}
 
 {% block title %}Reusable Barcode{% endblock %}
 
@@ -18,13 +18,13 @@
         </div>
         {% endif %}
         
-        {% if barcode.customer %}
+        {% if barcode.receipt %}
         <div class="detail-row">
-            <div>Abholer:</div>
-            <div>{{ barcode.customer.name }} kg</div>
+            <div>Dokumente:</div>
+            <div>{{ barcode.receipt }}</div>
         </div>
         {% endif %}
-        
+
         {% if barcode.box_type %}
         <div class="detail-row">
             <div>Behälter:</div>
@@ -32,17 +32,24 @@
         </div>
         {% endif %}
         
-        {% if barcode.weight %}
-        <div class="detail-row">
-            <div>Gewicht:</div>
-            <div>{{ barcode.weight }} kg</div>
-        </div>
-        {% endif %}
-        
         {% if barcode.material %}
         <div class="detail-row">
             <div>Material:</div>
             <div>{{ barcode.material.name }}</div>
+        </div>
+        {% endif %}
+
+        {% if barcode.transport %}
+        <div class="detail-row">
+            <div>transport:</div>
+            <div>{{ barcode.get_transport_display }}</div>
+        </div>
+        {% endif %}
+
+        {% if barcode.weight %}
+        <div class="detail-row">
+            <div>Gewicht:</div>
+            <div>{{ barcode.weight }} kg</div>
         </div>
         {% endif %}
     </section>
