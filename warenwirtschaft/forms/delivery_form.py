@@ -2,6 +2,7 @@ from django import forms
 from django.forms import inlineformset_factory
 from warenwirtschaft.models.delivery import Delivery
 from warenwirtschaft.models.delivery_unit import DeliveryUnit
+from warenwirtschaft.models.customer import Customer
 
 
 class DeliveryForm(forms.ModelForm):
@@ -11,6 +12,19 @@ class DeliveryForm(forms.ModelForm):
         widgets = {
             'note': forms.Textarea(attrs={'rows': 3}),
         }
+
+    
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.fields['customer'].queryset = Customer.objects.all().order_by('name')
+    #     self.fields['customer'].empty_label = '---------'
+    #     self.fields['customer'].required = True 
+
+    # def clean(self):
+    #     cleaned = super().clean()
+    #     if not cleaned.get('customer'):
+    #         self.add_error('customer', 'Bitte wählen Sie einen Lieferanten.')
+    #     return cleaned
 
 # Formular für einzelne Liefereinheit
 class DeliveryUnitForm(forms.ModelForm):

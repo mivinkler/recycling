@@ -1,3 +1,18 @@
+(() => {
+  const barcodeInput = document.getElementById('barcode');
+  const imgActive = document.getElementById('barcode-active');
+  const imgInactive = document.getElementById('barcode-inactive');
+
+  const setState = active => {
+    imgActive.hidden = !active;
+    imgInactive.hidden = active;
+  };
+
+  barcodeInput.addEventListener('focus', () => setState(true));
+  barcodeInput.addEventListener('blur',  () => setState(false));
+
+})();
+
 document.addEventListener('DOMContentLoaded', () => {
   const barcodeInput = document.getElementById('barcode');
   if (!barcodeInput) return;
