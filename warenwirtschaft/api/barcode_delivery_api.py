@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from django.views import View
 from warenwirtschaft.models import BarcodeGenerator
 
-class DeliveryInputAPI(View):
+class BarcodeDeliveryAPI(View):
     def get(self, request):
         # Barcode aus der URL lesen (Parameter heißt "barcode")
         barcode = request.GET.get("barcode", "").strip().upper()
@@ -25,6 +25,8 @@ class DeliveryInputAPI(View):
                 'delivery_receipt': generated.receipt or None,
                 'box_type': generated.box_type or None,
                 'material': generated.material_id or None,
+                'material': generated.material_id or None,
+                'weight': generated.weight or None,
             })
         except BarcodeGenerator.DoesNotExist:
             return JsonResponse(

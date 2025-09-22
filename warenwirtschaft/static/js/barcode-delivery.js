@@ -2,12 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const barcodeInput = document.getElementById('barcode');
   if (!barcodeInput) return;
 
-  const apiUrl = barcodeInput.dataset.api;
+  const apiUrl        = barcodeInput.dataset.api;
   const allowedPrefix = barcodeInput.dataset.accepted || 'G';
-
-  // Селект поставщика и текстовое поле Lieferschein по id
-  const customerSelect = document.getElementById('id_customer');
-  const receiptInput  = document.getElementById('id_delivery_receipt');
 
   const tbody = document.querySelector('.itemcard-tbody');
   const addRowBtn = document.getElementById('form-add-btn');
@@ -33,28 +29,25 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      // Kunde setzen, nur если опция существует
+      // Lieferant und Lieferschein setzen
+      const customerSelect = document.getElementById('id_customer');
       if (data.customer && customerSelect) {
-        const opt = customerSelect.querySelector(`option[value="${data.customer}"]`);
-        if (opt) {
-          customerSelect.value = data.customer;
-        } else {
-          // при желании можно показать предупреждение
-          console.warn(`Unbekannter Lieferant: ${data.customer}`);
-        }
+        customerSelect.value = data.customer;
       }
 
-      // Lieferschein in Textfeld schreiben (это не select)
+      const receiptInput  = document.getElementById('id_delivery_receipt');
       if (data.delivery_receipt && receiptInput) {
         receiptInput.value = data.delivery_receipt;
       }
 
       // Neue Zeile hinzufügen
       addRowBtn?.click();
+      // Kurze Pause, damit die neue Zeile im DOM verfügbar wird
+      await new Promise(resolve => setTimeout(resolve, 50));
+
+      // Die letzte Zeile auswählen und Daten eintragen
       const rows = tbody.querySelectorAll('.itemcard-table-row');
       const lastRow = rows[rows.length - 1];
-
-      // Material und Box-Type setzen
       if (lastRow) {
         if (data.material) {
           const materialSelect = lastRow.querySelector('select[name$="-material"]');
@@ -63,6 +56,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (data.box_type) {
           const boxSelect = lastRow.querySelector('select[name$="-box_type"]');
           if (boxSelect) boxSelect.value = data.box_type;
+        }
+        if (data.weight) {
+          const weightInput = lastRow.querySelector('input[name$="-weight"]');
+          if (weightInput) weightInput.value = data.weight;
         }
       }
     } catch (err) {
