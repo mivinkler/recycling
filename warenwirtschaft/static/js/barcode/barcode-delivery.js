@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (!barcodeInput) return;
 
-  // 🇩🇪 Icons für aktiven/inaktiven Scan-Eingabefokus
+  // Icons für aktiven/inaktiven Scan-Eingabefokus
   const setState = (active) => {
     if (imgActive)   imgActive.hidden   = !active;
     if (imgInactive) imgInactive.hidden =  active;
@@ -16,11 +16,11 @@ document.addEventListener('DOMContentLoaded', () => {
   barcodeInput.addEventListener('focus', () => setState(true));
   barcodeInput.addEventListener('blur',  () => setState(false));
 
-  // 🇩🇪 Konfiguration
+  // Konfiguration
   const apiUrl        = barcodeInput.dataset.api;
   const allowedPrefix = barcodeInput.dataset.accepted || 'G';
 
-  // 🇩🇪 Selektoren/Helfer
+  // Selektoren/Helfer
   const addRowBtn = document.getElementById('form-add-btn');
   const getRows   = () => Array.from(document.querySelectorAll('.itemcard-table-row'));
 
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return !!(el && String(el.value || '').trim());
   }
 
-  // 🇩🇪 Erste unvollständige Tabellenzeile finden
+  // Erste unvollständige Tabellenzeile finden
   function findIncompleteRow() {
     for (const row of getRows()) {
       const sMat = row.querySelector('select[name$="-material"]');
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return null;
   }
 
-  // 🇩🇪 Auf neue Zeile warten (nach Klick auf "+")
+  // Auf neue Zeile warten (nach Klick auf "+")
   async function waitForNewRow(expectedCount, timeoutMs = 800) {
     const start = Date.now();
     while (Date.now() - start < timeoutMs) {
@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return false;
   }
 
-  // 🇩🇪 Zeile mit API-Daten befüllen – nur leere Felder setzen
+  // Zeile mit API-Daten befüllen – nur leere Felder setzen
   function fillRowFromData(row, data) {
     const sMat = row.querySelector('select[name$="-material"]');
     const sBox = row.querySelector('select[name$="-box_type"]');
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (iWgt && !isFilled(iWgt) && data.weight)           iWgt.value = data.weight;
   }
 
-  // 🇩🇪 Lieferant in das passende Feld schreiben (ModelChoiceField erwartet PK)
+  // Lieferant in das passende Feld schreiben (ModelChoiceField erwartet PK)
   function setCustomer(data) {
     const customerSelect = document.getElementById('id_customer'); // Variante: ein <select>
     if (customerSelect && data.customer_id != null) {
@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (customerTextInput && data.customer_name && !customerTextInput.value) customerTextInput.value = data.customer_name;
   }
 
-  // 🇩🇪 Nach dem Befüllen sicherstellen: eine leere Zeile am Ende vorhanden
+  // Nach dem Befüllen sicherstellen: eine leere Zeile am Ende vorhanden
   async function ensureTrailingEmptyRow() {
     if (!findIncompleteRow()) {
       const before = getRows().length;
@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // 🇩🇪 Barcode-Scan (Enter)
+  // Barcode-Scan (Enter)
   barcodeInput.addEventListener('keydown', async (e) => {
     if (e.key !== 'Enter') return;
     e.preventDefault();
@@ -114,17 +114,17 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      // 🇩🇪 Lieferant/Lieferschein vorbelegen (nur wenn leer)
+      // Lieferant/Lieferschein vorbelegen (nur wenn leer)
       setCustomer(data);
       const receiptInput = document.getElementById('id_delivery_receipt');
       if (receiptInput && data.delivery_receipt && !receiptInput.value) {
         receiptInput.value = data.delivery_receipt;
       }
 
-      // 🇩🇪 ZUERST eine unvollständige Zeile verwenden
+      // ZUERST eine unvollständige Zeile verwenden
       let targetRow = findIncompleteRow();
 
-      // 🇩🇪 Wenn alle Zeilen vollständig sind: neue Zeile anlegen
+      // Wenn alle Zeilen vollständig sind: neue Zeile anlegen
       if (!targetRow) {
         const before = getRows().length;
         addRowBtn?.click();
@@ -138,10 +138,10 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      // 🇩🇪 Zielzeile befüllen
+      // Zielzeile befüllen
       fillRowFromData(targetRow, data);
 
-      // 🇩🇪 Danach sicherstellen, dass am Ende eine leere Zeile bereitsteht
+      // Danach sicherstellen, dass am Ende eine leere Zeile bereitsteht
       await ensureTrailingEmptyRow();
     } catch (err) {
       console.error(err);
