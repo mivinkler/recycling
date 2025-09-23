@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   let formIndex = +totalFormsInput.value;
 
-  // Считаем количество строк с классом .itemcard-table-row, у которых НЕТ класса .dynamic-row (то есть существующие строки)
+  // die Anzahl der Zeilen zählen mit der Klasse .itemcard-table-row, die NICHT über die Klasse .dynamic-row verfügen (d.h. vorhandene Zeilen).
   let rowNumber = tableBody.querySelectorAll('tr.itemcard-table-row:not(.dynamic-row)').length;
 
   addButton.addEventListener('click', function () {

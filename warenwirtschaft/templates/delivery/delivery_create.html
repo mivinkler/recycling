@@ -10,11 +10,7 @@
   <div class="itemcard">
     <div class="itemcard-title">
       <h2>Wareneingang erstellen</h2>
-      <!-- <div>
-        <a id="barcode" class="header-menu-icon svg-icon" name="barcode" autofocus autocomplete="off" placeholder="Scannen...">
-          <img src="{% static 'icons/barcode-scan-active.svg' %}">
-        </a>
-      </div> -->
+    
       <input 
         type="text" 
         id="barcode" 
@@ -22,13 +18,13 @@
         autocomplete="off" 
         data-accepted="G"
         data-api="{% url 'barcode_delivery_api' %}"
-        autofocus>
+        autofocus
+        />
 
       <label for="barcode" class="barcode-wrapper header-menu-icon svg-icon">
         <img src="{% static 'icons/barcode-scan-active.svg' %}" id="barcode-active">
         <img src="{% static 'icons/barcode-scan-inactive.svg' %}" id="barcode-inactive" hidden>
       </label>
-
     </div>
 
     <section class="itemcard-topbox">
@@ -36,7 +32,7 @@
 
       <div class="itemcard-topbox-row">
         <label for="id_customer">Lieferant:</label>
-        <div class="itemcard-topbox-content">{{ form.customer }}</div>
+        <div class="itemcard-topbox-content">{{ form.customer_id }} {{ form.customer }}</div>
       </div>
 
       <div class="itemcard-topbox-row">
@@ -52,7 +48,7 @@
 
     <div class="itemcard-table-title">Transportgut:</div>
 
-    <table class="itemcard-table add-row-js">
+    <table class="itemcard-table">
       {{ formset.management_form }}
 
       <thead class="itemcard-thead">
@@ -64,7 +60,7 @@
         </tr>
       </thead>
 
-      <tbody class="itemcard-tbody">
+      <tbody class="itemcard-tbody add-row-js">
         {{ formset.non_form_errors }}
         {% for item_form in formset %}
           <tr class="itemcard-table-row">
@@ -98,7 +94,11 @@
 </form>
 
 <style>
-.barcode-wrapper { cursor: pointer; }
+.barcode-wrapper { 
+  cursor: pointer; 
+  height: 32px;
+}
+
 #barcode {
   width: 0;
   height: 0;
