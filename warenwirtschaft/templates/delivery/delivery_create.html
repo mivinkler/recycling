@@ -11,20 +11,8 @@
     <div class="itemcard-title">
       <h2>Wareneingang erstellen</h2>
     
-      <input 
-        type="text" 
-        id="barcode" 
-        placeholder="Barcode scannen..." 
-        autocomplete="off" 
-        data-accepted="G"
-        data-api="{% url 'barcode_delivery_api' %}"
-        autofocus
-        />
-
-      <label for="barcode" class="barcode-wrapper header-menu-icon svg-icon">
-        <img src="{% static 'icons/barcode-scan-active.svg' %}" id="barcode-active">
-        <img src="{% static 'icons/barcode-scan-inactive.svg' %}" id="barcode-inactive" hidden>
-      </label>
+      {% include 'components/barcode_scan_icon.html' %}
+      
     </div>
 
     <section class="itemcard-topbox">
@@ -93,25 +81,11 @@
   </div>
 </form>
 
-<style>
-.barcode-wrapper { 
-  cursor: pointer; 
-  height: 32px;
-}
 
-#barcode {
-  width: 0;
-  height: 0;
-  border: 0;
-  padding: 0;
-}
-</style>
 {% endblock %}
 
 {% block extra_js %}
   <script src="{% static 'js/add-table-row.js' %}"></script>
-  <script src="{% static 'js/barcode-delivery.js' %}"></script>
-
 {% endblock %}
 
 
