@@ -11,7 +11,7 @@ class BarcodeRecyclingAPI(View):
             return JsonResponse({'error': 'Kein Barcode übergeben.'}, status=400)
 
         # Präfix prüfen – muss zum Frontend (data-accepted) passen
-        if not barcode.startswith("G" or "L"):
+        if not barcode.startswith("L"):
             return JsonResponse(
                 {'error': 'Nur Barcodes mit G- oder L-Präfix.'},
                 status=400

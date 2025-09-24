@@ -4,6 +4,7 @@ from warenwirtschaft.models.material import Material
 
 class DeliveryUnit(models.Model):
     STATUS_CHOICES = [
+        (0, "Engang"),
         (1, "Aktiv"),
         (4, "Erledigt"),
     ]

@@ -11,14 +11,14 @@
     <div class="itemcard-title itemcard-margin-left">
       <h2>Vorsortierung</h2>
       <input 
-          type="text" 
-          id="barcode" 
-          placeholder="Barcode scannen..." 
-          autocomplete="off" 
-          data-accepted="G"
-          data-api="{% url 'barcode_unload_api' %}"
-          autofocus
-          hidden
+        type="text" 
+        id="barcode" 
+        placeholder="Barcode scannen..." 
+        autocomplete="off" 
+        data-accepted="L"
+        data-api="{% url 'barcode_unload_api' %}"
+        autofocus
+        class="visually-hidden-input"
       />
 
       <label for="barcode" class="barcode-wrapper header-menu-icon svg-icon">
@@ -205,14 +205,6 @@
   </div>
 </form>
 
-{% endblock %}
-
-{% block extra_js %}
-<script src="{% static 'js/barcode/barcode-delivery.js' %}"></script>
-<script src="{% static 'js/close-open.js' %}"></script>
-<script src="{% static 'js/weight.js' %}"></script>
-{% endblock %}
-
 
 <style>
 .barcode-wrapper { 
@@ -226,4 +218,22 @@
   border: 0;
   padding: 0;
 }
+
+.visually-hidden-input {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: auto; /* важно: принимает фокус */
+}
 </style>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/barcode/barcode-unload.js' %}"></script>
+<script src="{% static 'js/close-open.js' %}"></script>
+<script src="{% static 'js/weight.js' %}"></script>
+{% endblock %}
+
+

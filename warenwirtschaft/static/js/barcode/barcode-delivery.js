@@ -1,6 +1,3 @@
-// barcode-delivery.js
-(() => {})();
-
 document.addEventListener('DOMContentLoaded', () => {
   const barcodeInput = document.getElementById('barcode');
   const imgActive    = document.getElementById('barcode-active');

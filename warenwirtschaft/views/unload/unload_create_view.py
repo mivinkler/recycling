@@ -12,7 +12,7 @@ from warenwirtschaft.services.barcode_number_service import BarcodeNumberService
 
 class UnloadCreateView(View):
     template_name = "unload/unload_create.html"
-    BARCODE_PREFIX = "V"  # Prefix für Vorsortierung/Unload
+    BARCODE_PREFIX = "S"  # Prefix für Vorsortierung/Unload
 
     def get(self, request):
         # Kopf-Form + leeres FormSet für neue Unloads
@@ -81,7 +81,7 @@ class UnloadCreateView(View):
                         # Barcode nur erzeugen, wenn Feld faktisch leer ist
                         val = (getattr(instance, "barcode", "") or "").strip()
                         if not val:
-                            instance.barcode = BarcodeNumberService.make_code(prefix=self.BARCODE_PREFIX)
+                            instance.barcode = BarcodeNumberService.marke_code(prefix=self.BARCODE_PREFIX)
 
                         instance.save()
                         instance.delivery_units.add(delivery_unit)
