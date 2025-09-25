@@ -4,7 +4,7 @@ from warenwirtschaft.models.material import Material
 
 class DeliveryUnit(models.Model):
     STATUS_CHOICES = [
-        (0, "Engang"),
+        (0, "Eingang"),
         (1, "Aktiv"),
         (4, "Erledigt"),
     ]
@@ -21,7 +21,7 @@ class DeliveryUnit(models.Model):
     material = models.ForeignKey(Material, on_delete=models.CASCADE, null=True, blank=True, related_name='material_for_delivery_units')
     material_other = models.CharField(max_length=50, null=True, blank=True)
     weight = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-    status = models.PositiveSmallIntegerField(choices=STATUS_CHOICES, default=1)
+    status = models.PositiveSmallIntegerField(choices=STATUS_CHOICES, default=0)
     note = models.CharField(max_length=255, null=True, blank=True)
     barcode = models.CharField(max_length=64, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)

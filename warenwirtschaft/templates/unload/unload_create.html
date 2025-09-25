@@ -36,7 +36,12 @@
         <label for="{{ form.delivery_unit.id_for_label }}">Wareneingang:</label>
 
         <div class="itemcard-topbox-content">
-          {{ form.delivery_unit }}
+          {% comment %} {{ form.delivery_unit }} {% endcomment %}
+          {% if form.delivery_unit.status == 0 %}
+            <a href="{% url 'unload_update' pk=delivery_unit.id %}">
+          {% else %}
+            <div class="itemcard-topbox-content">{{ form.delivery_unit }}</div>
+          {% endif %}
         </div>
         
         <aside class="itemcard-action-wrapper">
