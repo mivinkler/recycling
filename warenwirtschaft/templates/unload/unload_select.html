@@ -1,0 +1,231 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Vorsortierung erfassen{% endblock %}
+
+{% block content %}
+<form method="get" action="" id="du-select-form">
+{% csrf_token %}
+
+    <div class="itemcard">
+        <div class="itemcard-title itemcard-margin-left">
+            <h2>Vorsortierung</h2>
+            <input 
+                type="text" 
+                id="barcode" 
+                placeholder="Barcode scannen..." 
+                autocomplete="off" 
+                data-accepted="L"
+                data-api="{% url 'barcode_unload_api' %}"
+                autofocus
+                class="visually-hidden-input"
+            />
+
+            <label for="barcode" class="barcode-wrapper header-menu-icon svg-icon">
+                <img src="{% static 'icons/barcode-scan-active.svg' %}" id="barcode-active">
+                <img src="{% static 'icons/barcode-scan-inactive.svg' %}" id="barcode-inactive" hidden>
+            </label>
+        </div>
+
+        {# ====== Wareneingang ====== #}
+        <section class="itemcard-topbox itemcard-margin-left">
+            <div class="itemcard-topbox-row">
+                <label for="{{ form.delivery_unit.id_for_label }}">
+                    Wareneingang:
+                </label>
+
+                <div class="itemcard-topbox-content">
+                    {{ form.delivery_unit }}
+                </div>
+                
+                <aside class="itemcard-action-wrapper">
+                    <div class="itemcard-topbox-btn"></div>
+                </aside>
+            </div>
+        </section>
+
+        {# ====== Neue Wagen ====== #}
+        <section class="itemcard-topbox" style="pointer-events: none; opacity: 0.6;">
+            <div class="itemcard-table-title itemcard-margin-left">Neue Wagen:</div>
+
+            <table class="itemcard-table">
+                {{ formset.management_form }}
+
+                <thead class="itemcard-thead">
+                    <tr>
+                        <th class="checkbox-circle itemcard-action-left"></th>
+                        <th class="itemcard-id">№</th>
+                        <th class="itemcard-material">Material</th>
+                        <th class="itemcard-boxtype">Behälter</th>
+                        <th class="itemcard-status">Status</th>
+                        <th class="itemcard-weight">Gewicht</th>
+                        <th class="itemcard-action"></th>
+                    </tr>
+                </thead>
+
+                <tbody class="itemcard-tbody">
+                    <tr>
+                        <td class="checkbox-circle itemcard-action-left">
+                            <input type="checkbox">
+                        </td>
+                        <td class="itemcard-id"></td>
+                        <td class="itemcard-material"></td>
+                        <td class="itemcard-boxtype"></td>
+                        <td class="itemcard-status"></td>
+
+                        <td class="itemcard-weight itemcard-weight-action">
+                            <div class="weight-container">
+                                <input>
+                                <button type="button" class="btn btn-weight">
+                                    <img src="{% static 'icons/dashboard-icon.svg' %}">
+                                </button>
+                            </div>
+                        </td>
+
+                        <td class="itemcard-action-wrapper">
+                            <div class="itemcard-action">
+                                <button type="button" class="btn btn-lock">
+                                    <img class="icon-lock-closed" src="{% static 'icons/lock-icon.svg' %}">
+                                </button>
+                            </div>
+                        </td>
+                    </tr>       
+                </tbody>
+            </table>
+        </section>
+
+        {# ====== Aktive Wagen ====== #}
+        <section style="pointer-events: none; opacity: 0.6;">
+            <div class="itemcard-table-title itemcard-margin-left">Aktive Wagen:</div>
+
+            <table class="itemcard-table">
+                <thead class="itemcard-thead">
+                    <tr>
+                        <th class="checkbox-circle itemcard-action-left"></th>
+                        <th class="itemcard-id">№</th>
+                        <th class="itemcard-material">Material</th>
+                        <th class="itemcard-boxtype">Behälter</th>
+                        <th class="itemcard-status">Status</th>
+                        <th class="itemcard-weight">Gewicht</th>
+                        <th class="itemcard-action"></th>
+                    </tr>
+                </thead>
+
+                <tbody class="itemcard-tbody existing-tbody">
+                    {% if vorhandene_unloads %}
+                        {% for u in vorhandene_unloads %}
+                        <tr class="itemcard-table-row" data-kind="existing" data-key="{{ u.pk }}">
+                            <td class="checkbox-circle itemcard-action-left">
+                                <input type="checkbox">
+                            </td>
+                            <td class="itemcard-id">{{ forloop.counter }}</td>
+                            <td class="itemcard-material"><p>{{ u.material }}</p></td>
+                            <td class="itemcard-boxtype"><p>{{ u.get_box_type_display }}</p></td>
+                            <td class="itemcard-status"><p>{{ u.status }}<p></td>
+
+                            <td class="itemcard-weight itemcard-weight-action">
+                                <div class="weight-container">
+                                    <input type="text" value="{{ u.weight }}">
+                                    <button type="button" class="btn btn-weight">
+                                        <img src="{% static 'icons/dashboard-icon.svg' %}" alt="">
+                                    </button>
+                                </div>
+                            </td>
+
+                            <td class="itemcard-action-wrapper">
+                                <div class="itemcard-action">
+                                    <button type="button" class="btn btn-lock">
+                                        <img class="icon-lock-closed" src="{% static 'icons/lock-icon.svg' %}">
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr class="itemcard-table-row">
+                            <td class="checkbox-circle itemcard-action-left">
+                                <input type="checkbox" title="Keine Daten" disabled>
+                            </td>
+                            <td colspan="5" class="text-center">
+                                Keine Daten vorhanden
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </section>
+    </div>
+</form>
+
+
+
+<style>
+.barcode-wrapper { 
+  cursor: pointer; 
+  height: 32px;
+}
+
+#barcode {
+  width: 0;
+  height: 0;
+  border: 0;
+  padding: 0;
+}
+
+.visually-hidden-input {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: auto; /* wichtig: nimmt den Fokus */
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/barcode/barcode-unload.js' %}"></script>
+<script>
+  (function() {
+    var sel = document.getElementById("id_delivery_unit");
+    if (!sel) return;
+    sel.addEventListener("change", function() {
+      document.getElementById("du-select-form").submit();
+    });
+  })();
+</script>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<form method="get" >
+  
+</form>
+<script>
+  (function() {
+    var sel = document.getElementById("id_delivery_unit");
+    if (!sel) return;
+    sel.addEventListener("change", function() {
+      // mit ?delivery_unit=<id>
+      var url = new URL(window.location.href);
+      url.searchParams.set("delivery_unit", this.value);
+      window.location = url.toString();
+    });
+  })();
+</script>

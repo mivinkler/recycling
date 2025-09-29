@@ -10,21 +10,6 @@
   <div class="itemcard">
     <div class="itemcard-title itemcard-margin-left">
       <h2>Vorsortierung</h2>
-      <input 
-        type="text" 
-        id="barcode" 
-        placeholder="Barcode scannen..." 
-        autocomplete="off" 
-        data-accepted="L"
-        data-api="{% url 'barcode_unload_api' %}"
-        autofocus
-        class="visually-hidden-input"
-      />
-
-      <label for="barcode" class="barcode-wrapper header-menu-icon svg-icon">
-          <img src="{% static 'icons/barcode-scan-active.svg' %}" id="barcode-active">
-          <img src="{% static 'icons/barcode-scan-inactive.svg' %}" id="barcode-inactive" hidden>
-      </label>
     </div>
 
     {# ====== Wareneingang ====== #}
@@ -32,21 +17,11 @@
       {{ form.delivery_unit.errors }}
       {{ form.non_field_errors }}
 
-      <div class="itemcard-topbox-row">
-        <label for="{{ form.delivery_unit.id_for_label }}">Wareneingang:</label>
+      <div class="itemcard-topbox-row" style="justify-content: flex-start;">
+        <span>Wareneingang:</span>
 
-        <div class="itemcard-topbox-content">
-          {% comment %} {{ form.delivery_unit }} {% endcomment %}
-          {% if form.delivery_unit.status == 0 %}
-            <a href="{% url 'unload_update' pk=delivery_unit.id %}">
-          {% else %}
-            <div class="itemcard-topbox-content">{{ form.delivery_unit }}</div>
-          {% endif %}
-        </div>
-        
-        <aside class="itemcard-action-wrapper">
-          <div class="itemcard-topbox-btn"></div>
-        </aside>
+        <p>{{ delivery_unit }}</p>
+
       </div>
     </section>
 
@@ -143,7 +118,6 @@
           {{ existing_formset.management_form }}
 
           {% if vorhandene_unloads %}
-            {#Gleiches Ordering für Forms & Daten annehmen #}
             {% for f in existing_formset.forms %}
               {% with u=f.instance %}
               <tr class="itemcard-table-row" data-kind="existing" data-key="{{ u.pk }}">
@@ -210,33 +184,9 @@
   </div>
 </form>
 
-
-<style>
-.barcode-wrapper { 
-  cursor: pointer; 
-  height: 32px;
-}
-
-#barcode {
-  width: 0;
-  height: 0;
-  border: 0;
-  padding: 0;
-}
-
-.visually-hidden-input {
-  position: absolute;
-  left: -9999px;
-  width: 1px;
-  height: 1px;
-  opacity: 0;
-  pointer-events: auto; /* важно: принимает фокус */
-}
-</style>
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'js/barcode/barcode-unload.js' %}"></script>
 <script src="{% static 'js/close-open.js' %}"></script>
 <script src="{% static 'js/weight.js' %}"></script>
 {% endblock %}

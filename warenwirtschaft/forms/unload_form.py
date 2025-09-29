@@ -3,11 +3,11 @@ from django import forms
 from django.forms import modelformset_factory
 from warenwirtschaft.models import Unload, DeliveryUnit
 
-class DeliveryUnitForm(forms.Form):
+class DeliveryUnitSelectForm(forms.Form):
     delivery_unit = forms.ModelChoiceField(
-        queryset=DeliveryUnit.objects.filter(status=1),
+        queryset=DeliveryUnit.objects.all().order_by("pk"),
         label="Liefereinheit",
-        widget=forms.Select
+        widget=forms.Select(attrs={"id": "id_delivery_unit"})
     )
 
 class UnloadForm(forms.ModelForm):

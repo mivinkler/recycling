@@ -5,7 +5,7 @@ from django.conf.urls.static import static
 from warenwirtschaft.views.material import MaterialListView, MaterialCreateView, MaterialUpdateView, MaterialDeleteView
 from warenwirtschaft.views.customer import CustomerListView, CustomerUpdateView, CustomerDetailView, CustomerCreateView,CustomerDeleteView
 from warenwirtschaft.views.delivery import DeliveryListView, DeliveryDetailBarcodeView, DeliveryDetailWeightView, DeliveryCreateView, DeliveryUpdateView, DeliveryDeleteView, DeliveryUpdateStatusView
-from warenwirtschaft.views.unload import UnloadListView, UnloadCreateView, UnloadUpdateItemView, UnloadUpdateView, UnloadDeleteView, UnloadDetailBarcodeView, UnloadDetailWeightView
+from warenwirtschaft.views.unload import UnloadListView, UnloadSelectView, UnloadCreateView, UnloadUpdateItemView, UnloadUpdateView, UnloadDeleteView, UnloadDetailBarcodeView, UnloadDetailWeightView
 from warenwirtschaft.views.recycling import RecyclingListView, RecyclingCreateView, RecyclingUpdateView, RecyclingDeleteView, RecyclingDetailView
 from warenwirtschaft.views.recycling_weight import RecyclingWeightUpdateView, RecyclingWeightListView
 from warenwirtschaft.views.shipping import ShippingListView, ShippingDetailView, ShippingCreateView, ShippingUpdateView, ShippingDeleteView
@@ -29,7 +29,8 @@ urlpatterns = [
     path('delivery/status-update/<int:delivery_unit_pk>/', DeliveryUpdateStatusView.as_view(), name='delivery_update_status'),
 
     path('unload/list/', UnloadListView.as_view(), name='unload_list'),
-    path('unload/create/', UnloadCreateView.as_view(), name='unload_create'),
+    path('unload/create/<int:delivery_unit_pk>/', UnloadCreateView.as_view(), name='unload_create'),
+    path("unload/select/", UnloadSelectView.as_view(), name="unload_select"),
     path('unload/update/<int:delivery_unit_pk>/', UnloadUpdateView.as_view(), name='unload_update'),
     path('unload/update/item/<int:pk>/', UnloadUpdateItemView.as_view(), name='unload_update_item'),
     path('unload/delete/<int:pk>/', UnloadDeleteView.as_view(), name='unload_delete'),
