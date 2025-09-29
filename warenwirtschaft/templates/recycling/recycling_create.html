@@ -11,8 +11,20 @@
     <div class="itemcard-title itemcard-margin-left">
       <h2>Vorsortierung erstellen</h2>
 
-      {% include 'components/barcode_scan_icon.html' %}
-
+      <input 
+        type="text" 
+        id="barcode" 
+        placeholder="Barcode scannen..." 
+        autocomplete="off" 
+        data-accepted="S"
+        data-api="{% url 'barcode_recycling_api' %}"
+        autofocus
+      />
+      
+      <label for="barcode" class="barcode-wrapper header-menu-icon svg-icon">
+          <img src="{% static 'icons/barcode-scan-active.svg' %}" id="barcode-active">
+          <img src="{% static 'icons/barcode-scan-inactive.svg' %}" id="barcode-inactive" hidden>
+      </label>
     </div>
 
     <section class="itemcard-topbox itemcard-margin-left">
@@ -20,16 +32,12 @@
       {{ unload_form.non_field_errors }}
 
       <div class="itemcard-topbox-row">
-        <label for="barcode">Barcode:</label>
-        <div>
-          <!-- TODO:  "/api/unload-input/"??? -->
-          <input type="text" id="barcode" data-api="/api/unload-input/" autofocus autocomplete="off" placeholder="Barcode scannen..." />
+        <label for="{{ unload_form.unload.id_for_label }}">
+          Vorsortierung:
+        </label>
+        <div class="itemcard-topbox-content">
+          {{ unload_form.unload }}
         </div>
-      </div>
-
-      <div class="itemcard-topbox-row">
-        <label for="{{ unload_form.unload.id_for_label }}">Vorsortierung:</label>
-        <div class="itemcard-topbox-content">{{ unload_form.unload }}</div>
       </div>
     </section>
 
@@ -120,9 +128,34 @@
     </div>
   </div>
 </form>
+
+
+<style>
+.barcode-wrapper { 
+  cursor: pointer; 
+  height: 32px;
+}
+
+#barcode {
+  width: 0;
+  height: 0;
+  border: 0;
+  padding: 0;
+}
+
+.visually-hidden-input {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: auto; /* wichtig: nimmt den Fokus */
+}
+</style>
 {% endblock %}
 
 {% block extra_js %}
   <script src="{% static 'js/add-table-row.js' %}"></script>
   <script src="{% static 'js/mouse-right-click.js' %}"></script>
+  <script src="{% static 'js/barcode/barcode-recycling.js' %}"></script>
 {% endblock %}

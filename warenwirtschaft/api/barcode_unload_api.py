@@ -5,7 +5,6 @@ from warenwirtschaft.models import DeliveryUnit
 
 
 class BarcodeUnloadAPI(View):
-    # 🇩🇪 Erwarteter Präfix aus der UI (data-accepted="L")
     ACCEPTED_PREFIX = "L"
 
     def _ok(self, du):

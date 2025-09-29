@@ -1,86 +1,86 @@
-// barcode-delivery.js
-(() => {})();
-
 document.addEventListener('DOMContentLoaded', () => {
-  const barcodeInput = document.getElementById('barcode');
-  const imgActive    = document.getElementById('barcode-active');
-  const imgInactive  = document.getElementById('barcode-inactive');
+  const input   = document.getElementById('barcode');
+  const select  = document.getElementById('id_unload');         // 🇩🇪 Ziel-Select
+  const apiUrl  = input?.dataset.api || '';
+  const accepted = (input?.dataset.accepted || '').toUpperCase();
 
-  if (!barcodeInput) return;
+  // 🇩🇪 Grundprüfung
+  if (!input)  { console.warn('[SCAN] #barcode fehlt'); return; }
+  if (!select) { console.warn('[SCAN] #id_unload fehlt'); return; }
+  if (!apiUrl) { console.warn('[SCAN] data-api am #barcode fehlt'); return; }
 
-  // Icons für aktiven/inaktiven Scan-Eingabefokus
-  const setState = (active) => {
-    if (imgActive)   imgActive.hidden   = !active;
-    if (imgInactive) imgInactive.hidden =  active;
-  };
-  barcodeInput.addEventListener('focus', () => setState(true));
-  barcodeInput.addEventListener('blur',  () => setState(false));
-
-  // Konfiguration
-  const apiUrl        = barcodeInput.dataset.api;
-  const allowedPrefix = barcodeInput.dataset.accepted || 'G';
-
-  // Selektoren/Helfer
-  const addRowBtn = document.getElementById('form-add-btn');
-  const getRows   = () => Array.from(document.querySelectorAll('.itemcard-table-row'));
-
-  function isFilled(el) {
-    return !!(el && String(el.value || '').trim());
+  // 🇩🇪 Falls Enter im Feld die ganze Seite submitten würde – verhindern
+  const parentForm = input.closest('form');
+  if (parentForm) {
+    parentForm.addEventListener('submit', (e) => {
+      if (document.activeElement === input) e.preventDefault();
+    });
   }
 
-  // Erste unvollständige Tabellenzeile finden
-  function findIncompleteRow() {
-    for (const row of getRows()) {
-      const sMat = row.querySelector('select[name$="-material"]');
-      const sBox = row.querySelector('select[name$="-box_type"]');
-      const iWgt = row.querySelector('input[name$="-weight"]');
-      if (!isFilled(sMat) || !isFilled(sBox) || !isFilled(iWgt)) return row;
+  // 🇩🇪 Normalisierung: Großschreibung + Whitespace/CR/LF entfernen
+  const normalize = (raw) => (raw || '').toUpperCase().replace(/[\s\r\n]+/g, '');
+
+  // 🇩🇪 Option im Select sicherstellen + auswählen (kein Autosubmit)
+  const ensureOption = (id, text = `Einheit #${id}`) => {
+    let opt = select.querySelector(`option[value="${id}"]`);
+    if (!opt) {
+      opt = new Option(text, String(id));
+      select.add(opt);
     }
-    return null;
-  }
+    select.value = String(id);
+  };
 
-  // Zeile mit API-Daten befüllen – nur leere Felder setzen
-  function fillRowFromData(row, data) {
-    const sMat = row.querySelector('select[name$="-material"]');
-    const sBox = row.querySelector('select[name$="-box_type"]');
-    const iWgt = row.querySelector('input[name$="-weight"]');
+  // 🇩🇪 Hauptlogik Scan → API → Select setzen
+  const scan = async (raw) => {
+    const code = normalize(raw);
+    if (!code) { console.warn('[SCAN] leerer Code'); return; }
 
-    if (sMat && !isFilled(sMat) && data.material != null) sMat.value = String(data.material);
-    if (sBox && !isFilled(sBox) && data.box_type != null) sBox.value = String(data.box_type);
-    if (iWgt && !isFilled(iWgt) && data.weight)           iWgt.value = data.weight;
-  }
-
-  // Barcode-Scan (Enter)
-  barcodeInput.addEventListener('keydown', async (e) => {
-    if (e.key !== 'Enter') return;
-    e.preventDefault();
-
-    const code = barcodeInput.value.trim().toUpperCase();
-    barcodeInput.value = '';
-    if (!code) return;
-
-    if (!code.startsWith(allowedPrefix)) {
-      alert(`Nur Barcodes mit ${allowedPrefix}-Präfix sind für Wareneingang gültig.`);
+    // 🇩🇪 Clientseitige Präfixprüfung spart 400er
+    if (accepted && !code.startsWith(accepted)) {
+      alert(`Falscher Präfix: "${code}". Erlaubt: "${accepted}"`);
       return;
     }
 
+    const url = new URL(apiUrl, window.location.origin);
+    url.searchParams.set('code', code);
+    if (accepted) url.searchParams.set('accepted', accepted);
+
+    console.debug('[SCAN] fetch:', url.toString());
+
+    let res, data;
     try {
-      const response = await fetch(`${apiUrl}?barcode=${encodeURIComponent(code)}`);
-      const data = await response.json();
-      if (!response.ok) {
-        alert(data.error || 'Fehler beim Barcode');
-        return;
-      }
-
-      // ZUERST eine unvollständige Zeile verwenden
-      let targetRow = findIncompleteRow();
-
-      // Zielzeile befüllen
-      fillRowFromData(targetRow, data);
-
-    } catch (err) {
-      console.error(err);
-      alert('Barcode konnte nicht verarbeitet werden.');
+      res = await fetch(url.toString(), { method: 'GET' });
+      data = await res.json().catch(() => null);
+    } catch (e) {
+      alert('Netzwerkfehler.');
+      return;
     }
+
+    if (!res.ok) {
+      alert(data?.error || `Fehler ${res.status}`);
+      return;
+    }
+
+    if (data?.type === 'unload' && data?.unload_id != null) {
+      ensureOption(data.unload_id, data.label || `Einheit #${data.unload_id}`);
+    } else {
+      alert('Unerwartetes Antwortformat.');
+    }
+  };
+
+  // 🇩🇪 Scanner schickt meist Enter → hier abfangen
+  input.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter') return;
+    e.preventDefault();
+    const value = input.value;  // zuerst lesen
+    input.value = '';           // dann für nächsten Scan leeren
+    scan(value);
+  });
+
+  // 🇩🇪 Fallback: einige Scanner feuern nur 'change'
+  input.addEventListener('change', (e) => {
+    const value = e.target.value;
+    e.target.value = '';
+    scan(value);
   });
 });

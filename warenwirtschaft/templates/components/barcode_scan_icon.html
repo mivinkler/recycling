@@ -1,16 +1,15 @@
 {% load static %}
 
-<input 
+<label for="barcode" class="barcode-wrapper header-menu-icon svg-icon">
+  <input 
     type="text" 
     id="barcode" 
     placeholder="Barcode scannen..." 
     autocomplete="off" 
-    data-accepted="G"
+    data-accepted="{{ accepted }}"
     data-api="{% url 'barcode_delivery_api' %}"
     autofocus
-/>
-
-<label for="barcode" class="barcode-wrapper header-menu-icon svg-icon">
+  />
     <img src="{% static 'icons/barcode-scan-active.svg' %}" id="barcode-active">
     <img src="{% static 'icons/barcode-scan-inactive.svg' %}" id="barcode-inactive" hidden>
 </label>

@@ -183,6 +183,8 @@
 </style>
 {% endblock %}
 
+
+
 {% block extra_js %}
 <script src="{% static 'js/barcode/barcode-unload.js' %}"></script>
 <script>
@@ -195,37 +197,3 @@
   })();
 </script>
 {% endblock %}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<form method="get" >
-  
-</form>
-<script>
-  (function() {
-    var sel = document.getElementById("id_delivery_unit");
-    if (!sel) return;
-    sel.addEventListener("change", function() {
-      // mit ?delivery_unit=<id>
-      var url = new URL(window.location.href);
-      url.searchParams.set("delivery_unit", this.value);
-      window.location = url.toString();
-    });
-  })();
-</script>
