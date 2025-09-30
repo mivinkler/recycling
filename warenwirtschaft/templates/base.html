@@ -26,14 +26,13 @@
         <div class="header-menu">
             {% include 'components/top_navi.html' %}
         </div>
-            
+          
+
         <div>
             <div class="header-user">
                 <img src="{% static 'icons/user-icon.svg' %}">
             </div>
-            <div class="header-user">
-                <img src="{% static 'icons/question-icon.svg' %}">
-            </div>
+                {% include "components/help_dropdown.html" %}
         </div>
     </header>
    
