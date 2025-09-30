@@ -83,7 +83,7 @@
           {% endfor %}
         {% endif %}
 
-        {# --- Neue Zeilen aus dem Formset (falls сервер их уже вернул, например при ошибке) --- #}
+        {# --- Neue Zeilen aus dem Formset --- #}
         {{ new_formset.non_form_errors }}
         {% for form in new_formset %}
           <tr class="itemcard-table-row">

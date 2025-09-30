@@ -3,7 +3,7 @@ import uuid
 class BarcodeNumberService:
     """
     Service zur Erzeugung von Barcode-Nummern mit Prefix.
-    Beispiel: L8F2A9C1B (L = Lieferungen, U = Unloads, R = Recycling, S = Shipping, G = Generator)
+    Beispiel: L8F2A9C1B (L = Lieferungen, S = Unloads, A = Recycling, G = Generator)
     """
     @staticmethod
     def make_code(prefix: str) -> str:
