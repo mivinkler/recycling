@@ -22,6 +22,7 @@ class DeliveryUpdateView(UpdateView):
             # Ansonsten laden wir das Formset mit den bestehenden Objektdaten
             context['formset'] = DeliveryUnitFormSet(instance=self.object)
         context['empty_form'] = context['formset'].empty_form
+        context["selected_menu"] = "delivery_create"
         return context
 
     def form_valid(self, form):

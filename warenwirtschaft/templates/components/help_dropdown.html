@@ -9,10 +9,16 @@
     <span class="tooltip-text">Erläuterung</span>
   </summary>
 
-  <div class="header-details-disclosure" style="right: 0; left: auto; width: 400px;">
+  <div class="header-details-disclosure">
     {% if selected_menu == "delivery_list" %}
-      <h3>Lieferung erfassen</h3>
+      <h3>Lieferung Liste</h3>
       <p>Hier legen Sie neue Vorsortierungs-Behälter an und ordnen Material zu.</p>
+
+    {% elif selected_menu == "delivery_create" %}
+      <h3>Lieferung Formular</h3>
+      <p>Hier legen Sie neue Vorsortierungs-Behälter an und ordnen Material zu.</p>
+
+      <h4></h4>
 
     {% elif selected_menu == "unload_create" %}
       <h3>Vorsortierung erfassen</h3>
@@ -28,3 +34,11 @@
     {% endif %}
   </div>
 </details>
+
+<style>
+  .header-details-disclosure {
+    right: 0; left: auto; width: 400px;"
+  }
+
+
+</style>
