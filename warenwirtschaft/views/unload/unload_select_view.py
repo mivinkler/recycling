@@ -18,6 +18,7 @@ class UnloadSelectView(View):
         context = {
             "form": form,
             "vorhandene_unloads": vorhandene_unloads,
+            "selected_menu": "unload_create",
         }
 
         return render(request, self.template_name, context)

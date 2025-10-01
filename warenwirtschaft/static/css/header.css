@@ -5,33 +5,38 @@ header {
     box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
     border-bottom: 1px solid var(--color-gray-300);
     position: relative;
-    padding: 0 20px;
+    padding: 0 20px 0 0;
+    width: 100%;
 }
 
 .header-menu {
     display: flex;
-    align-items: flex-end;
-    gap: 46px;
+    gap: 6px;
 }
 
 .header-menu-item {
+    width: 116px;
+    height: 105px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 105px;
     padding: 6px 0 30px;
-}
-
-.header-user {
-    padding-top: 14px;
-    cursor: pointer;
+    align-items: center;
 }
 
 .header-menu-title {
-    padding-bottom: 3px;
+    padding-bottom: 7px;
     border-bottom: 3px solid transparent;
-    transition: border-color 0.2s ease-in-out;
+    /* transition: border-color 0.2s ease-in-out; */
     font-weight: 500;
+    width: max-content;
+    text-align: center;
+    position: relative;
+}
+
+.header-menu-search {
+    width: auto;
+    margin-left: 40px;
 }
 
 .header-menu-title:hover, 
@@ -46,8 +51,9 @@ header {
 
 .header-menu-splitter {
     border-right: 1px solid var(--color-gray-300);
-    height: 80%;
-    align-self: center;
+    height: 78%;
+    align-self: flex-start;
+    margin-top: 10px;
 }
 
 .header-menu-icon {
@@ -57,6 +63,11 @@ header {
 
 .header-menu-icon svg {
     vertical-align: bottom;
+}
+
+.header-user {
+    padding-top: 14px;
+    cursor: pointer;
 }
 
 /* ============ Details element ============*/
@@ -80,7 +91,7 @@ header {
 
 /*  ============ tooltip  ============ */
 
-.tooltip-text,
+.header-icon-tooltip,
 .tooltip-reset {
     position: absolute;
     bottom: -18px;
@@ -89,19 +100,37 @@ header {
     transform: translateX(-50%);
 }
 
-.tooltip-text {
+.header-icon-tooltip {
     opacity: 0;
     width: max-content;
 }
 
-.header-menu-icon:hover .tooltip-text,
-.icon-selected .tooltip-text {
+.header-title-tooltip {
+    opacity: 0;
+    position: absolute;
+    bottom: -6px;
+    font-size: 10px;
+    left: 64%;
+    transform: translateX(-36%);
+    background-color: var(--color-gray-100);
+    padding: 0 5px;
+    color: var(--color-hero-dark);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.header-menu-icon:hover .header-icon-tooltip,
+.icon-selected .header-icon-tooltip {
     opacity: 1;
 }
 
-.icon-selected .tooltip-text {
-    color: var(--color-hero);
-    filter: brightness(50%);
+.header-menu-title:hover .header-title-tooltip,
+.title-selected .header-title-tooltip {
+    opacity: 1;
+}
+
+.icon-selected .header-icon-tooltip {
+    color: #002411;
 }
 
 .tooltip-reset {
