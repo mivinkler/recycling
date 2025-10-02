@@ -1,15 +1,11 @@
-{# Komponenten-Template: Hilfe-Dropdown im Header #}
-{# Erwartet: 'selected_menu' im Kontext #}
-
 {% load static %}
 
 <details class="header-details">
   <summary class="header-menu-icon header-user" aria-label="Erläuterung öffnen">
-    <img src="{% static 'icons/question-icon.svg' %}" alt="Erläuterung">
-    <span class="tooltip-text">Erläuterung</span>
+    <img src="{% static 'icons/question-icon.svg' %}">
   </summary>
 
-  <div class="header-details-disclosure">
+  <div class="header-details-disclosure header-details-declaration">
     {% if selected_menu == "delivery_list" %}
       <h3>Lieferung Liste</h3>
       <p>Hier legen Sie neue Vorsortierungs-Behälter an und ordnen Material zu.</p>
@@ -35,10 +31,9 @@
   </div>
 </details>
 
+
 <style>
-  .header-details-disclosure {
+  .header-details-declaration {
     right: 0; left: auto; width: 400px;
   }
-
-
 </style>

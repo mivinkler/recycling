@@ -25,9 +25,8 @@ header {
 }
 
 .header-menu-title {
-    padding-bottom: 7px;
+    padding-bottom: 5px;
     border-bottom: 3px solid transparent;
-    /* transition: border-color 0.2s ease-in-out; */
     font-weight: 500;
     width: max-content;
     text-align: center;
@@ -91,46 +90,36 @@ header {
 
 /*  ============ tooltip  ============ */
 
+.header-title-tooltip,
 .header-icon-tooltip,
 .tooltip-reset {
+    opacity: 0;
     position: absolute;
     bottom: -18px;
     font-size: 10px;
     left: 50%;
     transform: translateX(-50%);
+    font-weight: 500;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1;
 }
 
 .header-icon-tooltip {
-    opacity: 0;
     width: max-content;
+    color: var(--color-hero)
 }
 
 .header-title-tooltip {
-    opacity: 0;
-    position: absolute;
-    bottom: -6px;
-    font-size: 10px;
-    left: 64%;
-    transform: translateX(-36%);
+    bottom: -5px;
     background-color: var(--color-gray-100);
-    padding: 0 5px;
-    color: var(--color-hero-dark);
-    font-weight: 500;
-    letter-spacing: 0.5px;
-}
-
-.header-menu-icon:hover .header-icon-tooltip,
-.icon-selected .header-icon-tooltip {
-    opacity: 1;
+    padding: 0 3px;
+    color: var(--color-hero);
 }
 
 .header-menu-title:hover .header-title-tooltip,
-.title-selected .header-title-tooltip {
-    opacity: 1;
-}
-
+.header-menu-icon:hover .header-icon-tooltip,
 .icon-selected .header-icon-tooltip {
-    color: #002411;
+    opacity: 1;
 }
 
 .tooltip-reset {
