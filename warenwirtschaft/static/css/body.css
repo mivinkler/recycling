@@ -436,3 +436,19 @@ td p {
 .context-menu li:hover {
   background-color: var(--color-gray-100);
 }
+
+
+/* Statistik */
+
+.chart-wrap {
+  position: relative;   /* von Chart.js benötigt */
+  width: 100%;
+  height: 360px;
+  max-height: 60vh;
+  overflow: hidden;     /* kein Auspressen des Box" */
+}
+
+/* media */
+@media (max-width: 600px) {
+  .chart-wrap { height: 280px; }
+}

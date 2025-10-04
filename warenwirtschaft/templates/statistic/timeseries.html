@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Statistik{% endblock %}
+
+{% block content %}
+<div class="itemcard">
+  <div class="itemcard-title itemcard-margin-left">
+    <h2>Gewicht über Zeitraum</h2>
+  </div>
+
+  <!-- 🇩🇪 Filterleiste -->
+  <form id="filter-form" class="itemcard-topbox itemcard-margin-left">
+    <div class="itemcard-topbox-row">
+      <label>Lieferant:</label>
+      <div class="itemcard-topbox-content">
+        {{ form.customer }}
+      </div>
+    </div>
+    <div class="itemcard-topbox-row">
+      <label>Material:</label>
+      <div class="itemcard-topbox-content">
+        {{ form.material }}
+      </div>
+    </div>
+    <div class="itemcard-topbox-row">
+      <label>Zeitraum:</label>
+      <div class="itemcard-topbox-content">
+        {{ form.date_from }} – {{ form.date_to }}
+      </div>
+    </div>
+    <button type="submit" class="btn btn-main">Aktualisieren</button>
+  </form>
+
+  <div class="itemcard-content">
+    <!-- Fester Container für Chart-Höhe -->
+    <div class="chart-wrap"> 
+      <canvas id="timeseriesChart"></canvas> <!-- ⚠️ kein height-Attribut -->
+    </div>
+
+    <div id="totals" class="itemcard-margin-left" style="margin-top:12px;font-weight:600;"></div>
+  </div>
+</div>
+
+<!-- url ubergeben in extra_js, weil in statischem JS von Django Tags nicht gerendert werden. -->
+<div id="page-vars" data-api-url="{% url 'warenwirtschaft_api:timeseries' %}"></div>
+{% endblock %}
+
+
+{% block extra_js %}
+<!-- Chart.js von CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="{% static 'js/statistic-filter.js' %}"></script>
+{% endblock %}

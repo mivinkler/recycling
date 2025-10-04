@@ -4,6 +4,7 @@ from .barcode_unload_api import BarcodeUnloadAPI
 from .barcode_recycling_api import BarcodeRecyclingAPI
 from .barcode_shipping_api import BarcodeShippingAPI
 from .weight_input_api import WeightInputAPI
+from warenwirtschaft.views.statistic.timeseries_view import TimeSeriesApiView
 
 
 urlpatterns = [
@@ -12,4 +13,6 @@ urlpatterns = [
     path('barcode-recycling-api/', BarcodeRecyclingAPI.as_view(), name='barcode_recycling_api'),
     path('barcode-shipping-api/', BarcodeShippingAPI.as_view(), name='barcode_shipping_api'),
     path('weight-data/', WeightInputAPI.as_view(), name='weight_input_api'),
+    
+    path("stats/timeseries/",  TimeSeriesApiView.as_view(), name="timeseries"),
 ]

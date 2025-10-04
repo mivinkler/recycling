@@ -38,8 +38,15 @@ header {
     margin-left: 40px;
 }
 
-.header-menu-title:hover, 
 .title-selected {
+    border-color: var(--color-hero);
+}
+
+.header-menu-title:hover {
+    border-color: var(--color-gray-700);
+}
+
+.header-menu-title.title-selected:hover  {
     border-color: var(--color-hero);
 }
 
@@ -106,20 +113,25 @@ header {
 
 .header-icon-tooltip {
     width: max-content;
-    color: var(--color-hero)
 }
 
 .header-title-tooltip {
     bottom: -5px;
     background-color: var(--color-gray-100);
     padding: 0 3px;
-    color: var(--color-hero);
+    color: var(--color-gray-700);
+    border-width: 2px;
 }
 
 .header-menu-title:hover .header-title-tooltip,
 .header-menu-icon:hover .header-icon-tooltip,
 .icon-selected .header-icon-tooltip {
     opacity: 1;
+}
+
+.title-selected .header-title-tooltip,
+.icon-selected .header-icon-tooltip {
+    color: var(--color-hero);
 }
 
 .tooltip-reset {
