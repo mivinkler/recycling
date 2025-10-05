@@ -10,7 +10,7 @@ from warenwirtschaft.views.recycling import RecyclingListView, RecyclingCreateVi
 from warenwirtschaft.views.recycling_weight import RecyclingWeightUpdateView, RecyclingWeightListView
 from warenwirtschaft.views.shipping import ShippingListView, ShippingDetailView, ShippingCreateView, ShippingUpdateView, ShippingDeleteView
 from warenwirtschaft.views.barcode import BarcodeGeneratorListView, BarcodeGeneratorDetailView, BarcodeGeneratorCreateView, BarcodeGeneratorUpdateView, BarcodeGeneratorDeleteView
-from warenwirtschaft.views.statistic.timeseries_view import TimeSeriesPageView, TimeSeriesApiView
+from warenwirtschaft.views.statistic.timeseries_view import TimeSeriesPageView
 
 
 

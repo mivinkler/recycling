@@ -263,7 +263,6 @@ td p {
 
 .itemcard-content {
   margin-bottom: 20px;
-  max-width: 540px;
   line-height: 1.8;
 }
 
@@ -295,17 +294,20 @@ td p {
   height: 26px;
   display: flex;
   align-items: center;
-  justify-content: center
+  justify-content: center;
+  color: var(--color-gray-900)
 }
 
 .btn:hover {
-  background-color: var(--color-gray-200);
+  background-color: rgb(33, 115, 70, 0.2);
   box-shadow: none;
+  color: black;
 }
 
 .btn:active {
   background-color: var(--color-gray-300);
   box-shadow: none;
+  color: black;
 }
 
 .btn-main {
@@ -440,15 +442,56 @@ td p {
 
 /* Statistik */
 
-.chart-wrap {
-  position: relative;   /* von Chart.js benötigt */
-  width: 100%;
-  height: 360px;
-  max-height: 60vh;
-  overflow: hidden;     /* kein Auspressen des Box" */
+.chart-filter {
+  background-color: var(--color-gray-100);
+  padding: 10px 20px;
 }
 
-/* media */
-@media (max-width: 600px) {
-  .chart-wrap { height: 280px; }
+.itemcard-chart {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.itemcard-chart > div {
+  display: flex;
+  gap: 26px; 
+  align-items: flex-end;
+}
+
+.chart-filter-date {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 7px;
+  border: 0;
+}
+
+.chart-filter-date div {
+  width: 200px;
+}
+
+.chart-wrap {
+  position: relative;   /* von Chart.js benötigt */
+  bottom: 0;
+  width: 100vw;
+  height: 76vh;
+  overflow: hidden;     /* kein Auspressen des Box" */
+  padding: 20px 10px;
+}
+
+.chart-total {
+  font-weight:500;
+}
+
+.itemcard-chart-compare {
+  margin-right: 7px;
+}
+
+.btn-chart {
+  padding: 0 8px;
+  height: 27px;
+  font-weight: 500;
+  box-shadow: 0 1px 3px var(--color-gray-200);
+  align-self: flex-end;
+  margin-left: 26px;
 }
