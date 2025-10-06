@@ -1,21 +1,9 @@
-// Feste API-URL (ohne Django-Tags im statischen JS)
 const API_URL = '/warenwirtschaft/api/stats/timeseries/';
 
 document.addEventListener('DOMContentLoaded', () => {
   const form    = document.getElementById('filter-form');
   const chartEl = document.getElementById('timeseriesChart');
   const totalsEl= document.getElementById('totals');
-
-  // Sicherheitscheck: Chart.js geladen?
-  if (!window.Chart) {
-    console.error('Chart.js ist nicht geladen. Prüfe das <script> für chart.umd.min.js.');
-    if (totalsEl) totalsEl.textContent = 'Chart-Bibliothek nicht geladen.';
-    return;
-  }
-  if (!chartEl) {
-    console.error('#timeseriesChart nicht gefunden.');
-    return;
-  }
 
   let chart;
 
@@ -96,7 +84,6 @@ document.addEventListener('DOMContentLoaded', () => {
       data: {
         labels,
         datasets: [{
-          label: 'Gewicht (kg)',
           data: values,
           borderWidth: 1,
           borderColor: 'rgba(33, 150, 243, 1)',
@@ -111,20 +98,40 @@ document.addEventListener('DOMContentLoaded', () => {
         maintainAspectRatio: false,
         animation: false,
         scales: {
+          x: {
+            grid: {
+              lineWidth: 1,             
+              borderWidth: 1,
+              borderDash: [2, 2],          // optional: feiner Strich
+              drawBorder: false,   
+              color: (ctx) =>              // letzte senkrechte Linie unsichtbar
+                ctx.index === ctx.scale.ticks.length - 1
+                  ? 'transparent'
+                  : 'rgba(0, 0, 0, 0.05)'
+              }
+          },
           y: {
             beginAtZero: true,
             grace: '10%',
             ticks: {
-              callback: (v) => fmtNumber.format(v),
-              format: { notation: 'standard' }
+              callback: (value, index, ticks) =>
+                index === ticks.length - 1 ? '' : fmtNumber.format(value)
+            },
+            grid: {
+              lineWidth: 1,
+              borderWidth: 1,
+              borderDash: [2, 2], 
+              drawBorder: false,
+              color: (ctx) =>                         
+                ctx.index === ctx.scale.ticks.length - 1
+                  ? 'transparent'
+                  : 'rgba(0, 0, 0, 0.05)'
+              }
             }
-          }
+          
         },
-        plugins: {
-          legend: { 
-            display: true,
-            position: 'bottom',
-          },
+        plugins:  {
+          legend: { display: false },
           tooltip: {
             callbacks: {
               label: (ctx) => `Gewicht: ${fmtNumber.format(ctx.parsed.y)} kg`
@@ -134,7 +141,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    console.debug('chart labels:', chart.data.labels);
     console.debug('chart values:', chart.data.datasets[0].data);
   }
 

@@ -1,4 +1,3 @@
-# 🇩🇪 Service: Einfache und robuste Zeitreihenaggregation für SQLite
 from __future__ import annotations
 from dataclasses import dataclass
 from datetime import date, datetime, timedelta
