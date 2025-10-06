@@ -1,4 +1,4 @@
-// 🇩🇪 Feste API-URL (ohne Django-Tags im statischen JS)
+// Feste API-URL (ohne Django-Tags im statischen JS)
 const API_URL = '/warenwirtschaft/api/stats/timeseries/';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const chartEl = document.getElementById('timeseriesChart');
   const totalsEl= document.getElementById('totals');
 
-  // 🇩🇪 Sicherheitscheck: Chart.js geladen?
+  // Sicherheitscheck: Chart.js geladen?
   if (!window.Chart) {
     console.error('Chart.js ist nicht geladen. Prüfe das <script> für chart.umd.min.js.');
     if (totalsEl) totalsEl.textContent = 'Chart-Bibliothek nicht geladen.';
@@ -92,17 +92,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const ctx = chartEl.getContext('2d');
 
     chart = new Chart(ctx, {
-      type: 'bar',
+      type: 'line',
       data: {
         labels,
         datasets: [{
           label: 'Gewicht (kg)',
           data: values,
           borderWidth: 1,
-          backgroundColor: 'rgba(33, 150, 243, 0.6)',
-          borderColor: '#2196f3'
-        }]
-      },
+          borderColor: 'rgba(33, 150, 243, 1)',
+          fill: true,
+            backgroundColor: [
+              'rgba(33, 150, 243, 0.3)'
+            ],
+          }]
+        },
       options: {
         responsive: true,
         maintainAspectRatio: false,
@@ -118,7 +121,10 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         },
         plugins: {
-          legend: { display: true },
+          legend: { 
+            display: true,
+            position: 'bottom',
+          },
           tooltip: {
             callbacks: {
               label: (ctx) => `Gewicht: ${fmtNumber.format(ctx.parsed.y)} kg`
@@ -137,6 +143,6 @@ document.addEventListener('DOMContentLoaded', () => {
     loadDataAndRender();
   });
 
-  // 🇩🇪 Initial laden
+  // Initial laden
   loadDataAndRender();
 });

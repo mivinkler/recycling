@@ -476,7 +476,6 @@ td p {
   width: 100vw;
   height: 76vh;
   overflow: hidden;     /* kein Auspressen des Box" */
-  padding: 20px 10px;
 }
 
 .chart-total {
@@ -491,7 +490,9 @@ td p {
   padding: 0 8px;
   height: 27px;
   font-weight: 500;
-  box-shadow: 0 1px 3px var(--color-gray-200);
+  /* box-shadow: 0 1px 3px var(--color-gray-200); */
   align-self: flex-end;
   margin-left: 26px;
+  border-color: var(--color-gray-500);
+  background-color: white;
 }
