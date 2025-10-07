@@ -5,16 +5,33 @@
     <img src="{% static 'icons/question-icon.svg' %}">
   </summary>
 
-  <div class="header-details-disclosure header-details-declaration">
+  <div class="header-details-disclosure page-help-wrapper">
     {% if selected_menu == "delivery_list" %}
       <h3>Lieferung Liste</h3>
       <p>Hier legen Sie neue Vorsortierungs-Behälter an und ordnen Material zu.</p>
 
+    <!-- delivery_create und delivery_update -->
     {% elif selected_menu == "delivery_create" %}
-      <h3>Lieferung Formular</h3>
-      <p>Hier legen Sie neue Vorsortierungs-Behälter an und ordnen Material zu.</p>
+      <!-- 🇩🇪 Hilfstext: Wareneingang erstellen -->
+      <section class="page-help">
+        <h3>Wareneingang erstellen</h3>
+        <p>
+          Hier legen Sie einen neuen Wareneingang mit Lieferant, Lieferschein und Transportgut an.
+        </p>
 
-      <h4></h4>
+        <h4>Scanner-Hinweis</h4>
+        <p>
+          Über das Scanner-Symbol können Barcodes eingelesen werden.
+          Akzeptiert werden Barcodes mit Präfix <code>G</code> (Generator/Wareneingang). 
+        </p>
+
+        <h4>Tipps &amp; Fehlerhinweise</h4>
+        <ul>
+          <li>Mindestens eine Tabellenzeile mit <em>Material</em>, <em>Behälter</em> und <em>Gewicht</em> erfassen.</li>
+          <li>Dezimaltrennzeichen beim Gewicht sind erlaubt.</li>
+          <li>Leere Zeilen werden beim Speichern ignoriert.</li>
+        </ul>
+      </section>
 
     {% elif selected_menu == "unload_create" %}
       <h3>Vorsortierung erfassen</h3>
@@ -33,7 +50,28 @@
 
 
 <style>
-  .header-details-declaration {
-    right: 0; left: auto; width: 400px;
+  .page-help-wrapper {
+    right: 0; 
+    left: auto; 
+    width: 400px;
+    padding-left: 12px;
+  }
+
+  .page-help-wrapper {
+    line-height: 1.5em;
+  }
+
+  .page-help li {
+    margin-left: 30px;
+  }
+
+  .page-help h3 {
+    color: var(--color-hero);
+    font-size: 1.2em;
+    margin-bottom: 18px;
+  }
+
+  .page-help h4 {
+    margin: 10px 0 5px;
   }
 </style>
