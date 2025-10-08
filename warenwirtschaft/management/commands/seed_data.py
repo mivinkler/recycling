@@ -1,4 +1,3 @@
-# warenwirtschaft/management/commands/seed_warenwirtschaft.py
 import random
 import re
 from datetime import timedelta
