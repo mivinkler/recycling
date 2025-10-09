@@ -1,6 +1,6 @@
 {% load static %}
 
-<details class="header-details">
+<details class="header-details" open>
   <summary class="header-menu-icon header-user" aria-label="Erläuterung öffnen">
     <img src="{% static 'icons/question-icon.svg' %}">
   </summary>
@@ -12,30 +12,61 @@
 
     <!-- delivery_create und delivery_update -->
     {% elif selected_menu == "delivery_create" %}
-      <!-- 🇩🇪 Hilfstext: Wareneingang erstellen -->
       <section class="page-help">
         <h3>Wareneingang erstellen</h3>
         <p>
-          Hier legen Sie einen neuen Wareneingang mit Lieferant, Lieferschein und Transportgut an.
+          Hier legen Sie einen neuen Wareneingang mit Transportgut an.
         </p>
 
         <h4>Scanner-Hinweis</h4>
         <p>
           Über das Scanner-Symbol können Barcodes eingelesen werden.
-          Akzeptiert werden Barcodes mit Präfix <code>G</code> (Generator/Wareneingang). 
+          Akzeptiert werden Barcodes mit dem Präfix "G" (Generierter Barcode).
         </p>
 
-        <h4>Tipps &amp; Fehlerhinweise</h4>
+        <h4>Tipps</h4>
         <ul>
-          <li>Mindestens eine Tabellenzeile mit <em>Material</em>, <em>Behälter</em> und <em>Gewicht</em> erfassen.</li>
-          <li>Dezimaltrennzeichen beim Gewicht sind erlaubt.</li>
+          <li>Mindestens eine Zeile mit Material, Behälter und Gewicht erfassen.</li>
+          <li>Beim Gewicht sind Dezimaltrennzeichen erlaubt.</li>
           <li>Leere Zeilen werden beim Speichern ignoriert.</li>
+          <li>Die Felder <em>Lieferant</em> und <em>Lieferschein</em> sind Pflichtfelder.</li>
+          <li>Für neue Wagen werden beim Speichern automatisch die Barcode mit der Prefix "L" (Lieferung) versehen.</li>
+        </ul>
+        
+      </section>
+
+
+    {% elif selected_menu == "unload_create" %}
+      <section class="page-help">
+        <h3>Vorsortierung erfassen</h3>
+        <p>
+          Hier erfassen Sie die Vorsortierung einer Liefereinheit. 
+          Das Transportgut aus dem Wareneingang wird in einzelne Wagen aufgeteilt und gewogen.
+        </p>
+
+        <p>
+          Oben können Sie neue Wagen anlegen, unten bestehende (aktive) Wagen aus früheren Lieferungen weiterverwenden.
+        </p>
+
+        <h4>Scanner-Hinweis</h4>
+        <p>
+          Über das Scanner-Symbol können Barcodes eingelesen werden.
+          Akzeptiert werden Barcodes mit dem Präfix "L" (Lieferung).
+        </p>
+
+        <h4>Tipps</h4>
+        <ul>
+
+          <li>Wareneingang ist ein Pflichtfeld</li>
+          <li>Leere Felder sowie ganze Zeilen werden nicht gespeichert.</li>
+          <li>Über das Symbol 
+            &nbsp;<img src="{% static 'icons/dashboard-icon.svg' %}" alt="Waage" style="height:1em; vertical-align:middle;">&nbsp;
+            wird das Feld "Gewicht" automatisch ausgefüllt, alternativ kann das Gewicht manuell eingetragen werden.</li>
+          <li>Neue Wagen werden beim Speichern automatisch mit einem Barcode "S" versehen.</li>
+          <li>Nur ausgewählte Wagen (Checkbox) werden mit der Liefereinheit verknüpft.</li>
         </ul>
       </section>
 
-    {% elif selected_menu == "unload_create" %}
-      <h3>Vorsortierung erfassen</h3>
-      <p>Hier legen Sie neue Vorsortierungs-Behälter an und ordnen Material zu.</p>
 
     {% elif selected_menu == "recycling_create" %}
       <h3>Aufbereitung erfassen</h3>
