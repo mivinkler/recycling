@@ -472,14 +472,15 @@ td p {
 
 .chart-wrap {
   position: relative;   /* von Chart.js benötigt */
-  bottom: 0;
   width: 100vw;
-  height: 76vh;
+  height: 70vh;
   overflow: hidden;     /* kein Auspressen des Box" */
+  padding: 20px;
 }
 
 .chart-total {
   font-weight:500;
+  padding: 20px;
 }
 
 .btn-chart {

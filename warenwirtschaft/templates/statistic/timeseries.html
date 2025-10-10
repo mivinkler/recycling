@@ -47,17 +47,14 @@
   </form>
 </section>
 
-
-
+<div id="totals" class="chart-total"></div>
 <section class="chart-wrap">
   <canvas id="timeseriesChart"></canvas> 
 </section>
-<div id="totals" class="chart-total"></div>
 
 {% endblock %}
 
 
-{% load static %}
 
 {% block extra_js %}
   <script src="{% static 'vendor/chartjs/4.5.0/chart.umd.min.js' %}"></script>
