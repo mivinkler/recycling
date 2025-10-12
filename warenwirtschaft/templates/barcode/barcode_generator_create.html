@@ -7,64 +7,139 @@
 <form method="post">
   {% csrf_token %}
 
-  <div class="itemcard">
-    <div class="itemcard-title">
-    <h2>Barcode generieren</h2>
-  </div>
+  <div class="itemcard" style="margin-top: 100px; z-index: 0;">
+    <div class="itemcard-tabs">
+      <!-- Tabs: Gemeinsamer Name + unterschiedliche Werte -->
+      <input type="radio"
+             name="eingang"
+             id="eingang"
+             value="eingang"
+             {% if not form.eingang.value or form.eingang.value == 'eingang' %}checked{% endif %}>
+      <label for="eingang">Eingang</label>
 
-  <section class="itemcard-topbox">
-    {{ form.non_field_errors }}
-
-    <div id="fields-delivery">
-      <div class="itemcard-topbox-row">
-        <label for="id_customer">Kunde:</label>
-        <div class="itemcard-topbox-content">
-          {{ form.customer }}
-        </div>
-      </div>
-
-      <div class="itemcard-topbox-row">
-        <label>Begleitdokumente:</label>
-        <div class="itemcard-topbox-content">
-          {{ form.receipt }}
-        </div>
-      </div>
-
-      <div class="itemcard-topbox-row">
-        <label>Behälter-Art:</label>
-        <div class="itemcard-topbox-content">
-          {{ form.box_type }}
-        </div>
-      </div>
-      
-      <div class="itemcard-topbox-row">
-        <label>Material:</label>
-        <div class="itemcard-topbox-content">
-          {{ form.material }}
-        </div>
-      </div>
-      
-      <div class="itemcard-topbox-row">
-        <label for="{{ form.transport.id_for_label }}">Transport:</label>
-        <div class="itemcard-topbox-content">
-          {{ form.transport }}
-        </div>
-      </div>
-
-
-      <div class="itemcard-topbox-row">
-        <label>Gewicht:</label>
-        <div class="itemcard-topbox-content">
-          {{ form.weight }}
-        </div>
-      </div>
-
-      <div class="buttons-form-footer">
-        <button type="submit" name="save" class="btn btn-main">Speichern</button>
-      </div>
+      <input type="radio"
+             name="eingang"
+             id="abholung"
+             value="abholung"
+             {% if form.eingang.value == 'abholung' %}checked{% endif %}>
+      <label for="abholung">Abholung</label>
     </div>
-    
-  </section>
+
+    <div class="itemcard-title">
+      <h2>Barcode generieren</h2>
+    </div>
+
+    <section class="itemcard-topbox">
+      {{ form.non_field_errors }}
+
+      <div id="fields-delivery">
+        <div class="itemcard-topbox-row">
+          <label for="id_customer">Kunde:</label>
+          <div class="itemcard-topbox-content">
+            {{ form.customer }}
+          </div>
+        </div>
+
+        <div class="itemcard-topbox-row">
+          <label>Begleitdokumente:</label>
+          <div class="itemcard-topbox-content">
+            {{ form.receipt }}
+          </div>
+        </div>
+
+        <!-- Felder für Eingang -->
+        <div id="eingang-fields" style="display:none;">
+          <div class="itemcard-topbox-row">
+            <label>Behälter-Art:</label>
+            <div class="itemcard-topbox-content">
+              {{ form.box_type }}
+            </div>
+          </div>
+
+          <div class="itemcard-topbox-row">
+            <label>Material:</label>
+            <div class="itemcard-topbox-content">
+              {{ form.material }}
+            </div>
+          </div>
+
+          <div class="itemcard-topbox-row">
+            <label>Gewicht:</label>
+            <div class="itemcard-topbox-content">
+              {{ form.weight }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Felder für Abholung -->
+        <div id="abholung-fields" style="display:none;">
+          <div class="itemcard-topbox-row">
+            <label for="{{ form.transport.id_for_label }}">Transport:</label>
+            <div class="itemcard-topbox-content">
+              {{ form.transport }}
+            </div>
+          </div>
+        </div>
+
+        <div class="buttons-form-footer">
+          <button type="submit" name="save" class="btn btn-main">Speichern</button>
+        </div>
+      </div>
+    </section>
+  </div>
 </form>
 
+<style>
+  .itemcard-tabs {
+    display: flex;
+    position: absolute;
+  }
+  .itemcard-tabs input[type="radio"] { display: none; }
+
+  .itemcard-tabs label {
+    position: relative;
+    top: -59px;
+    left: -31px;
+    z-index: 1000;
+    padding: 5px 16px;
+    border: 1px solid var(--color-gray-300);
+    font-weight: 500;
+    cursor: pointer;
+    background-color: white;
+    color: var(--color-gray-800);
+  }
+  .itemcard-tabs label[for="eingang"] { border-right: none; }
+
+  .itemcard-tabs input[type="radio"]:checked + label {
+    background-color: var(--color-gray-100);
+    border-bottom: none;
+    color: black;
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const radioEingang  = document.getElementById("eingang");
+    const radioAbholung = document.getElementById("abholung");
+    const eingangFields = document.getElementById("eingang-fields");
+    const abholungFields= document.getElementById("abholung-fields");
+
+    // Sichtbarkeit anhand des gewählten Tabs umschalten
+    const toggleFields = () => {
+      if (radioEingang.checked) {
+        eingangFields.style.display  = "block";
+        abholungFields.style.display = "none";
+      } else if (radioAbholung.checked) {
+        eingangFields.style.display  = "none";
+        abholungFields.style.display = "block";
+      }
+    };
+
+    // Events registrieren
+    radioEingang.addEventListener("change", toggleFields);
+    radioAbholung.addEventListener("change", toggleFields);
+
+    toggleFields();
+  });
+</script>
 {% endblock %}

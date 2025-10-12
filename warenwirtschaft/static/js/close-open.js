@@ -49,8 +49,6 @@
       if (kind === "new") {
         row.dataset.initialChecked = "0"; // nicht geschützt
         setLocked(row, false);            // Neue Wagen offen anzeigen
-        // Wenn du neue Zeile auch vorselektieren willst:
-        // setRowCheckbox(row, true);
       } else {
         row.dataset.initialChecked = serverChecked ? "1" : "0";
         setLocked(row, true);             
@@ -89,9 +87,6 @@
     // Exklusiv öffnen – unabhängig davon, ob checked oder nicht
     document.querySelectorAll(ROW_SELECTOR).forEach(r => setLocked(r, r !== row));
     setLocked(row, false);
-
-    // WICHTIG: Checkbox-Zustand nicht anfassen – Nutzer hat ihn gerade gesetzt.
-    //             (Damit kann man auch eine "initial geschützte" abwählen und speichern.)
   }
 
   function onClick(e) {

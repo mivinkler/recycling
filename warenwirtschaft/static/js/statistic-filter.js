@@ -1,4 +1,4 @@
-// 🇩🇪 API-Endpunkt für Zeitreihen-Statistik
+// API-Endpunkt für Zeitreihen-Statistik
 const API_URL = '/warenwirtschaft/api/stats/timeseries/';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const totalsEl = document.getElementById('totals');
   let chart = null;
 
-  // 🇩🇪 Zahlformat (kg)
+  // Zahlformat (kg)
   const fmt = new Intl.NumberFormat('de-DE', { minimumFractionDigits: 0, maximumFractionDigits: 0, useGrouping: false });
 
   // ---------- Label-Hilfen ----------
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (chart) { chart.destroy(); chart = null; }
       const ctx = canvas.getContext('2d');
 
-      // 🇩🇪 Schrittweite bestimmen (10^n) und 2 zusätzliche Schritte oben hinzufügen
+      // Schrittweite bestimmen (10^n) und 2 zusätzliche Schritte oben hinzufügen
       const maxVal = Math.max(...values, 0);
       const step   = Math.pow(10, Math.floor(Math.log10(Math.max(1, maxVal))));
       const yMax   = Math.ceil(maxVal / step) * step + 2 * step; // ⬅️ z.B. 70000 -> 90000
@@ -95,9 +95,9 @@ document.addEventListener('DOMContentLoaded', () => {
             x: { grid: { drawBorder: false } },
             y: {
               beginAtZero: true,
-              max: yMax,             // 🇩🇪 feste Obergrenze inkl. 2 Extra-Teilstriche
+              max: yMax,             // feste Obergrenze inkl. 2 Extra-Teilstriche
               ticks: {
-                stepSize: step,      // 🇩🇪 z.B. 10000 => 0, 10000, …, 90000
+                stepSize: step,      // z.B. 10000 => 0, 10000, …, 90000
                 callback: (v) => fmt.format(v)
               },
               grid: { drawBorder: false }
@@ -121,6 +121,6 @@ document.addEventListener('DOMContentLoaded', () => {
     loadAndRender();
   });
 
-  // 🇩🇪 Initial laden
+  // Initial laden
   loadAndRender();
 });

@@ -68,9 +68,21 @@
       </section>
 
 
-    {% elif selected_menu == "recycling_create" %}
-      <h3>Aufbereitung erfassen</h3>
-      <p>Aktive Fraktionen bearbeiten oder neue Posten hinzufügen.</p>
+    {% elif selected_menu == "barcode_generator_create" %}
+      <section class="page-help">
+
+        <h3>Barcode erstellen</h3>
+        <p>Hier generieren Sie Barcodes, die das Ausfüllen der Formulare „Wareneingang erstellen“ und „Abholung erstellen“ vereinfachen. Stammkunden, die regelmäßig Lieferungen oder Abholungen durchführen, können feste Barcodes erhalten, um Formulare schneller auszufüllen.</p>
+  
+        <h4>Eingang-Barcode</h4>
+        <p>Der Barcode wird im Formular „Wareneingang erstellen“ verwendet. Hier können Sie den Kunden festlegen und ein Transportgut mit den Werten Material, Behälter und Gewicht hinterlegen.</p>
+
+        <h4>Abholung-Barcode</h4>
+        <p>Der Barcode wird im Formular „Abholung erstellen“ verwendet.</p>
+
+        <h4>Hinweis</h4>
+        <p>Das Feld „Kunde“ ist ein Pflichtfeld. Leere Felder werden beim Speichern ignoriert.</p>
+      </section>
 
     {% else %}
       <h3>Erläuterung</h3>
