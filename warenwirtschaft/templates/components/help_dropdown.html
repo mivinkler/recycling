@@ -8,31 +8,27 @@
   <div class="header-details-disclosure page-help-wrapper">
     {% if selected_menu == "delivery_list" %}
       <h3>Lieferung Liste</h3>
-      <p>Hier legen Sie neue Vorsortierungs-Behälter an und ordnen Material zu.</p>
+      <p></p>
 
     <!-- delivery_create und delivery_update -->
     {% elif selected_menu == "delivery_create" %}
       <section class="page-help">
         <h3>Wareneingang erstellen</h3>
         <p>
-          Hier legen Sie einen neuen Wareneingang mit Transportgut an.
+          Wählen Sie einen Lieferanten aus und fügen Sie dessen Liefereinheiten (Transportgut) hinzu.
         </p>
 
-        <h4>Scanner-Hinweis</h4>
-        <p>
-          Über das Scanner-Symbol können Barcodes eingelesen werden.
-          Akzeptiert werden Barcodes mit dem Präfix "G" (Generierter Barcode).
-        </p>
-
-        <h4>Tipps</h4>
+        <h4>Hinweise</h4>
         <ul>
-          <li>Mindestens eine Zeile mit Material, Behälter und Gewicht erfassen.</li>
+          <li>
+            Über das aktivierte Scanner-Symbol 
+            &nbsp;<img src="/static/icons/barcode-scan-active.svg" style="height:1.5em; vertical-align:middle;">&nbsp; 
+            kann ein Barcode eingelesen werden. Akzeptiert werden Barcodes mit dem Präfix <code>"G"</code> (Generator-Code).</li>
           <li>Beim Gewicht sind Dezimaltrennzeichen erlaubt.</li>
           <li>Leere Zeilen werden beim Speichern ignoriert.</li>
-          <li>Die Felder <em>Lieferant</em> und <em>Lieferschein</em> sind Pflichtfelder.</li>
-          <li>Für neue Wagen werden beim Speichern automatisch die Barcode mit der Prefix "L" (Lieferung) versehen.</li>
+          <li>Das Feld "Lieferant" und mindestens eine Liefereinheit "Transportgut" sind Pflichtfelder.</li>
+          <li>Beim Speichern erhält jede Liefereinheit "Transpportgut" automatisch einen Barcode mit dem Präfix <code>"L"</code> (Lieferung)</li>
         </ul>
-        
       </section>
 
 
