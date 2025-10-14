@@ -132,6 +132,7 @@ header {
 .title-selected .header-title-tooltip,
 .icon-selected .header-icon-tooltip {
     color: var(--color-hero);
+    filter: brightness(50%);
 }
 
 .tooltip-reset {

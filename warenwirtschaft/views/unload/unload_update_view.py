@@ -30,10 +30,10 @@ class UnloadUpdateView(View):
         delivery_unit = get_object_or_404(DeliveryUnit, pk=delivery_unit_pk)
         formset = UnloadFormSet(request.POST, queryset=Unload.objects.none(), prefix="new")
 
-        # 🇩🇪 Bestehende Wagen: binden mit POST; Initial nur für GET verwendet
+        # Bestehende Wagen: binden mit POST; Initial nur für GET verwendet
         vorhandene_forms = self.build_vorhandene_forms(delivery_unit, data=request.POST)
 
-        # 🇩🇪 Validierung: neue + geänderte bestehende
+        # Validierung: neue + geänderte bestehende
         valid_new = formset.is_valid()
         # Wir validieren ALLE bestehenden (wegen cleaned_data['selected'])
         valid_existing = all(f.is_valid() for f, _ in vorhandene_forms)
@@ -42,28 +42,28 @@ class UnloadUpdateView(View):
             messages.error(request, "⚠️ Bitte Eingaben prüfen.")
             return self.render_page(formset, vorhandene_forms, delivery_unit)
 
-        # 🇩🇪 Aus der validierten Form das Auswahl-Set bestimmen
+        # Aus der validierten Form das Auswahl-Set bestimmen
         selected_ids = {
             str(f.instance.pk)
             for f, _ in vorhandene_forms
             if f.cleaned_data.get("selected")
         }
 
-        # 🇩🇪 Nur geänderte bestehende speichern
+        # Nur geänderte bestehende speichern
         changed_existing = [f for f, _ in vorhandene_forms if f.has_changed()]
 
         with transaction.atomic():
             for f in changed_existing:
                 f.save()
 
-            # 🇩🇪 M2M-Verknüpfung gemäß Auswahl setzen
+            # M2M-Verknüpfung gemäß Auswahl setzen
             for obj in Unload.objects.filter(status=self.OPEN_STATUS):
                 if str(obj.pk) in selected_ids:
                     obj.delivery_units.add(delivery_unit)
                 else:
                     obj.delivery_units.remove(delivery_unit)
 
-            # 🇩🇪 Neue Zeilen speichern + verknüpfen
+            # Neue Zeilen speichern + verknüpfen
             new_instances = formset.save(commit=False)
             for instance in new_instances:
                 if not instance.status:
@@ -82,7 +82,7 @@ class UnloadUpdateView(View):
 
     def build_vorhandene_forms(self, delivery_unit: DeliveryUnit, data=None):
         """
-        🇩🇪 Baut Einzel-ModelForms für alle aktiven Wagen.
+        Baut Einzel-ModelForms für alle aktiven Wagen.
         - GET: Initial für 'selected' aus der DB-Beziehung.
         - POST: 'data' überschreibt initial automatisch (Django-Mechanik).
         """
@@ -100,7 +100,7 @@ class UnloadUpdateView(View):
                 prefix=f"exist_{obj.pk}",
                 selected_initial=(obj.pk in selected_ids_db),
             )
-            # 🇩🇪 Für das Template zusätzlich ein bool, wie die Form es gerade sieht
+            # Für das Template zusätzlich ein bool, wie die Form es gerade sieht
             current_selected = bool(form["selected"].value())
             forms.append((form, current_selected))
         return forms
@@ -112,12 +112,12 @@ class UnloadUpdateView(View):
             "formset": formset,
             "empty_form": formset.empty_form,
             "vorhandene_forms": vorhandene_forms,
-            "selected_menu": "unload_update",
+            "selected_menu": "unload_form",
         })
 
     @staticmethod
     def _gen_barcode() -> str:
-        #Einfaches Barcode-Muster U<8HEX>
+        # Einfaches Barcode-Muster U<8HEX>
         return f"U{uuid.uuid4().hex[:8].upper()}"
 
     @staticmethod
@@ -132,5 +132,5 @@ class UnloadUpdateView(View):
             pass
 
     def _success_url(self, delivery_unit_pk: int) -> str:
-        #Zurück auf dieselbe Update-Seite
+        # Zurück auf dieselbe Update-Seite
         return reverse("unload_update", kwargs={"delivery_unit_pk": delivery_unit_pk})

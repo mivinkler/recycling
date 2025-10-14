@@ -64,7 +64,7 @@ urlpatterns = [
     path("material/update/<int:pk>/", MaterialUpdateView.as_view(), name="material_update"),
     path('material/delete/<int:pk>/', MaterialDeleteView.as_view(), name='material_delete'),
 
-    path("statistic/", TimeSeriesPageView.as_view(), name="statistik"),
+    path("statistic/", TimeSeriesPageView.as_view(), name="statistic"),
 
     path("api/", include(("warenwirtschaft.api.urls", "warenwirtschaft_api"), namespace="warenwirtschaft_api")),
 ]

@@ -17,4 +17,10 @@ class TimeSeriesPageView(View):
     def get(self, request):
         start, end = self._default_range()
         form = TimeSeriesFilterForm(initial={"date_from": start, "date_to": end})
-        return render(request, self.template_name, {"form": form})
+        
+        context = {
+            "form": form,
+            "selected_menu": "statistic",  # <-- добавлено
+        }
+
+        return render(request, self.template_name, context)

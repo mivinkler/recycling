@@ -1,67 +1,83 @@
 {% load static %}
 
-<details class="header-details">
+<details class="header-details" open>
   <summary class="header-menu-icon header-user" aria-label="Erläuterung öffnen">
     <img src="{% static 'icons/question-icon.svg' %}">
   </summary>
 
   <div class="header-details-disclosure page-help-wrapper">
-    {% if selected_menu == "delivery_list" %}
-      <h3>Lieferung Liste</h3>
-      <p></p>
 
     <!-- delivery_create und delivery_update -->
-    {% elif selected_menu == "delivery_create" %}
+    {% if selected_menu == "delivery_create" %}
       <section class="page-help">
         <h3>Wareneingang erstellen</h3>
-        <p>
-          Wählen Sie einen Lieferanten aus und fügen Sie dessen Liefereinheiten (Transportgut) hinzu.
-        </p>
 
-        <h4>Hinweise</h4>
+        <h4>Beschreibung</h4>
+        <ul>
+          <li>Wählen Sie einen Lieferanten aus und fügen Sie mindestens eine Liefereinheit (Transportgut) hinzu (<em>Pflichtfelder</em>).</li>
+          <li>Beim Gewicht sind Dezimaltrennzeichen erlaubt.</li>
+          <li>Leere Zeilen werden beim Speichern ignoriert.</li>
+        </ul>
+
+        <h4>Scanner</h4>
         <ul>
           <li>
             Über das aktivierte Scanner-Symbol 
             &nbsp;<img src="/static/icons/barcode-scan-active.svg" style="height:1.5em; vertical-align:middle;">&nbsp; 
-            kann ein Barcode eingelesen werden. Akzeptiert werden Barcodes mit dem Präfix <code>"G"</code> (Generator-Code).</li>
-          <li>Beim Gewicht sind Dezimaltrennzeichen erlaubt.</li>
-          <li>Leere Zeilen werden beim Speichern ignoriert.</li>
-          <li>Das Feld "Lieferant" und mindestens eine Liefereinheit "Transportgut" sind Pflichtfelder.</li>
-          <li>Beim Speichern erhält jede Liefereinheit "Transpportgut" automatisch einen Barcode mit dem Präfix <code>"L"</code> (Lieferung)</li>
+            kann ein Barcode eingelesen werden.
+          </li>
+          <li>Akzeptiert werden Barcodes mit dem Präfix <code>"G"</code> (Generator-Code).</li>
+        </ul>
+
+        <h4>Prozess</h4>
+        <ul>
+          <li>Beim Speichern erhält jede Liefereinheit (Transportgut) automatisch einen Barcode mit dem Präfix <code>L</code> (Lieferung). Dieser kann später im Formular <em>Vorsortierung</em> verwendet werden.</li>
+          <li>Beim Speichern erhält jede Liefereinheit (Transportgut) den Status <em>Aktiv</em>.</li>
+          <li>Nach Speicherung erfolgt eine Weiterleitung zur Liste der Liefereinheiten.</li>
         </ul>
       </section>
 
 
-    {% elif selected_menu == "unload_create" %}
+
+    {% elif selected_menu == "unload_form" %}
       <section class="page-help">
         <h3>Vorsortierung erfassen</h3>
+
+        <h4>Beschreibung</h4>
         <p>
-          Hier erfassen Sie die Vorsortierung einer Liefereinheit. 
-          Das Transportgut aus dem Wareneingang wird in einzelne Wagen aufgeteilt und gewogen.
+          Hier wird die aktive Liefereinheit (Transportgut) in kleinere Behälter (<em>Wagen</em>) umgefüllt.
         </p>
 
-        <p>
-          Oben können Sie neue Wagen anlegen, unten bestehende (aktive) Wagen aus früheren Lieferungen weiterverwenden.
-        </p>
-
-        <h4>Scanner-Hinweis</h4>
-        <p>
-          Über das Scanner-Symbol können Barcodes eingelesen werden.
-          Akzeptiert werden Barcodes mit dem Präfix "L" (Lieferung).
-        </p>
-
-        <h4>Tipps</h4>
+        <h4>Wareneingang</h4>
         <ul>
+          <li>Wählen Sie eine Liefereinheit aus (<em>Pflichtfeld</em>).</li>
+          <li>Wenn die gewählte Liefereinheit bereits verknüpfte (aktive) Wagen hat, werden diese automatisch angezeigt.</li>
+          <li>Bei Liefereinheiten mit bereits verknüpften Wagen wird zusätzlich die Schaltfläche <em>„Entladung abschließen“</em> angezeigt. 
+              Mit dieser Funktion kann die Entladung beendet werden. 
+              Die Liefereinheit erhält dann den Status <em>„Erledigt“</em> und wird anschließend nicht mehr in der Übersicht angezeigt.</li>
+        </ul>
 
-          <li>Wareneingang ist ein Pflichtfeld</li>
-          <li>Leere Felder sowie ganze Zeilen werden nicht gespeichert.</li>
-          <li>Über das Symbol 
-            &nbsp;<img src="{% static 'icons/dashboard-icon.svg' %}" alt="Waage" style="height:1em; vertical-align:middle;">&nbsp;
-            wird das Feld "Gewicht" automatisch ausgefüllt, alternativ kann das Gewicht manuell eingetragen werden.</li>
-          <li>Neue Wagen werden beim Speichern automatisch mit einem Barcode "S" versehen.</li>
-          <li>Nur ausgewählte Wagen (Checkbox) werden mit der Liefereinheit verknüpft.</li>
+        <h4>Neue und aktive Wagen</h4>
+        <ul>
+          <li>Ein Wagen bleibt aktiv, bis er an die Abteilung Aufbereitung übergeben oder manuell auf „Erledigt“ gesetzt wird.</li>
+          <li>
+            Über das Symbol <img src="/static/icons/dashboard-icon.svg" style="height:1.2em; vertical-align:middle;"> 
+            kann das Gewicht direkt von der elektronischen Waage abgefragt und automatisch ausgefüllt werden. 
+          </li>
+          <li>Neue Wagen werden beim Speichern automatisch mit einem Barcode (<code>S</code>) versehen.</li>
+        </ul>
+
+        <h4>Scanner</h4>
+        <ul>
+          <li>
+            Über das aktivierte Scanner-Symbol 
+            <img src="/static/icons/barcode-scan-active.svg" style="height:1.5em; vertical-align:middle;"> 
+            kann ein Barcode eingelesen werden.
+          </li>
+          <li>Akzeptiert werden Barcodes mit dem Präfix <code>L</code> (Lieferung / Wareneingang).</li>
         </ul>
       </section>
+
 
 
     {% elif selected_menu == "barcode_generator_create" %}
@@ -78,6 +94,12 @@
 
         <h4>Hinweis</h4>
         <p>Das Feld „Kunde“ ist ein Pflichtfeld. Leere Felder werden beim Speichern ignoriert.</p>
+      </section>
+
+    {% elif selected_menu == "delivery_list" or "unload_list" or "recycling_list" or "shipping_list"%}
+      <section class="page-help">
+        <h3>Liste</h3>
+        <p>Für diese Seite ist noch keine spezifische Beschreibung hinterlegt.</p>
       </section>
 
     {% else %}
