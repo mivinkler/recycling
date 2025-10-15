@@ -14,37 +14,33 @@
 
         <h4>Beschreibung</h4>
         <p>
-          Hier wird die Liferung und die zugehörige Liefereinheiten (Container, Gitterboxen usw.) erfasst.
+          Hier wird eine neue Lieferung und die dazugehörigen Liefereinheiten (z.&nbsp;B. Container, Gitterboxen usw.) erfasst.
+          <ul>
+
+          </ul>
         </p>
 
-        <h4>Lieferant</h4>
-        <ul>
-          <li>Wählen Sie einen Lieferanten aus und fügen Sie mindestens eine Liefereinheit hinzu (<em>Pflichtfelder</em>).</li>
-          <li>Das Feld "Anmerkung" ist optional.</li>
-        </ul>
-        
         <h4>Liefereinheiten</h4>
         <ul>
-          <li></li>
           <li>Leere Zeilen werden beim Speichern ignoriert.</li>
-          <li>Beim Speichern erhält jede Liefereinheit automatisch einen Barcode mit dem Präfix <code>L</code> (Lieferung). Dieser kann später im Formular <em>Vorsortierung</em> verwendet werden.</li>
-          <li>Beim Speichern erhält jede Liefereinheit den Status <em>Aktiv</em>.</li>
-          <li>Wenn ein Material nicht vorhanden ist, soll es entweder neu in die Auflistung von Materialien eingelegt werder oder als Maaterial "Sonstige" markieren und bei Anmerkung die Materialname eingeben</li>
           <li>Beim Gewicht sind Dezimaltrennzeichen erlaubt.</li>
-          Eine Liefereinheit bleibt solange aktiv, bis sie in der Abteilung "Vorsortierung".
-
+          <li>Neu Liefereinheit erhält bei der Speicherung einen Barcode mit dem Präfix <code>L</code> (Lieferung). 
+              Dieser kann später in der <em>Vorsortierung</em> verwendet werden.</li>
+          <li>Eine Liefereinheit bleibt aktiv, bis sie in der Abteilung <em>Vorsortierung</em> als eledigt markiert wird</li>
         </ul>
-
+        
         <h4>Scanner</h4>
         <ul>
           <li>
             Über das aktivierte Scanner-Symbol 
-            &nbsp;<img src="/static/icons/barcode-scan-active.svg" style="height:1.5em; vertical-align:middle;">&nbsp; 
+            <img src="/static/icons/barcode-scan-active.svg" style="height:1.5em; vertical-align:middle;"> 
             kann ein Barcode eingelesen werden.
           </li>
-          <li>Akzeptiert werden Barcodes mit dem Präfix <code>"G"</code> (Generator-Code).</li>
+          <li>Akzeptiert werden Barcodes mit dem Präfix <code>G</code> (Generator-Code).</li>
         </ul>
       </section>
+
+
 
 
 
@@ -54,26 +50,28 @@
 
         <h4>Beschreibung</h4>
         <p>
-          Hier wird die aktive Liefereinheit in kleinere Behälter (<em>Wagen</em>) umgefüllt.
+          Hier wird die eine aktive Liefereinheit in andere Behälter (<em>Wagen</em>) umgefüllt und gewogen.
         </p>
 
         <h4>Wareneingang</h4>
         <ul>
-          <li>Wählen Sie eine Liefereinheit aus (<em>Pflichtfeld</em>).</li>
+          <li>Wählen Sie zuerzst eine Liefereinheit aus (<em>Pflichtfeld</em>).</li>
           <li>Wenn die gewählte Liefereinheit bereits verknüpfte (aktive) Wagen hat, werden diese automatisch angezeigt.</li>
-          <li>Bei Liefereinheiten mit bereits verknüpften Wagen wird zusätzlich die Schaltfläche <em>„Entladung abschließen“</em> angezeigt. 
-              Mit dieser Funktion kann die Entladung beendet werden. 
-              Die Liefereinheit erhält dann den Status <em>„Erledigt“</em> und wird anschließend nicht mehr in der Übersicht angezeigt.</li>
+          <li>Bei der Liefereinheit mit mindestens einem zugeordneten Wagen (die Entladung läuft) wird die Schaltfläche <em>Entladung abschließen</em> angezeigt.
+              Damit kann man die Liefereinheit (z.B. Container) als erledigt markieren.
+          </li>
         </ul>
 
-        <h4>Neue und aktive Wagen</h4>
+        <h4>Wagen</h4>
         <ul>
-          <li>Ein Wagen bleibt aktiv, bis er an die Abteilung Aufbereitung übergeben oder manuell auf „Erledigt“ gesetzt wird.</li>
+          <li>Ein Wagen bleibt aktiv, bis er an die Abteilung <em>Aufbereitung</em> übergeben oder manuell auf <em>Erledigt</em> gesetzt wird.</li>
           <li>
-            Über das Symbol <img src="/static/icons/dashboard-icon.svg" style="height:1.2em; vertical-align:middle;"> 
-            kann das Gewicht direkt von der elektronischen Waage abgefragt und automatisch ausgefüllt werden. 
+            Über das Symbol 
+            <img src="/static/icons/dashboard-icon.svg" style="height:1.2em; vertical-align:middle;"> 
+            kann das Gewicht direkt von der elektronischen Waage abgefragt werden. 
+            Das Feld <em>Gewicht</em> wird dabei automatisch ausgefüllt.
           </li>
-          <li>Neue Wagen werden beim Speichern automatisch mit einem Barcode (<code>S</code>) versehen.</li>
+          <li>Neue Wagen erhalten beim Speichern automatisch einen Barcode mit dem Präfix <code>S</code> (Sortierung).</li>
         </ul>
 
         <h4>Scanner</h4>
@@ -83,9 +81,16 @@
             <img src="/static/icons/barcode-scan-active.svg" style="height:1.5em; vertical-align:middle;"> 
             kann ein Barcode eingelesen werden.
           </li>
-          <li>Akzeptiert werden Barcodes mit dem Präfix <code>L</code> (Lieferung / Wareneingang).</li>
+          <li>Akzeptiert werden Barcodes mit dem Präfix <code>L</code> (Lieferung).</li>
         </ul>
+
+        <h4>Status</h4>
+        <ul>
+          <li>Jede neu Liefereinheit erhält den Status <em>Aktiv</em>, bis sie in die Abteilung <em>Vorsortierung</em> übergeben wird.</li>
+        </ul>
+
       </section>
+
 
 
 
@@ -123,7 +128,7 @@
   .page-help-wrapper {
     right: 0; 
     left: auto; 
-    width: 400px;
+    width: 25vw;
     padding-left: 12px;
   }
 
