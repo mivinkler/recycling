@@ -1,14 +1,14 @@
 {% load static %}
 
-<details class="header-details" open>
+<details class="header-details">
   <summary class="header-menu-icon header-user" aria-label="Erläuterung öffnen">
     <img src="{% static 'icons/question-icon.svg' %}">
   </summary>
 
   <div class="header-details-disclosure page-help-wrapper">
 
-    <!-- delivery -->
-    {% if selected_menu == "delivery_create" %}
+    <!-- Wareneingang -->
+    {% if selected_menu == "delivery_form" %}
       <section class="page-help">
         <h3>Wareneingang erstellen</h3>
 
@@ -21,8 +21,8 @@
         <ul>
           <li>Leere Zeilen werden beim Speichern ignoriert.</li>
           <li>Beim Gewicht sind Dezimaltrennzeichen erlaubt.</li>
-          <li>Neu gespeicherte Liefereinheit erhält einen Barcode mit dem Präfix <code>"L"</code> (Lieferung). Dieser kann später in der <em>Vorsortierung</em> verwendet werden.</li>
-          <li>Eine Liefereinheit bleibt aktiv, bis sie in der <em>"Vorsortierung"</em> als eledigt markiert wird</li>
+          <li>Neu gespeicherte Liefereinheiten erhalten automatisch einen Barcode mit dem Präfix <code>L</code> (Lieferung). Dieser kann später in der <em>Vorsortierung</em> verwendet werden.</li>
+          <li>Eine Liefereinheit bleibt aktiv, bis sie in der <em>Vorsortierung</em> als <em>Erledigt</em> markiert wird.</li>
         </ul>
         
         <h4>Scanner</h4>
@@ -35,24 +35,22 @@
       </section>
 
 
-    <!-- unload -->
+    <!-- Vorsortierung -->
     {% elif selected_menu == "unload_form" %}
       <section class="page-help">
         <h3>Vorsortierung erfassen</h3>
 
         <h4>Beschreibung</h4>
         <p>
-          Hier wird eine aktive Liefereinheit in kleinere Behälter (<em>Wagen</em>) umgefüllt und gewogen.
+          Hier wird eine aktive Liefereinheit in andere Behälter (<em>Wagen</em>) umgefüllt und gewogen.
         </p>
 
         <h4>Wareneingang</h4>
         <ul>
-          <li>Die Liefereinheit ist ein <em>Pflichtfeld</em>.</li>
           <li>Wenn die gewählte Liefereinheit bereits verknüpfte aktive Wagen hat, werden diese automatisch angezeigt.</li>
           <li>
-            Bei einer Liefereinheit mit mindestens einem verknüpften Wagen (die Entladung läuft) wird die Schaltfläche 
-            <em>Entladung abschließen</em> angezeigt. Damit kann die Liefereinheit (z.&nbsp;B. Container) als 
-            <em>Erledigt</em> markiert werden.
+            Bei einer Liefereinheit mit mindestens einem verknüpften Wagen (die Entladung läuft) wird die Schaltfläche <em>Entladung abschließen</em> angezeigt. 
+            Damit kann die Liefereinheit (z.&nbsp;B. Container) als <em>Erledigt</em> markiert werden.
           </li>
         </ul>
 
@@ -62,43 +60,124 @@
             Um eine Zeile zu bearbeiten oder neu anzulegen, muss das Schloss-Symbol geöffnet sein 
             <img class="icon-lock-open" src="/static/icons/lock-open-icon.svg" style="height:1em; vertical-align:middle;">.
           </li>
-          <li>Ein neuer Wagen erscheint nach dem Speichern in der Liste der aktiven Wagen.</li>
+          <li>Ein "Neue Wagen" erscheint nach dem Speichern in der Liste "Aktive Wagen".</li>
           <li>
-            Ein Wagen bleibt aktiv, bis er an die Abteilung <em>Aufbereitung</em> übergeben oder manuell auf 
-            <em>Erledigt</em> gesetzt wird.
+            Nach dem Befüllen eines Wagens sollte dessen Status auf <em>Bereit für Behandlung</em> oder <em>Bereit für Abholung</em> gesetzt werden.
+            Sobald der Wagen in der Abteilung <em>Aufbereitung</em> oder <em>Abholung</em> gescannt bzw. übernommen wurde, erhält er automatisch den Status <em>Erledigt</em>.
           </li>
           <li>
-            Über das Symbol 
-            <img src="/static/icons/dashboard-icon.svg" style="height:1.2em; vertical-align:middle;"> 
-            kann das Gewicht von der elektronischen Waage abgefragt werden. 
+            Über das Symbol <img src="/static/icons/dashboard-icon.svg" style="height:1.2em; vertical-align:middle;"> kann das Gewicht von der elektronischen Waage abgefragt werden. 
             Das Feld <em>Gewicht</em> wird dabei automatisch ausgefüllt.
           </li>
-          <li>Neu gespeicherte Wagen erhalten automatisch einen Barcode mit dem Präfix <code>S</code> (Sortierung).</li>
+          <li>Neu gespeichert Wagen erhalten automatisch einen Barcode mit dem Präfix <code>"S"</code> (Sortierung).</li>
         </ul>
 
         <h4>Scanner</h4>
         <ul>
           <li>
             Über das aktivierte Scanner-Symbol 
-            <img src="/static/icons/barcode-scan-active.svg" style="height:0.95em; vertical-align:middle;"> 
+            <img src="/static/icons/barcode-scan-active.svg" style="height:1.5em; vertical-align:middle;"> 
             kann ein Barcode eingelesen werden.
           </li>
-          <li>Akzeptiert werden Barcodes mit dem Präfix <code>L</code> (Lieferung).</li>
+          <li>Akzeptiert werden Barcodes mit dem Präfix <code>"L"</code> (Lieferung).</li>
         </ul>
       </section>
 
+ 
+    <!-- Aufbereitung -->
+    {% elif selected_menu == "recycling_form" %}
+      <section class="page-help">
+        <h3>Aufbereitung erfassen</h3>
+
+        <h4>Beschreibung</h4>
+        <p>
+          Hier wird ein <em>Wagen</em> aus der <em>Vorsortierung</em> in der Abteilung <em>Aufbereitung</em> aufgenommen 
+          und mit den zugehörigen Fraktionen verknüpft.
+        </p>
+
+        <h4>Vorsortierung</h4>
+        <ul>
+          <li>
+            Es werden alle Wagen mit dem Status <em>Bereit für Aufbereitung</em> angezeigt.  
+            Wählen Sie einen Wagen aus (<em>Pflichtfeld</em>).
+          </li>
+        </ul>
+
+        <h4>Fraktionen</h4>
+        <ul>
+          <li>Standardmäßig wird vorgeschlagen, den Wagen mit allen aktiven Fraktionen zu verknüpfen. Nicht benötigte Fraktionen können abgewählt werden.</li>
+          <li>Neue Fraktionen können über die Schaltfläche "+" unten in der Tabelle hinzugefügt werden.</li>
+          <li>Leere oder unvollständige Zeilen werden beim Speichern ignoriert. Dezimaltrennzeichen beim Gewicht sind erlaubt.</li>
+        </ul>
+
+        <h4>Speicherung</h4>
+        <ul>
+          <li>Neue Fraktionen erhalten beim Speichern automatisch einen Barcode mit dem Präfix <code>A</code> (Aufbereitung) und werden dem gewählten Wagen zugeordnet.</li>
+          <li>Sobald eine Fraktion in der Abteilung <em>Abholung</em> übernommen wurde, erhält sie automatisch den Status <em>Erledigt</em>.</li>
+        </ul>
+
+        <h4>Scanner</h4>
+        <ul>
+          <li>
+            Über das aktivierte Scanner-Symbol 
+            <img src="/static/icons/barcode-scan-active.svg" style="height:1.5em; vertical-align:middle;"> 
+            kann ein Barcode eingelesen werden.
+          </li>
+          <li>Akzeptiert werden Barcodes mit dem Präfix <code>S</code> (Wagen / Vorsortierung).</li>
+        </ul>
+      </section>
+      
+
+    <!-- Abholung -->
+    {% elif selected_menu == "shipping_create" or selected_menu == "shipping_update" %}
+      <section class="page-help">
+        <h3>Abholung erstellen</h3>
+
+        <h4>Beschreibung</h4>
+        <p>
+          Hier werden die abholbereiten Positionen (<em>Wagen</em> aus der Vorsortierung und <em>Fraktionen</em> aus der Aufbereitung) einer Abholung zugeordnet.
+        </p>
+
+        <h4>Prozess</h4>
+        <ul>
+          <li>Es werden nur Fraktionen und/oder Wagen mit dem Status <em>Bereit für Abholung</em> angezeigt.</li>
+          <li>Nach dem Speichern werden alle markierten Positionen der Abholung zugeordnet und auf den Status <em>Erledigt</em> gesetzt.</li>
+        </ul>
+
+        <h4>Scanner</h4>
+        <ul>
+          <li>
+            Über das aktivierte Scanner-Symbol 
+            <img src="/static/icons/barcode-scan-active.svg" style="height:1.5em; vertical-align:middle;"> 
+            kann ein Barcode eingelesen werden.
+          </li>
+          <li>Für die Kopfdaten (Abholer, Abholschein usw.) werden Barcodes mit dem Präfix <code>"G"</code> akzeptiert.</li>
+          <li>Für den Abschnitt <em>Abholbereit</em> werden Barcodes mit den Präfixen <code>"S"</code> (Wagen aus der Vorsortierung) und <code>"A"</code> (Fraktion aus der Aufbereitung) akzeptiert.
+              Beim Scannen eines Barcodes wird die entsprechende Position in der Liste automatisch ausgewählt (Checkbox wird aktiviert).
+          </li>
+        </ul>
+      </section>
+
+    {% elif selected_menu == "customer_create" %}
+      <section class="page-help">
+        <h3>Abholung erstellen</h3>
+
+        <h4>Beschreibung</h4>
+        <p>
+          Hier werden neu Kunden erfasst.
+        </p>
+      </section>
 
 
-
-
+    <!-- Barcode -->
     {% elif selected_menu == "barcode_generator_create" %}
       <section class="page-help">
 
         <h3>Barcode erstellen</h3>
-        <p>Hier generieren Sie Barcodes, die das Ausfüllen der Formulare „Wareneingang erstellen“ und „Abholung erstellen“ vereinfachen. Stammkunden, die regelmäßig Lieferungen oder Abholungen durchführen, können feste Barcodes erhalten, um Formulare schneller auszufüllen.</p>
+        <p>Hier werden die Barcodes generiert, die das Ausfüllen der Formulare „Wareneingang erstellen“ und „Abholung erstellen“ vereinfachen. Stammkunden, die regelmäßig Lieferungen oder Abholungen durchführen, können feste Barcodes erhalten, um Formulare schneller auszufüllen.</p>
   
         <h4>Eingang-Barcode</h4>
-        <p>Der Barcode wird im Formular „Wareneingang erstellen“ verwendet. Hier können Sie den Kunden festlegen und ein Transportgut mit den Werten Material, Behälter und Gewicht hinterlegen.</p>
+        <p>Der Barcode wird im Formular „Wareneingang erstellen“ verwendet. Hier können Sie den Kunden festlegen und eine Liefereinheit mit Material, Behälter und Gewicht hinterlegen.</p>
 
         <h4>Abholung-Barcode</h4>
         <p>Der Barcode wird im Formular „Abholung erstellen“ verwendet.</p>
@@ -107,23 +186,76 @@
         <p>Das Feld „Kunde“ ist ein Pflichtfeld. Leere Felder werden beim Speichern ignoriert.</p>
       </section>
 
-
-
-
-
-
-
-
-
-    {% elif selected_menu == "delivery_list" or "unload_list" or "recycling_list" or "shipping_list"%}
+    <!-- Material -->
+    {% elif selected_menu == "material_form" %}
       <section class="page-help">
-        <h3>Liste</h3>
-        <p>Für diese Seite ist noch keine spezifische Beschreibung hinterlegt.</p>
+        <h3>Material ändern</h3>
+
+        <h4>Beschreibung</h4>
+        <p>
+          Hier verwalten Sie die Material-Liste und legen fest, in welchen Formularen das Material verwendet wird:
+          </br>E - &nbsp;Eingang,
+          </br>V - &nbsp;Vorsortierung,
+          </br>A - &nbsp;Aufbereitung.
+        </p>
+
+        <h4>Bearbeitung</h4>
+        <ul>
+          <li>
+            Um eine Zeile zu bearbeiten oder neu anzulegen, muss das Schloss-Symbol geöffnet sein 
+            <img class="icon-lock-open" src="/static/icons/lock-open-icon.svg" style="vertical-align:middle;">.
+          </li>
+          <li>
+            Für seltene Materialien kann in der Liste ein oder mehrere Eintrage <em>„Sonstige“</em> angelegt werden.
+            Wenn dieses Material später ausgewählt wird (z. B. im Formular <em>Wareneingang erstellen</em>), kann genaue Materialname im Feld <em>Anmerkung</em> eingetragen sein.
+          </li>
+          <li>Material kann durch  
+              <img src="/static/icons/delete-icon.svg" style="vertical-align:middle;">
+              gelöscht werden.
+          </li>
+          <li><em>Neu anlegen</em> – über die letzte Zeile („…“).</li>
+        </ul>
       </section>
 
+    <!-- Material -->
+    {% elif selected_menu == "recycling_weight_form" %}
+      <section class="page-help">
+        <h3>Tägliches wiegen</h3>
+
+        <h4>Beschreibung</h4>
+        <p>
+          Auf dieser Seite werden die <em>Fraktionen</em> aus der Abteilung <em>Aufbereitung</em> täglich gewogen.
+        </p>
+
+        <h4>Vorgang</h4>
+        <ul>
+          <li>Wählen Sie die gewünschte Fraktion über das <em>Schloss-Symbol</em> aus, um die Zeile zu ändern.</li>
+          <li>Tragen Sie das neue Gewicht im Feld <em>Gewicht neu</em> ein.</li>
+          <li>Bei Bedarf kann auch der <em>Status</em> der Fraktion angepasst werden.</li>
+          <li>Speichern Sie die Änderungen mit der Schaltfläche <em>Speichern</em>.</li>
+        </ul>
+      </section>
+
+
+    {% elif selected_menu == "delivery_list" or selected_menu == "unload_list" or selected_menu == "recycling_list" or selected_menu == "shipping_list"%}
+      <section class="page-help">
+        <h3>Liste</h3>
+
+        <h4>Vorgang</h4>
+        <ul>
+          <li>Durch Klicken auf eine Zeile mit der linken Maustaste kann man zu „Barcode drucken“ und „Inhalt ändern“ gelangen.</li>
+          <li>Nach jeder Suche oder Sortierung erscheint das Symbol <img src="/static/icons/reset-icon.svg" color="#9f5017;" style="vertical-align:middle; height: 1em;"> zur Zurücksetzung der Suche.</li>
+          <li>Wenn die ausgewählte Zeile einen aktiven oder bereiten Status hat, kann man mit einem Rechtsklick zum Formular für weiteren Verarbeitung gelangen.</li>
+        </ul>
+      </section>
+
+
     {% else %}
+    <section class="page-help">
       <h3>Erläuterung</h3>
-      <p>Für diese Seite ist noch keine spezifische Beschreibung hinterlegt.</p>
+      <p>Für diese Seite ist noch keine Beschreibung hinterlegt.</p>
+    </section>
+
     {% endif %}
   </div>
 </details>

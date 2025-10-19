@@ -130,5 +130,5 @@ class RecyclingCreateView(View):
             "existing_selected_ids": set(str(pk) for pk in existing_selected_ids),
             "existing_count": active_qs.count(),
             "unload": unload,
-            "selected_menu": "recycling_create",
+            "selected_menu": "recycling_form",
         })

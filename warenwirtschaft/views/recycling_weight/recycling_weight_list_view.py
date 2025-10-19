@@ -13,5 +13,5 @@ class RecyclingWeightListView(ListView):
         context = super().get_context_data(**kwargs)
 
         context['recycling_list'] = Recycling.objects.filter(status=1)
-        context['selected_menu'] = "recycling_weight_list"
+        context['selected_menu'] = "recycling_weight_form"
         return context

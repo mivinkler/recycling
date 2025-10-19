@@ -120,5 +120,5 @@ class RecyclingUpdateView(View):
             "existing_selected_ids": existing_selected_ids,  # Set[str] für "checked"
             "existing_count": active_qs.count(),     # falls für die laufende Nummer benötigt
             "unload": unload,
-            "selected_menu": "recycling_update",
+            "selected_menu": "recycling_form",
         })

@@ -9,7 +9,7 @@ class RecyclingWeightUpdateView(View):
         # Kontext für die Anzeige des Formulars vorbereiten
         context = {
             "recycling_list": Recycling.objects.filter(status=1),
-            "selected_menu": "recycling_weight_list",
+            "selected_menu": "recycling_weight_form",
             "edit_recycling": get_object_or_404(Recycling, pk=pk),
             "status_choices": Recycling.STATUS_CHOICES,
         }

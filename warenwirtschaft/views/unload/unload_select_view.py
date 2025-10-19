@@ -1,35 +1,66 @@
-from django.views import View
-from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.views.generic.edit import FormView
+from django.shortcuts import render, redirect
 
-from django.db.models import Q
 from warenwirtschaft.forms.unload_form import DeliveryUnitSelectForm
 from warenwirtschaft.models import DeliveryUnit, Unload
 
 
-class UnloadSelectView(View):
+class UnloadSelectView(FormView):
     template_name = "unload/unload_select.html"
+    form_class = DeliveryUnitSelectForm
 
-    def get(self, request):
-        # Auswahl: nur aktive Liefereinheiten für die Vorsortierung
-        du_qs = (
+    # ---------- Hilfsfunktionen ----------
+
+    def _du_queryset(self):
+        # Liefert nur aktive Liefereinheiten (Status=1) – schlanke Feldauswahl.
+        return (
             DeliveryUnit.objects
-            .filter(status=1)
+            .filter(status=1, deleted_at__isnull=True)
             .only("id", "status", "box_type", "weight", "barcode")
             .order_by("pk")
         )
 
-        form = DeliveryUnitSelectForm(request.GET or None, queryset=du_qs)
+    def _redirect_by_relation(self, du: DeliveryUnit):
+        """
+        Regel:
+        - Gibt es mind. einen aktiven Unload (status=1) mit dieser DU? → Update
+        - Sonst → Create
+        """
+        has_active_unload = Unload.objects.filter(
+            status=1,
+            delivery_units__pk=du.pk
+        ).exists()
 
-        # Wenn eine DeliveryUnit gewählt wurde, direkt weiterleiten (create|update)
-        if "delivery_unit" in request.GET and form.is_valid():
-            return self._redirect_by_relation(form.cleaned_data["delivery_unit"])
+        viewname = "unload_update" if has_active_unload else "unload_create"
+        return redirect(reverse(viewname, kwargs={"delivery_unit_pk": du.pk}))
 
-        # Übersicht aktiver Wagen
+    # ---------- FormView-Hooks ----------
+
+    def get_form_kwargs(self):
+        # Übergibt das QuerySet an das Formular, damit die Auswahl schlank bleibt.
+        kwargs = super().get_form_kwargs()
+        kwargs["queryset"] = self._du_queryset()
+        return kwargs
+
+    def form_valid(self, form):
+        # Bei gültiger Auswahl sofort weiterleiten.
+        du = form.cleaned_data["delivery_unit"]
+        return self._redirect_by_relation(du)
+
+    # ---------- GET/POST ----------
+
+    def get(self, request, *args, **kwargs):
+        form = self.get_form()
+        if "delivery_unit" in request.GET:
+            form = self.form_class(request.GET, queryset=self._du_queryset())
+            if form.is_valid():
+                return self.form_valid(form)
+
         vorhandene_unloads = (
             Unload.objects
-            .filter(status__in=[0, 1])
-            .select_related("material")             # verhindert N+1 bei {{ u.material }}
+            .filter(status=1)
+            .select_related("material")
             .only("id", "status", "box_type", "weight", "created_at", "material__name")
             .order_by("pk")
         )
@@ -41,27 +72,11 @@ class UnloadSelectView(View):
         }
         return render(request, self.template_name, context)
 
-    def post(self, request):
-        du_qs = (
-            DeliveryUnit.objects
-            .filter(status=1)
-            .only("id", "status", "box_type", "weight", "barcode")
-            .order_by("pk")
-        )
-        form = DeliveryUnitSelectForm(request.POST, queryset=du_qs)
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST, queryset=self._du_queryset())
         if form.is_valid():
-            return self._redirect_by_relation(form.cleaned_data["delivery_unit"])
-        return render(request, self.template_name, {"form": form, "selected_menu": "unload_select"})
-
-    # ===== Intern =====
-
-    def _redirect_by_relation(self, du: DeliveryUnit):
-        """
-        Regel:
-        - Gibt es mind. einen Unload (status=1), der mit dieser Liefereinheit verknüpft ist? → update
-        - Sonst → create
-        """
-        has_active_unload = Unload.objects.filter(status=1, delivery_units=du).exists()
-        if has_active_unload:
-            return redirect(reverse("unload_update", kwargs={"delivery_unit_pk": du.pk}))
-        return redirect(reverse("unload_create", kwargs={"delivery_unit_pk": du.pk}))
+            return self.form_valid(form)
+        return render(request, self.template_name, {
+            "form": form,
+            "selected_menu": "unload_form",
+        })

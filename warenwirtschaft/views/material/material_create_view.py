@@ -13,5 +13,5 @@ class MaterialCreateView(CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["material_list"] = Material.objects.all()
-        context["selected_menu"] = "material_create"
+        context["selected_menu"] = "material_form"
         return context

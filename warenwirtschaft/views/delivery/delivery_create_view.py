@@ -27,7 +27,7 @@ class DeliveryCreateView(CreateView):
             context['formset'] = DeliveryUnitFormSet()
 
         context['empty_form'] = context['formset'].empty_form
-        context["selected_menu"] = "delivery_create"
+        context["selected_menu"] = "delivery_form"
         return context
 
     def form_valid(self, form):

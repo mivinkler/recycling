@@ -9,6 +9,7 @@ class MaterialUpdateView(View):
         context = {
             "material_list": Material.objects.all(),
             "edit_material": get_object_or_404(Material, pk=pk),
+            "selected_menu": "material_form"
         }
         return render(request, self.template_name, context)
 
