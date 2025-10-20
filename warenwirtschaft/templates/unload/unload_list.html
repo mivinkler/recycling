@@ -23,7 +23,8 @@
     <div class="table-row js-select-row"
       data-id="{{ item.id }}"
       data-status="{{ item.status }}"
-      data-url-unload-create="{% url 'recycling_create' %}?unit_id={{ item.id }}"
+      data-url-recycling-create="{% url 'recycling_create' %}"
+      data-url-shipping-create="{% url 'shipping_create' %}"
       data-url-update="{% if delivery_unit %}{% url 'unload_update' delivery_unit_pk=delivery_unit.id %}{% endif %}"
       data-url-detail-barcode="{% url 'unload_detail_barcode' pk=item.id %}"
       {% comment %} data-url-detail-weight="{% if delivery_unit %}{% url 'unload_detail_weight' pk=delivery_unit.id %}{% endif %}" {% endcomment %}
@@ -33,7 +34,9 @@
       <div class="table-cell">
         {% for delivery in item.delivery_units.all %}
           {{ delivery }} /
-        {% empty %}-{% endfor %}
+        {% empty %}
+        -
+        {% endfor %}
       </div>
 
       <div class="table-cell">{{ item|getattr:"get_box_type_display" }}</div>
@@ -50,10 +53,45 @@
 
 <template id="context-menu-template">
   <ul id="context-menu" class="context-menu">
-    <li data-action="url-detail-barcode">Barcode drücken</li>
-    <li data-action="url-update">Inhalt ändern</li>
+    <li data-action="urlDetailBarcode">Barcode drucken</li>
+    <li data-action="urlUpdate">Inhalt ändern</li>
+
+    <!-- Status 2 -> Aufbereitung -->
+    <li data-action="urlRecyclingCreate" data-require-status="2" data-param="unload">
+      In Aufbereitung übergeben
+    </li>
+
+    <!-- Status 3 -> Abholung -->
+    <li data-action="urlShippingCreate" data-require-status="3" data-param="unload">
+      In Abholung übergeben
+    </li>
+    
   </ul>
 </template>
+
+<style>
+  .context-menu {
+  position: absolute;
+  display: none;
+  min-width: 200px;
+  margin: 0;
+  padding: 6px 0;
+  list-style: none;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  box-shadow: 0 10px 20px rgba(0,0,0,.08);
+  z-index: 1000;
+}
+.context-menu.is-open { display: block; }
+.context-menu li {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+.context-menu li:hover {
+  background: #f3f4f6;
+}
+</style>
 
 {% endblock %}
 

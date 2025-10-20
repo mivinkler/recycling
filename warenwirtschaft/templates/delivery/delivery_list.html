@@ -25,7 +25,7 @@
   <div class="table-row js-select-row"
     data-id="{{ item.id }}"
     data-status="{{ item.status }}"
-    data-url-nextstep-create="{% url 'unload_select' %}?unit_id={{ item.id }}"
+    data-url-unload-create="{% url 'unload_select' %}"
     data-url-update="{% url 'delivery_update' pk=item.delivery.id %}"
     data-url-detail-barcode="{% url 'delivery_detail_barcode' pk=item.id %}"
     {% comment %} data-url-detail-weight="{% url 'delivery_detail_weight' pk=item.delivery.id %}" {% endcomment %}
@@ -48,10 +48,39 @@
 
 <template id="context-menu-template">
   <ul id="context-menu" class="context-menu">
-    <li data-action="url-detail-barcode">Barcode drücken</li>
-    <li data-action="url-update">Inhalt ändern</li>
+    <li data-action="urlDetailBarcode">Barcode drucken</li>
+    <li data-action="urlUpdate">Inhalt ändern</li>
+
+     <!-- Status 1 -> Übergabe an Vorsortierung (Delivery -> Unload) -->
+    <li data-action="urlUnloadCreate" data-require-status="1" data-param="delivery_unit">
+      In Aufbereitung übergeben
+    </li>
   </ul>
 </template>
+
+<style>
+  .context-menu {
+  position: absolute;
+  display: none;
+  min-width: 200px;
+  margin: 0;
+  padding: 6px 0;
+  list-style: none;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  box-shadow: 0 10px 20px rgba(0,0,0,.08);
+  z-index: 1000;
+}
+.context-menu.is-open { display: block; }
+.context-menu li {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+.context-menu li:hover {
+  background: #f3f4f6;
+}
+</style>
 
 {% endblock %}
 
