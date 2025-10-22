@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import os  # <-- Umgebungsvariablen nutzen
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -22,10 +23,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-cz(6lu_=f_*yp&*k$c&so(+ls5eo3431d47(8dvbsl-8*5dehe'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG über ENV steuerbar (lokal bleibt default True)
+DEBUG = os.getenv("DJ_DEBUG", "true").lower() == "true"
 
-ALLOWED_HOSTS = []
+
+# vertrauenswürdige Ursprünge für CSRF (Prod), sonst können 403 auftretten 
+CSRF_TRUSTED_ORIGINS = [o.strip() for o in os.getenv("DJ_CSRF_TRUSTED", "http://127.0.0.1:8000").split(",") if o.strip()]
+
+# --- Hosts aus ENV (fällt zurück auf localhost)
+ALLOWED_HOSTS = [h.strip() for h in os.getenv("DJ_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",") if h.strip()]
 
 
 # Application definition
@@ -118,22 +124,25 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
+# --- Basis-Pfad (z.B. DJ_BASE_PATH=aba). Leer = Betrieb im Root.
+BASE_PATH = os.getenv("DJ_BASE_PATH", "").strip("/")
 
-STATIC_URL = '/static/'
-
-# path to static files
-STATICFILES_DIRS = [
-    BASE_DIR / "warenwirtschaft" / "static",
-]
-
+# Static files
+STATICFILES_DIRS = [BASE_DIR / "warenwirtschaft" / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
+# --- NEU: STATIC/MEDIA-URLs abhängig vom Unterpfad
+if BASE_PATH:
+    # Deutsch: App läuft unter /<BASE_PATH>, z. B. /aba
+    FORCE_SCRIPT_NAME = f"/{BASE_PATH}"
+    STATIC_URL = f"/{BASE_PATH}/static/"
+    MEDIA_URL  = f"/{BASE_PATH}/media/"
+else:
+    # Deutsch: Lokaler Betrieb im Root
+    FORCE_SCRIPT_NAME = None
+    STATIC_URL = "/static/"
+    MEDIA_URL  = "/media/"
+
+MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'

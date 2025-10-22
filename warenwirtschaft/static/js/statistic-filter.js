@@ -1,5 +1,6 @@
 // API-Endpunkt für Zeitreihen-Statistik
-const API_URL = '/warenwirtschaft/api/stats/timeseries/';
+const el = document.getElementById('timeseriesChart');
+const API_URL = el?.dataset.api;
 
 document.addEventListener('DOMContentLoaded', () => {
   const form     = document.getElementById('filter-form');

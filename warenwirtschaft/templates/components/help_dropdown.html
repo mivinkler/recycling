@@ -28,7 +28,7 @@
         <h4>Scanner</h4>
         <ul>
           <li>
-            Über das aktivierte Scanner-Symbol <img src="/static/icons/barcode-scan-active.svg" style="height:1.5em; vertical-align:middle;"> kann ein Barcode eingelesen werden.
+            Über das aktivierte Scanner-Symbol <img src="{% static 'icons/barcode-scan-active.svg' %}" style="height:1.5em; vertical-align:middle;"> kann ein Barcode eingelesen werden.
           </li>
           <li>Akzeptiert werden Barcodes mit dem Präfix <code>"G"</code> (Generator-Code).</li>
         </ul>
@@ -58,7 +58,7 @@
         <ul>
           <li>
             Um eine Zeile zu bearbeiten oder neu anzulegen, muss das Schloss-Symbol geöffnet sein 
-            <img class="icon-lock-open" src="/static/icons/lock-open-icon.svg" style="height:1em; vertical-align:middle;">.
+            <img class="icon-lock-open" src="{% static 'icons/lock-open-icon.svg' %}" style="height:1em; vertical-align:middle;">.
           </li>
           <li>Ein "Neue Wagen" erscheint nach dem Speichern in der Liste "Aktive Wagen".</li>
           <li>
@@ -66,7 +66,7 @@
             Sobald der Wagen in der Abteilung <em>Aufbereitung</em> oder <em>Abholung</em> gescannt bzw. übernommen wurde, erhält er automatisch den Status <em>Erledigt</em>.
           </li>
           <li>
-            Über das Symbol <img src="/static/icons/dashboard-icon.svg" style="height:1.2em; vertical-align:middle;"> kann das Gewicht von der elektronischen Waage abgefragt werden. 
+            Über das Symbol <img src="{% static 'icons/dashboard-icon.svg' %}" style="height:1.2em; vertical-align:middle;"> kann das Gewicht von der elektronischen Waage abgefragt werden. 
             Das Feld <em>Gewicht</em> wird dabei automatisch ausgefüllt.
           </li>
           <li>Neu gespeichert Wagen erhalten automatisch einen Barcode mit dem Präfix <code>"S"</code> (Sortierung).</li>
@@ -76,7 +76,7 @@
         <ul>
           <li>
             Über das aktivierte Scanner-Symbol 
-            <img src="/static/icons/barcode-scan-active.svg" style="height:1.5em; vertical-align:middle;"> 
+            <img src="{% static 'icons/barcode-scan-active.svg' %}" style="height:1.5em; vertical-align:middle;"> 
             kann ein Barcode eingelesen werden.
           </li>
           <li>Akzeptiert werden Barcodes mit dem Präfix <code>"L"</code> (Lieferung).</li>
@@ -120,7 +120,7 @@
         <ul>
           <li>
             Über das aktivierte Scanner-Symbol 
-            <img src="/static/icons/barcode-scan-active.svg" style="height:1.5em; vertical-align:middle;"> 
+            <img src="{% static 'icons/barcode-scan-active.svg' %}" style="height:1.5em; vertical-align:middle;"> 
             kann ein Barcode eingelesen werden.
           </li>
           <li>Akzeptiert werden Barcodes mit dem Präfix <code>S</code> (Wagen / Vorsortierung).</li>
@@ -148,7 +148,7 @@
         <ul>
           <li>
             Über das aktivierte Scanner-Symbol 
-            <img src="/static/icons/barcode-scan-active.svg" style="height:1.5em; vertical-align:middle;"> 
+            <img src="{% static 'icons/barcode-scan-active.svg' %}" style="height:1.5em; vertical-align:middle;"> 
             kann ein Barcode eingelesen werden.
           </li>
           <li>Für die Kopfdaten (Abholer, Abholschein usw.) werden Barcodes mit dem Präfix <code>"G"</code> akzeptiert.</li>
@@ -203,14 +203,14 @@
         <ul>
           <li>
             Um eine Zeile zu bearbeiten oder neu anzulegen, muss das Schloss-Symbol geöffnet sein 
-            <img class="icon-lock-open" src="/static/icons/lock-open-icon.svg" style="vertical-align:middle;">.
+            <img class="icon-lock-open" src="{% static 'icons/lock-open-icon.svg' %}" style="vertical-align:middle;">.
           </li>
           <li>
             Für seltene Materialien kann in der Liste ein oder mehrere Eintrage <em>„Sonstige“</em> angelegt werden.
             Wenn dieses Material später ausgewählt wird (z. B. im Formular <em>Wareneingang erstellen</em>), kann genaue Materialname im Feld <em>Anmerkung</em> eingetragen sein.
           </li>
           <li>Material kann durch  
-              <img src="/static/icons/delete-icon.svg" style="vertical-align:middle;">
+              <img src="{% static 'icons/delete-icon.svg' %}" style="vertical-align:middle;">
               gelöscht werden.
           </li>
           <li><em>Neu anlegen</em> – über die letzte Zeile („…“).</li>
@@ -244,7 +244,7 @@
         <h4>Vorgang</h4>
         <ul>
           <li>Durch Klicken auf eine Zeile mit der linken Maustaste kann man zu „Barcode drucken“ und „Inhalt ändern“ gelangen.</li>
-          <li>Nach jeder Suche oder Sortierung erscheint das Symbol <img src="/static/icons/reset-icon.svg" color="#9f5017;" style="vertical-align:middle; height: 1em;"> zur Zurücksetzung der Suche.</li>
+          <li>Nach jeder Suche oder Sortierung erscheint das Symbol <img src="{% static 'icons/reset-icon.svg' %}" color="#9f5017;" style="vertical-align:middle; height: 1em;"> zur Zurücksetzung der Suche.</li>
           <li>Wenn die ausgewählte Zeile einen aktiven oder bereiten Status hat, kann man mit einem Rechtsklick zum Formular für weiteren Verarbeitung gelangen.</li>
         </ul>
       </section>
