@@ -1,4 +1,3 @@
-# warenwirtschaft/templatetags/barcodes.py
 from django import template
 from django.utils.safestring import mark_safe
 from warenwirtschaft.services.barcode_image_service import BarcodeImageService

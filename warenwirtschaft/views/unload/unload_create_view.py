@@ -1,4 +1,3 @@
-# warenwirtschaft/views/unload_create_view.py
 from __future__ import annotations
 from django.views import View
 from django.shortcuts import render, redirect, get_object_or_404
