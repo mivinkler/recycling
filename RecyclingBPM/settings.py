@@ -26,7 +26,6 @@ SECRET_KEY = 'django-insecure-cz(6lu_=f_*yp&*k$c&so(+ls5eo3431d47(8dvbsl-8*5dehe
 # DEBUG über ENV steuerbar (lokal bleibt default True)
 DEBUG = os.getenv("DJ_DEBUG", "true").lower() == "true"
 
-
 # vertrauenswürdige Ursprünge für CSRF (Prod), sonst können 403 auftretten 
 CSRF_TRUSTED_ORIGINS = [o.strip() for o in os.getenv("DJ_CSRF_TRUSTED", "http://127.0.0.1:8000").split(",") if o.strip()]
 
