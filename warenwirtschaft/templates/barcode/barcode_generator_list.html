@@ -33,8 +33,9 @@
     <div class="table-cell">{{ barcode.created_at|date:"d.m.Y H:i" }}</div>
   </div>
   {% endfor %}
-
 </div>
+
+{% paginate page_obj %}
 
 {% endblock %}
 

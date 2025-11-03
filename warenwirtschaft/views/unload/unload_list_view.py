@@ -10,7 +10,7 @@ class UnloadListView(ListView):
     model = Unload
     template_name = "unload/unload_list.html"
     context_object_name = "unloads"
-    paginate_by = 22
+    paginate_by = 28
 
     active_fields = [
         ("id", "Vorsortierung"),

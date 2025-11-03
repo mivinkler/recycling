@@ -8,7 +8,7 @@ class RecyclingListView(ListView):
     model = Recycling
     template_name = "recycling/recycling_list.html"
     context_object_name = "recycling"
-    paginate_by = 22
+    paginate_by = 28
 
     active_fields = [
         ("id", "ID"),

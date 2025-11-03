@@ -9,7 +9,7 @@ class CustomerListView(ListView):
     model = Customer
     template_name = "customer/customer_list.html"
     context_object_name = "customers"
-    paginate_by = 22
+    paginate_by = 28
 
     active_fields = [
         ("id", "ID"),

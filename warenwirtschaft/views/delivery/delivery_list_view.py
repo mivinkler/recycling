@@ -10,7 +10,7 @@ class DeliveryListView(ListView):
     model = DeliveryUnit
     template_name = "delivery/delivery_list.html"
     context_object_name = "delivery_units"
-    paginate_by = 50
+    paginate_by = 28
 
     active_fields = [
         ("delivery__id", "LID"),
