@@ -14,7 +14,7 @@ from warenwirtschaft.models import (
 )
 
 # ==============================
-# 🇩🇪 Hilfsfunktionen
+# Hilfsfunktionen
 # ==============================
 
 def _email_from_name(name: str) -> str:
@@ -27,27 +27,27 @@ def _note() -> str:
 
 def _status_codes(model_cls, field_name: str = "status") -> List[int]:
     """
-    🇩🇪 Liefert die in der Modell-Choice-Liste vorhandenen Status-Codes.
+    Liefert die in der Modell-Choice-Liste vorhandenen Status-Codes.
     """
     field = model_cls._meta.get_field(field_name)
     return [choice[0] for choice in getattr(field, "choices", []) or []]
 
 def _has_status(model_cls, code: int, field_name: str = "status") -> bool:
     """
-    🇩🇪 Prüft, ob ein Status-Code in den Choices des Modells existiert.
+    Prüft, ob ein Status-Code in den Choices des Modells existiert.
     """
     return code in _status_codes(model_cls, field_name)
 
 def _barcode(prefix: str) -> str:
     """
-    🇩🇪 Erzeugt eine eindeutige Barcode-Nummer mit Prefix.
+    Erzeugt eine eindeutige Barcode-Nummer mit Prefix.
     Beispiel: L8F2A9C1
     """
     return f"{prefix}{uuid4().hex[:8].upper()}"
 
 def _random_past_datetime(years: int = 15):
     """
-    🇩🇪 Liefert ein zufälliges Datum/Zeitpunkt innerhalb der letzten `years` Jahre.
+    Liefert ein zufälliges Datum/Zeitpunkt innerhalb der letzten `years` Jahre.
     Sekundenauflösung, ohne Millisekunden/Mikrosekunden.
     Wird genutzt, um auto_now_add=jetzt nachträglich zu überschreiben.
     """
@@ -65,7 +65,7 @@ class Command(BaseCommand):
         random.seed(42)
 
         # ==============================
-        # 🇩🇪 1) Tabellen leeren (in sicherer Reihenfolge)
+        # 1) Tabellen leeren (in sicherer Reihenfolge)
         # ==============================
         Recycling.objects.all().delete()
         Unload.objects.all().delete()
@@ -78,7 +78,7 @@ class Command(BaseCommand):
         self.stdout.write(self.style.WARNING("Alle relevanten Tabellen wurden geleert."))
 
         # ==============================
-        # 🇩🇪 2) Stammdaten erzeugen: Material & Kunde
+        # 2) Stammdaten erzeugen: Material & Kunde
         # ==============================
         materials_data = [
             "Laptop", "PC", "Dockingstation", "Monitor", "Bildröhren",
@@ -119,7 +119,7 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS(f"Materialien: {Material.objects.count()} • Kunden: {Customer.objects.count()}"))
 
         # ==============================
-        # 🇩🇪 3) Deliveries erzeugen (10.000 über 15 Jahre)
+        # 3) Deliveries erzeugen (10.000 über 15 Jahre)
         #     auto_now_add überschreiben wir danach per bulk_update.
         # ==============================
         deliveries: List[Delivery] = [
@@ -141,7 +141,7 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS(f"Deliveries: {len(deliveries)}"))
 
         # ==============================
-        # 🇩🇪 4) DeliveryUnits
+        # 4) DeliveryUnits
         #     a) Standard: Status = 4 (Erledigt)
         #     b) Zusätzlich: je 10 mit Status 1/2/3, wenn vorhanden
         # ==============================
@@ -156,7 +156,7 @@ class Command(BaseCommand):
                     box_type=random.choice([1, 2, 3, 4]),
                     material=random.choice(materials),
                     weight=round(random.uniform(80, 800), 2),
-                    status=4,  # 🇩🇪 Standard-Status für Seeds
+                    status=4,  # Standard-Status für Seeds
                     note=_note(),
                     barcode=_barcode("L"),
                 ))
@@ -179,7 +179,7 @@ class Command(BaseCommand):
         if extra_du:
             DeliveryUnit.objects.bulk_create(extra_du, batch_size=2000)
 
-        # 🇩🇪 Historische Zeitstempel für alle DeliveryUnits (letzte 15 Jahre)
+        # Historische Zeitstempel für alle DeliveryUnits (letzte 15 Jahre)
         du_all = list(DeliveryUnit.objects.all().only("id", "created_at"))
         for du in du_all:
             du.created_at = _random_past_datetime(15)
@@ -188,7 +188,7 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS(f"DeliveryUnits total: {DeliveryUnit.objects.count()}"))
 
         # ==============================
-        # 🇩🇪 5) Unloads (m2m zu DeliveryUnit)
+        # 5) Unloads (m2m zu DeliveryUnit)
         #     a) Standard: Status = 4 (Erledigt)
         #     b) Zusätzlich: je 10 für 1/2/3 (falls vorhanden)
         # ==============================
@@ -197,7 +197,7 @@ class Command(BaseCommand):
                 box_type=random.choice([1, 2, 3, 4]),
                 material=random.choice(materials),
                 weight=round(random.uniform(10, 150), 2),
-                status=4,  # 🇩🇪 Standard-Status
+                status=4,  # Standard-Status
                 note=_note(),
                 barcode=_barcode("S"),
             )
@@ -221,7 +221,7 @@ class Command(BaseCommand):
         if extra_unloads:
             Unload.objects.bulk_create(extra_unloads, batch_size=1000)
 
-        # 🇩🇪 Historische Zeitstempel für alle Unloads (letzte 15 Jahre)
+        # Historische Zeitstempel für alle Unloads (letzte 15 Jahre)
         u_all = list(Unload.objects.all().only("id", "created_at"))
         for u in u_all:
             u.created_at = _random_past_datetime(15)
@@ -238,7 +238,7 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS(f"Unloads total: {Unload.objects.count()}"))
 
         # ==============================
-        # 🇩🇪 6) Recycling (m2m zu Unload)
+        # 6) Recycling (m2m zu Unload)
         #     a) Standard: Status = 4 (Erledigt)
         #     b) Zusätzlich: je 10 für 1/3 (falls vorhanden; 2 gibt es hier evtl. nicht)
         # ==============================
@@ -271,7 +271,7 @@ class Command(BaseCommand):
         if extra_rec:
             Recycling.objects.bulk_create(extra_rec, batch_size=1000)
 
-        # 🇩🇪 Historische Zeitstempel für alle Recyclings (letzte 15 Jahre)
+        # Historische Zeitstempel für alle Recyclings (letzte 15 Jahre)
         r_all = list(Recycling.objects.all().only("id", "created_at"))
         for r in r_all:
             r.created_at = _random_past_datetime(15)
@@ -287,7 +287,7 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS(f"Recyclings total: {Recycling.objects.count()}"))
 
         # ==============================
-        # 🇩🇪 7) Shipping (finale Stufe)
+        # 7) Shipping (finale Stufe)
         #     - Bilden auf Basis von Status 3 („Bereit für Abholung“) – falls vorhanden.
         #     - Mehrere Unloads/Recyclings verweisen via FK 'shipping' auf die Sendung.
         #     - Shipping.unload erhält einen „repräsentativen“ Unload.
@@ -295,7 +295,7 @@ class Command(BaseCommand):
         bereite_unloads = list(Unload.objects.filter(status=3).only("id"))
         bereite_recycling = list(Recycling.objects.filter(status=3).only("id"))
 
-        # 🇩🇪 Falls keine Status-3-Objekte existieren, nehmen wir ein paar erledigte als Demo.
+        # Falls keine Status-3-Objekte existieren, nehmen wir ein paar erledigte als Demo.
         if not bereite_unloads:
             bereite_unloads = list(Unload.objects.order_by('?').only("id")[:20])
         if not bereite_recycling:
@@ -314,13 +314,13 @@ class Command(BaseCommand):
         ]
         Shipping.objects.bulk_create(shippings, batch_size=100)
 
-        # 🇩🇪 Historische Zeitstempel für Shipping (ebenfalls 15 Jahre)
+        # Historische Zeitstempel für Shipping (ebenfalls 15 Jahre)
         s_all = list(Shipping.objects.all().only("id", "created_at"))
         for s in s_all:
             s.created_at = _random_past_datetime(15)
         Shipping.objects.bulk_update(s_all, ["created_at"], batch_size=1000)
 
-        # 🇩🇪 Zuweisung: pro Shipping ein paar Unloads/Recyclings
+        # Zuweisung: pro Shipping ein paar Unloads/Recyclings
         shippings = list(Shipping.objects.all().only("id", "unload"))
         for ship in shippings:
             picked_unloads = random.sample(bereite_unloads, k=min(len(bereite_unloads), random.randint(1, 5))) if bereite_unloads else []

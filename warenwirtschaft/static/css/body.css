@@ -21,8 +21,8 @@
   grid-template-columns: minmax(33px, max-content) repeat(5, 1fr) 2fr;
 }
 
-.table[data-type="shippingunits"] {
-  grid-template-columns: minmax(33px, max-content) repeat(8, 1fr) 2fr;
+.table[data-type="shipping"] {
+  grid-template-columns: minmax(33px, max-content) repeat(10, 1fr) 2fr;
 }
 
 .table[data-type="barcode"] {

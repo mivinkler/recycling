@@ -9,12 +9,16 @@
 
 {% block content %}
 <div class="table-border"></div>
-<div class="table" data-type="shippingunits">
+<div class="table" data-type="shipping">
   <div class="table-header">{% sort_header "shipping__id" "№" %}</div>
   <div class="table-header">{% sort_header "customer__name" "Abholer" %}</div>
   <div class="table-header">{% sort_header "certificate" "Übernahmeschein" %}</div>
-  <div class="table-header">{% sort_header "box_type" "Behälter" %}</div>
+  <div class="table-header">Einheit</div>
+
+  <div class="table-header">Herkunft</div>
+
   <div class="table-header">{% sort_header "transport" "Transport" %}</div>
+  <div class="table-header">{% sort_header "box_type" "Behälter" %}</div>
   <div class="table-header">{% sort_header "material" "Material" %}</div>
   <div class="table-header">{% sort_header "weight" "Gewicht" %}</div>
   <div class="table-header">{% sort_header "status" "Status" %}</div>
@@ -22,23 +26,74 @@
   <div class="table-header">{% sort_header "note" "Notiz" %}</div>
 
   {% for item in page_obj %}
-    <div class="table-row js-select-row"
-      data-id="{{ item.id }}"
-      data-url-detail="{% url 'shipping_detail' pk=item.id %}"
-      data-url-update="{% url 'shipping_update' pk=item.id %}">
-    
-      <div class="table-cell table-cell-id">{{ item.id }}</div>
-      <div class="table-cell">{{ item.customer.name }}</div>
-      <div class="table-cell">{{ item.certificate }}</div>
-      <div class="table-cell">{{ item.get_box_type_display }}</div>
-      <div class="table-cell">{{ item.get_transport_display }}</div>
-      <div class="table-cell">{{ item.material }}</div>
-      <div class="table-cell">{{ item.weight }}</div>
-      <div class="table-cell">{{ item.get_status_display }}</div>
-      <div class="table-cell">{{ item.created_at|date:'d.m.Y' }}</div>
-      <div class="table-cell" title="{{ item.note }}">{{ item.note }}</div>
+  <div class="table-row js-select-row"
+       data-id="{{ item.id }}"
+       data-url-detail="{% url 'shipping_detail' pk=item.id %}"
+       data-url-update="{% url 'shipping_update' pk=item.id %}">
+
+    <div class="table-cell table-cell-id">{{ item.id }}</div>
+    <div class="table-cell">{{ item.customer.name }}</div>
+    <div class="table-cell">{{ item.certificate }}</div>
+
+    {# --- CHOICES aus Recycling / Unload --- #}
+
+    <div class="table-cell">
+      {% if item.recycling %}
+        {{ item.recycling }}
+      {% elif item.unload %}
+        {{ item.unload }}
+      {% endif %}
     </div>
-  {% endfor %}
+
+    <!-- Bereich -->
+    <div class="table-cell">
+      {% if item.recycling %}
+        Aufbereitung
+      {% elif item.unload %}
+        Vorsortierung
+      {% endif %}
+    </div>
+
+    <div class="table-cell">{{ item.get_transport_display }}</div>
+    
+    
+    <div class="table-cell">
+      {% if item.recycling.get_box_type_display %}
+      {{ item.recycling.get_box_type_display }}
+      {% elif item.unload.get_box_type_display %}
+      {{ item.unload.get_box_type_display }}
+      {% endif %}
+    </div>
+    
+    <div class="table-cell">
+      {% if item.recycling.material.name %}
+        {{ item.recycling.material.name }}
+      {% elif item.unload.material.name %}
+        {{ item.unload.material.name }}
+      {% endif %}
+    </div>
+
+    <div class="table-cell">
+      {% if item.recycling.weight %}
+        {{ item.recycling.weight }} 
+      {% elif item.unload.weight %}
+        {{ item.unload.weight }}
+      {% endif%}
+    </div>
+
+    <div class="table-cell">
+      {% if item.recycling.get_status_display %}
+        {{ item.recycling.get_status_display }} 
+      {% elif item.unload.get_status_display %}
+        {{ item.unload.get_status_display }}
+      {% endif%}
+    </div>
+
+    <div class="table-cell">{{ item.created_at|date:'d.m.Y' }}</div>
+    <div class="table-cell" title="{{ item.note }}">{{ item.note }}</div>
+  </div>
+{% endfor %}
+
 </div>
 
 {% paginate page_obj %}
