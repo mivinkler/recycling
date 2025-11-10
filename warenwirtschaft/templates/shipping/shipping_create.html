@@ -78,7 +78,7 @@
                   {% if rec.pk in preselected_ids %}checked{% endif %}>
               </td>
               <td class="itemcard-id">{{ forloop.counter }}</td>
-              <td class="itemcard-material"><p>{{ rec.material|default:rec.material_other }}</p></td>
+              <td class="itemcard-material"><p>{{ rec.material }}</p></td>
               <td class="itemcard-boxtype"><p>{{ rec.get_box_type_display }}</p></td>
               <td class="itemcard-weight"><p>{{ rec.weight }}</p></td>
               <td class="itemcard-status"><p>Aufbereitung</p></td>
@@ -97,10 +97,10 @@
                   {% if unload.pk in preselected_ids %}checked{% endif %}>
               </td>
               <td class="itemcard-id">{{ forloop.counter }}</td>
-              <td class="itemcard-material"><p>{{ unload.material|default:unload.material_other }}</p></td>
+              <td class="itemcard-material"><p>{{ unload.material }}</p></td>
               <td class="itemcard-boxtype"><p>{{ unload.get_box_type_display }}</p></td>
               <td class="itemcard-weight"><p>{{ unload.weight }}</p></td>
-              <td class="itemcard-status"><p></p></td>
+              <td class="itemcard-status"><p>Vorsortierung</p></td>
             </tr>
           {% endfor %}
           {% else %}

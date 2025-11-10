@@ -10,8 +10,6 @@ class Shipping(models.Model):
     ]
 
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='shipping_for_customer')
-    unload = models.ForeignKey(Unload, on_delete=models.CASCADE,  null=True, blank=True, related_name="unload_for_shipping")
-    recycling = models.ForeignKey(Recycling, on_delete=models.CASCADE,  null=True, blank=True, related_name="recycling_for_shipping")
     certificate = models.PositiveIntegerField(null=True, blank=True)
     transport = models.PositiveSmallIntegerField(choices=TRANSPORT_CHOICES)
     note = models.CharField(max_length=255, null=True, blank=True)

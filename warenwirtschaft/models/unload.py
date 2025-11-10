@@ -1,7 +1,5 @@
 from django.db import models
 from warenwirtschaft.models.material import Material
-from warenwirtschaft.models.delivery_unit import DeliveryUnit
-
 
 class Unload(models.Model):
     BOX_TYPE_CHOICES = [
@@ -32,4 +30,4 @@ class Unload(models.Model):
     deleted_at = models.DateTimeField(null=True, blank=True, default=None)
 
     def __str__(self):
-        return f"ID: {self.id} - {self.get_box_type_display()} - {self.material} - {self.weight} kg"
+        return f"ID: {self.id} - {self.get_box_type_display()} - {self.weight} kg - {self.status}"

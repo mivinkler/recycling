@@ -22,7 +22,7 @@
 }
 
 .table[data-type="shipping"] {
-  grid-template-columns: minmax(33px, max-content) repeat(10, 1fr) 2fr;
+  grid-template-columns: minmax(33px, max-content) 2fr 1fr 1fr 2fr repeat(6, 1fr) 2fr;
 }
 
 .table[data-type="barcode"] {

@@ -1,7 +1,6 @@
 from django.db import models
 from warenwirtschaft.models.material import Material
 
-
 class Recycling(models.Model):
     BOX_TYPE_CHOICES = [
         (1, "Gitterbox"),
@@ -30,4 +29,4 @@ class Recycling(models.Model):
     deleted_at = models.DateTimeField(null=True, blank=True, default=None)
 
     def __str__(self):
-        return f"{self.get_box_type_display()} - {self.material_other} - {self.weight} kg - {self.status}"
+        return f"ID: {self.id} - {self.get_box_type_display()} - {self.weight} kg - {self.status}"

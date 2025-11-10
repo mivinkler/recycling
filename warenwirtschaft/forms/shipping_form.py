@@ -27,7 +27,7 @@ class RecyclingChoiceForm(forms.Form):
 class ShippingForm(forms.ModelForm):
     class Meta:
         model = Shipping
-        fields = ["customer", "unload", "recycling", "certificate", "transport", "note"]
+        fields = ["customer", "certificate", "transport", "note"]
 
 # extra=0, sodass ein leeres Formset gültig ist, wenn der Benutzer nichts hinzugefügt hat
 ShippingFormSet = modelformset_factory(

@@ -13,11 +13,9 @@
   <div class="table-header">{% sort_header "shipping__id" "№" %}</div>
   <div class="table-header">{% sort_header "customer__name" "Abholer" %}</div>
   <div class="table-header">{% sort_header "certificate" "Übernahmeschein" %}</div>
-  <div class="table-header">Einheit</div>
-
-  <div class="table-header">Herkunft</div>
-
   <div class="table-header">{% sort_header "transport" "Transport" %}</div>
+  <div class="table-header">Einheiten</div>
+  <div class="table-header">Herkunft</div>
   <div class="table-header">{% sort_header "box_type" "Behälter" %}</div>
   <div class="table-header">{% sort_header "material" "Material" %}</div>
   <div class="table-header">{% sort_header "weight" "Gewicht" %}</div>
@@ -25,74 +23,46 @@
   <div class="table-header">{% sort_header "created_at" "Datum" %}</div>
   <div class="table-header">{% sort_header "note" "Notiz" %}</div>
 
-  {% for item in page_obj %}
-  <div class="table-row js-select-row"
-       data-id="{{ item.id }}"
-       data-url-detail="{% url 'shipping_detail' pk=item.id %}"
-       data-url-update="{% url 'shipping_update' pk=item.id %}">
+{% for shipping in page_obj %}
+    {% for unload in shipping.unload_for_shipping.all %}
+        <div class="table-row">
+            <div class="table-cell">{{ shipping.id }}</div>
+            <div class="table-cell">{{ shipping.customer.name }}</div>
+            <div class="table-cell">{{ shipping.certificate }}</div>
+            <div class="table-cell">{{ shipping.get_transport_display }}</div>
+            
+            <div class="table-cell">{{ unload }}</div>  {# Einheiten #}
+            <div class="table-cell">Vorsortierung</div> {# Herkunft #}
+            <div class="table-cell">{{ unload.get_box_type_display }}</div>
+            <div class="table-cell">{{ unload.material.name }}</div>
+            <div class="table-cell">{{ unload.weight }} kg</div>
+            <div class="table-cell">{{ unload.get_status_display }}</div>
+            <div class="table-cell">{{ shipping.created_at|date:'d.m.Y' }}</div>
+            <div class="table-cell" title="{{ shipping.note }}">{{ shipping.note|default:"—" }}</div>
+        </div>
+    {% endfor %}
 
-    <div class="table-cell table-cell-id">{{ item.id }}</div>
-    <div class="table-cell">{{ item.customer.name }}</div>
-    <div class="table-cell">{{ item.certificate }}</div>
-
-    {# --- CHOICES aus Recycling / Unload --- #}
-
-    <div class="table-cell">
-      {% if item.recycling %}
-        {{ item.recycling }}
-      {% elif item.unload %}
-        {{ item.unload }}
-      {% endif %}
-    </div>
-
-    <!-- Bereich -->
-    <div class="table-cell">
-      {% if item.recycling %}
-        Aufbereitung
-      {% elif item.unload %}
-        Vorsortierung
-      {% endif %}
-    </div>
-
-    <div class="table-cell">{{ item.get_transport_display }}</div>
-    
-    
-    <div class="table-cell">
-      {% if item.recycling.get_box_type_display %}
-      {{ item.recycling.get_box_type_display }}
-      {% elif item.unload.get_box_type_display %}
-      {{ item.unload.get_box_type_display }}
-      {% endif %}
-    </div>
-    
-    <div class="table-cell">
-      {% if item.recycling.material.name %}
-        {{ item.recycling.material.name }}
-      {% elif item.unload.material.name %}
-        {{ item.unload.material.name }}
-      {% endif %}
-    </div>
-
-    <div class="table-cell">
-      {% if item.recycling.weight %}
-        {{ item.recycling.weight }} 
-      {% elif item.unload.weight %}
-        {{ item.unload.weight }}
-      {% endif%}
-    </div>
-
-    <div class="table-cell">
-      {% if item.recycling.get_status_display %}
-        {{ item.recycling.get_status_display }} 
-      {% elif item.unload.get_status_display %}
-        {{ item.unload.get_status_display }}
-      {% endif%}
-    </div>
-
-    <div class="table-cell">{{ item.created_at|date:'d.m.Y' }}</div>
-    <div class="table-cell" title="{{ item.note }}">{{ item.note }}</div>
-  </div>
+    {% for recycling in shipping.recycling_for_shipping.all %}
+        <div class="table-row">
+            <div class="table-cell">{{ shipping.id }}</div>
+            <div class="table-cell">{{ shipping.customer.name }}</div>
+            <div class="table-cell">{{ shipping.certificate }}</div>
+            <div class="table-cell">{{ shipping.get_transport_display }}</div>
+            
+            <div class="table-cell">{{ recycling }}</div>  {# Einheiten #}
+            <div class="table-cell">Aufbereitung</div> {# Herkunft #}
+            <div class="table-cell">{{ recycling.get_box_type_display }}</div>
+            <div class="table-cell">{{ recycling.material.name }}</div>
+            <div class="table-cell">{{ recycling.weight }} kg</div>
+            <div class="table-cell">{{ recycling.get_status_display }}</div>
+            <div class="table-cell">{{ shipping.created_at|date:'d.m.Y' }}</div>
+            <div class="table-cell" title="{{ shipping.note }}">{{ shipping.note|default:"—" }}</div>
+        </div>
+    {% endfor %}
 {% endfor %}
+
+
+
 
 </div>
 
@@ -104,7 +74,6 @@
     <li data-action="url-update">Inhalt ändern</li>
   </ul>
 </template>
-
 {% endblock %}
 
 {% block extra_js %}
