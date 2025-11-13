@@ -45,6 +45,7 @@
           <th class="itemcard-material">Material</th>
           <th class="itemcard-boxtype">Behälter</th>
           <th class="itemcard-weight">Gewicht</th>
+          <th class="itemcard-weight">Anmerkung</th>
         </tr>
       </thead>
 
@@ -56,6 +57,7 @@
             <td class="itemcard-material">{{ item_form.material }}</td>
             <td class="itemcard-boxtype">{{ item_form.box_type }}</td>
             <td class="itemcard-weight">{{ item_form.weight }}</td>
+            <td class="itemcard-weight">{{ item_form.note }}</td>
           </tr>
         {% endfor %}
       </tbody>
@@ -67,6 +69,7 @@
         <td class="itemcard-material">{{ empty_form.material }}</td>
         <td class="itemcard-boxtype">{{ empty_form.box_type }}</td>
         <td class="itemcard-weight">{{ empty_form.weight }}</td>
+        <td class="itemcard-weight">{{ empty_form.note }}</td>
       </tr>
     </template>
 

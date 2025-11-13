@@ -23,7 +23,7 @@
   <div class="table-header">{% sort_header "created_at" "Datum" %}</div>
   <div class="table-header">{% sort_header "note" "Notiz" %}</div>
 
-{% for shipping in page_obj %}
+  {% for shipping in page_obj %}
     {% for unload in shipping.unload_for_shipping.all %}
         <div class="table-row">
             <div class="table-cell">{{ shipping.id }}</div>
@@ -59,11 +59,7 @@
             <div class="table-cell" title="{{ shipping.note }}">{{ shipping.note|default:"—" }}</div>
         </div>
     {% endfor %}
-{% endfor %}
-
-
-
-
+  {% endfor %}
 </div>
 
 {% paginate page_obj %}
@@ -78,4 +74,5 @@
 
 {% block extra_js %}
   <script src="{% static 'js/mouse-right-click.js' %}"></script>
+  <script src="{% static 'js/current-date.js' %}"></script>
 {% endblock %}

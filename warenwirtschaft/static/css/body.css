@@ -232,8 +232,14 @@ td p {
   width: 120px;
 }
 
-.itemcard-material {
+.itemcard-material,
+.itemcard-note {
   width: 200px;
+}
+
+.itemcard-note textarea{
+  resize: vertical;
+  box-sizing: border-box;
 }
 
 .itemcard-action,

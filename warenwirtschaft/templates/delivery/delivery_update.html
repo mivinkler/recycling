@@ -46,6 +46,7 @@
           <th class="itemcard-boxtype">Behälter</th>
           <th class="itemcard-material">Material</th>
           <th class="itemcard-weight">Gewicht</th>
+          <th class="itemcard-weight">Anmerkung</th>
           <th class="itemcard-row-delete"><img src="{% static 'icons/delete-icon.svg' %}" title="Zeile löschen"></th>
         </tr>
       </thead>
@@ -61,6 +62,7 @@
           <td class="itemcard-material">{{ item_form.material }}</td>
           <td class="itemcard-boxtype">{{ item_form.box_type }}</td>
           <td class="itemcard-weight">{{ item_form.weight }}</td>
+          <td class="itemcard-note">{{ item_form.note }}</td>
           <td class="itemcard-row-delete">
             <label class="checkbox-square">
               {{ item_form.DELETE }}
@@ -79,6 +81,7 @@
         <td class="itemcard-material">{{ empty_form.material }}</td>
         <td class="itemcard-boxtype">{{ empty_form.box_type }}</td>
         <td class="itemcard-weight">{{ empty_form.weight }}</td>
+        <td class="itemcard-note">{{ empty_form.note }}</td>
         <td class="itemcard-row-delete">
           <label class="checkbox-square">
             {{ empty_form.DELETE }}

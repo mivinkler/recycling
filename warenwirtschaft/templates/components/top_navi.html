@@ -217,7 +217,7 @@
   </div>
 
   <!-- Reset -->
-  {% if search_query or sort_param %}
+  {% if 'search' in request.GET or 'sort' in request.GET %}
   <div class="header-menu-item">
     <div></div>
     <a href="{{ request.path|cut:'?' }}" class="header-menu-icon svg-icon">
@@ -227,5 +227,5 @@
       <div class="tooltip-reset">Reset</div>
     </a>
   </div>
-      {% endif %}
+  {% endif %}
 {% endif %}
