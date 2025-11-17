@@ -112,6 +112,7 @@
             <th class="itemcard-material">Material</th>
             <th class="itemcard-boxtype">Behälter</th>
             <th class="itemcard-status">Status</th>
+            <th class="itemcard-status">Anmerkung</th>
             <th class="itemcard-weight">Gewicht</th>
             <th class="itemcard-action"></th>
           </tr>
@@ -140,6 +141,8 @@
                   {{ f.id }} {# verstecktes PK-Feld für das Form #}
                   {{ f.status }}
                 </td>
+
+                <td class="itemcard-boxtype">{{ f.box_note }}</td>
 
                 <td class="itemcard-weight itemcard-weight-action">
                   <div class="weight-container">
