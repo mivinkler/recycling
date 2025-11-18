@@ -1,0 +1,2 @@
+from .daily_weight_update_view import DailyWeightUpdateView
+from .daily_weight_list_view import DailyWeightListView

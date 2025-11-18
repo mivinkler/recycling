@@ -8,7 +8,7 @@ from warenwirtschaft.views.customer import CustomerListView, CustomerUpdateView,
 from warenwirtschaft.views.delivery import DeliveryListView, DeliveryDetailBarcodeView, DeliveryDetailWeightView, DeliveryCreateView, DeliveryUpdateView, DeliveryDeleteView, DeliveryUpdateStatusView
 from warenwirtschaft.views.unload import UnloadListView, UnloadSelectView, UnloadCreateView, UnloadUpdateItemView, UnloadUpdateView, UnloadDeleteView, UnloadDetailBarcodeView, UnloadDetailWeightView
 from warenwirtschaft.views.recycling import RecyclingListView, RecyclingCreateView, RecyclingUpdateView, RecyclingDeleteView, RecyclingDetailView
-from warenwirtschaft.views.recycling_weight import RecyclingWeightUpdateView, RecyclingWeightListView
+from warenwirtschaft.views.daily_weight import DailyWeightUpdateView, DailyWeightListView
 from warenwirtschaft.views.shipping import ShippingListView, ShippingDetailView, ShippingCreateView, ShippingUpdateView, ShippingDeleteView
 from warenwirtschaft.views.barcode import BarcodeGeneratorListView, BarcodeGeneratorDetailView, BarcodeGeneratorCreateView, BarcodeGeneratorUpdateView, BarcodeGeneratorDeleteView
 from warenwirtschaft.views.statistic.timeseries_view import TimeSeriesPageView
@@ -45,8 +45,8 @@ urlpatterns = [
     path('recycling/detail/<int:pk>/', RecyclingDetailView.as_view(), name='recycling_detail'),
     path('recycling/delete/<int:pk>/', RecyclingDeleteView.as_view(), name='recycling_delete'),
     
-    path('recycling-weight/list', RecyclingWeightListView.as_view(), name='recycling_weight_list'),
-    path('recycling-weight/update/<int:pk>/', RecyclingWeightUpdateView.as_view(), name='recycling_weight_update'),
+    path('daily-weight/list', DailyWeightListView.as_view(), name='daily_weight_list'),
+    path('daily-weight/update/<int:pk>/', DailyWeightUpdateView.as_view(), name='daily_weight_update'),
 
     path('shipping/list/', ShippingListView.as_view(), name='shipping_list'),
     path('shipping/detail/<int:pk>/', ShippingDetailView.as_view(), name='shipping_detail'),

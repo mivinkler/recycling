@@ -13,7 +13,7 @@ class UnloadChoiceForm(forms.Form):
 class RecyclingForm(forms.ModelForm):
     class Meta:
         model = Recycling
-        fields = ["box_type", "material", "status", "weight"]
+        fields = ["box_type", "material", "status", "weight", "note"]
 
 
 # ---- Form für die Auswahl bestehender aktiver Recycling-Objekte ----

@@ -35,6 +35,7 @@
           <th class="itemcard-boxtype">Behälter</th>
           <th class="itemcard-status">Status</th>
           <th class="itemcard-weight">Gewicht</th>
+          <th class="itemcard-note">Anmerkung</th>
         </tr>
       </thead>
 
@@ -60,6 +61,7 @@
               <td class="itemcard-boxtype"><p>{{ obj.get_box_type_display }}</p></td>
               <td class="itemcard-boxtype"><p>{{ obj.get_status_display }}</p></td>
               <td class="itemcard-weight"><p>{{ obj.weight }}</p></td>
+              <td class="itemcard-note"><p>{{ obj.note }}</p></td>
             </tr>
           {% endfor %}
         {% endif %}
@@ -76,6 +78,7 @@
             <td class="itemcard-boxtype">{{ form.box_type.errors }}{{ form.box_type }}</td>
             <td class="itemcard-boxtype">{{ form.status.errors }}{{ form.status }}</td>
             <td class="itemcard-weight">{{ form.weight.errors }}{{ form.weight }}</td>
+            <td class="itemcard-note">{{ form.note.errors }}{{ form.note }}</td>
           </tr>
         {% empty %}
           {# Keine initialen neuen Zeilen – werden via Template+JS hinzugefügt #}
@@ -96,6 +99,7 @@
         <td class="itemcard-boxtype">{{ empty_form.box_type }}</td>
         <td class="itemcard-boxtype">{{ empty_form.status }}</td>
         <td class="itemcard-weight">{{ empty_form.weight }}</td>
+        <td class="itemcard-note">{{ empty_form.note }}</td>
       </tr>
     </template>
 

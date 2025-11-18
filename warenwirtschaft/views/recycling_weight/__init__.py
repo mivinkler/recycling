@@ -1,2 +1,0 @@
-from .recycling_weight_update_view import RecyclingWeightUpdateView
-from .recycling_weight_list_view import RecyclingWeightListView
