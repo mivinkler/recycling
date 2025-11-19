@@ -18,7 +18,7 @@ class DeliveryUnitSelectForm(forms.Form):
         if queryset is None:
             queryset = (DeliveryUnit.objects
                         .filter(status=1)                       # nur relevante Einheiten für Vorsortierung
-                        .only("id", "status", "box_type", "weight", "barcode")
+                        .only("id", "status", "box_type", "weight", "note", "barcode")
                         .order_by("pk")[:500])                   # Sicherheits-Deckel; не пагинация, просто ограничитель
 
         self.fields["delivery_unit"].queryset = queryset
@@ -33,7 +33,13 @@ class UnloadForm(forms.ModelForm):
     class Meta:
         model = Unload
         fields = ['box_type', 'material', 'weight', 'status', 'note']
-        labels = {'weight': 'Gewicht', 'status': 'Status'}
+        labels = {
+            'box_type': 'Behälter', 
+            'material': 'Material',
+            'weight': 'Gewicht', 
+            'status': 'Status', 
+            'note': 'Anmerkung'
+            }
 
 
 class ExistingEditForm(forms.ModelForm):
@@ -49,10 +55,11 @@ class ExistingEditForm(forms.ModelForm):
     class Meta:
         model = Unload
         # Nur änderbare Felder für bestehende Wagen
-        fields = ['status', 'weight']  # + das Hilfsfeld ist separat definiert
+        fields = ['status', 'weight', 'note']  # + das Hilfsfeld ist separat definiert
         labels = {
             'status': 'Status',
             'weight': 'Gewicht',
+            'note': 'Anmerkung'
         }
 
 # Formset für neue Zeilen (keine M2M-Felder hier)
