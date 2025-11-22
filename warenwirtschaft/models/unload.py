@@ -14,6 +14,7 @@ class Unload(models.Model):
         (2, "Bereit für Behandlung"),
         (3, "Bereit für Abholung"),
         (4, "Erledigt"),
+        (5, "Bereit für Halle 2"),
     ]
 
     delivery_units = models.ManyToManyField("warenwirtschaft.DeliveryUnit", related_name="unload_for_delivery_unit")

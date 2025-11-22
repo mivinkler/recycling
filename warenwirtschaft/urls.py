@@ -11,6 +11,7 @@ from warenwirtschaft.views.recycling import RecyclingListView, RecyclingCreateVi
 from warenwirtschaft.views.daily_weight import DailyWeightUpdateView, DailyWeightListView
 from warenwirtschaft.views.shipping import ShippingListView, ShippingDetailView, ShippingCreateView, ShippingUpdateView, ShippingDeleteView
 from warenwirtschaft.views.barcode import BarcodeGeneratorListView, BarcodeGeneratorDetailView, BarcodeGeneratorCreateView, BarcodeGeneratorUpdateView, BarcodeGeneratorDeleteView
+from warenwirtschaft.views.device_check import DeviceCheckCreateView
 from warenwirtschaft.views.statistic.timeseries_view import TimeSeriesPageView
 
 
@@ -64,6 +65,8 @@ urlpatterns = [
     path('material/create/', MaterialCreateView.as_view(), name='material_create'),
     path("material/update/<int:pk>/", MaterialUpdateView.as_view(), name="material_update"),
     path('material/delete/<int:pk>/', MaterialDeleteView.as_view(), name='material_delete'),
+
+    path('device-check/create/', DeviceCheckCreateView.as_view(), name='device_check_create'),
 
     path("statistic/", TimeSeriesPageView.as_view(), name="statistic"),
 

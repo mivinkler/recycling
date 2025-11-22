@@ -1,0 +1,40 @@
+<details class="header-details">
+    <summary class="header-menu-icon">
+        <div>Aktives Gewicht:</div>  
+        <span id="header-weight-total" data-weight="{{ active_weight_total }}">
+            {{ active_weight_total|floatformat:2 }} kg
+        </span>
+    </summary>
+
+    <div class="header-details-disclosure">
+        <div class="header-weight-item">
+            <span>Anlieferung:</span> {{ active_weight_delivery|floatformat:2 }} kg
+        </div>
+        <div class="header-weight-item">
+            <span>Vorsortierung:</span> {{ active_weight_unload|floatformat:2 }} kg
+        </div>
+        <div class="header-weight-item">
+            <span>Aufbereitung:</span> {{ active_weight_recycling|floatformat:2 }} kg
+        </div>
+        <div class="header-weight-item">
+            <span>Geräteprüfung:</span> {{ active_weight_devicecheck|floatformat:2 }} kg
+        </div>
+    </div>
+</details>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const el = document.getElementById("header-weight-total");
+    if (!el) return;
+
+    const weight = parseFloat(el.dataset.weight);
+
+    if (weight > 10000) {
+        el.style.color = "#d70101";
+        el.style.fontWeight = 600;
+    }
+});
+</script>
+
+
+

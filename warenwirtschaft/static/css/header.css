@@ -16,7 +16,7 @@ header {
 }
 
 .header-menu-item {
-    width: 116px;
+    width: 100px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -74,6 +74,21 @@ header {
 .header-user {
     padding-top: 14px;
     cursor: pointer;
+}
+
+.header-active-weight {
+    align-self: center;
+    font-weight: 500;
+    cursor: pointer;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.header-weight-item {
+    width: 200px;
+    display: flex;
+    justify-content: space-between;
+    line-height: 2;
 }
 
 /* ============ Details element ============*/

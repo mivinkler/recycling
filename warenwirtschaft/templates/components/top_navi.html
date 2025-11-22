@@ -47,6 +47,22 @@
 
 <span class="header-menu-splitter"></span>
 
+<!-- Halle 2 -->
+<div class="header-menu-item">
+  <a href="{% url 'device_check_create' %}" class="header-menu-icon{% if selected_menu == 'device_check_create' %} title-selected{% endif %}">
+    Halle 2
+    <span class="header-title-tooltip">Liste</span>
+  </a>
+  <a href="{% url 'device_check_create' %}" class="header-menu-icon{% if selected_menu == 'device_check_create' %} icon-selected{% endif %}">
+    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="22px" width="22px" fill="#606060" version="1.1" id="Capa_1" width="800px" height="800px" viewBox="0 0 35.33 35.33" xml:space="preserve">
+      <path d="M17.667,0.001v4c7.534,0,13.664,6.131,13.664,13.666s-6.13,13.666-13.664,13.666c-6.856,0-12.549-5.075-13.521-11.666h5.24   c0.902,3.738,4.268,6.525,8.279,6.525h2v-3.101h5.67v-4h-5.67v-2.854h5.67v-4h-5.67v-3.1h-2c-4.012,0-7.377,2.787-8.279,6.525H0v2   c0,9.74,7.925,17.666,17.666,17.666c9.74,0,17.664-7.926,17.664-17.666C35.33,7.924,27.407,0.001,17.667,0.001z"/>
+    </svg>
+    <span class="header-icon-tooltip">Formular</span>
+  </a>
+</div>
+
+<span class="header-menu-splitter"></span>
+
 <!-- Abholung -->
 <div class="header-menu-item">
   <a href="{% url 'shipping_list' %}" class="header-menu-title{% if selected_menu == 'shipping_list' %} title-selected{% endif %}">
@@ -129,6 +145,7 @@
 </div>
 
 <div class="header-menu-splitter"></div>
+
 <!-- Wiegen -->
 <div class="header-menu-item">
   <a href="#" class="header-menu-title">

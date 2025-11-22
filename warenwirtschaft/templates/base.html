@@ -1,4 +1,5 @@
 {% load static %}
+{% load header_active_weights %}
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -27,12 +28,16 @@
             {% include 'components/top_navi.html' %}
         </div>
           
+        <div class="header-active-weight">
+            {% header_active_weights %}
+        </div>
 
         <div>
             <div class="header-user">
                 <img src="{% static 'icons/user-icon.svg' %}">
             </div>
-                {% include "components/help_dropdown.html" %}
+
+            {% include "components/help_dropdown.html" %}
         </div>
     </header>
    

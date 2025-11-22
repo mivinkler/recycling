@@ -13,6 +13,7 @@ class Recycling(models.Model):
         (1, "Aktiv"),
         (3, "Bereit für Abholung"),
         (4, "Erledigt"),
+        (5, "Bereit für Halle 2"),
     ]
 
     unloads = models.ManyToManyField("warenwirtschaft.Unload", related_name="recycling_for_unload")

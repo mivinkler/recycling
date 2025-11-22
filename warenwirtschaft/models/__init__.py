@@ -6,3 +6,5 @@ from .recycling import Recycling
 from .shipping import Shipping
 from .customer import Customer
 from .barcode_generator import BarcodeGenerator
+from .device_check import DeviceCheck
+
