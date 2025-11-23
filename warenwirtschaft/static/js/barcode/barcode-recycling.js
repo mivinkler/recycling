@@ -1,23 +1,33 @@
+// static/js/barcode/barcode-recycling.js
+
 document.addEventListener('DOMContentLoaded', () => {
   const input   = document.getElementById('barcode');
   const select  = document.getElementById('id_unload');         // Ziel-Select
+  const imgOn   = document.getElementById('barcode-active');
+  const imgOff  = document.getElementById('barcode-inactive');
+  const label   = document.querySelector('label[for="barcode"]');
+
   const apiUrl  = input?.dataset.api || '';
   const accepted = (input?.dataset.accepted || '').toUpperCase();
 
-  // Grundprüfung
+  // --- Grundprüfung ---
   if (!input)  { console.warn('[SCAN] #barcode fehlt'); return; }
   if (!select) { console.warn('[SCAN] #id_unload fehlt'); return; }
   if (!apiUrl) { console.warn('[SCAN] data-api am #barcode fehlt'); return; }
 
-  // Falls Enter im Feld die ganze Seite submitten würde – verhindern
-  const parentForm = input.closest('form');
-  if (parentForm) {
-    parentForm.addEventListener('submit', (e) => {
-      if (document.activeElement === input) e.preventDefault();
-    });
-  }
+  // --- Helfer: Icon an/aus ---
+  const toggleIcon = (active) => {
+    if (imgOn)  imgOn.hidden  = !active;
+    if (imgOff) imgOff.hidden =  active;
+  };
 
-  // Normalisierung: Großschreibung + Whitespace/CR/LF entfernen
+  // Initial: Icon aktiv, solange Barcode-Feld im Fokus ist
+  input.addEventListener('focus', () => toggleIcon(true));
+  input.addEventListener('blur',  () => toggleIcon(false));
+  label?.addEventListener('click', () => input.focus());
+  toggleIcon(document.activeElement === input);
+
+  // Normalisierung: Großschreibung + Whitespace entfernen
   const normalize = (raw) => (raw || '').toUpperCase().replace(/[\s\r\n]+/g, '');
 
   // Option im Select sicherstellen + auswählen (kein Autosubmit)
@@ -35,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const code = normalize(raw);
     if (!code) { console.warn('[SCAN] leerer Code'); return; }
 
-    // Clientseitige Präfixprüfung spart 400er
+    // Präfix-Check
     if (accepted && !code.startsWith(accepted)) {
       alert(`Falscher Präfix: "${code}". Erlaubt: "${accepted}"`);
       return;

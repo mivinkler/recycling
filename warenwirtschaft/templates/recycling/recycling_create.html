@@ -10,17 +10,17 @@
   <div class="itemcard">
     <div class="itemcard-title itemcard-margin-left">
       <h2>Vorsortierung erstellen</h2>
-
       <input 
-        type="text" 
-        id="barcode" 
-        placeholder="Barcode scannen..." 
-        autocomplete="off" 
-        data-accepted="S"
-        data-api="{% url 'barcode_recycling_api' %}"
-        autofocus
+          type="text" 
+          id="barcode" 
+          placeholder="Barcode scannen..." 
+          autocomplete="off" 
+          data-accepted="S"
+          data-api="{% url 'barcode_recycling_api' %}"
+          autofocus
+          class="visually-hidden-input"
       />
-      
+
       <label for="barcode" class="barcode-wrapper header-menu-icon svg-icon">
           <img src="{% static 'icons/barcode-scan-active.svg' %}" id="barcode-active">
           <img src="{% static 'icons/barcode-scan-inactive.svg' %}" id="barcode-inactive" hidden>
@@ -132,7 +132,6 @@
   </div>
 </form>
 
-
 <style>
 .barcode-wrapper { 
   cursor: pointer; 
@@ -155,6 +154,7 @@
   pointer-events: auto; /* wichtig: nimmt den Fokus */
 }
 </style>
+
 {% endblock %}
 
 {% block extra_js %}

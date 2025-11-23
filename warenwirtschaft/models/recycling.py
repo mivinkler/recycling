@@ -2,6 +2,9 @@ from django.db import models
 from warenwirtschaft.models.material import Material
 
 class Recycling(models.Model):
+
+    STATUS_AKTIV = 1
+
     BOX_TYPE_CHOICES = [
         (1, "Gitterbox"),
         (2, "Palette"),

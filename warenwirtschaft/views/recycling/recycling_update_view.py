@@ -3,122 +3,139 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.db import transaction
 
-from warenwirtschaft.models import Unload, Recycling
-from warenwirtschaft.forms.recycling_form import (
-    ExistingRecyclingForm,
-    NewRecyclingFormSet,
-)
+from warenwirtschaft.forms.recycling_form import NewRecyclingFormSet
+from warenwirtschaft.models import Recycling, Unload
+from warenwirtschaft.services.barcode_number_service import BarcodeNumberService
 
 
 class RecyclingUpdateView(View):
-    """
-    🇩🇪 Update-Ansicht für die Aufbereitung eines konkreten Unload:
-    - Links (Checkboxen) zu allen aktiven Fraktionen (status=1) anzeigen.
-      * Checkbox "existing" ist angehakt, wenn die Fraktion bereits mit dem Unload verknüpft ist.
-      * Nutzer kann Häkchen entfernen/hinzufügen und speichern -> M2M wird synchronisiert.
-    - Neue Fraktionen können über das Formset hinzugefügt und automatisch mit dem Unload verknüpft werden.
-    - Layout/Interaktion identisch zu "create" (Tabellen-Design beibehalten).
-    """
     template_name = "recycling/recycling_update.html"
+    BARCODE_PREFIX = "A"  # Prefix für Recycling
 
-    def get(self, request, pk: int):
-        # 🇩🇪 Unload ermitteln
+    # ---------- GET ----------
+
+    def get(self, request, pk):
+        # Unload-Objekt holen oder 404 werfen
         unload = get_object_or_404(Unload, pk=pk)
 
-        # 🇩🇪 Aktive Fraktionen (status=1)
-        active_qs = Recycling.objects.filter(status=1)
+        # Alle aktiven Recycling-Objekte
+        active_qs = Recycling.objects.filter(status=Recycling.STATUS_AKTIV)
 
-        # 🇩🇪 IDs der derzeit mit diesem Unload verknüpften aktiven Fraktionen
-        selected_ids_qs = Recycling.objects.filter(status=1, unloads=unload).values_list("pk", flat=True)
-        selected_ids = set(selected_ids_qs)
-
-        # 🇩🇪 Formular für bestehende Auswahl:
-        # initial = aktuell verknüpfte Fraktionen
-        existing_form = ExistingRecyclingForm(
-            initial={"existing": active_qs.filter(unloads=unload)}
+        # IDs der Recycling-Objekte, die bereits mit diesem Unload verknüpft sind
+        existing_selected_ids = set(
+            str(pk)
+            for pk in unload.recycling_for_unload.filter(
+                status=Recycling.STATUS_AKTIV
+            ).values_list("pk", flat=True)
         )
-        existing_form.fields["existing"].queryset = active_qs
 
-        # 🇩🇪 Formset nur für NEUE Zeilen
-        new_formset = NewRecyclingFormSet(queryset=Recycling.objects.none(), prefix="new")
+        # Formset für neue Recycling-Zeilen (leer initial, nur über JS/HTML)
+        new_formset = NewRecyclingFormSet(
+            queryset=Recycling.objects.none(),
+            prefix="new",
+        )
 
         return self.render_page(
-            existing_form=existing_form,
+            unload=unload,
             new_formset=new_formset,
             active_qs=active_qs,
-            existing_selected_ids={str(pk) for pk in selected_ids},
-            unload=unload,
+            existing_selected_ids=existing_selected_ids,
         )
 
-    def post(self, request, pk: int):
+    # ---------- POST ----------
+
+    def post(self, request, pk):
         unload = get_object_or_404(Unload, pk=pk)
-        active_qs = Recycling.objects.filter(status=1)
+        active_qs = Recycling.objects.filter(status=Recycling.STATUS_AKTIV)
 
-        # 🇩🇪 POST binden
-        existing_form = ExistingRecyclingForm(request.POST)
-        existing_form.fields["existing"].queryset = active_qs  # wichtig für Validierung
+        new_formset = NewRecyclingFormSet(
+            request.POST,
+            queryset=Recycling.objects.none(),
+            prefix="new",
+        )
 
-        new_formset = NewRecyclingFormSet(request.POST, queryset=Recycling.objects.none(), prefix="new")
+        # Ausgewählte bestehende Recycling-IDs aus den Checkboxen
+        existing_selected_ids = set(request.POST.getlist("existing"))
 
-        forms_ok = existing_form.is_valid()
-        formset_ok = new_formset.is_valid()
-
-        if forms_ok and formset_ok:
-            selected_qs = existing_form.cleaned_data.get("existing")  # kann leer sein
+        if new_formset.is_valid():
+            # String-IDs in int konvertieren (nur gültige Zahlen berücksichtigen)
+            selected_ids = set()
+            for value in existing_selected_ids:
+                try:
+                    selected_ids.add(int(value))
+                except (TypeError, ValueError):
+                    # Ungültige Werte ignorieren
+                    continue
 
             with transaction.atomic():
-                # 🇩🇪 M2M-Synchronisierung nur innerhalb der aktiven Fraktionen
+                # --- Aktuelle Verknüpfungen (für diesen Unload + aktive Recycling) ---
                 current_ids = set(
-                    Recycling.objects.filter(status=1, unloads=unload).values_list("pk", flat=True)
+                    unload.recycling_for_unload.filter(
+                        status=Recycling.STATUS_AKTIV
+                    ).values_list("pk", flat=True)
                 )
-                selected_ids = set(selected_qs.values_list("pk", flat=True)) if selected_qs is not None else set()
 
                 to_add = selected_ids - current_ids
                 to_remove = current_ids - selected_ids
 
+                # Neue Verknüpfungen hinzufügen
                 if to_add:
                     for r in Recycling.objects.filter(pk__in=to_add):
                         r.unloads.add(unload)
 
+                # Verknüpfungen entfernen
                 if to_remove:
                     for r in Recycling.objects.filter(pk__in=to_remove):
                         r.unloads.remove(unload)
 
-                # 🇩🇪 Neue Fraktionen speichern und mit Unload verknüpfen
+                # --- Neue Recycling-Zeilen speichern und verknüpfen ---
                 new_instances = new_formset.save(commit=False)
+
                 for instance in new_instances:
-                    # Pflicht-/Defaultwerte setzen, die nicht im Formular stehen
-                    instance.status = 1  # aktiv
+                    # Standardstatus, falls nicht gesetzt
+                    if not instance.status:
+                        instance.status = Recycling.STATUS_AKTIV
+
+                    # Barcode nur erzeugen, wenn Feld leer ist
+                    val = (getattr(instance, "barcode", "") or "").strip()
+                    if not val:
+                        instance.barcode = BarcodeNumberService.make_code(
+                            prefix=self.BARCODE_PREFIX
+                        )
+
                     instance.save()
                     instance.unloads.add(unload)
 
-                # 🇩🇪 Optional: Unload-Status sicherstellen (z.B. 2 = "in Aufbereitung")
-                if getattr(unload, "status", None) != 2:
+                # Unload-Status optional anpassen (idempotent):
+                # z.B. sicherstellen, dass er auf "2" bleibt
+                if unload.status != 2:
                     unload.status = 2
                     unload.save(update_fields=["status"])
 
-            # 🇩🇪 Zur eigenen Update-Seite zurück
+            # Nach dem Speichern zurück auf dieselbe Seite (oder Liste, wie du willst)
             return redirect(reverse("recycling_update", kwargs={"pk": unload.pk}))
 
-        # 🇩🇪 Ungültig -> Auswahl erhalten
-        selected_ids_post = request.POST.getlist("existing")
+        # Fehler im Formset -> Seite mit Fehlern und aktueller Auswahl anzeigen
         return self.render_page(
-            existing_form=existing_form,
+            unload=unload,
             new_formset=new_formset,
             active_qs=active_qs,
-            existing_selected_ids=set(selected_ids_post),
-            unload=unload,
+            existing_selected_ids=existing_selected_ids,
         )
 
-    def render_page(self, existing_form, new_formset, active_qs, existing_selected_ids, unload):
-        # 🇩🇪 Hilfs-Renderer: liefert alle nötigen Kontextwerte an das Template
-        return render(self.request, self.template_name, {
-            "existing_form": existing_form,
-            "new_formset": new_formset,
-            "empty_form": new_formset.empty_form,    # für JS (__prefix__)
-            "active_qs": active_qs,                  # aktive Fraktionen für die Tabelle
-            "existing_selected_ids": existing_selected_ids,  # Set[str] für "checked"
-            "existing_count": active_qs.count(),     # falls für die laufende Nummer benötigt
-            "unload": unload,
-            "selected_menu": "recycling_form",
-        })
+    # ---------- Hilfsmethode ----------
+
+    def render_page(self, unload, new_formset, active_qs, existing_selected_ids):
+        return render(
+            self.request,
+            self.template_name,
+            {
+                "unload": unload,
+                "new_formset": new_formset,
+                "empty_form": new_formset.empty_form,  # für JS (__prefix__)
+                "active_qs": active_qs,
+                "existing_selected_ids": set(str(pk) for pk in existing_selected_ids),
+                "existing_count": active_qs.count(),
+                "selected_menu": "recycling_form",
+            },
+        )
