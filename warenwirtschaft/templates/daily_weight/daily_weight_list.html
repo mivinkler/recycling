@@ -26,31 +26,31 @@
       </thead>
     
       <tbody class="itemcard-tbody">
-        {% for item in unload_list %}
+        {% for unload in unload_list %}
           <tr class="itemcard-table-row">
-            <input type="hidden" name="unload_id_{{ item.id }}" value="{{ item.id }}">
+            <input type="hidden" name="unload_id_{{ unload.id }}" value="{{ unload.id }}">
             <td class="itemcard-id">
               {{ forloop.counter }}
             </td>
             <td class="itemcard-material">
-              <p>{{ item.material }}</p>
+              <p>{{ unload.material }}</p>
             </td>
             <td class="itemcard-boxtype">
-              <p>{{ item.get_box_type_display }}</p>
+              <p>{{ unload.get_box_type_display }}</p>
             </td>
             <td class="itemcard-status">
-              <p>{{ item.get_status_display }}</p>
+              <p>{{ unload.get_status_display }}</p>
             </td>
             <td class="itemcard-note">
-              <p>{{ item.note }}</p>
+              <p>{{ unload.note }}</p>
             </td>
             <td class="itemcard-weight">
-              <p>{{ item.weight }}</p>
+              <p>{{ unload.weight }}</p>
             </td>
             <td class="itemcard-weight"></td>
 
             <td class="itemcard-action">
-              <a href="{% url 'daily_weight_update' item.id %}" class="btn btn-lock">
+              <a href="{% url 'daily_weight_update' 'unload' unload.id %}" class="btn btn-lock">
                 <img src="{% static 'icons/lock-icon.svg' %}">
               </a>
             </td>
@@ -77,31 +77,31 @@
       </thead>
     
       <tbody class="itemcard-tbody">
-        {% for item in recycling_list %}
+        {% for recycling in recycling_list %}
           <tr class="itemcard-table-row">
-            <input type="hidden" name="recycling_id_{{ item.id }}" value="{{ item.id }}">
+            <input type="hidden" name="recycling_id_{{ recycling.id }}" value="{{ recycling.id }}">
             <td class="itemcard-id">
               {{ forloop.counter }}
             </td>
             <td class="itemcard-material">
-              <p>{{ item.material }}</p>
+              <p>{{ recycling.material }}</p>
             </td>
             <td class="itemcard-boxtype">
-              <p>{{ item.get_box_type_display }}</p>
+              <p>{{ recycling.get_box_type_display }}</p>
             </td>
             <td class="itemcard-status">
-              <p>{{ item.get_status_display }}</p>
+              <p>{{ recycling.get_status_display }}</p>
             </td>
             <td class="itemcard-status">
-              <p>{{ item.note }}</p>
+              <p>{{ recycling.note }}</p>
             </td>
             <td class="itemcard-weight">
-              <p>{{ item.weight }}</p>
+              <p>{{ recycling.weight }}</p>
             </td>
             <td class="itemcard-weight"></td>
 
             <td class="itemcard-action">
-              <a href="{% url 'daily_weight_update' item.id %}" class="btn btn-lock">
+              <a href="{% url 'daily_weight_update' 'recycling' recycling.id %}" class="btn btn-lock">
                 <img src="{% static 'icons/lock-icon.svg' %}">
               </a>
             </td>

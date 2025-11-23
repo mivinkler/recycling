@@ -47,7 +47,7 @@ urlpatterns = [
     path('recycling/delete/<int:pk>/', RecyclingDeleteView.as_view(), name='recycling_delete'),
     
     path('daily-weight/list', DailyWeightListView.as_view(), name='daily_weight_list'),
-    path('daily-weight/update/<int:pk>/', DailyWeightUpdateView.as_view(), name='daily_weight_update'),
+    path('daily-weight/update/<str:model>/<int:pk>/', DailyWeightUpdateView.as_view(), name='daily_weight_update'),
 
     path('shipping/list/', ShippingListView.as_view(), name='shipping_list'),
     path('shipping/detail/<int:pk>/', ShippingDetailView.as_view(), name='shipping_detail'),

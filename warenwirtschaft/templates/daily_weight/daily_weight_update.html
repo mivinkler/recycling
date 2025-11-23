@@ -9,61 +9,11 @@
     <h2>Aufbereitung: Tägliches wiegen</h2>
   </div>
 
-<section name="unload" class="itemcard-topbox">
-    <div class="itemcard-table-title">Bereit für Aufbereitung</div>
+  <section name="unload" class="itemcard-topbox">
+    <div class="itemcard-table-title">
+      Bereit für Aufbereitung
+    </div>
     <table class="itemcard-table">
-      <thead class="itemcard-thead">
-        <tr>
-          <th class="itemcard-id">№</th>
-          <th class="itemcard-material">Material</th>
-          <th class="itemcard-boxtype">Behälter</th>
-          <th class="itemcard-status">Status</th>
-          <th class="itemcard-note">Anmerkung</th>
-          <th class="itemcard-weight">Gewicht</th>
-          <th class="itemcard-weight">Gewicht neu</th>
-          <div></div>
-        </tr>
-      </thead>
-    
-      <tbody class="itemcard-tbody">
-        {% for item in unload_list %}
-          <tr class="itemcard-table-row">
-            <input type="hidden" name="unload_id_{{ item.id }}" value="{{ item.id }}">
-            <td class="itemcard-id">
-              {{ forloop.counter }}
-            </td>
-            <td class="itemcard-material">
-              <p>{{ item.material }}</p>
-            </td>
-            <td class="itemcard-boxtype">
-              <p>{{ item.get_box_type_display }}</p>
-            </td>
-            <td class="itemcard-status">
-              <p>{{ item.get_status_display }}</p>
-            </td>
-            <td class="itemcard-note">
-              <p>{{ item.note }}</p>
-            </td>
-            <td class="itemcard-weight">
-              <p>{{ item.weight }}</p>
-            </td>
-            <td class="itemcard-weight"></td>
-
-            <td class="itemcard-action">
-              <a href="{% url 'daily_weight_update' item.id %}" class="btn btn-lock">
-                <img src="{% static 'icons/lock-icon.svg' %}">
-              </a>
-            </td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </section>
-
-  <section name="recycling">
-    <div class="itemcard-table-title">Aktive Fraktionen</div>
-    <table class="itemcard-table">
-      {{ formset.management_form }}
       <thead class="itemcard-thead">
         <tr>
           <th class="itemcard-id">№</th>
@@ -78,89 +28,176 @@
       </thead>
 
       <tbody class="itemcard-tbody">
-        {% for item in recycling_list %}
-          {% if item.id == edit_recycling.id %}
-          <form method="post" action="{% url 'daily_weight_update' pk=item.id %}">
+        {% for unload in unload_list %}
+        <tr class="itemcard-table-row">
+          <input type="hidden" name="unload_id_{{ unload.id }}" value="{{ unload.id }}">
+
+          <!-- № -->
+          <td class="itemcard-id">
+            {{ forloop.counter }}
+          </td>
+
+          <!-- Material -->
+          <td class="itemcard-material">
+            <p>{{ unload.material }}</p>
+          </td>
+
+          <!-- Behälter -->
+          <td class="itemcard-boxtype">
+            <p>{{ unload.get_box_type_display }}</p>
+          </td>
+
+          {% if edit_unload and unload.id == edit_unload.id %}
+          <form method="post" action="{% url 'daily_weight_update' model='unload' pk=unload.id %}">
             {% csrf_token %}
-            <tr class="itemcard-table-row active-row">
-              <input type="hidden" name="recycling_id_{{ item.id }}" value="{{ item.id }}">
-              
-              <!-- № -->
-              <td class="itemcard-id">
-                {{ forloop.counter }}
-              </td>
+            <!-- Status (Unload) -->
+            <td class="itemcard-status">
+              <select name="unload_status" class="active-border">
+                {% for key, value in status_choices_unload %}
+                <option value="{{ key }}" {% if unload.status == key %}selected{% endif %}>{{ value }}</option>
+                {% endfor %}
+              </select>
+            </td>
 
-              <!-- Material -->
-              <td class="itemcard-material">
-                <p>{{ item.material }}</p>
-              </td>
+            <!-- Anmerkung neu-->
+            <td class="itemcard-note">
+              <input class="active-border" type="text" name="new_note" value="{{ unload.note }}">
+            </td>
 
-              <!-- Behälter -->
-              <td class="itemcard-boxtype">
-                <p>{{ item.get_box_type_display }}</p>
-              </td>
+            <!-- Gewicht -->
+            <td class="itemcard-weight">
+              <p>{{ unload.weight }}</p>
+            </td>
 
-              <!-- Status -->
-              <td class="itemcard-status">
-                <select name="status" class="active-border">
-                  {% for key, value in status_choices %}
-                  <option value="{{ key }}" {% if item.status == key %}selected{% endif %}>{{ value }}</option>
-                  {% endfor %}
-                </select>
-              </td>
+            <!-- Gewicht neu -->
+            <td class="itemcard-weight">
+              <input class="active-border" type="number" name="new_weight" autofocus>
+            </td>
 
-              <!-- Anmerkung neu-->
-              <td class="itemcard-note">
-                <input class="active-border" type="text" name="new_note" value="{{ item.note }}">
-              </td>
-
-              <!-- Gewicht -->
-              <td class="itemcard-weight">
-                <p>{{ item.weight }}</p>
-              </td>
-
-              <!-- Gewicht neu -->
-              <td class="itemcard-weight">
-                <input class="active-border" type="number" name="new_weight" autofocus>
-              </td>
-
-              <!-- Button -->
-              <td class="itemcard-action">
-                <a href="{% url 'daily_weight_list' %}" class="btn btn-lock">
-                  <img src="{% static 'icons/lock-open-icon.svg' %}">
-                </a>
-                <button type="submit" class="btn btn-main">Speichern</button>
-              </td>
-            </tr>
+            <!-- Button -->
+            <td class="itemcard-action">
+              <a href="{% url 'daily_weight_list' %}" class="btn btn-lock">
+                <img src="{% static 'icons/lock-open-icon.svg' %}">
+              </a>
+              <button type="submit" class="btn btn-main">Speichern</button>
+            </td>
           </form>
           {% else %}
-          <tr class="itemcard-table-row">
-            <td class="itemcard-id">{{ forloop.counter }}</td>
-            <td class="itemcard-material">
-              <p>{{ item.material }}</p>
-            </td>
-            <td class="itemcard-boxtype">
-              <p>{{ item.get_box_type_display }}</p>
-            </td>
             <td class="itemcard-status">
-              <p>{{ item.get_status_display }}</p>
+              <p>{{ unload.get_status_display }}</p>
             </td>
             <td class="itemcard-note">
-              <p>{{ item.note }}</p>
+              <p>{{ unload.note }}</p>
             </td>
             <td class="itemcard-weight">
-              <p>{{ item.weight }}</p>
+              <p>{{ unload.weight }}</p>
             </td>
             <td class="itemcard-weight">
-              <a href="{% url 'daily_weight_update' item.id %}"></a>
+              <a href="{% url 'daily_weight_update' model='unload' pk=unload.id %}"></a>
             </td>
             <td class="itemcard-action">
-              <a href="{% url 'daily_weight_update' item.id %}" class="btn btn-lock">
+              <a href="{% url 'daily_weight_update' model='unload' pk=unload.id %}" class="btn btn-lock">
                 <img src="{% static 'icons/lock-icon.svg' %}">
               </a>
             </td>
-          </tr>
           {% endif %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+
+  <section name="recycling">
+    <div class="itemcard-table-title">Aktive Fraktionen</div>
+    <table class="itemcard-table">
+      <thead class="itemcard-thead">
+        <tr>
+          <th class="itemcard-id">№</th>
+          <th class="itemcard-material">Material</th>
+          <th class="itemcard-boxtype">Behälter</th>
+          <th class="itemcard-status">Status</th>
+          <th class="itemcard-note">Anmerkung</th>
+          <th class="itemcard-weight">Gewicht</th>
+          <th class="itemcard-weight">Gewicht neu</th>
+          <th class="itemcard-action"></th>
+        </tr>
+      </thead>
+
+      <tbody class="itemcard-tbody">
+        {% for recycling in recycling_list %}
+        <tr class="itemcard-table-row">
+          <input type="hidden" name="recycling_id_{{ recycling.id }}" value="{{ recycling.id }}">
+
+          <!-- № -->
+          <td class="itemcard-id">
+            {{ forloop.counter }}
+          </td>
+
+          <!-- Material -->
+          <td class="itemcard-material">
+            <p>{{ recycling.material }}</p>
+          </td>
+
+          <!-- Behälter -->
+          <td class="itemcard-boxtype">
+            <p>{{ recycling.get_box_type_display }}</p>
+          </td>
+
+          {% if edit_recycling and recycling.id == edit_recycling.id %}
+          <form method="post" action="{% url 'daily_weight_update' model='recycling' pk=recycling.id %}">
+            {% csrf_token %}
+            <!-- Status (Recycling) -->
+            <td class="itemcard-status">
+              <select name="recycling_status" class="active-border">
+                {% for key, value in status_choices_recycling %}
+                <option value="{{ key }}" {% if recycling.status == key %}selected{% endif %}>{{ value }}</option>
+                {% endfor %}
+              </select>
+            </td>
+
+            <!-- Anmerkung neu-->
+            <td class="itemcard-note">
+              <input class="active-border" type="text" name="new_note" value="{{ recycling.note }}">
+            </td>
+
+            <!-- Gewicht -->
+            <td class="itemcard-weight">
+              <p>{{ recycling.weight }}</p>
+            </td>
+
+            <!-- Gewicht neu -->
+            <td class="itemcard-weight">
+              <input class="active-border" type="number" name="new_weight" autofocus>
+            </td>
+
+            <!-- Button -->
+            <td class="itemcard-action">
+              <a href="{% url 'daily_weight_list' %}" class="btn btn-lock">
+                <img src="{% static 'icons/lock-open-icon.svg' %}">
+              </a>
+              <button type="submit" class="btn btn-main">Speichern</button>
+            </td>
+          </form>
+          {% else %}
+            <td class="itemcard-status">
+              <p>{{ recycling.get_status_display }}</p>
+            </td>
+            <td class="itemcard-note">
+              <p>{{ recycling.note }}</p>
+            </td>
+            <td class="itemcard-weight">
+              <p>{{ recycling.weight }}</p>
+            </td>
+            <td class="itemcard-weight">
+              <a href="{% url 'daily_weight_update' model='recycling' pk=recycling.id %}"></a>
+            </td>
+            <td class="itemcard-action">
+              <a href="{% url 'daily_weight_update' model='recycling' pk=recycling.id %}" class="btn btn-lock">
+                <img src="{% static 'icons/lock-icon.svg' %}">
+              </a>
+            </td>
+          {% endif %}
+        </tr>
         {% endfor %}
       </tbody>
     </table>
