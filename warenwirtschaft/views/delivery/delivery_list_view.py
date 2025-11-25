@@ -1,5 +1,5 @@
 from django.views.generic import ListView
-from django.utils.dateparse import parse_date
+# from django.utils.dateparse import parse_date
 from warenwirtschaft.models.delivery_unit import DeliveryUnit
 from warenwirtschaft.services.search_service import SearchService
 from warenwirtschaft.services.sorting_service import SortingService
@@ -56,6 +56,8 @@ class DeliveryListView(ListView):
         context["box_types"] = DeliveryUnit.BOX_TYPE_CHOICES
         context["statuses"] = DeliveryUnit.STATUS_CHOICES
         context["selected_menu"] = "delivery_list"
+        
+        # Panel mit Suche und Sortierung
         context["dashboard"] = True
 
         context["filters"] = {

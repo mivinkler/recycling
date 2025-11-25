@@ -71,8 +71,13 @@ header {
     vertical-align: bottom;
 }
 
-.header-user {
-    padding-top: 14px;
+.user-menu {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.user-menu div {
     cursor: pointer;
 }
 

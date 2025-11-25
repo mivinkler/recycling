@@ -8,12 +8,8 @@ from warenwirtschaft.models.customer import Customer
 class DeliveryForm(forms.ModelForm):
     class Meta:
         model = Delivery
-        fields = ['customer', 'delivery_receipt', 'note']
-        widgets = {
-            'note': forms.Textarea(attrs={'rows': 3}),
-        }
+        fields = ['customer', 'delivery_receipt']
 
-    
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['customer'].queryset = Customer.objects.all().order_by('name')
@@ -32,7 +28,6 @@ class DeliveryUnitForm(forms.ModelForm):
         model = DeliveryUnit
         fields = ['box_type', 'material', 'weight', 'note']
 
-# Fabrik für Formset
 # Funktion zum Erzeugen des Formsets mit dynamischem 'extra'
 def get_delivery_unit_formset(extra=0):
     return inlineformset_factory(

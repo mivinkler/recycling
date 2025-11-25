@@ -9,28 +9,38 @@
 
 {% block content %}
 <div class="table-border"></div>
+
 <div class="table" data-type="recycling">
-  <div class="table-header">{% sort_header "id" "№" %}</div>
-  <div class="table-header">{% sort_header "box_type" "Behälter" %}</div>
-  <div class="table-header">{% sort_header "weight" "Gewicht" %}</div>
-  <div class="table-header">{% sort_header "status" "Status" %}</div>
-  <div class="table-header">{% sort_header "material" "Material" %}</div>
+  <div class="table-header">№</div>
+  <div class="table-header" title="Vorsortierung-ID">{% sort_header "unload_id" "VID" %}</div>
+  <div class="table-header" title="Aufbereitung-ID">{% sort_header "recycling_id" "AID" %}</div>
   <div class="table-header">{% sort_header "created_at" "Datum" %}</div>
+  <div class="table-header">{% sort_header "box_type" "Behälter" %}</div>
+  <div class="table-header">{% sort_header "material" "Material" %}</div>
+  <div class="table-header">{% sort_header "weight" "Gewicht (kg)" %}</div>
+  <div class="table-header">{% sort_header "status" "Status" %}</div>
   <div class="table-header">{% sort_header "note" "Anmerkung" %}</div>
 
   {% for item in page_obj %}
     <div class="table-row js-select-row"
       data-id="{{ item.id }}"
-      data-url-detail="{% url 'recycling_detail' pk=item.id %}"
       data-url-update="{% url 'recycling_update' pk=item.id %}"
-      data-url-detail-barcode="{% url 'recycling_detail' pk=item.id %}">
-
-      <div class="table-cell table-cell-id">{{ item.id }}</div>
+      data-url-detail-barcode="{% url 'recycling_detail' pk=item.id %}"
+      >
+      <div class="table-cell table-cell-counter">{{ forloop.counter }}</div>
+      <div class="table-cell multiple-id">
+        {% for unload in item.unloads.all %}
+          <span title="{% for d in item.unloads.all %}{{ d }}&#10;{% endfor %}"> {{ unload.id }}</span> 
+        {% empty %}
+        -----
+        {% endfor %}
+      </div>
+      <div class="table-cell table-cell-center">{{ item.id }}</div>
+      <div class="table-cell table-cell-center">{{ item.created_at|date:'d.m.Y' }}</div>
       <div class="table-cell">{{ item|getattr:"get_box_type_display" }}</div>
-      <div class="table-cell">{{ item.weight }}</div>
-      <div class="table-cell">{{ item|getattr:"get_status_display" }}</div>
       <div class="table-cell">{{ item.material }}</div>
-      <div class="table-cell">{{ item.created_at|date:'d.m.Y' }}</div>
+      <div class="table-cell table-cell-right">{{ item.weight }}</div>
+      <div class="table-cell">{{ item|getattr:"get_status_display" }}</div>
       <div class="table-cell" title="{{ item.note }}">{{ item.note }}</div>
     </div>
   {% endfor %}
@@ -40,8 +50,8 @@
 
 <template id="context-menu-template">
   <ul id="context-menu" class="context-menu">
-    <li data-action="url-detail">Barcode drücken</li>
-    <li data-action="url-update">Inhalt ändern</li>
+    <li data-action="urlDetailBarcode">Barcode drücken</li>
+    <li data-action="urlUpdate">Inhalt ändern</li>
   </ul>
 </template>
 

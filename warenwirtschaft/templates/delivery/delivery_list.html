@@ -11,13 +11,15 @@
 <div class="table-border"></div>
 
 <div class="table" data-type="deliveryunits">
-  <div class="table-header">{% sort_header "delivery__id" "№" %}</div>
-  <div class="table-header">{% sort_header "delivery__customer__name" "Lieferant" %}</div>
+  <div class="table-header">№</div>
+  <div class="table-header" title="Lieferung-ID">{% sort_header "delivery__id" "LID" %}</div>
+  <div class="table-header" title="Lieferung-Einheit-ID">{% sort_header "id" "EID" %}</div>
+  <div class="table-header">{% sort_header "delivery__created_at" "Datum" %}</div>
+  <div class="table-header">{% sort_header "delivery__customer__name" "Kunde" %}</div>
   <div class="table-header">{% sort_header "delivery__delivery_receipt" "Lieferschein" %}</div>
   <div class="table-header">{% sort_header "box_type" "Behälter" %}</div>
   <div class="table-header">{% sort_header "material__name" "Material" %}</div>
-  <div class="table-header">{% sort_header "weight" "Gewicht" %}</div>
-  <div class="table-header">{% sort_header "delivery__created_at" "Datum" %}</div>
+  <div class="table-header">{% sort_header "weight" "Gewicht (kg)" %}</div>
   <div class="table-header">{% sort_header "status" "Status" %}</div>
   <div class="table-header">{% sort_header "note" "Anmerkung" %}</div>
 
@@ -28,15 +30,18 @@
     data-url-unload-create="{% url 'unload_select' %}"
     data-url-update="{% url 'delivery_update' pk=item.delivery.id %}"
     data-url-detail-barcode="{% url 'delivery_detail_barcode' pk=item.id %}"
+    
     {% comment %} data-url-detail-weight="{% url 'delivery_detail_weight' pk=item.delivery.id %}" {% endcomment %}
   >
-    <div class="table-cell table-cell-id">{{ item.delivery.id }}</div>
+    <div class="table-cell table-cell-counter">{{ forloop.counter }}</div>
+    <div class="table-cell">{{ item.delivery.id }}</div>
+    <div class="table-cell">{{ item.id }}</div>
+    <div class="table-cell table-cell-center">{{ item.created_at|date:'d.m.Y' }}</div>
     <div class="table-cell">{{ item.delivery.customer.name }}</div>
     <div class="table-cell">{{ item.delivery.delivery_receipt }}</div>
     <div class="table-cell">{{ item.get_box_type_display }}</div>
     <div class="table-cell">{{ item.material.name|default:"-" }}</div>
-    <div class="table-cell">{{ item.weight }}</div>
-    <div class="table-cell">{{ item.created_at|date:'d.m.Y' }}</div>
+    <div class="table-cell table-cell-right">{{ item.weight }}</div>
     <div class="table-cell">{{ item.get_status_display }}</div>
     <div class="table-cell" title="{{ item.note }}">{{ item.note }}</div>
   </div>
@@ -53,34 +58,10 @@
 
      <!-- Status 1 -> Übergabe an Vorsortierung (Delivery -> Unload) -->
     <li data-action="urlUnloadCreate" data-require-status="1" data-param="delivery_unit">
-      In Aufbereitung übergeben
+      Zum Formular
     </li>
   </ul>
 </template>
-
-<style>
-  .context-menu {
-  position: absolute;
-  display: none;
-  min-width: 200px;
-  margin: 0;
-  padding: 6px 0;
-  list-style: none;
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
-  box-shadow: 0 10px 20px rgba(0,0,0,.08);
-  z-index: 1000;
-}
-.context-menu.is-open { display: block; }
-.context-menu li {
-  padding: 8px 12px;
-  cursor: pointer;
-}
-.context-menu li:hover {
-  background: #f3f4f6;
-}
-</style>
 
 {% endblock %}
 

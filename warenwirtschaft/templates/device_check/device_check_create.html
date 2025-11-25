@@ -6,11 +6,11 @@
 {% block content %}
 <div class="itemcard">
   <div class="itemcard-title">
-    <h2>Electroprüfung:</h2>
+    <h2>Halle 2: Geräteprüfung</h2>
   </div>
 
   <section name="unload" class="itemcard-topbox">
-    <div class="itemcard-table-title">Vorsortierung und Aufbereitung</div>
+    <div class="itemcard-table-title">Bereit für Halle 2</div>
     {{ formset.management_form }}
     <table class="itemcard-table">
       <thead class="itemcard-thead">
@@ -31,7 +31,7 @@
         {% for item in unload_list %}
         <form method="post">
           {% csrf_token %}
-            <tr class="itemcard-table-row active-row">
+            <tr class="itemcard-table-row">
               <input type="hidden" name="recycling_id_{{ item.id }}" value="{{ item.id }}">
 
               <td class="itemcard-id">
@@ -51,7 +51,7 @@
               </td>
 
               <td class="itemcard-status">
-                <p></p>
+                <p>Vorsortierung</p>
               </td>
 
               <td class="itemcard-note">
@@ -67,7 +67,7 @@
               </td>
 
               <td class="itemcard-action">
-                <a href="{% url 'daily_weight_list' %}" class="btn btn-lock">
+                <a href="{% url 'device_check_list' %}" class="btn btn-lock">
                   <img src="{% static 'icons/lock-open-icon.svg' %}">
                 </a>
                 <button type="submit" class="btn btn-main">Speichern</button>

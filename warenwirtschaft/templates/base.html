@@ -32,12 +32,22 @@
             {% header_active_weights %}
         </div>
 
-        <div>
-            <div class="header-user">
+        <div class="user-menu">
+            <span class="header-user">
                 <img src="{% static 'icons/user-icon.svg' %}">
-            </div>
+            </span>
 
-            {% include "components/help_dropdown.html" %}
+            <span>
+                {% include "components/help_dropdown.html" %}
+            </span>
+
+            <span>
+                <img src="{% static 'icons/download-icon.svg' %}">
+            </span>
+
+            <span>
+                <img src="{% static 'icons/print-icon.svg' %}">
+            </span>
         </div>
     </header>
    

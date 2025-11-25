@@ -51,6 +51,8 @@ class RecyclingListView(ListView):
         context["box_type"] = Recycling.BOX_TYPE_CHOICES
         context["status"] = Recycling.STATUS_CHOICES
         context["selected_menu"] = "recycling_list"
+
+        # Panel mit Suche und Sortierung
         context["dashboard"] = True
 
         return context

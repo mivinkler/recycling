@@ -6,27 +6,27 @@
 }
 
 .table[data-type="customer"] {
-  grid-template-columns: minmax(33px, max-content) 1fr 2fr 2fr 1fr 2fr 1fr 2fr 1fr 4fr;
+  grid-template-columns: repeat(2, minmax(33px, max-content)) 1fr 1fr 2fr 2fr 1fr 2fr 1fr 2fr 4fr;
 }
 
 .table[data-type="deliveryunits"] {
-  grid-template-columns: minmax(33px, max-content) repeat(7, 1fr) 2fr;
+  grid-template-columns: repeat(3, minmax(33px, max-content)) 1fr 3fr 1fr 2fr 2fr 1fr 1fr 4fr;
 }
 
 .table[data-type="unload"] {
-  grid-template-columns: minmax(33px, max-content) repeat(6, 1fr);
+  grid-template-columns: repeat(3, minmax(33px, max-content)) 1fr 3fr 3fr 1fr 2fr 4fr;
 }
 
 .table[data-type="recycling"] {
-  grid-template-columns: minmax(33px, max-content) repeat(5, 1fr) 2fr;
+  grid-template-columns: repeat(3, minmax(33px, max-content)) 1fr 3fr 3fr 1fr 2fr 4fr;
 }
 
 .table[data-type="shipping"] {
-  grid-template-columns: minmax(33px, max-content) 2fr 1fr 1fr 2fr repeat(6, 1fr) 2fr;
+  grid-template-columns: repeat(3, minmax(33px, max-content)) 1fr 3fr 1fr 1fr repeat(3, 2fr) 1fr 2fr 4fr;
 }
 
 .table[data-type="barcode"] {
-  grid-template-columns: minmax(33px, max-content) repeat(6, 1fr);
+  grid-template-columns: repeat(2, minmax(33px, max-content)) repeat(3, 1fr) 4fr repeat(3, 2fr);
 }
 
 .table[data-type="material"] {
@@ -40,10 +40,31 @@
   padding-bottom: 4px;
 }
 
+.table-cell {
+  border-right: 1px solid var(--color-gray-200);
+  border-bottom: 1px solid var(--color-gray-200);
+  height: 26px;
+  padding: 2px 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+  align-content: end;
+}
+
 .table-header,
-.table-cell-id {
+.table-cell-counter {
   text-align: center;
   background-color: var(--color-gray-100);
+}
+
+.table-cell-right {
+  text-align: right;
+  padding-right: 14px;
+}
+
+.table-cell-center {
+  text-align: center;
 }
 
 .table-header-arrow {
@@ -63,22 +84,6 @@
 
 .table-row:hover > div {
   background-color: var(--color-gray-100);
-}
-
-.table-cell {
-  border-right: 1px solid var(--color-gray-200);
-  border-bottom: 1px solid var(--color-gray-200);
-  height: 26px;
-  padding: 2px 2px 2px 6px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  cursor: pointer;
-  align-content: center;
-}
-
-.table-cell-id {
-  text-align: center;
 }
 
 .pagination {
@@ -216,6 +221,14 @@ td p {
 .itemcard-id {
   text-align: center;
   width: 28px;
+}
+
+.multiple-id {
+  padding-right: 14px;
+}
+
+.multiple-id span:not(:first-child)::before {
+  content: "• ";
 }
 
 .active-border {
@@ -425,24 +438,26 @@ td p {
 .context-menu {
   position: absolute;
   display: none;
-  border-radius: 2px; 
-  background-color: var(--color-gray-500);
+  min-width: 200px;
+  margin: 0;
+  padding: 6px 0;
+  list-style: none;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  box-shadow: 0 10px 20px rgba(0,0,0,.08);
   z-index: 1000;
-  min-width: 150px;
-  box-shadow: 0 4px 7px rgba(0,0,0,0.2);
+}
+.context-menu.is-open { 
+  display: block; 
 }
 
 .context-menu li {
-  background-color: var(--color-gray-50);
-  margin: 1px; /* Das ist Border 1px  */
-  outline: 1px solid #fff;
-  outline-offset: -2px;
   padding: 8px 12px;
   cursor: pointer;
 }
-
 .context-menu li:hover {
-  background-color: var(--color-gray-100);
+  background: #f3f4f6;
 }
 
 

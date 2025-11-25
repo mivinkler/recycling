@@ -10,13 +10,15 @@
 {% block content %}
 <div class="table-border"></div>
 <div class="table" data-type="barcode">
+  <div class="table-header">№</div>
   <div class="table-header">{% sort_header "id" "ID" %}</div>
+  <div class="table-header">{% sort_header "datum" "Datum" %}</div>
   <div class="table-header">{% sort_header "barcode" "Barcode" %}</div>
   <div class="table-header">{% sort_header "transport" "Transport" %}</div>
   <div class="table-header">{% sort_header "customer" "Customer" %}</div>
   <div class="table-header">{% sort_header "typ" "Behälter" %}</div>
   <div class="table-header">{% sort_header "material" "Material" %}</div>
-  <div class="table-header">{% sort_header "datum" "Datum" %}</div>
+  <div class="table-header">{% sort_header "receipt" "Lieferschein" %}</div>
 
   {% for barcode in barcodes %}
   <div class="table-row js-select-row"
@@ -24,18 +26,27 @@
     data-url-detail-barcode="{% url 'barcode_generator_detail' pk=barcode.id %}"
     data-url-update="{% url 'barcode_generator_update' pk=barcode.id %}"
     >
-    <div class="table-cell table-cell-id">{{ barcode.id }}</div>
-    <div class="table-cell">{{ barcode.code }}</div>
+    <div class="table-cell table-cell-counter">{{ forloop.counter }}</div>
+    <div class="table-cell table-cell-center">{{ barcode.id }}</div>
+    <div class="table-cell">{{ barcode.created_at|date:"d.m.Y" }}</div>
+    <div class="table-cell">{{ barcode.barcode }}</div>
     <div class="table-cell">{{ barcode.get_transport_display }}</div>
-    <div class="table-cell">{{ barcode.customer }}</div>
+    <div class="table-cell">{{ barcode.customer.name }}</div>
     <div class="table-cell">{{ barcode.get_box_type_display }}</div>
     <div class="table-cell">{{ barcode.material }}</div>
-    <div class="table-cell">{{ barcode.created_at|date:"d.m.Y H:i" }}</div>
+    <div class="table-cell">{{ barcode.receipt }}</div>
   </div>
   {% endfor %}
 </div>
 
 {% paginate page_obj %}
+
+<template id="context-menu-template">
+  <ul id="context-menu" class="context-menu">
+    <li data-action="urlDetailBarcode">Barcode drucken</li>
+    <li data-action="urlUpdate">Inhalt ändern</li>
+  </ul>
+</template>
 
 {% endblock %}
 

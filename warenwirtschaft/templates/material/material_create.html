@@ -16,7 +16,7 @@
 
     {% for item in material_list %}
       <div class="table-row">
-        <div class="table-cell table-cell-id">{{ item.id }}</div>
+        <div class="table-cell table-cell-center">{{ item.id }}</div>
         <div class="table-cell">{{ item.name }}</div>
 
         <div class="table-cell checkbox-circle">
@@ -42,7 +42,7 @@
   {% csrf_token %}
     <section class="table" data-type="material">
       <div class="table-row">
-        <div class="table-cell table-cell-id">...</div>
+        <div class="table-cell table-cell-center">...</div>
         <div class="table-cell">
           {{ form.name }}
         </div>

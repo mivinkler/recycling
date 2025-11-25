@@ -20,7 +20,7 @@
     {% for item in material_list %}
       <div class="table-row {% if item.id == edit_material.id %}active-row{% endif %}">
 
-        <div class="table-cell table-cell-id">
+        <div class="table-cell table-cell-center">
           {% if item.id == edit_material.id %}
             <a href="{% url 'material_delete' item.id %}" class="material-delete" title="Löschen">
               <img src="{% static 'icons/delete-icon.svg' %}">
@@ -82,7 +82,7 @@
 <a href="{% url 'material_create' %}" class="table" data-type="material">
   <div class="table-row">
 
-    <div class="table-cell table-cell-id">...</div>
+    <div class="table-cell table-cell-center">...</div>
     <div class="table-cell">...</div>
 
     <div class="table-cell checkbox-circle">

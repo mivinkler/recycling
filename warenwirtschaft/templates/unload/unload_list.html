@@ -11,12 +11,14 @@
 <div class="table-border"></div>
 <div class="table" data-type="unload">
   <div class="table-header">№</div>
-  <div class="table-header">{% sort_header "id" "Liefereinheit" %}</div>
+  <div class="table-header" title="Lieferung-Einheit-ID">{% sort_header "delivery_units__id" "EID" %}</div>
+  <div class="table-header" title="Vorsortierung-ID">{% sort_header "id" "VID" %}</div>
+  <div class="table-header">{% sort_header "created_at" "Datum" %}</div>
   <div class="table-header">{% sort_header "box_type" "Behälter" %}</div>
   <div class="table-header">{% sort_header "material__name" "Material" %}</div>
-  <div class="table-header">{% sort_header "weight" "Gewicht" %}</div>
-  <div class="table-header">{% sort_header "created_at" "Datum" %}</div>
+  <div class="table-header">{% sort_header "weight" "Gewicht (kg)" %}</div>
   <div class="table-header">{% sort_header "status" "Status" %}</div>
+  <div class="table-header">{% sort_header "note" "Anmerkung" %}</div>
 
   {% for item in page_obj %}
     {% with delivery_unit=item.delivery_units.all|first %}
@@ -29,21 +31,25 @@
       data-url-detail-barcode="{% url 'unload_detail_barcode' pk=item.id %}"
       {% comment %} data-url-detail-weight="{% if delivery_unit %}{% url 'unload_detail_weight' pk=delivery_unit.id %}{% endif %}" {% endcomment %}
       >
-      <div class="table-cell table-cell-id">{{ forloop.counter }}</div>
 
-      <div class="table-cell">
+      <div class="table-cell table-cell-counter">{{ forloop.counter }}</div>
+
+      <div class="table-cell multiple-id">
         {% for delivery in item.delivery_units.all %}
-          {{ delivery }} /
+          <span title="{% for d in item.delivery_units.all %}{{ d }}&#10;{% endfor %}"> {{ delivery.id }}</span> 
         {% empty %}
-        -
+        -----
         {% endfor %}
       </div>
 
+      <div class="table-cell">{{ item.id }}</div>
+      <div class="table-cell table-cell-center">{{ item.created_at|date:'d.m.Y' }}</div>
+
       <div class="table-cell">{{ item|getattr:"get_box_type_display" }}</div>
       <div class="table-cell">{{ item.material }}</div>
-      <div class="table-cell">{{ item.weight }}</div>
-      <div class="table-cell">{{ item.created_at|date:'d.m.Y' }}</div>
+      <div class="table-cell table-cell-right">{{ item.weight }}</div>
       <div class="table-cell">{{ item|getattr:"get_status_display" }}</div>
+      <div class="table-cell" title="{{ item.note }}">{{ item.note }}</div>
     </div>
     {% endwith %}
   {% endfor %}
@@ -69,32 +75,10 @@
   </ul>
 </template>
 
-<style>
-  .context-menu {
-  position: absolute;
-  display: none;
-  min-width: 200px;
-  margin: 0;
-  padding: 6px 0;
-  list-style: none;
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
-  box-shadow: 0 10px 20px rgba(0,0,0,.08);
-  z-index: 1000;
-}
-.context-menu.is-open { display: block; }
-.context-menu li {
-  padding: 8px 12px;
-  cursor: pointer;
-}
-.context-menu li:hover {
-  background: #f3f4f6;
-}
-</style>
-
 {% endblock %}
 
 {% block extra_js %}
   <script src="{% static 'js/mouse-right-click.js' %}"></script>
+  <script src="{% static 'js/current-date.js' %}"></script>
 {% endblock %}
+

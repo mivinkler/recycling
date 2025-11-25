@@ -10,7 +10,9 @@
 {% block content %}
 <div class="table-border"></div>
 <div class="table" data-type="customer">
+  <div class="table-header">№</div>
   <div class="table-header">{% sort_header "id" "ID" %}</div>
+  <div class="table-header">{% sort_header "created_at" "Datum" %}</div>
   <div class="table-header">{% sort_header "avv_number" "AVV" %}</div>
   <div class="table-header">{% sort_header "name" "Lieferant" %}</div>
   <div class="table-header">{% sort_header "street" "Straße" %}</div>
@@ -18,7 +20,6 @@
   <div class="table-header">{% sort_header "city" "Stadt" %}</div>
   <div class="table-header">{% sort_header "phone" "Telefon"  %}</div>
   <div class="table-header">{% sort_header "email" "Email" %}</div>
-  <div class="table-header">{% sort_header "created_at" "Datum" %}</div>
   <div class="table-header">{% sort_header "note" "Anmerkung" %}</div>
   
   {% for customer in page_obj %}
@@ -27,7 +28,9 @@
     data-url-detail="{% url 'customer_detail' pk=customer.id %}"
     data-url-update="{% url 'customer_update' pk=customer.id %}">
     
-    <div class="table-cell table-cell-id">{{ customer.id }}</div>
+    <div class="table-cell table-cell-counter">{{ forloop.counter }}</div>
+    <div class="table-cell table-cell-center">{{ customer.id }}</div>
+    <div class="table-cell">{{ customer.created_at|date:"d.m.Y" }}</div>
     <div class="table-cell">{{ customer.avv_number }}</div>
     <div class="table-cell">{{ customer.name }}</div>
     <div class="table-cell">{{ customer.street }}</div>
@@ -35,7 +38,6 @@
     <div class="table-cell">{{ customer.city }}</div>
     <div class="table-cell">{{ customer.phone }}</div>
     <div class="table-cell">{{ customer.email }}</div>
-    <div class="table-cell">{{ customer.created_at|date:"d.m.Y" }}</div>
     <div class="table-cell" title="{{ customer.note }}">{{ customer.note }}</div>
   </div>
   {% endfor %}
