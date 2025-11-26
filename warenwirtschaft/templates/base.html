@@ -45,12 +45,23 @@
                 <img src="{% static 'icons/download-icon.svg' %}">
             </span>
 
-            <span>
-                <img src="{% static 'icons/print-icon.svg' %}">
-            </span>
+            {% include "components/header_print_icon.html" %}
         </div>
     </header>
    
+    <style>
+        /* --- Druckformat: Querformat erzwingen --- */
+        @media print {
+            @page {
+                size: A4 landscape; /* Альбомная ориентация */
+                margin: 12mm;       /* Можно настроить */
+            }
+
+            body {
+                transform: none !important;
+            }
+        }
+        </style>
 
     <main>
         {% block content %}{% endblock %}

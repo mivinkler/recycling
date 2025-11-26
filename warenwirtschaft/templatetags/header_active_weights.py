@@ -14,11 +14,11 @@ def header_active_weights():
     """
 
     # --- Anlieferung (DeliveryUnit) ---
-    delivery_total = (
-        DeliveryUnit.objects.filter(status=1)
-        .aggregate(total=Sum("weight"))
-        .get("total") or 0
-    )
+    # delivery_total = (
+    #     DeliveryUnit.objects.filter(status=1)
+    #     .aggregate(total=Sum("weight"))
+    #     .get("total") or 0
+    # )
 
     # --- Vorsortierung (Unload) ---
     unload_total = (
@@ -43,11 +43,12 @@ def header_active_weights():
 
     # --- Gesamtgewicht über alle Bereiche ---
     overall_total = (
-        delivery_total + unload_total + recycling_total + devicecheck_total
+        # delivery_total + 
+        unload_total + recycling_total + devicecheck_total
     )
 
     return {
-        "active_weight_delivery": delivery_total,
+        # "active_weight_delivery": delivery_total,
         "active_weight_unload": unload_total,
         "active_weight_recycling": recycling_total,
         "active_weight_devicecheck": devicecheck_total,

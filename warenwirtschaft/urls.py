@@ -13,7 +13,7 @@ from warenwirtschaft.views.shipping import ShippingListView, ShippingDetailView,
 from warenwirtschaft.views.barcode import BarcodeGeneratorListView, BarcodeGeneratorDetailView, BarcodeGeneratorCreateView, BarcodeGeneratorUpdateView, BarcodeGeneratorDeleteView
 from warenwirtschaft.views.device_check import DeviceCheckCreateView, DeviceCheckSelectView, DeviceCheckListView
 from warenwirtschaft.views.statistic.timeseries_view import TimeSeriesPageView
-
+from warenwirtschaft.views.export_excel import DeliveryExportExcel
 
 
 urlpatterns = [
@@ -69,6 +69,8 @@ urlpatterns = [
     path('device-check/create/', DeviceCheckCreateView.as_view(), name='device_check_create'),
     path('device-check/select/', DeviceCheckSelectView.as_view(), name='device_check_select'),
     path('device-check/list/', DeviceCheckListView.as_view(), name='device_check_list'),
+
+    path('export-excel/', DeliveryExportExcel.as_view(), name='delivery_export_excel'),
 
     path("statistic/", TimeSeriesPageView.as_view(), name="statistic"),
 
