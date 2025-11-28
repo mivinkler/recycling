@@ -89,11 +89,22 @@ header {
     text-align: center;
 }
 
-.header-weight-item {
-    width: 200px;
-    display: flex;
-    justify-content: space-between;
-    line-height: 2;
+.header-active-weight .header-details-disclosure {
+    width: max-content;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 50px;
+    padding: 2px
+}
+
+.active-weight-category {
+    text-align: left;
+}
+
+.header-active-weight th,
+.header-active-weight td {
+    width: 120px;
+    padding: 0 6px;
 }
 
 /* ============ Details element ============*/

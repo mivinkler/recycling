@@ -1,0 +1,10 @@
+{% load static %}
+{% load export_excel_tags %}
+
+{% get_export_url_name selected_menu as export_url_name %}
+
+{% if export_url_name %}
+    <a href="{% url export_url_name %}">
+        <img src="{% static 'icons/download-icon.svg' %}">
+    </a>
+{% endif %}

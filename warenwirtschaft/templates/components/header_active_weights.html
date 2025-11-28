@@ -7,35 +7,47 @@
     </summary>
 
     <div class="header-details-disclosure">
-        <!-- <div class="header-weight-item">
-            <span>Anlieferung:</span> {{ active_weight_delivery|floatformat:2 }} kg
-        </div> -->
-        <div class="header-weight-item">
-            <span>Vorsortierung:</span> {{ active_weight_unload|floatformat:2 }} kg
-        </div>
-        <div class="header-weight-item">
-            <span>Aufbereitung:</span> {{ active_weight_recycling|floatformat:2 }} kg
-        </div>
-        <div class="header-weight-item">
-            <span>Geräteprüfung:</span> {{ active_weight_devicecheck|floatformat:2 }} kg
-        </div>
+        <table>
+            <thead class="itemcard-thead">
+                <tr>
+                    <th>Bereich</th>
+                    <th>Aktiv</th>
+                    <th>B. für Behandlung</th>
+                    <th>B. für Abholung</th>
+                    <th>B. für Halle 2</th>
+                    <th>Gesamt</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="active-weight-category">Vorsortierung</td>
+                    <td>{{ unload_aktiv|floatformat:2 }}</td>
+                    <td>{{ unload_bereit_fuer_behandlung|floatformat:2 }}</td>
+                    <td>{{ unload_bereit_fuer_abholung|floatformat:2 }}</td>
+                    <td>{{ unload_bereit_fuer_halle_2|floatformat:2 }}</td>
+                    <td>{{ unload_total|floatformat:2 }}</td>
+                </tr>
+                <tr>
+                    <td class="active-weight-category">Aufbereitung</td>
+                    <td>{{ recycling_aktiv|floatformat:2 }}</td>
+                    <td>{{ recycling_bereit_fuer_behandlung|floatformat:2 }}</td>
+                    <td>{{ recycling_bereit_fuer_abholung|floatformat:2 }}</td>
+                    <td>{{ recycling_bereit_fuer_halle_2|floatformat:2 }}</td>
+                    <td>{{ recycling_total|floatformat:2 }}</td>
+                </tr>
+                <tr>
+                    <td class="active-weight-category">Halle 2</td>
+                    <td>{{ devicecheck_aktiv|floatformat:2 }}</td>
+                    <td>{{ devicecheck_bereit_fuer_behandlung|floatformat:2 }}</td>
+                    <td>{{ devicecheck_bereit_fuer_abholung|floatformat:2 }}</td>
+                    <td>{{ devicecheck_bereit_fuer_halle_2|floatformat:2 }}</td>
+                    <td>{{ devicecheck_total|floatformat:2 }}</td>
+                </tr>
+                <tr class="active-weight-summe">
+                    <td colspan="5"></td>
+                    <td><b>{{ active_weight_total|floatformat:2 }} kg</b></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </details>
-
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-    const el = document.getElementById("header-weight-total");
-    if (!el) return;
-
-    const weight = parseFloat(el.dataset.weight);
-
-    if (weight > 10000) {
-        el.style.color = "#d70101";
-        el.style.fontWeight = 600;
-    }
-});
-</script>
-
-
-
