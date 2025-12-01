@@ -8,182 +8,85 @@
   {% csrf_token %}
 
   <div class="itemcard">
-    <div class="itemcard-title itemcard-margin-left">
+    <div class="itemcard-title">
       <h2>Halle 2</h2>
     </div>
 
     {# ====== Wagen wählen ====== #}
-    <section class="itemcard-topbox itemcard-margin-left">
-      {{ form.delivery_unit.errors }}
-      {{ form.non_field_errors }}
-
+    <section class="itemcard-topbox">
       <div class="itemcard-topbox-row" style="justify-content: flex-start;">
         <span>Wagen:</span>
 
-        <p>{{ delivery_unit }}</p>
 
+        <select>
+          {% for item in recycling_list %}
+            <option>{{ item }}</option>
+          {% endfor %}
+        </select>
       </div>
     </section>
 
-    {# ====== Neue Wagen ====== #}
+    {# ====== Gewählte Wagen ====== #}
     <section class="itemcard-topbox">
-      <div class="itemcard-table-title itemcard-margin-left">Gewählte Wagen:</div>
+      <div class="itemcard-table-title">Gewählte Wagen:</div>
 
       <table class="itemcard-table">
-        {{ formset.management_form }}
-
         <thead class="itemcard-thead">
           <tr>
-            <th class="checkbox-circle itemcard-action-left"></th>
-            <th class="itemcard-id">№</th>
+            <th class="itemcard-id">ID</th>
             <th class="itemcard-material">Material</th>
             <th class="itemcard-boxtype">Behälter</th>
             <th class="itemcard-status">Status</th>
-            <th class="itemcard-note">Anmerkung</th>
             <th class="itemcard-weight">Gewicht</th>
-            <th class="itemcard-action"></th>
+            <th class="itemcard-weight">Herkunft</th>
+            <th class="itemcard-note">Anmerkung</th>
+
           </tr>
         </thead>
 
         <tbody class="itemcard-tbody">
-          {{ formset.non_form_errors }}
-
-          {% for f in formset.forms %}
-          <tr class="itemcard-table-row" data-kind="new" data-key="{{ f.prefix }}">
-            <td class="checkbox-circle itemcard-action-left">
-              <input type="checkbox"
-                     name="selected_unload"
-                     value="new:{{ f.prefix }}"
-                     title="Fraktion verknüpfen"
-                     checked>
-            </td>
-            <td class="itemcard-id">{{ forloop.counter }}</td>
-            <td class="itemcard-material">{{ f.material }}</td>
-            <td class="itemcard-boxtype">{{ f.box_type }}</td>
-
-            <td class="itemcard-status">
-              {% if f.id %}{{ f.id }}{% endif %}
-              {{ f.status }}
-            </td>
-
-            <td class="itemcard-boxtype">{{ f.note }}</td>
-
-            <td class="itemcard-weight itemcard-weight-action">
-              <div class="weight-container">
-                {{ f.weight }}
-                <button type="button" class="btn btn-weight" title="Gewicht anfragen" data-weight-url="{% url 'warenwirtschaft_api:weight_input_api' %}">
-                  <img src="{% static 'icons/dashboard-icon.svg' %}">
-                </button>
-              </div>
-            </td>
-
-            <td class="itemcard-action-wrapper">
-              <div class="itemcard-action">
-                <button type="button" class="btn btn-lock">
-                  <img class="icon-lock-closed" src="{% static 'icons/lock-icon.svg' %}">
-                </button>
-              </div>
-            </td>
-
-            <td class="itemcard-action-wrapper">
-              <div class="itemcard-action">
-                <button type="button" class="btn btn-lock">
-                  <img class="icon-lock-open" src="{% static 'icons/lock-open-icon.svg' %}">
-                </button>
-
-                <button type="submit" class="btn btn-main btn-save">Speichern</button>
-              </div>
-            </td>
+          <tr class="itemcard-table-row">
+            <td class="itemcard-id"></td>
+            <td class="itemcard-material"></td>
+            <td class="itemcard-boxtype"></td>
+            <td class="itemcard-status"></td>
+            <td class="itemcard-weight"></td>
+            <td class="itemcard-weight"></td>
+            <td class="itemcard-note"></td>
           </tr>
-          {% endfor %}
         </tbody>
       </table>
     </section>
 
-    {# ====== Aktive Wagen ====== #}
-    <section>
-      <div class="itemcard-table-title itemcard-margin-left">Geprüfte Geräte:</div>
+
+    {# ====== Geprüfte Materialien ====== #}
+    <section class="itemcard-topbox">
+      <div class="itemcard-table-title">Geprüftes Material:</div>
 
       <table class="itemcard-table">
         <thead class="itemcard-thead">
           <tr>
-            <th class="checkbox-circle itemcard-action-left"></th>
             <th class="itemcard-id">№</th>
             <th class="itemcard-material">Material</th>
             <th class="itemcard-boxtype">Behälter</th>
             <th class="itemcard-status">Status</th>
-            <th class="itemcard-note">Anmerkung</th>
             <th class="itemcard-weight">Gewicht</th>
-            <th class="itemcard-action"></th>
+            <th class="itemcard-weight">Zweck</th>
+            <th class="itemcard-note">Anmerkung</th>
+
           </tr>
         </thead>
 
-        <tbody class="itemcard-tbody existing-tbody">
-          {{ existing_formset.management_form }}
-
-          {% if vorhandene_unloads %}
-            {% for f in existing_formset.forms %}
-              {% with u=f.instance %}
-              <tr class="itemcard-table-row" data-kind="existing" data-key="{{ u.pk }}">
-                <td class="checkbox-circle itemcard-action-left">
-                  <input type="checkbox"
-                    name="selected_unload"
-                    value="{{ u.pk }}"
-                    title="Fraktion verknüpfen"
-                    >
-                </td>
-
-                <td class="itemcard-id">{{ forloop.counter }}</td>
-                <td class="itemcard-material"><p>{{ u.material }}</p></td>
-                <td class="itemcard-boxtype"><p>{{ u.get_box_type_display }}</p></td>
-
-                <td class="itemcard-status">
-                  {{ f.id }} {# verstecktes PK-Feld für das Form #}
-                  {{ f.status }}
-                </td>
-
-                <td class="itemcard-note">{{ f.note }}</td>
-
-                <td class="itemcard-weight itemcard-weight-action">
-                  <div class="weight-container">
-                    {{ f.weight }}
-                    <button type="button" class="btn btn-weight" title="Waage öffnen" data-weight-url="{% url 'warenwirtschaft_api:weight_input_api' %}">
-                      <img src="{% static 'icons/dashboard-icon.svg' %}" alt="">
-                    </button>
-                  </div>
-                </td>
-
-                <td class="itemcard-action-wrapper">
-                  <div class="itemcard-action">
-                    <button type="button" class="btn btn-lock">
-                      <img class="icon-lock-closed" src="{% static 'icons/lock-icon.svg' %}">
-                    </button>
-                  </div>
-                </td>
-
-                <td class="itemcard-action-wrapper">
-                  <div class="itemcard-action">
-                    <button type="button" class="btn btn-lock">
-                      <img class="icon-lock-open" src="{% static 'icons/lock-open-icon.svg' %}">
-                    </button>
-
-                    <button type="submit" class="btn btn-main btn-save">Speichern</button>
-                  </div>
-                </td>
-
-              </tr>
-              {% endwith %}
-            {% endfor %}
-          {% else %}
-            <tr class="itemcard-table-row">
-              <td class="checkbox-circle itemcard-action-left">
-                <input type="checkbox" title="Keine Daten" disabled>
-              </td>
-              <td colspan="5" class="text-center">
-                Keine Daten vorhanden
-              </td>
-            </tr>
-          {% endif %}
+        <tbody class="itemcard-tbody">
+          <tr class="itemcard-table-row">
+            <td class="itemcard-id">{{ counter }}</td>
+            <td class="itemcard-material"></td>
+            <td class="itemcard-boxtype"></td>
+            <td class="itemcard-status"></td>
+            <td class="itemcard-weight"></td>
+            <td class="itemcard-weight"></td>
+            <td class="itemcard-note"></td>
+          </tr>
         </tbody>
       </table>
     </section>

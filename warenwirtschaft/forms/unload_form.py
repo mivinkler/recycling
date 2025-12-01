@@ -19,7 +19,7 @@ class DeliveryUnitSelectForm(forms.Form):
             queryset = (DeliveryUnit.objects
                         .filter(status=1)                       # nur relevante Einheiten für Vorsortierung
                         .only("id", "status", "box_type", "weight", "note", "barcode")
-                        .order_by("pk")[:500])                   # Sicherheits-Deckel; не пагинация, просто ограничитель
+                        .order_by("pk")[:500])                   # Sicherheits-Deckel
 
         self.fields["delivery_unit"].queryset = queryset
 

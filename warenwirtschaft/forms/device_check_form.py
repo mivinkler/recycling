@@ -3,7 +3,6 @@ from warenwirtschaft.models import Unload, Recycling
 
 
 class DeviceCheckForm(forms.Form):
-    # "unload-12" или "recycling-5"
     container = forms.ChoiceField(
         widget=forms.RadioSelect,
         label="Behälter auswählen",

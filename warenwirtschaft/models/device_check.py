@@ -4,7 +4,7 @@ from warenwirtschaft.models.material import Material
 
 
 class DeviceCheck(models.Model):
-    SOURCE_TYPE_CHOICES = [
+    SOURCE_CHOICES = [
         (1, "Unload"),
         (2, "Recycling"),
     ]
@@ -17,8 +17,16 @@ class DeviceCheck(models.Model):
         (5, "Bereit für Halle 2"),
     ]
 
+    PURPOSE_CHOICES = [
+        (1, "Interne Verwendung"),
+        (2, "Online-Verkauf"),
+        (3, "Barverkauf"),
+        (4, "Geschenk"),
+        (5, "Austausch"),
+    ]
+
     # Herkunft
-    source_type = models.PositiveSmallIntegerField(choices=SOURCE_TYPE_CHOICES)
+    source = models.PositiveSmallIntegerField(choices=SOURCE_CHOICES)
 
     unload = models.ForeignKey(
         Unload,
@@ -40,6 +48,7 @@ class DeviceCheck(models.Model):
     material = models.ForeignKey(Material, on_delete=models.CASCADE, null=True, blank=True)
     weight = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     status = models.PositiveSmallIntegerField(choices=STATUS_CHOICES, default=1)
+    purpose = models.PositiveSmallIntegerField(choices=PURPOSE_CHOICES)
     note = models.CharField(max_length=255, null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
