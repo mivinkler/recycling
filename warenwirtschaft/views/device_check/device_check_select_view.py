@@ -15,8 +15,8 @@ class DeviceCheckSelectView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["unload_list"] = Unload.objects.filter(status=5)
-        context["recycling_list"] = Recycling.objects.filter(status=1)
+        context["unload_list"] = Unload.objects.filter(status=1)
+        context["recycling_list"] = Recycling.objects.filter(status=3)
         context["selected_menu"] = "device_check_form"
 
         return context

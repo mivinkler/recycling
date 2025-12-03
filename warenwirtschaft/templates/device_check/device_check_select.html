@@ -1,103 +1,115 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Vorsortierung erfassen{% endblock %}
+{% block title %}Device-Check{% endblock %}
 
 {% block content %}
-<form method="post" action="" id="unload-form">
-  {% csrf_token %}
-
-  <div class="itemcard">
-    <div class="itemcard-title">
-      <h2>Halle 2</h2>
-    </div>
-
-    {# ====== Wagen wählen ====== #}
-    <section class="itemcard-topbox">
-      <div class="itemcard-topbox-row" style="justify-content: flex-start;">
-        <span>Wagen:</span>
-
-
-        <select>
-          {% for item in recycling_list %}
-            <option>{{ item }}</option>
-          {% endfor %}
-        </select>
-      </div>
-    </section>
-
-    {# ====== Gewählte Wagen ====== #}
-    <section class="itemcard-topbox">
-      <div class="itemcard-table-title">Gewählte Wagen:</div>
-
-      <table class="itemcard-table">
-        <thead class="itemcard-thead">
-          <tr>
-            <th class="itemcard-id">ID</th>
-            <th class="itemcard-material">Material</th>
-            <th class="itemcard-boxtype">Behälter</th>
-            <th class="itemcard-status">Status</th>
-            <th class="itemcard-weight">Gewicht</th>
-            <th class="itemcard-weight">Herkunft</th>
-            <th class="itemcard-note">Anmerkung</th>
-
-          </tr>
-        </thead>
-
-        <tbody class="itemcard-tbody">
-          <tr class="itemcard-table-row">
-            <td class="itemcard-id"></td>
-            <td class="itemcard-material"></td>
-            <td class="itemcard-boxtype"></td>
-            <td class="itemcard-status"></td>
-            <td class="itemcard-weight"></td>
-            <td class="itemcard-weight"></td>
-            <td class="itemcard-note"></td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
-
-
-    {# ====== Geprüfte Materialien ====== #}
-    <section class="itemcard-topbox">
-      <div class="itemcard-table-title">Geprüftes Material:</div>
-
-      <table class="itemcard-table">
-        <thead class="itemcard-thead">
-          <tr>
-            <th class="itemcard-id">№</th>
-            <th class="itemcard-material">Material</th>
-            <th class="itemcard-boxtype">Behälter</th>
-            <th class="itemcard-status">Status</th>
-            <th class="itemcard-weight">Gewicht</th>
-            <th class="itemcard-weight">Zweck</th>
-            <th class="itemcard-note">Anmerkung</th>
-
-          </tr>
-        </thead>
-
-        <tbody class="itemcard-tbody">
-          <tr class="itemcard-table-row">
-            <td class="itemcard-id">{{ counter }}</td>
-            <td class="itemcard-material"></td>
-            <td class="itemcard-boxtype"></td>
-            <td class="itemcard-status"></td>
-            <td class="itemcard-weight"></td>
-            <td class="itemcard-weight"></td>
-            <td class="itemcard-note"></td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
+<div class="itemcard">
+  <div class="itemcard-title">
+    <h2>Halle 2: Geräteprüfung</h2>
   </div>
-</form>
 
+  <section name="unload" class="itemcard-topbox">
+    <div class="itemcard-table-title">Bereit für Halle 2</div>
+    <table class="itemcard-table">
+      <thead class="itemcard-thead">
+        <tr>
+          <th class="itemcard-id">№</th>
+          <th class="itemcard-material">Material</th>
+          <th class="itemcard-boxtype">Behälter</th>
+          <th class="itemcard-status">Status</th>
+          <th class="itemcard-status">Herkunft</th>
+          <th class="itemcard-note">Anmerkung</th>
+          <th class="itemcard-weight">Gewicht</th>
+          <th class="itemcard-action"></th>
+        </tr>
+      </thead>
+      
+      <!-- Vorsortierung (unload) -->
+      <tbody class="itemcard-tbody">
+        {% for unload in unload_list %}
+          <tr class="itemcard-table-row">
+            <input type="hidden" name="recycling_id_{{ unload.id }}" value="{{ unload.id }}">
+
+            <td class="itemcard-id">
+              {{ forloop.counter }}
+            </td>
+
+            <td class="itemcard-material">
+              <p>{{ unload.material }}</p>
+            </td>
+
+            <td class="itemcard-boxtype">
+              <p>{{ unload.get_box_type_display }}</p>
+            </td>
+
+            <td class="itemcard-status">
+              <p>{{ unload.get_status_display }}</p>
+            </td>
+
+            <td class="itemcard-status">
+              <p>Vorsortierung</p>
+            </td>
+
+            <td class="itemcard-note">
+              <p>{{ unload.note }}</p>
+            </td>
+
+            <td class="itemcard-weight">
+              <p>{{ unload.weight }}</p>
+            </td>
+
+            <td class="">
+              <a href="" class="btn btn-lock">
+                <span style="font-weight: 900; color: var(--color-hero);">≫</span>
+              </a>
+            </td>
+          </tr>
+        {% endfor %}
+
+
+        <!-- Aufbereitung (recycling) -->
+        {% for recycling in recycling_list %}
+          <tr class="itemcard-table-row">
+            <input type="hidden" name="recycling_id_{{ recycling.id }}" value="{{ recycling.id }}">
+
+            <td class="itemcard-id">
+              {{ forloop.counter }}
+            </td>
+
+            <td class="itemcard-material">
+              <p>{{ recycling.material }}</p>
+            </td>
+
+            <td class="itemcard-boxtype">
+              <p>{{ recycling.get_box_type_display }}</p>
+            </td>
+
+            <td class="itemcard-status">
+              <p>{{ recycling.get_status_display }}</p>
+            </td>
+
+            <td class="itemcard-status">
+              <p>Aufbereitung</p>
+            </td>
+
+            <td class="itemcard-note">
+              <p>{{ recycling.note }}</p>
+            </td>
+
+            <td class="itemcard-weight">
+              <p>{{ recycling.weight }}</p>
+            </td>
+
+            <td class="itemcard-action">
+              <a href="" class="btn btn-lock">
+                <span style="font-weight: 900; color: var(--color-hero);">≫</span>
+              </a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+</div>
 {% endblock %}
-
-{% block extra_js %}
-<script src="{% static 'js/close-open.js' %}"></script>
-<script src="{% static 'js/weight.js' %}"></script>
-{% endblock %}
-
-
