@@ -235,19 +235,23 @@ td p {
   border: 1px solid var(--color-hero);
 }
 
-.itemcard-area,
-.itemcard-status,
+
 .itemcard-weight {
-  width: 110px;
+  width: 100px;
 }
 
-.itemcard-boxtype {
+.itemcard-status,
+.itemcard-boxtype,
+.itemcard-origin {
   width: 120px;
 }
 
-.itemcard-material,
+.itemcard-material {
+  width: 160px;
+}
+
 .itemcard-note {
-  width: 200px;
+  width: 240px;
 }
 
 .itemcard-note textarea{
