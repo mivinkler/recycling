@@ -1,36 +1,23 @@
 from django.db import models
 from warenwirtschaft.models.material import Material
+from warenwirtschaft.models_common.choices import BoxTypeChoices, StatusChoices
+from warenwirtschaft.models_common.mixins import DeactivateTimeMixin, WeightHistoryMixin
 
-class Recycling(models.Model):
 
-    STATUS_AKTIV = 1
-
-    BOX_TYPE_CHOICES = [
-        (1, "Gitterbox"),
-        (2, "Palette"),
-        (3, "Gelbe Waagen"),
-        (4, "Ohne Behälter"),
-    ]
-
-    STATUS_CHOICES = [
-        (1, "Aktiv"),
-        (3, "Bereit für Abholung"),
-        (4, "Erledigt"),
-        (5, "Bereit für Halle 2"),
-    ]
-
-    unloads = models.ManyToManyField("warenwirtschaft.Unload", related_name="recycling_for_unload")
-    box_type = models.PositiveSmallIntegerField(choices=BOX_TYPE_CHOICES)
-    material = models.ForeignKey(Material, on_delete=models.CASCADE, null=True, blank=True, related_name="material_for_recycling")
-    material_other = models.CharField(max_length=50, null=True, blank=True)
-    weight = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-    status = models.PositiveSmallIntegerField(choices=STATUS_CHOICES, default=1)
+class Recycling(WeightHistoryMixin, DeactivateTimeMixin, models.Model):
+    unloads = models.ManyToManyField("warenwirtschaft.Unload", related_name="recyclings")
+    box_type = models.PositiveSmallIntegerField(choices=BoxTypeChoices.CHOICES)
+    material = models.ForeignKey(Material, on_delete=models.CASCADE, related_name="recyclings")
+    weight = models.DecimalField(max_digits=10, decimal_places=2)
+    status = models.PositiveSmallIntegerField(choices=StatusChoices.CHOICES, default=StatusChoices.AUFBEREITUNG_LAUFEND)
     note = models.CharField(max_length=255, null=True, blank=True)
-    shipping = models.ForeignKey('warenwirtschaft.Shipping', on_delete=models.SET_NULL, null=True, blank=True, related_name='recycling_for_shipping')
-    barcode = models.CharField(max_length=64, unique=True, null=True)
+    shipping = models.ForeignKey('warenwirtschaft.Shipping', on_delete=models.SET_NULL, null=True, blank=True, related_name='recyclings')
+    barcode = models.CharField(max_length=64, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(null=True, blank=True, default=None)
-    deleted_at = models.DateTimeField(null=True, blank=True, default=None)
+
+    class Meta:
+        indexes = [models.Index(fields=["status"])]
 
     def __str__(self):
-        return f"ID: {self.id} - {self.get_box_type_display()} - {self.weight} kg - {self.status}"
+        return f"ID: {self.id} - {self.get_box_type_display()} - {self.weight} kg - {self.get_status_display()}"
+    

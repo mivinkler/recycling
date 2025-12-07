@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Customer(models.Model):
     name = models.CharField(max_length=100, unique=True)
     avv_number = models.PositiveIntegerField(null=True, blank=True)
@@ -10,13 +11,6 @@ class Customer(models.Model):
     email = models.EmailField(max_length=30, null=True, blank=True)
     note = models.CharField(max_length=255, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(null=True, blank=True, default=None)
-    deleted_at = models.DateTimeField(null=True, blank=True, default=None)
-
-    class Meta:
-        indexes = [
-            models.Index(fields=["name"]),
-        ]
 
     def __str__(self):
         return f"{self.name} • {self.postal_code} {self.city}"

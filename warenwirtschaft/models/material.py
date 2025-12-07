@@ -1,13 +1,21 @@
 from django.db import models
 
+
 class Material(models.Model):
-    name = models.CharField(max_length=50)
-    delivery = models.BooleanField(default=False, verbose_name="material_delivery")
-    unload = models.BooleanField(default=False, verbose_name="material_unload")
-    recycling = models.BooleanField(default=False, verbose_name="material_recycling")
+    name = models.CharField(max_length=50, unique=True)
+    delivery = models.BooleanField(default=False)
+    unload = models.BooleanField(default=False)
+    recycling = models.BooleanField(default=False)
+    device_check = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(null=True, blank=True, default=None)
-    deleted_at = models.DateTimeField(null=True, blank=True, default=None)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=["delivery"]),
+            models.Index(fields=["unload"]),
+            models.Index(fields=["recycling"]),
+            models.Index(fields=["device_check"]),
+        ]
 
     def __str__(self):
         return self.name
