@@ -1,5 +1,4 @@
 from django.views.generic import ListView
-# from django.utils.dateparse import parse_date
 from warenwirtschaft.models.delivery_unit import DeliveryUnit
 from warenwirtschaft.services.search_service import SearchService
 from warenwirtschaft.services.sorting_service import SortingService
@@ -20,7 +19,6 @@ class DeliveryListView(ListView):
         ("material__name", "Material"),
         ("weight", "Gewicht"),
         ("created_at", "Datum"),
-        ("status", "Status"),
         ("note", "Anmerkung"),
     ]
 
@@ -29,8 +27,7 @@ class DeliveryListView(ListView):
         fields = [field[0] for field in self.active_fields]
 
         choices_fields = {
-            "box_type": DeliveryUnit.BOX_TYPE_CHOICES,
-            "status": DeliveryUnit.STATUS_CHOICES,
+            "box_type": DeliveryUnit.box_type,
         }
 
         search_service = SearchService(self.request, fields, choices_fields)
@@ -53,8 +50,7 @@ class DeliveryListView(ListView):
         context["active_fields"] = self.active_fields
         context["search_query"] = self.request.GET.get("search", "")
         context["sort_param"] = self.request.GET.get("sort", "")
-        context["box_types"] = DeliveryUnit.BOX_TYPE_CHOICES
-        context["statuses"] = DeliveryUnit.STATUS_CHOICES
+        context["box_types"] = DeliveryUnit.box_type
         context["selected_menu"] = "delivery_list"
         
         # Panel mit Suche und Sortierung
@@ -64,7 +60,6 @@ class DeliveryListView(ListView):
             "search": self.request.GET.get("search", ""),
             "date_start": self.request.GET.get("date_start", "")[:10],
             "date_end": self.request.GET.get("date_end", "")[:10],
-            "status_filter": self.request.GET.get("status_filter", ""),
         }
 
         return context

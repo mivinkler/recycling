@@ -13,22 +13,22 @@ class UnloadSelectView(FormView):
     # ---------- Hilfsfunktionen ----------
 
     def _du_queryset(self):
-        # Liefert nur aktive Liefereinheiten (Status=1) – schlanke Feldauswahl.
+        # Liefert nur aktive Liefereinheiten (is_active=True) – schlanke Feldauswahl.
         return (
             DeliveryUnit.objects
-            .filter(status=1, deleted_at__isnull=True)
-            .only("id", "status", "box_type", "weight", "barcode")
+            .filter(is_active=True)
+            .only("id", "box_type", "weight", "barcode")
             .order_by("pk")
         )
 
     def _redirect_by_relation(self, du: DeliveryUnit):
         """
         Regel:
-        - Gibt es mind. einen aktiven Unload (status=1) mit dieser DU? → Update
+        - Gibt es mind. einen aktiven Unload (is_active=True) mit dieser DU? → Update
         - Sonst → Create
         """
         has_active_unload = Unload.objects.filter(
-            status=1,
+            is_active=True,
             delivery_units__pk=du.pk
         ).exists()
 

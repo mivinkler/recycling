@@ -28,8 +28,8 @@ class UnloadListView(ListView):
         fields = [field[0] for field in self.active_fields]
 
         choices_fields = {
-            "box_type": Unload.BOX_TYPE_CHOICES,
-            "status": Unload.STATUS_CHOICES,
+            "box_type": Unload.box_type,
+            "status": Unload.status,
         }
 
         search_service = SearchService(self.request, fields, choices_fields)
@@ -50,8 +50,8 @@ class UnloadListView(ListView):
         context["active_fields"] = self.active_fields
         context["search_query"] = self.request.GET.get("search", "")
         context["sort_param"] = self.request.GET.get("sort", "")
-        context["box_type"] = Unload.BOX_TYPE_CHOICES
-        context["status"] = Unload.STATUS_CHOICES
+        context["box_type"] = Unload.box_type
+        context["status"] = Unload.status
         context["selected_menu"] = "unload_list"
         
         # Panel mit Suche und Sortierung

@@ -20,25 +20,25 @@ class ShippingListView(ListView):
         ("transport", "Transport"),
 
         # Unload (Vorsortierung)
-        ("unload_for_shipping__material__name", "Material (Vorsort.)"),
-        ("unload_for_shipping__weight", "Gewicht (Vorsort.)"),
-        ("unload_for_shipping__box_type", "Behälter (Vorsort.)"),
-        ("unload_for_shipping__status", "Status (Vorsort.)"),
+        ("unloads__material__name", "Material (Vorsort.)"),
+        ("unloads__weight", "Gewicht (Vorsort.)"),
+        ("unloads__box_type", "Behälter (Vorsort.)"),
+        ("unloads__status", "Status (Vorsort.)"),
 
         # Recycling (Aufbereitung)
-        ("recycling_for_shipping__material__name", "Material (Aufbereitung)"),
-        ("recycling_for_shipping__weight", "Gewicht (Aufbereitung)"),
-        ("recycling_for_shipping__box_type", "Behälter (Aufbereitung)"),
-        ("recycling_for_shipping__status", "Status (Aufbereitung)"),
+        ("recyclings__material__name", "Material (Aufbereitung)"),
+        ("recyclings__weight", "Gewicht (Aufbereitung)"),
+        ("recyclings__box_type", "Behälter (Aufbereitung)"),
+        ("recyclings__status", "Status (Aufbereitung)"),
     ]
 
     def get_queryset(self):
         unload_prefetch = Prefetch(
-            "unload_for_shipping",
+            "unloads",
             queryset=Unload.objects.select_related("material"),
         )
         recycling_prefetch = Prefetch(
-            "recycling_for_shipping",
+            "recyclings",
             queryset=Recycling.objects.select_related("material"),
         )
 
@@ -51,11 +51,11 @@ class ShippingListView(ListView):
         fields = [field_name for field_name, _ in self.active_fields]
 
         choices_fields = {
-            "transport": Shipping.TRANSPORT_CHOICES,
-            "unload_for_shipping__box_type": Unload.BOX_TYPE_CHOICES,
-            "recycling_for_shipping__box_type": Recycling.BOX_TYPE_CHOICES,
-            "unload_for_shipping__status": Unload.STATUS_CHOICES,
-            "recycling_for_shipping__status": Recycling.STATUS_CHOICES,
+            "transport": Shipping.transport,
+            "unloads__box_type": Unload.box_type,
+            "recyclings__box_type": Recycling.box_type,
+            "unloads__status": Unload.status,
+            "recyclings__status": Recycling.status,
         }
 
         search_service = SearchService(self.request, fields, choices_fields)
@@ -75,14 +75,14 @@ class ShippingListView(ListView):
         # Eine Zeile für Unload und Recycling
         rows = []
         for shipping in page_obj:
-            for unload in shipping.unload_for_shipping.all():
+            for unload in shipping.unloads.all():
                 rows.append({
                     "shipping": shipping,
                     "item": unload,
                     "kind": "unload",
                 })
 
-            for recycling in shipping.recycling_for_shipping.all():
+            for recycling in shipping.recyclings.all():
                 rows.append({
                     "shipping": shipping,
                     "item": recycling,
@@ -95,11 +95,11 @@ class ShippingListView(ListView):
         context["search_query"] = self.request.GET.get("search", "")
         context["sort_param"] = self.request.GET.get("sort", "")
 
-        context["transport_choices"] = Shipping.TRANSPORT_CHOICES
-        context["unload_box_type_choices"] = Unload.BOX_TYPE_CHOICES
-        context["unload_status_choices"] = Unload.STATUS_CHOICES
-        context["recycling_box_type_choices"] = Recycling.BOX_TYPE_CHOICES
-        context["recycling_status_choices"] = Recycling.STATUS_CHOICES
+        context["transport_choices"] = Shipping.transport
+        context["unload_box_type_choices"] = Unload.box_type
+        context["unload_status_choices"] = Unload.status
+        context["recycling_box_type_choices"] = Recycling.box_type
+        context["recycling_status_choices"] = Recycling.status
 
         context["selected_menu"] = "shipping_list"
         context["dashboard"] = True

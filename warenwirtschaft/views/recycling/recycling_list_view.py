@@ -26,8 +26,8 @@ class RecyclingListView(ListView):
         fields = [field[0] for field in self.active_fields]
 
         choices_fields = {
-            "box_type": Recycling.BOX_TYPE_CHOICES,
-            "status": Recycling.STATUS_CHOICES,
+            "box_type": Recycling.box_type,
+            "status": Recycling.status,
         }
 
         search_service = SearchService(self.request, fields, choices_fields)
@@ -48,8 +48,8 @@ class RecyclingListView(ListView):
         context["active_fields"] = self.active_fields
         context["search_query"] = self.request.GET.get("search", "")
         context["sort_param"] = self.request.GET.get("sort", "")
-        context["box_type"] = Recycling.BOX_TYPE_CHOICES
-        context["status"] = Recycling.STATUS_CHOICES
+        context["box_type"] = Recycling.box_type
+        context["status"] = Recycling.status
         context["selected_menu"] = "recycling_list"
 
         # Panel mit Suche und Sortierung

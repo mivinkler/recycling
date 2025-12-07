@@ -28,18 +28,13 @@ def header_active_weights():
     recycling_bereit_fuer_abholung = get_weight_by_status(Recycling, 3)
     recycling_bereit_fuer_halle_2 = get_weight_by_status(Recycling, 5)
 
-    devicecheck_aktiv = get_weight_by_status(DeviceCheck, 1)
-    devicecheck_bereit_fuer_behandlung = get_weight_by_status(DeviceCheck, 2)
-    devicecheck_bereit_fuer_abholung = get_weight_by_status(DeviceCheck, 3)
-    devicecheck_bereit_fuer_halle_2 = get_weight_by_status(DeviceCheck, 5)
 
     # Суммируем веса по статусам для каждого раздела
     unload_total = unload_aktiv + unload_bereit_fuer_behandlung + unload_bereit_fuer_abholung + unload_bereit_fuer_halle_2
     recycling_total = recycling_aktiv + recycling_bereit_fuer_behandlung + recycling_bereit_fuer_abholung + recycling_bereit_fuer_halle_2
-    devicecheck_total = devicecheck_aktiv + devicecheck_bereit_fuer_behandlung + devicecheck_bereit_fuer_abholung + devicecheck_bereit_fuer_halle_2
 
     # Общий итог по всем разделам
-    overall_total = unload_total + recycling_total + devicecheck_total
+    overall_total = unload_total + recycling_total
 
     return {
         "unload_aktiv": unload_aktiv,
@@ -52,14 +47,8 @@ def header_active_weights():
         "recycling_bereit_fuer_abholung": recycling_bereit_fuer_abholung,
         "recycling_bereit_fuer_halle_2": recycling_bereit_fuer_halle_2,
 
-        "devicecheck_aktiv": devicecheck_aktiv,
-        "devicecheck_bereit_fuer_behandlung": devicecheck_bereit_fuer_behandlung,
-        "devicecheck_bereit_fuer_abholung": devicecheck_bereit_fuer_abholung,
-        "devicecheck_bereit_fuer_halle_2": devicecheck_bereit_fuer_halle_2,
-
         "unload_total": unload_total,
         "recycling_total": recycling_total,
-        "devicecheck_total": devicecheck_total,
 
         "active_weight_total": overall_total,
     }

@@ -20,7 +20,6 @@
   <div class="table-header">{% sort_header "box_type" "Behälter" %}</div>
   <div class="table-header">{% sort_header "material__name" "Material" %}</div>
   <div class="table-header">{% sort_header "weight" "Gewicht (kg)" %}</div>
-  <div class="table-header">{% sort_header "status" "Status" %}</div>
   <div class="table-header">{% sort_header "note" "Anmerkung" %}</div>
 
   {% for item in page_obj %}
@@ -42,7 +41,6 @@
     <div class="table-cell">{{ item.get_box_type_display }}</div>
     <div class="table-cell">{{ item.material.name|default:"-" }}</div>
     <div class="table-cell table-cell-right">{{ item.weight }}</div>
-    <div class="table-cell">{{ item.get_status_display }}</div>
     <div class="table-cell" title="{{ item.note }}">{{ item.note }}</div>
   </div>
   {% endfor %}

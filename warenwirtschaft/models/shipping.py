@@ -9,7 +9,7 @@ class Shipping(DeactivateTimeMixin, models.Model):
     certificate = models.PositiveIntegerField(null=True, blank=True)
     transport = models.PositiveSmallIntegerField(choices=TransportChoices.CHOICES)
     note = models.CharField(max_length=255, null=True, blank=True)
-    barcode = models.CharField(max_length=64, unique=True)
+    barcode = models.CharField(max_length=64, blank=True, null=True, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
