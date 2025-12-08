@@ -89,7 +89,6 @@ class DeliveryFormMixin:
             self.formset.instance = self.object
 
             # 2) Markierte Einheiten löschen
-            #    inlineformset_factory stellt deleted_forms bereit, nicht deleted_objects
             for deleted_form in self.formset.deleted_forms:
                 instance = getattr(deleted_form, "instance", None)
                 # Nur echte, bereits gespeicherte Objekte löschen
@@ -101,12 +100,10 @@ class DeliveryFormMixin:
 
             # 4) Optional: Barcodes erzeugen
             if self.generate_barcodes:
-                for unit in units:
-                    val = (unit.barcode or "").strip()
-                    if not val:
-                        unit.barcode = BarcodeNumberService.make_code(
-                            prefix=self.BARCODE_PREFIX
-                        )
+                BarcodeNumberService.set_barcodes(
+                    units,
+                    prefix=self.BARCODE_PREFIX
+                )
 
             # 5) Einheiten speichern
             for unit in units:

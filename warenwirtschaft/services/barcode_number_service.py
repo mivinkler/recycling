@@ -1,11 +1,27 @@
 import uuid
 
+
 class BarcodeNumberService:
     """
-    Service zur Erzeugung von Barcode-Nummern mit Prefix.
-    Beispiel: L8F2A9C1B (L = Lieferungen, S = Unloads, A = Recycling, G = Generator)
+    Service zur Erzeugung Barcode-Nummern.
     """
+
     @staticmethod
     def make_code(prefix: str) -> str:
-        suffix = uuid.uuid4().hex[:8].upper()
-        return f"{prefix}{suffix}"
+        """
+        Erzeugt einen neuen Barcode-String mit Prefix.
+        Beispiel: L8F2A9C1B
+        """
+        return f"{prefix}{uuid.uuid4().hex[:8].upper()}"
+
+    @classmethod
+    def set_barcodes(cls, units, prefix: str) -> None:
+        """
+        Weist Einheiten Barcodes zu, falls diese noch keinen Barcode besitzen.
+        Erwartet Objekte mit Attribut 'barcode'.
+        """
+        for unit in units:
+            current = (getattr(unit, "barcode", "") or "").strip()
+            if not current:
+                unit.barcode = cls.make_code(prefix)
+

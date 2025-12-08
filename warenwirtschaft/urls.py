@@ -29,7 +29,7 @@ urlpatterns = [
     path('delivery/create/', DeliveryCreateView.as_view(), name='delivery_create'),
     path('delivery/update/<int:pk>/', DeliveryUpdateView.as_view(), name='delivery_update'),
     path('delivery/delete/<int:pk>/', DeliveryDeleteView.as_view(), name='delivery_delete'),
-    path('delivery/deactivate/<int:delivery_unit_pk>/', DeliveryDeactivateView.as_view(), name='delivery_update_status'),
+    path('delivery/deactivate/<int:delivery_unit_pk>/', DeliveryDeactivateView.as_view(), name='delivery_deactivate'),
 
     path('unload/list/', UnloadListView.as_view(), name='unload_list'),
     path('unload/create/<int:delivery_unit_pk>/', UnloadCreateView.as_view(), name='unload_create'),
