@@ -7,7 +7,7 @@ from django.views.generic.edit import UpdateView
 from warenwirtschaft.models.delivery_unit import DeliveryUnit
 
 
-class DeliveryUpdateStatusView(UpdateView):
+class DeliveryDeactivateView(UpdateView):
     """
     Bestätigungsseite zum Abschließen einer Entladung:
     - GET  : zeigt Bestätigungsseite

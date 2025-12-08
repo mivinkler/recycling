@@ -5,7 +5,7 @@ import sys
 
 from warenwirtschaft.views.material import MaterialListView, MaterialCreateView, MaterialUpdateView, MaterialDeleteView
 from warenwirtschaft.views.customer import CustomerListView, CustomerUpdateView, CustomerDetailView, CustomerCreateView,CustomerDeleteView
-from warenwirtschaft.views.delivery import DeliveryListView, DeliveryDetailBarcodeView, DeliveryDetailWeightView, DeliveryCreateView, DeliveryUpdateView, DeliveryDeleteView, DeliveryUpdateStatusView
+from warenwirtschaft.views.delivery import DeliveryListView, DeliveryBarcodeView, DeliveryCreateView, DeliveryUpdateView, DeliveryDeleteView, DeliveryDeactivateView
 from warenwirtschaft.views.unload import UnloadListView, UnloadSelectView, UnloadCreateView, UnloadUpdateItemView, UnloadUpdateView, UnloadDeleteView, UnloadDetailBarcodeView, UnloadDetailWeightView
 from warenwirtschaft.views.recycling import RecyclingListView, RecyclingCreateView, RecyclingUpdateView, RecyclingDeleteView, RecyclingDetailView
 from warenwirtschaft.views.daily_weight import DailyWeightUpdateView, DailyWeightListView
@@ -24,12 +24,12 @@ urlpatterns = [
     path('customer/delete/<int:pk>/', CustomerDeleteView.as_view(), name='customer_delete'),
 
     path('delivery/list/', DeliveryListView.as_view(), name='delivery_list'),
-    path('delivery/detail/weight/<int:pk>/', DeliveryDetailWeightView.as_view(), name='delivery_detail_weight'),
-    path('delivery/detail/barcode/<int:pk>/', DeliveryDetailBarcodeView.as_view(), name='delivery_detail_barcode'),
+    # path('delivery/detail/weight/<int:pk>/', DeliveryDetailWeightView.as_view(), name='delivery_detail_weight'),
+    path('delivery/barcode/<int:pk>/', DeliveryBarcodeView.as_view(), name='delivery_barcode'),
     path('delivery/create/', DeliveryCreateView.as_view(), name='delivery_create'),
     path('delivery/update/<int:pk>/', DeliveryUpdateView.as_view(), name='delivery_update'),
     path('delivery/delete/<int:pk>/', DeliveryDeleteView.as_view(), name='delivery_delete'),
-    path('delivery/status-update/<int:delivery_unit_pk>/', DeliveryUpdateStatusView.as_view(), name='delivery_update_status'),
+    path('delivery/deactivate/<int:delivery_unit_pk>/', DeliveryDeactivateView.as_view(), name='delivery_update_status'),
 
     path('unload/list/', UnloadListView.as_view(), name='unload_list'),
     path('unload/create/<int:delivery_unit_pk>/', UnloadCreateView.as_view(), name='unload_create'),

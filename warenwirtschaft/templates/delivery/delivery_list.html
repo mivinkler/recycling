@@ -30,7 +30,7 @@
     data-url-update="{% url 'delivery_update' pk=item.delivery.id %}"
     data-url-detail-barcode="{% url 'delivery_detail_barcode' pk=item.id %}"
     
-    {% comment %} data-url-detail-weight="{% url 'delivery_detail_weight' pk=item.delivery.id %}" {% endcomment %}
+    {% comment %} data-url-detail-weight="{% url 'delivery_weight' pk=item.delivery.id %}" {% endcomment %}
   >
     <div class="table-cell table-cell-counter">{{ forloop.counter }}</div>
     <div class="table-cell">{{ item.delivery.id }}</div>

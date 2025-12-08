@@ -1,9 +1,9 @@
 from django.views.generic import DetailView
 from warenwirtschaft.models.delivery_unit import DeliveryUnit
 
-class DeliveryDetailBarcodeView(DetailView):
+class DeliveryBarcodeView(DetailView):
     model = DeliveryUnit
-    template_name = "delivery/delivery_detail_barcode.html"
+    template_name = "delivery/delivery_barcode.html"
     context_object_name = "delivery_unit"
 
     def get_context_data(self, **kwargs):
@@ -12,8 +12,7 @@ class DeliveryDetailBarcodeView(DetailView):
         delivery = self.object.delivery
 
         context["delivery"] = delivery
-        context["box_type"] = DeliveryUnit.BOX_TYPE_CHOICES
-        context["statuses"] = DeliveryUnit.STATUS_CHOICES
+        context["box_type"] = DeliveryUnit.box_type
 
         return context
 

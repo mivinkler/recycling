@@ -1,7 +1,7 @@
 from .delivery_list_view import DeliveryListView
 from .delivery_create_view import DeliveryCreateView
 from .delivery_update_view import DeliveryUpdateView
-from .delivery_detail_weight_view import DeliveryDetailWeightView
-from .delivery_detail_barcode_view import DeliveryDetailBarcodeView
+# from .delivery_detail_weight_view import DeliveryDetailWeightView
+from .delivery_barcode_view import DeliveryBarcodeView
 from .delivery_delete_view import DeliveryDeleteView
-from .delivery_update_status_view import DeliveryUpdateStatusView
+from .delivery_deactivate_view import DeliveryDeactivateView
