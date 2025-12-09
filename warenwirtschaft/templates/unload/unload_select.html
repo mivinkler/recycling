@@ -1,166 +1,58 @@
+{# templates/unload/unload_select.html #}
 {% extends 'base.html' %}
 {% load static %}
 
 {% block title %}Vorsortierung erfassen{% endblock %}
 
 {% block content %}
-<form method="get" action="" id="du-select-form">
-{% csrf_token %}
+<div class="itemcard">
+    <div class="itemcard-title itemcard-margin-left">
+        <h2>Vorsortierung</h2>
 
-    <div class="itemcard">
-        <div class="itemcard-title itemcard-margin-left">
-            <h2>Vorsortierung</h2>
-            <input 
-                type="text" 
-                id="barcode" 
-                placeholder="Barcode scannen..." 
-                autocomplete="off" 
-                data-accepted="L"
-                data-api="{% url 'barcode_unload_api' %}"
-                autofocus
-                class="visually-hidden-input"
-            />
+        {# Verstecktes Input-Feld für Barcode-Scanner #}
+        <input 
+            type="text" 
+            id="barcode" 
+            placeholder="Barcode scannen..." 
+            autocomplete="off" 
+            data-accepted="L"
+            data-api="{% url 'barcode_unload_api' %}"
+            autofocus
+            class="visually-hidden-input"
+        />
 
-            <label for="barcode" class="barcode-wrapper header-menu-icon svg-icon">
-                <img src="{% static 'icons/barcode-scan-active.svg' %}" id="barcode-active">
-                <img src="{% static 'icons/barcode-scan-inactive.svg' %}" id="barcode-inactive" hidden>
-            </label>
-        </div>
-
-        {# ====== Wareneingang ====== #}
-        <section class="itemcard-topbox itemcard-margin-left">
-            <div class="itemcard-topbox-row">
-                <label for="{{ form.delivery_unit.id_for_label }}">
-                    Wareneingang:
-                </label>
-
-                <div class="itemcard-topbox-content">
-                    {{ form.delivery_unit }}
-                </div>
-                
-                <aside class="itemcard-action-wrapper">
-                    <div class="itemcard-topbox-btn"></div>
-                </aside>
-            </div>
-        </section>
-
-        {# ====== Neue Wagen ====== #}
-        <section class="itemcard-topbox" style="pointer-events: none; opacity: 0.6;">
-            <div class="itemcard-table-title itemcard-margin-left">Neue Wagen:</div>
-
-            <table class="itemcard-table">
-                {{ formset.management_form }}
-
-                <thead class="itemcard-thead">
-                    <tr>
-                        <th class="checkbox-circle itemcard-action-left"></th>
-                        <th class="itemcard-id">№</th>
-                        <th class="itemcard-material">Material</th>
-                        <th class="itemcard-boxtype">Behälter</th>
-                        <th class="itemcard-status">Status</th>
-                        <th class="itemcard-note">Anmerkung</th>
-                        <th class="itemcard-weight">Gewicht</th>
-                        <th class="itemcard-action"></th>
-                    </tr>
-                </thead>
-
-                <tbody class="itemcard-tbody">
-                    <tr>
-                        <td class="checkbox-circle itemcard-action-left">
-                            <input type="checkbox">
-                        </td>
-                        <td class="itemcard-id"></td>
-                        <td class="itemcard-material"></td>
-                        <td class="itemcard-boxtype"></td>
-                        <td class="itemcard-status"></td>
-                        <td class="itemcard-note"></td>
-
-                        <td class="itemcard-weight itemcard-weight-action">
-                            <div class="weight-container">
-                                <input>
-                                <button type="button" class="btn btn-weight">
-                                    <img src="{% static 'icons/dashboard-icon.svg' %}">
-                                </button>
-                            </div>
-                        </td>
-
-                        <td class="itemcard-action-wrapper">
-                            <div class="itemcard-action">
-                                <button type="button" class="btn btn-lock">
-                                    <img class="icon-lock-closed" src="{% static 'icons/lock-icon.svg' %}">
-                                </button>
-                            </div>
-                        </td>
-                    </tr>       
-                </tbody>
-            </table>
-        </section>
-
-        {# ====== Aktive Wagen ====== #}
-        <section style="pointer-events: none; opacity: 0.6;">
-            <div class="itemcard-table-title itemcard-margin-left">Aktive Wagen:</div>
-
-            <table class="itemcard-table">
-                <thead class="itemcard-thead">
-                    <tr>
-                        <th class="checkbox-circle itemcard-action-left"></th>
-                        <th class="itemcard-id">№</th>
-                        <th class="itemcard-material">Material</th>
-                        <th class="itemcard-boxtype">Behälter</th>
-                        <th class="itemcard-status">Status</th>
-                        <th class="itemcard-note">Anmerkung</th>
-                        <th class="itemcard-weight">Gewicht</th>
-                        <th class="itemcard-action"></th>
-                    </tr>
-                </thead>
-
-                <tbody class="itemcard-tbody existing-tbody">
-                    {% if vorhandene_unloads %}
-                        {% for u in vorhandene_unloads %}
-                        <tr class="itemcard-table-row" data-kind="existing" data-key="{{ u.pk }}">
-                            <td class="checkbox-circle itemcard-action-left">
-                                <input type="checkbox">
-                            </td>
-                            <td class="itemcard-id">{{ forloop.counter }}</td>
-                            <td class="itemcard-material"><p>{{ u.material }}</p></td>
-                            <td class="itemcard-boxtype"><p>{{ u.get_box_type_display }}</p></td>
-                            <td class="itemcard-status"><p>{{ u.get_status_display }}<p></td>
-                            <td class="itemcard-note"><p>{{ u.note }}</p></td>
-
-                            <td class="itemcard-weight itemcard-weight-action">
-                                <div class="weight-container">
-                                    <input type="text" value="{{ u.weight }}">
-                                    <button type="button" class="btn btn-weight">
-                                        <img src="{% static 'icons/dashboard-icon.svg' %}" alt="">
-                                    </button>
-                                </div>
-                            </td>
-
-                            <td class="itemcard-action-wrapper">
-                                <div class="itemcard-action">
-                                    <button type="button" class="btn btn-lock">
-                                        <img class="icon-lock-closed" src="{% static 'icons/lock-icon.svg' %}">
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    {% else %}
-                        <tr class="itemcard-table-row">
-                            <td class="checkbox-circle itemcard-action-left">
-                                <input type="checkbox" title="Keine Daten" disabled>
-                            </td>
-                            <td colspan="5" class="text-center">
-                                Keine Daten vorhanden
-                            </td>
-                        </tr>
-                    {% endif %}
-                </tbody>
-            </table>
-        </section>
+        <label for="barcode" class="barcode-wrapper header-menu-icon svg-icon">
+            <img src="{% static 'icons/barcode-scan-active.svg' %}" id="barcode-active">
+            <img src="{% static 'icons/barcode-scan-inactive.svg' %}" id="barcode-inactive" hidden>
+        </label>
     </div>
-</form>
 
+    {# ------- Auswahl Liefereinheit ------- #}
+    <section class="itemcard-topbox itemcard-margin-left">
+        <div class="itemcard-topbox-row">
+            <label for="delivery_unit">
+                Wareneingang:
+            </label>
+
+            <div class="itemcard-topbox-content">
+                <select id="delivery_unit">
+                    <option value="">--- Liefereinheit auswählen ---</option>
+                    {% for du in delivery_units %}
+                        <option value="{{ du.id }}">
+                            {{ du }} {# nutzt DeliveryUnit.__str__ #}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <aside class="itemcard-action-wrapper">
+                <div class="itemcard-topbox-btn"></div>
+            </aside>
+        </div>
+    </section>
+
+    
+</div>
 
 <style>
 .barcode-wrapper { 
@@ -186,17 +78,22 @@
 </style>
 {% endblock %}
 
-
-
 {% block extra_js %}
 <script src="{% static 'js/barcode/barcode-unload.js' %}"></script>
 <script>
-  (function() {
-    var sel = document.getElementById("id_delivery_unit");
+  // Automatische Weiterleitung beim Wechsel der Liefereinheit
+  document.addEventListener("DOMContentLoaded", function () {
+    const sel = document.getElementById("delivery_unit");
     if (!sel) return;
-    sel.addEventListener("change", function() {
-      document.getElementById("du-select-form").submit();
+
+    sel.addEventListener("change", function () {
+      const value = sel.value;
+      if (!value) return;
+
+      const url = new URL(window.location.href);
+      url.searchParams.set("delivery_unit", value);
+      window.location.href = url.toString();
     });
-  })();
+  });
 </script>
 {% endblock %}

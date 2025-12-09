@@ -24,7 +24,6 @@ urlpatterns = [
     path('customer/delete/<int:pk>/', CustomerDeleteView.as_view(), name='customer_delete'),
 
     path('delivery/list/', DeliveryListView.as_view(), name='delivery_list'),
-    # path('delivery/detail/weight/<int:pk>/', DeliveryDetailWeightView.as_view(), name='delivery_detail_weight'),
     path('delivery/barcode/<int:pk>/', DeliveryBarcodeView.as_view(), name='delivery_barcode'),
     path('delivery/create/', DeliveryCreateView.as_view(), name='delivery_create'),
     path('delivery/update/<int:pk>/', DeliveryUpdateView.as_view(), name='delivery_update'),
