@@ -25,7 +25,7 @@
     <div class="table-row js-select-row"
       data-id="{{ item.id }}"
       data-status="{{ item.status }}"
-      data-url-recycling-create="{% url 'recycling_create' %}"
+      data-url-recycling-create="{% url 'recycling_create' unload_pk=item.id %}"
       data-url-shipping-create="{% url 'shipping_create' %}"
       data-url-update="{% if delivery_unit %}{% url 'unload_update' delivery_unit_pk=delivery_unit.id %}{% endif %}"
       data-url-detail-barcode="{% url 'unload_detail_barcode' pk=item.id %}"

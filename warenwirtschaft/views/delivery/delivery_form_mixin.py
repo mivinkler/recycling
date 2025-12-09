@@ -1,5 +1,4 @@
 # warenwirtschaft/views/delivery/mixins.py
-# -*- coding: utf-8 -*-
 from django.db import transaction
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy

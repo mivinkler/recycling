@@ -15,11 +15,11 @@ class StatusChoices:
         (VORSORTIERUNG_LAUFEND, "Vorsortierung: Laufend"),
         (VORSORTIERUNG_ABHOLBEREIT, "Vorsortierung: Abholbereit"),
 
-        (AUFBEREITUNG_AUSSTEHEND, "Aufbereitung: Abholbereit"),
+        (AUFBEREITUNG_AUSSTEHEND, "Aufbereitung: Ausstehend"),
         (AUFBEREITUNG_LAUFEND, "Aufbereitung: Laufend"),
         (AUFBEREITUNG_ABHOLBEREIT, "Aufbereitung: Abholbereit"),
 
-        (HALLE_ZWEI_AUSSTEHEND, "Halle 2: Abholbereit"),
+        (HALLE_ZWEI_AUSSTEHEND, "Halle 2: Ausstehend"),
         (HALLE_ZWEI_LAUFEND, "Halle 2: Laufend"),
         (HALLE_ZWEI_ABHOLBEREIT, "Halle 2: Abholbereit"),
     ]

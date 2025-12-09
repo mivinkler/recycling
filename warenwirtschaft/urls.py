@@ -7,7 +7,7 @@ from warenwirtschaft.views.material import MaterialListView, MaterialCreateView,
 from warenwirtschaft.views.customer import CustomerListView, CustomerUpdateView, CustomerDetailView, CustomerCreateView,CustomerDeleteView
 from warenwirtschaft.views.delivery import DeliveryListView, DeliveryBarcodeView, DeliveryCreateView, DeliveryUpdateView, DeliveryDeleteView, DeliveryDeactivateView
 from warenwirtschaft.views.unload import UnloadListView, UnloadSelectView, UnloadCreateView, UnloadUpdateItemView, UnloadUpdateView, UnloadDeleteView, UnloadDetailBarcodeView, UnloadDetailWeightView
-from warenwirtschaft.views.recycling import RecyclingListView, RecyclingCreateView, RecyclingUpdateView, RecyclingDeleteView, RecyclingDetailView
+from warenwirtschaft.views.recycling import RecyclingListView, RecyclingSelectView, RecyclingCreateView, RecyclingUpdateView, RecyclingDeleteView, RecyclingDetailView
 from warenwirtschaft.views.daily_weight import DailyWeightUpdateView, DailyWeightListView
 from warenwirtschaft.views.shipping import ShippingListView, ShippingDetailView, ShippingCreateView, ShippingUpdateView, ShippingDeleteView
 from warenwirtschaft.views.barcode import BarcodeGeneratorListView, BarcodeGeneratorDetailView, BarcodeGeneratorCreateView, BarcodeGeneratorUpdateView, BarcodeGeneratorDeleteView
@@ -40,7 +40,8 @@ urlpatterns = [
     path('unload/detail/weight/<int:pk>/', UnloadDetailWeightView.as_view(), name='unload_detail_weight'),
 
     path('recycling/list/', RecyclingListView.as_view(), name='recycling_list'),
-    path('recycling/create/', RecyclingCreateView.as_view(), name='recycling_create'),
+    path("recycling/select/", RecyclingSelectView.as_view(), name="recycling_select"),
+    path('recycling/create/<int:unload_pk>/', RecyclingCreateView.as_view(), name='recycling_create'),
     path('recycling/update/<int:pk>/', RecyclingUpdateView.as_view(), name='recycling_update'),
     path('recycling/detail/<int:pk>/', RecyclingDetailView.as_view(), name='recycling_detail'),
     path('recycling/delete/<int:pk>/', RecyclingDeleteView.as_view(), name='recycling_delete'),

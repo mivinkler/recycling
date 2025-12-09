@@ -1,7 +1,6 @@
-# warenwirtschaft/forms/unload_form.py
 from django import forms
 from django.forms import modelformset_factory
-from warenwirtschaft.models import Unload, DeliveryUnit
+from warenwirtschaft.models import Unload
 
 
 class UnloadForm(forms.ModelForm):
@@ -24,6 +23,7 @@ class UnloadForm(forms.ModelForm):
 class ExistingEditForm(forms.ModelForm):
     """
     Formular für bestehende Wagen inkl. Auswahl-Flag.
+    Das Feld 'selected' wird nicht in der DB gespeichert.
     """
 
     selected = forms.BooleanField(
@@ -45,7 +45,7 @@ class ExistingEditForm(forms.ModelForm):
             "note": "Anmerkung",
         }
 
-
+# Formset für NEUE Unloads
 UnloadFormSet = modelformset_factory(
     Unload,
     form=UnloadForm,
@@ -53,7 +53,7 @@ UnloadFormSet = modelformset_factory(
     can_delete=False,
 )
 
-
+# Formset für bestehende Unloads (nur in Create-View benutzt)
 ExistingEditFormSet = modelformset_factory(
     Unload,
     form=ExistingEditForm,
