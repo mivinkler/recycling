@@ -50,9 +50,11 @@
         <tr>
           <th class="checkbox-circle itemcard-action-left"></th>
           <th class="itemcard-id">№</th>
+          <th class="itemcard-id">AID</th>
           <th class="itemcard-material">Material</th>
           <th class="itemcard-boxtype">Behälter</th>
           <th class="itemcard-status">Status</th>
+          <th class="itemcard-position">Position</th>
           <th class="itemcard-weight">Gewicht</th>
           <th class="itemcard-note">Anmerkung</th>
         </tr>
@@ -68,17 +70,19 @@
                 data-url-update="{% url 'recycling_update' pk=obj.pk %}">
               <td hidden></td>
               <td class="checkbox-circle itemcard-action-left">
-                {# WICHTIG: name="existing" (Formfeld), value=obj.pk, checked falls in existing_selected_ids #}
+                {# name="existing" (Formfeld), value=obj.pk, checked wenn in existing_selected_ids #}
                 <input type="checkbox"
                        name="existing"
                        value="{{ obj.pk }}"
                        title="Fraktion verknüpfen"
                        {% if obj.pk|stringformat:'s' in existing_selected_ids %}checked{% endif %}>
               </td>
-              <td class="itemcard-id">{{ forloop.counter }}</td>
+              <td class="itemcard-id"><p>{{ forloop.counter }}</p></td>
+              <td class="itemcard-id"><p>{{ obj.id }}</p></td>
               <td class="itemcard-material"><p>{{ obj.material }}</p></td>
               <td class="itemcard-boxtype"><p>{{ obj.get_box_type_display }}</p></td>
-              <td class="itemcard-boxtype"><p>{{ obj.get_status_display }}</p></td>
+              <td class="itemcard-status"><p>{{ unload.is_active|yesno:"Aktiv,Nicht aktiv" }}</p></td>
+              <td class="itemcard-position"><p>{{ obj.get_status_display }}</p></td>
               <td class="itemcard-weight"><p>{{ obj.weight }}</p></td>
               <td class="itemcard-note"><p>{{ obj.note }}</p></td>
             </tr>
@@ -86,20 +90,21 @@
         {% endif %}
 
         {# --- Neue Zeilen aus dem Formset --- #}
-        {{ new_formset.non_form_errors }}
+        <!-- {{ new_formset.non_form_errors }}
         {% for form in new_formset %}
           <tr class="itemcard-table-row">
             <td hidden></td>
             <td class="checkbox-circle itemcard-action-left"></td>
             <td class="itemcard-id">{{ forloop.counter0|add:existing_count|add:1 }}</td>
-            <td class="itemcard-material">{{ form.material.errors }}{{ form.material }}</td>
-            <td class="itemcard-boxtype">{{ form.box_type.errors }}{{ form.box_type }}</td>
-            <td class="itemcard-boxtype">{{ form.status.errors }}{{ form.status }}</td>
-            <td class="itemcard-weight">{{ form.weight.errors }}{{ form.weight }}</td>
+            <td class="itemcard-id">{{ form.id }}</td>
+            <td class="itemcard-material">{{ form.material }}</td>
+            <td class="itemcard-boxtype">{{ form.get_box_type_display }}</td>
+            <th class="itemcard-position">{{ unload.is_active|yesno:"Aktiv,Nicht aktiv" }}</th>
+            <td class="itemcard-boxtype">{{ form.get_status_display }}</td>
+            <td class="itemcard-weight">{{ form.weight }}</td>
+            <td class="itemcard-note"><p>{{ obj.note }}</p></td>
           </tr>
-        {% empty %}
-          {# Nichts – neue Zeilen werden über das Template + JS hinzugefügt #}
-        {% endfor %}
+        {% endfor %} -->
       </tbody>
     </table>
 
@@ -111,9 +116,10 @@
         </td>
         <td class="checkbox-circle itemcard-action-left"></td>
         <td class="itemcard-id">__index__</td>
-
+        <td class="itemcard-id">{{ form.id }}</td>
         <td class="itemcard-material">{{ empty_form.material }}</td>
         <td class="itemcard-boxtype">{{ empty_form.box_type }}</td>
+        <td class="itemcard-status"><p>{{ unload.is_active|yesno:"Aktiv,Nicht aktiv" }}</p></td>
         <td class="itemcard-boxtype">{{ empty_form.status }}</td>
         <td class="itemcard-weight">{{ empty_form.weight }}</td>
         <td class="itemcard-weight">{{ empty_form.note }}</td>
@@ -131,29 +137,6 @@
     </div>
   </div>
 </form>
-
-<style>
-.barcode-wrapper { 
-  cursor: pointer; 
-  height: 32px;
-}
-
-#barcode {
-  width: 0;
-  height: 0;
-  border: 0;
-  padding: 0;
-}
-
-.visually-hidden-input {
-  position: absolute;
-  left: -9999px;
-  width: 1px;
-  height: 1px;
-  opacity: 0;
-  pointer-events: auto; /* wichtig: nimmt den Fokus */
-}
-</style>
 
 {% endblock %}
 

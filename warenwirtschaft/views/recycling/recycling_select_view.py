@@ -32,6 +32,7 @@ class RecyclingSelectView(View):
         return render(request, self.template_name, {
             "unloads": unloads,
             "selected_menu": "recycling_form",
+            'status_choices': StatusChoices,
         })
 
     def post(self, request):

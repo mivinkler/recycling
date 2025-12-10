@@ -19,4 +19,4 @@ class Unload(WeightHistoryMixin, DeactivateTimeMixin, models.Model):
         indexes = [models.Index(fields=["status"])]
 
     def __str__(self):
-        return f"ID: {self.id} - {self.get_box_type_display()} - {self.weight} kg - {self.get_status_display()}"
+        return f"VID: {self.id} - {self.get_box_type_display()} - {self.weight} kg - {self.get_status_display()}"
