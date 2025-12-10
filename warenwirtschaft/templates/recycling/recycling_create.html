@@ -31,12 +31,12 @@
       {{ unload_form.unload.errors }}
       {{ unload_form.non_field_errors }}
 
-      <div class="itemcard-topbox-row">
-        <label for="{{ unload_form.unload.id_for_label }}">
+      <div class="itemcard-topbox-row" style="justify-content: flex-start;">
+        <span>
           Vorsortierung:
-        </label>
-        <div class="itemcard-topbox-content">
-          {{ unload_form.unload }}
+        </span>
+        <div>
+          <strong>{{ unload }}</strong>
         </div>
       </div>
     </section>

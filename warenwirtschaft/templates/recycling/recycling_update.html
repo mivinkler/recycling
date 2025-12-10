@@ -13,10 +13,11 @@
     </div>
 
     <section class="itemcard-topbox itemcard-margin-left">
-      <div class="itemcard-topbox-row">
-        <label>Vorsortierung:</label>
-        <div class="itemcard-topbox-content">
-          {# 🇩🇪 Anzeige des Unload; falls du ein bestimmtes Feld möchtest, hier anpassen #}
+      <div class="itemcard-topbox-row" style="justify-content: flex-start;">
+        <span>
+          Vorsortierung:
+        </span>
+        <div>
           <strong>{{ unload }}</strong>
         </div>
       </div>
@@ -34,6 +35,7 @@
           <th class="itemcard-material">Material</th>
           <th class="itemcard-boxtype">Behälter</th>
           <th class="itemcard-status">Status</th>
+          <th class="itemcard-position">Position</th>
           <th class="itemcard-weight">Gewicht</th>
           <th class="itemcard-note">Anmerkung</th>
         </tr>
@@ -59,6 +61,7 @@
               <td class="itemcard-id">{{ forloop.counter }}</td>
               <td class="itemcard-material"><p>{{ obj.material }}</p></td>
               <td class="itemcard-boxtype"><p>{{ obj.get_box_type_display }}</p></td>
+              <td class="itemcard-status"><p>{{ unload.is_active|yesno:"Aktiv,Nicht aktiv" }}</p></td>
               <td class="itemcard-boxtype"><p>{{ obj.get_status_display }}</p></td>
               <td class="itemcard-weight"><p>{{ obj.weight }}</p></td>
               <td class="itemcard-note"><p>{{ obj.note }}</p></td>

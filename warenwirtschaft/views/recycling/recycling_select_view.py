@@ -42,7 +42,6 @@ class RecyclingSelectView(View):
         unload = get_object_or_404(Unload, pk=int(pk_raw))
 
         if unload.status == StatusChoices.AUFBEREITUNG_AUSSTEHEND:
-            # wichtig: unload_pk, nicht pk
             return redirect("recycling_create", unload_pk=unload.pk)
 
         if unload.status == StatusChoices.AUFBEREITUNG_LAUFEND:

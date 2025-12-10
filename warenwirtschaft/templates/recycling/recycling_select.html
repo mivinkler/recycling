@@ -17,24 +17,40 @@
                 <tr>
                     <th class="itemcard-id">№</th>
                     <th class="itemcard-material">Material</th>
+                    <th class="itemcard-boxtype">Behälter</th>
                     <th class="itemcard-status">Status</th>
+                    <th class="itemcard-position">Position</th>
                     <th class="itemcard-action"></th>
                 </tr>
             </thead>
 
             <tbody class="itemcard-tbody">
                 {% for unload in unloads %}
-                <tr>
-                    <td class="itemcard-id">{{ unload.id }}</td>
-                    <td class="itemcard-material">{{ unload.material }}</td>
-                    <td class="itemcard-status">{{ unload.get_status_display }}</td>
-
-                    <td class="itemcard-action">
-                        <button type="submit" name="unload_id" value="{{ unload.pk }}"
-                                class="itemcard-btn">
-                            Öffnen
-                        </button>
+                <tr class="itemcard-table-row">
+                    <td class="itemcard-id">
+                        <p>{{ unload.id }}</p>
                     </td>
+                    <td class="itemcard-material">
+                        <p>{{ unload.material }}</p>
+                    </td>
+                    <td class="iitemcard-boxtype">
+                        <p>{{ unload.get_box_type_display }}</p>
+                    </td>
+                    <td class="itemcard-status">
+                        <p>{{ unload.is_active|yesno:"Aktiv,Nicht aktiv" }}</p>
+                    </td>
+                    <td class="itemcard-position">
+                        <p>{{ unload.get_status_display }}</p>
+                    </td>
+
+                    <td class="itemcard-action-wrapper">
+                        <div class="itemcard-action">
+                            <button type="submit"  name="unload_id" value="{{ unload.pk }}" class="btn btn-lock">
+                                <img class="icon-lock-closed" src="/static/icons/lock-icon.svg">
+                            </button>
+                        </div>
+                    </td>
+
                 </tr>
                 {% empty %}
                 <tr>

@@ -246,6 +246,10 @@ td p {
   width: 120px;
 }
 
+.itemcard-position {
+   width: 180px;
+}
+
 .itemcard-material {
   width: 160px;
 }
