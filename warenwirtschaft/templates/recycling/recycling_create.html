@@ -61,7 +61,6 @@
       </thead>
 
       <tbody class="itemcard-tbody" id="new-formset-tbody">
-        {# --- Bestehende aktive Fraktionen als Checkbox-Zeilen (ALLE initial checked) --- #}
         {% if active_qs %}
           {% for obj in active_qs %}
             <tr class="itemcard-table-row"
@@ -88,27 +87,10 @@
             </tr>
           {% endfor %}
         {% endif %}
-
-        {# --- Neue Zeilen aus dem Formset --- #}
-        <!-- {{ new_formset.non_form_errors }}
-        {% for form in new_formset %}
-          <tr class="itemcard-table-row">
-            <td hidden></td>
-            <td class="checkbox-circle itemcard-action-left"></td>
-            <td class="itemcard-id">{{ forloop.counter0|add:existing_count|add:1 }}</td>
-            <td class="itemcard-id">{{ form.id }}</td>
-            <td class="itemcard-material">{{ form.material }}</td>
-            <td class="itemcard-boxtype">{{ form.get_box_type_display }}</td>
-            <th class="itemcard-position">{{ unload.is_active|yesno:"Aktiv,Nicht aktiv" }}</th>
-            <td class="itemcard-boxtype">{{ form.get_status_display }}</td>
-            <td class="itemcard-weight">{{ form.weight }}</td>
-            <td class="itemcard-note"><p>{{ obj.note }}</p></td>
-          </tr>
-        {% endfor %} -->
       </tbody>
     </table>
 
-    {# --- Template für NEUE Zeilen (auf Basis empty_form, __prefix__) --- #}
+    {# --- JS Template für NEUE Zeilen (auf Basis empty_form, __prefix__) --- #}
     <template id="table-row-template">
       <tr class="itemcard-table-row dynamic-row">
         <td hidden>
@@ -122,7 +104,7 @@
         <td class="itemcard-status"><p>{{ unload.is_active|yesno:"Aktiv,Nicht aktiv" }}</p></td>
         <td class="itemcard-boxtype">{{ empty_form.status }}</td>
         <td class="itemcard-weight">{{ empty_form.weight }}</td>
-        <td class="itemcard-weight">{{ empty_form.note }}</td>
+        <td class="itemcard-note">{{ empty_form.note }}</td>
       </tr>
     </template>
 
@@ -137,7 +119,6 @@
     </div>
   </div>
 </form>
-
 {% endblock %}
 
 {% block extra_js %}

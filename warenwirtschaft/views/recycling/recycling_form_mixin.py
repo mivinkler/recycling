@@ -52,6 +52,10 @@ class RecyclingFormMixin:
     def get_new_formset(self, data=None):
         """
         Liefert das Formset für neue Recycling-Zeilen (ohne Grund-QuerySet).
+
+        Wichtig:
+        - queryset=Recycling.objects.none() -> nur neue Objekte
+        - prefix=self.new_prefix -> muss zu den Feldnamen im Template passen
         """
         kwargs = {
             "queryset": Recycling.objects.none(),
@@ -71,11 +75,12 @@ class RecyclingFormMixin:
         Erwartet u.a.:
         - new_formset
         - active_qs
-        - existing_selected_ids (Set von IDs als String)
+        - existing_selected_ids (Set von int-IDs)
         - unload oder unload_form (je nach View)
         """
         new_formset = kwargs.get("new_formset")
         active_qs = kwargs.get("active_qs")
+        # 👉 Hier: IDs als int beibehalten, damit der Template-Vergleich mit obj.pk funktioniert
         existing_selected_ids = kwargs.get("existing_selected_ids", set())
 
         context = {
@@ -83,7 +88,8 @@ class RecyclingFormMixin:
             "new_formset": new_formset,
             "empty_form": new_formset.empty_form if new_formset is not None else None,
             "active_qs": active_qs,
-            "existing_selected_ids": {str(pk) for pk in existing_selected_ids},
+            # Set von int-IDs, wird direkt im Template mit obj.pk verglichen
+            "existing_selected_ids": set(existing_selected_ids),
             "existing_count": active_qs.count() if active_qs is not None else 0,
             "unload": kwargs.get("unload"),
             "unload_form": kwargs.get("unload_form"),
@@ -139,6 +145,7 @@ class RecyclingFormMixin:
 
         for obj in instances:
             obj.save()
+            # Beziehung zum Unload setzen (M2M)
             obj.unloads.add(unload)
 
     # ----------------------------------------------------------
@@ -148,6 +155,7 @@ class RecyclingFormMixin:
         """
         Synchronisiert die M2M-Verknüpfungen zwischen Unload und
         aktiven Recycling-Objekten anhand der ausgewählten IDs.
+
         Nutzt is_active=True und das related_name 'recyclings'.
         """
         current_ids = set(

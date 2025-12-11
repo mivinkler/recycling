@@ -22,7 +22,6 @@ class RecyclingUpdateView(RecyclingFormMixin, View):
         unload = self.get_unload(pk)
         active_qs = self.get_active_qs()
 
-        # IDs der Recycling-Objekte, die bereits mit diesem Unload verknüpft sind
         existing_selected_ids = set(
             unload.recyclings
             .filter(is_active=True)
@@ -45,20 +44,19 @@ class RecyclingUpdateView(RecyclingFormMixin, View):
 
         new_formset = self.get_new_formset(data=request.POST)
 
-        # Ausgewählte bestehende Recycling-IDs aus den Checkboxen
         existing_selected_ids_raw = request.POST.getlist("existing")
 
-        if new_formset.is_valid():
-            selected_ids: set[int] = set()
-            for value in existing_selected_ids_raw:
-                if value.isdigit():
-                    selected_ids.add(int(value))
+        # 👉 сразу приводим к int
+        selected_ids: set[int] = {
+            int(value) for value in existing_selected_ids_raw if value.isdigit()
+        }
 
+        if new_formset.is_valid():
             with self.atomic():
-                # M2M-Verknüpfungen anhand der Auswahl synchronisieren
+                # M2M-Verknüpfungen aktualisieren
                 self.sync_m2m(unload, selected_ids)
 
-                # Neue Recycling-Zeilen speichern und verknüpfen
+                # neue Recycling-Zeilen speichern
                 self.save_new_formset(new_formset, unload)
 
                 # Unload-Status anpassen
@@ -66,11 +64,12 @@ class RecyclingUpdateView(RecyclingFormMixin, View):
 
             return redirect(reverse("recycling_update", kwargs={"pk": unload.pk}))
 
-        # Fehler im Formset -> Seite mit Fehlern wieder anzeigen
-        return self.form_invalid(
-            request,
+        # Formset ist ungültig -> Seite mit Fehlern und gesetzten Checkboxen anzeigen
+        context = self.get_context_data(
             unload=unload,
             new_formset=new_formset,
             active_qs=active_qs,
-            existing_selected_ids=set(existing_selected_ids_raw),
+            existing_selected_ids=selected_ids,
         )
+        return self.render_response(request, context)
+

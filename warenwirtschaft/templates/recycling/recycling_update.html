@@ -32,10 +32,9 @@
         <tr>
           <th class="checkbox-circle itemcard-action-left"></th>
           <th class="itemcard-id">№</th>
+          <th class="itemcard-id">AID</th>
           <th class="itemcard-material">Material</th>
           <th class="itemcard-boxtype">Behälter</th>
-          <th class="itemcard-status">Status</th>
-          <th class="itemcard-position">Position</th>
           <th class="itemcard-weight">Gewicht</th>
           <th class="itemcard-note">Anmerkung</th>
         </tr>
@@ -53,16 +52,15 @@
               <td hidden></td>
               <td class="checkbox-circle itemcard-action-left">
                 <input type="checkbox"
-                       name="existing"
-                       value="{{ obj.pk }}"
-                       title="Fraktion verknüpfen"
-                       {% if obj.pk|stringformat:'s' in existing_selected_ids %}checked{% endif %}>
+                      name="existing"
+                      value="{{ obj.pk }}"
+                      title="Fraktion verknüpfen"
+                      {% if obj.pk in existing_selected_ids %}checked{% endif %}>
               </td>
               <td class="itemcard-id">{{ forloop.counter }}</td>
+              <td class="itemcard-id"><p>{{ obj.id }}</p></td>
               <td class="itemcard-material"><p>{{ obj.material }}</p></td>
               <td class="itemcard-boxtype"><p>{{ obj.get_box_type_display }}</p></td>
-              <td class="itemcard-status"><p>{{ unload.is_active|yesno:"Aktiv,Nicht aktiv" }}</p></td>
-              <td class="itemcard-boxtype"><p>{{ obj.get_status_display }}</p></td>
               <td class="itemcard-weight"><p>{{ obj.weight }}</p></td>
               <td class="itemcard-note"><p>{{ obj.note }}</p></td>
             </tr>
@@ -77,14 +75,12 @@
             <td class="checkbox-circle itemcard-action-left"></td>
             {# Hinweis: Nummerierung kann bei Bedarf über existing_count berechnet werden #}
             <td class="itemcard-id">{{ forloop.counter0|add:existing_count|add:1 }}</td>
+            <td class="itemcard-id"></td>
             <td class="itemcard-material">{{ form.material.errors }}{{ form.material }}</td>
             <td class="itemcard-boxtype">{{ form.box_type.errors }}{{ form.box_type }}</td>
-            <td class="itemcard-boxtype">{{ form.status.errors }}{{ form.status }}</td>
             <td class="itemcard-weight">{{ form.weight.errors }}{{ form.weight }}</td>
             <td class="itemcard-note">{{ form.note.errors }}{{ form.note }}</td>
           </tr>
-        {% empty %}
-          {# Keine initialen neuen Zeilen – werden via Template+JS hinzugefügt #}
         {% endfor %}
       </tbody>
     </table>
@@ -97,10 +93,9 @@
         </td>
         <td class="checkbox-circle itemcard-action-left"></td>
         <td class="itemcard-id">__index__</td>
-
+        <td class="itemcard-id"></td>
         <td class="itemcard-material">{{ empty_form.material }}</td>
         <td class="itemcard-boxtype">{{ empty_form.box_type }}</td>
-        <td class="itemcard-boxtype">{{ empty_form.status }}</td>
         <td class="itemcard-weight">{{ empty_form.weight }}</td>
         <td class="itemcard-note">{{ empty_form.note }}</td>
       </tr>
@@ -108,6 +103,7 @@
 
     <div class="itemcard-action add-buttons">
       <div style="width: 20px;"></div>
+
       <button class="btn btn-row-add" type="button" id="form-add-btn">+</button>
       <button class="btn btn-row-add" type="button" id="form-remove-btn">–</button>
     </div>

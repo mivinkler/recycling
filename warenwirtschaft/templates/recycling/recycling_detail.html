@@ -9,7 +9,6 @@
 {% block content %}
 <div class="detail">
   <section id="print-area">
-
     <div class="barcode">{{ object.barcode|barcode_svg }}</div>
 
     <div class="detail-row">
@@ -41,9 +40,8 @@
       <div>Datum:</div>
       <div>{{ recycling.created_at|date:"d.m.Y" }}</div>
     </div>
-
-    
   </section>
+
   <section class="print-btn-wrapper no-print">
     <button class="print-btn btn" onclick="window.print()">Drucken</button>
     <button class="print-btn btn"><a href="{% url 'recycling_update' pk=recycling.id %}">Ändern</a></button>
