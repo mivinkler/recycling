@@ -4,30 +4,27 @@
 {% block title %}Vorsortierung bearbeiten{% endblock %}
 
 {% block content %}
-<form method="post" action="" id="unload-form">
+<form method="post" id="unload-form">
   {% csrf_token %}
+  <input type="hidden" name="action" id="form-action" value="">
 
   <div class="itemcard">
     <div class="itemcard-title itemcard-margin-left">
       <h2>Vorsortierung</h2>
-      
     </div>
 
-    {# ====== Wareneingang ====== #}
     <section class="itemcard-topbox itemcard-margin-left">
       <div class="itemcard-topbox-row">
         <span>Wareneingang:</span>
-
         <p>{{ delivery_unit }}</p>
 
-        <aside>
-          <a 
-            href="{% url 'delivery_deactivate' delivery_unit_pk=delivery_unit.pk %}" 
-            class="btn btn-main itemcard-topbox-btn"
-            >
-            Entladung abschließen
-          </a>
-        </aside>
+        <button
+          type="button"
+          class="btn btn-main itemcard-topbox-btn"
+          id="finish-unload-btn"
+        >
+          Entladung abschließen
+        </button>
       </div>
     </section>
 
@@ -188,11 +185,63 @@
     </section>
 
   </div>
+  <!-- Confirm modal -->
+  <div id="confirm-overlay" class="cm-overlay" hidden>
+    <div class="cm-modal" role="dialog" aria-modal="true">
+      <h3 class="cm-title">Entladung abschließen</h3>
+      <p class="cm-text">Sind Sie sicher, dass Sie die Entladung abschließen wollen?</p>
+
+      <div class="cm-actions">
+        <button type="button" class="btn btn-main" id="cm-yes">Ja</button>
+        <button type="button" class="btn btn-main" id="cm-no">Nein</button>
+      </div>
+    </div>
+  </div>
 </form>
 
+<style>
+  .cm-overlay{ position:fixed; inset:0; background:rgba(0,0,0,.35);
+    z-index:10000; display:flex; align-items:center; justify-content:center; padding:16px; }
+  .cm-overlay[hidden]{ display:none !important; }
+  .cm-modal{ width:min(520px,100%); background:#fff; border-radius:10px;
+    padding:20px 22px; box-shadow:0 12px 34px rgba(0,0,0,.25); }
+  .cm-title{ margin:0 0 10px; font-size:1.25rem; }
+  .cm-text{ margin:0 0 16px; line-height:1.4; }
+  .cm-actions{ display:flex; gap:10px; justify-content:flex-end; }
+</style>
 {% endblock %}
 
 {% block extra_js %}
 <script src="{% static 'js/close-open.js' %}"></script>
 <script src="{% static 'js/weight.js' %}"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const openBtn = document.getElementById('finish-unload-btn');
+    const overlay = document.getElementById('confirm-overlay');
+    const yesBtn = document.getElementById('cm-yes');
+    const noBtn = document.getElementById('cm-no');
+    const form = document.getElementById('unload-form');
+    const actionInput = document.getElementById('form-action');
+
+    const open = () => { overlay.hidden = false; noBtn.focus(); };
+    const close = () => { overlay.hidden = true; actionInput.value = ""; };
+
+    openBtn.addEventListener('click', open);
+    noBtn.addEventListener('click', close);
+
+    yesBtn.addEventListener('click', () => {
+      actionInput.value = "finish_unload";
+      form.submit();
+    });
+
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) close();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !overlay.hidden) close();
+    });
+  });
+</script>
 {% endblock %}

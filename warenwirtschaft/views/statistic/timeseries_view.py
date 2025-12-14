@@ -20,7 +20,7 @@ class TimeSeriesPageView(View):
         
         context = {
             "form": form,
-            "selected_menu": "statistic",  # <-- добавлено
+            "selected_menu": "statistic",
         }
 
         return render(request, self.template_name, context)

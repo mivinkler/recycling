@@ -17,7 +17,6 @@ def header_active_weights():
         """
         return model.objects.filter(status=status).aggregate(total=Sum("weight")).get("total") or 0
 
-    # Вес по статусам для каждого раздела
     unload_aktiv = get_weight_by_status(Unload, 1)
     unload_bereit_fuer_behandlung = get_weight_by_status(Unload, 2)
     unload_bereit_fuer_abholung = get_weight_by_status(Unload, 3)
@@ -28,12 +27,9 @@ def header_active_weights():
     recycling_bereit_fuer_abholung = get_weight_by_status(Recycling, 3)
     recycling_bereit_fuer_halle_2 = get_weight_by_status(Recycling, 5)
 
-
-    # Суммируем веса по статусам для каждого раздела
     unload_total = unload_aktiv + unload_bereit_fuer_behandlung + unload_bereit_fuer_abholung + unload_bereit_fuer_halle_2
     recycling_total = recycling_aktiv + recycling_bereit_fuer_behandlung + recycling_bereit_fuer_abholung + recycling_bereit_fuer_halle_2
 
-    # Общий итог по всем разделам
     overall_total = unload_total + recycling_total
 
     return {

@@ -27,7 +27,6 @@
     <div class="buttons-form-footer">
       <button type="submit" class="btn btn-main">Speichern</button>
 
-      {# Назад к форме Unload (если есть) #}
       {% with u=recycling.unloads.first %}
         {% if u %}
           <a class="btn" href="{% url 'recycling_create' unload_pk=u.pk %}">Zurück</a>

@@ -1,7 +1,6 @@
 from .unload_list_view import UnloadListView
 from .unload_select_view import UnloadSelectView
 from .unload_create_view import UnloadCreateView
-from .unload_update_view import UnloadUpdateView
 from .unload_update_item_view import UnloadUpdateItemView
 from .unload_delete_view import UnloadDeleteView
 from .unload_detail_view import UnloadDetailBarcodeView

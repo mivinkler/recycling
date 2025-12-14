@@ -15,148 +15,187 @@ from warenwirtschaft.services.barcode_number_service import BarcodeNumberService
 
 class UnloadCreateView(View):
     """
-    Ein gemeinsamer Screen für Create + Update der Vorsortierung zu einer Liefereinheit.
+    Gemeinsamer Screen für Create + Update der Vorsortierung
+    einer DeliveryUnit.
 
-    Idee:
-    - Es gibt immer zwei Bereiche:
-      (1) bestehende offene Unloads (jeweils Einzel-Form mit Checkbox 'selected')
-      (2) neue Unloads als Formset
-    - Der Unterschied Create/Update ist nur das Template (und dass beim Update
-      bereits verknüpfte Unloads als 'selected' vorausgewählt sind).
+    - Ein URL
+    - Ein Template
+    - Zwei Aktionen:
+      1) Vorsortierung speichern
+      2) Entladung abschließen (DeliveryUnit deaktivieren)
     """
 
-    # --- Konfiguration ---
-    mode: str = "update"  # wird über as_view(mode="create"/"update") gesetzt
+    template_name = "unload/unload_create.html"
 
-    template_name_create = "unload/unload_create.html"
-    template_name_update = "unload/unload_update.html"
-
+    # Status für offene Unloads
     OPEN_STATUS = StatusChoices.IN_VORSORTIERUNG
+
+    # Prefix für generierte Barcodes
     BARCODE_PREFIX = "S"
+
+    # Prefix für das Formset neuer Unloads
     NEW_PREFIX = "new"
 
     # ----------------------------------------------------------
     # GET
     # ----------------------------------------------------------
     def get(self, request, delivery_unit_pk: int):
-        delivery_unit = self._get_delivery_unit(delivery_unit_pk)
-
-        new_formset = self._get_new_formset()
-        vorhandene_forms = self._build_existing_forms(delivery_unit)
-
-        context = self._get_context_data(
-            delivery_unit=delivery_unit,
-            formset=new_formset,
-            vorhandene_forms=vorhandene_forms,
-        )
-        return self._render(request, context)
+        """
+        Zeigt die Vorsortierungsseite an:
+        - bestehende (aktive) Unloads
+        - neue Unloads (Formset)
+        """
+        delivery_unit = get_object_or_404(DeliveryUnit, pk=delivery_unit_pk)
+        context = self._build_context(delivery_unit)
+        return render(request, self.template_name, context)
 
     # ----------------------------------------------------------
     # POST
     # ----------------------------------------------------------
     def post(self, request, delivery_unit_pk: int):
-        delivery_unit = self._get_delivery_unit(delivery_unit_pk)
+        """
+        Verarbeitet Formular-Submits:
+        - action=finish_unload  -> Entladung abschließen
+        - sonst                -> Vorsortierung speichern
+        """
+        delivery_unit = get_object_or_404(DeliveryUnit, pk=delivery_unit_pk)
 
-        new_formset = self._get_new_formset(data=request.POST)
-        vorhandene_forms = self._build_existing_forms(delivery_unit, data=request.POST)
+        # 1) Entladung abschließen
+        if request.POST.get("action") == "finish_unload":
+            delivery_unit.is_active = False
+            # save() triggert automatisch das Setzen von inactive_at (Mixin)
+            delivery_unit.save()
 
-        valid_new = new_formset.is_valid()
-        valid_existing = all(f.is_valid() for f, _ in vorhandene_forms)
+            messages.success(request, "Entladung erfolgreich abgeschlossen.")
+            return redirect("delivery_list")
 
-        if not (valid_new and valid_existing):
+        # 2) Normales Speichern der Vorsortierung
+
+        # Formset für neue Unloads
+        new_formset = UnloadFormSet(
+            data=request.POST,
+            queryset=Unload.objects.none(),
+            prefix=self.NEW_PREFIX,
+        )
+
+        # Einzel-Forms für bestehende Unloads
+        vorhandene_forms = self._build_existing_forms(
+            delivery_unit,
+            data=request.POST,
+        )
+
+        # Validierung
+        if not new_formset.is_valid() or not all(f.is_valid() for f, _ in vorhandene_forms):
             messages.error(request, "⚠️ Bitte Eingaben prüfen.")
-            context = self._get_context_data(
-                delivery_unit=delivery_unit,
-                formset=new_formset,
-                vorhandene_forms=vorhandene_forms,
+            return render(
+                request,
+                self.template_name,
+                self._build_context(delivery_unit, new_formset, vorhandene_forms),
             )
-            return self._render(request, context)
 
-        # IDs der ausgewählten bestehenden Unloads (Checkboxen in Einzel-Forms)
+        # IDs der ausgewählten bestehenden Unloads
         selected_ids = {
             str(f.instance.pk)
             for f, _ in vorhandene_forms
             if f.cleaned_data.get("selected")
         }
 
-        # Nur geänderte bestehende speichern
-        changed_existing = [f for f, _ in vorhandene_forms if f.has_changed()]
-
+        # Alle Änderungen in einer Transaktion
         with transaction.atomic():
-            # 1) bestehende Unloads speichern (status/weight/note)
-            for f in changed_existing:
-                f.save()
+            # 1) Geänderte bestehende Unloads speichern
+            for f, _ in vorhandene_forms:
+                if f.has_changed():
+                    f.save()
 
-            # 2) M2M-Verknüpfung gemäß Auswahl synchronisieren
-            #    (für Create ist das ebenfalls ok – es gab vorher keine Auswahl)
-            open_qs = self._get_open_unloads_qs()
-            for obj in open_qs:
+            # 2) M2M-Verknüpfung DeliveryUnit <-> Unload synchronisieren
+            for obj in self._open_unloads_qs():
                 if str(obj.pk) in selected_ids:
                     obj.delivery_units.add(delivery_unit)
                 else:
                     obj.delivery_units.remove(delivery_unit)
 
-            # 3) neue Unloads speichern + verknüpfen (inkl. Barcode)
-            self._save_new_formset(new_formset, delivery_unit)
+            # 3) Neue Unloads speichern, Barcode setzen und verknüpfen
+            self._save_new(new_formset, delivery_unit)
 
         messages.success(request, "✅ Die Daten sind gespeichert.")
-        return redirect(self._get_success_url(delivery_unit.pk))
+        return redirect(
+            reverse("unload_create", kwargs={"delivery_unit_pk": delivery_unit.pk})
+        )
 
     # ----------------------------------------------------------
-    # Helpers
+    # Helper-Methoden
     # ----------------------------------------------------------
-    def _template_name(self) -> str:
-        """Wählt je nach Modus das Template aus."""
-        return self.template_name_create if self.mode == "create" else self.template_name_update
 
-    def _get_delivery_unit(self, pk: int) -> DeliveryUnit:
-        """Liefert die zugehörige Liefereinheit oder 404."""
-        return get_object_or_404(DeliveryUnit, pk=pk)
+    def _build_context(self, delivery_unit, new_formset=None, vorhandene_forms=None):
+        """
+        Baut den Kontext für GET und POST (bei Fehlern).
+        """
+        if new_formset is None:
+            new_formset = UnloadFormSet(
+                queryset=Unload.objects.none(),
+                prefix=self.NEW_PREFIX,
+            )
 
-    def _get_open_unloads_qs(self):
-        """Basis-Query für alle offenen, aktiven Unloads."""
+        if vorhandene_forms is None:
+            vorhandene_forms = self._build_existing_forms(delivery_unit)
+
+        return {
+            "delivery_unit": delivery_unit,
+            "formset": new_formset,
+            "vorhandene_forms": vorhandene_forms,
+            "empty_form": new_formset.empty_form,
+            "selected_menu": "unload_form",
+        }
+
+    def _open_unloads_qs(self):
+        """
+        Liefert alle offenen, aktiven Unloads,
+        die für die Vorsortierung relevant sind.
+        """
         return (
             Unload.objects
             .filter(is_active=True, status=self.OPEN_STATUS)
             .order_by("pk")
         )
 
-    def _get_new_formset(self, data=None):
-        """Formset für neue Unloads."""
-        kwargs = {"queryset": Unload.objects.none(), "prefix": self.NEW_PREFIX}
-        if data is not None:
-            kwargs["data"] = data
-        return UnloadFormSet(**kwargs)
-
     def _build_existing_forms(self, delivery_unit: DeliveryUnit, data=None):
         """
-        Erstellt Einzel-Forms für alle offenen, aktiven Unloads.
+        Erstellt Einzel-Forms für alle offenen Unloads.
 
-        - GET: selected_initial kommt aus der M2M-Beziehung
-        - POST: data überschreibt initial automatisch
+        - Checkbox 'selected' zeigt, ob der Unload
+          bereits mit der DeliveryUnit verknüpft ist
         """
         ExistingEditForm = ExistingEditFormSet.form
 
+        # IDs der aktuell verknüpften Unloads
         selected_ids_db = set(
             Unload.objects
             .filter(delivery_units=delivery_unit, is_active=True)
             .values_list("pk", flat=True)
         )
 
-        forms = []
-        for obj in self._get_open_unloads_qs():
+        result = []
+        for obj in self._open_unloads_qs():
             form = ExistingEditForm(
-                data=data if data is not None else None,
+                data=data,
                 instance=obj,
                 prefix=f"exist_{obj.pk}",
                 selected_initial=(obj.pk in selected_ids_db),
             )
-            selected_flag = bool(form["selected"].value())
-            forms.append((form, selected_flag))
-        return forms
+            result.append((form, bool(form["selected"].value())))
+        return result
 
-    def _prepare_new_unloads(self, instances):
-        """Setzt Standard-Status und Barcodes für neue Unloads."""
+    def _save_new(self, formset, delivery_unit: DeliveryUnit):
+        """
+        Speichert neue Unloads:
+        - setzt Standard-Status
+        - generiert Barcodes
+        - verknüpft mit DeliveryUnit
+        """
+        instances = formset.save(commit=False)
+        if not instances:
+            return
+
         for obj in instances:
             if not obj.status:
                 obj.status = self.OPEN_STATUS
@@ -166,40 +205,6 @@ class UnloadCreateView(View):
             prefix=self.BARCODE_PREFIX,
         )
 
-    def _save_new_formset(self, formset, delivery_unit: DeliveryUnit):
-        """Speichert neue Unloads und verknüpft sie mit der Liefereinheit."""
-        instances = formset.save(commit=False)
-        if not instances:
-            return
-
-        self._prepare_new_unloads(instances)
-
         for obj in instances:
             obj.save()
             obj.delivery_units.add(delivery_unit)
-
-        # falls irgendwann can_delete=True wird
-        if hasattr(formset, "deleted_objects"):
-            for deleted in formset.deleted_objects:
-                deleted.delete()
-
-    def _get_success_url(self, delivery_unit_pk: int) -> str:
-        """Erfolgs-URL: immer zurück auf die Update-Seite."""
-        return reverse("unload_update", kwargs={"delivery_unit_pk": delivery_unit_pk})
-
-    def _get_context_data(self, **kwargs):
-        """Basis-Kontext für beide Seiten."""
-        formset = kwargs.get("formset")
-        context = {
-            "delivery_unit": kwargs.get("delivery_unit"),
-            "formset": formset,
-            "empty_form": formset.empty_form if formset is not None else None,
-            "selected_menu": "unload_form",
-            "mode": self.mode,  # optional für Template
-        }
-        context.update(kwargs)
-        return context
-
-    def _render(self, request, context):
-        """Rendert das passende Template."""
-        return render(request, self._template_name(), context)
