@@ -1,25 +1,22 @@
 class StatusChoices:
-    VORSORTIERUNG_AUSSTEHEND = 1
-    VORSORTIERUNG_LAUFEND = 2
-    VORSORTIERUNG_ABHOLBEREIT = 3
+    WARTET_AUF_VORSORTIERUNG = 1
+    WARTET_AUF_AUFBEREITUNG = 2
+    WARTET_AUF_HALLE_ZWEI = 3
+    
+    IN_VORSORTIERUNG = 4
+    IN_AUFBEREITUNG = 5
+    IN_HALLE_ZWEI = 6
 
-    AUFBEREITUNG_AUSSTEHEND = 4
-    AUFBEREITUNG_LAUFEND = 5
-    AUFBEREITUNG_ABHOLBEREIT = 6
-
-    HALLE_ZWEI_AUSSTEHEND = 7
-    HALLE_ZWEI_LAUFEND = 8
-    HALLE_ZWEI_ABHOLBEREIT = 9
+    ABHOLBEREIT = 7
 
     CHOICES = [
-        (VORSORTIERUNG_LAUFEND, "Vorsortierung: Laufend"),
-        (VORSORTIERUNG_ABHOLBEREIT, "Vorsortierung: Abholbereit"),
+        (WARTET_AUF_VORSORTIERUNG, "Wartet auf Vorsortierung"),
+        (WARTET_AUF_AUFBEREITUNG, "Wartet auf Aufbereitung"),
+        (WARTET_AUF_HALLE_ZWEI, "Wartet auf Halle 2"),
 
-        (AUFBEREITUNG_AUSSTEHEND, "Aufbereitung: Ausstehend"),
-        (AUFBEREITUNG_LAUFEND, "Aufbereitung: Laufend"),
-        (AUFBEREITUNG_ABHOLBEREIT, "Aufbereitung: Abholbereit"),
+        (IN_VORSORTIERUNG, "In Vorsortierung"),
+        (IN_AUFBEREITUNG, "In Aufbereitung"),
+        (IN_HALLE_ZWEI, "In Halle 2"),
 
-        (HALLE_ZWEI_AUSSTEHEND, "Halle 2: Ausstehend"),
-        (HALLE_ZWEI_LAUFEND, "Halle 2: Laufend"),
-        (HALLE_ZWEI_ABHOLBEREIT, "Halle 2: Abholbereit"),
+        (ABHOLBEREIT, "Abholbereit"),
     ]

@@ -5,4 +5,4 @@ from .unload_update_view import UnloadUpdateView
 from .unload_update_item_view import UnloadUpdateItemView
 from .unload_delete_view import UnloadDeleteView
 from .unload_detail_view import UnloadDetailBarcodeView
-from .unload_detail_weight_view import UnloadDetailWeightView
+# from .unload_detail_weight_view import UnloadDetailWeightView

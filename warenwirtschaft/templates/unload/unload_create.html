@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Vorsortierung erfassen{% endblock %}
+{% block title %}Vorsortierung bearbeiten{% endblock %}
 
 {% block content %}
 <form method="post" action="" id="unload-form">
@@ -10,15 +10,24 @@
   <div class="itemcard">
     <div class="itemcard-title itemcard-margin-left">
       <h2>Vorsortierung</h2>
+      
     </div>
 
     {# ====== Wareneingang ====== #}
     <section class="itemcard-topbox itemcard-margin-left">
-      <div class="itemcard-topbox-row" style="justify-content: flex-start;">
+      <div class="itemcard-topbox-row">
         <span>Wareneingang:</span>
 
         <p>{{ delivery_unit }}</p>
 
+        <aside>
+          <a 
+            href="{% url 'delivery_deactivate' delivery_unit_pk=delivery_unit.pk %}" 
+            class="btn btn-main itemcard-topbox-btn"
+            >
+            Entladung abschließen
+          </a>
+        </aside>
       </div>
     </section>
 
@@ -74,7 +83,7 @@
               </div>
             </td>
 
-            <td class="itemcard-action-wrapper">
+            <td class="itemcard-action-wrapper" hidden>
               <div class="itemcard-action">
                 <button type="button" class="btn btn-lock">
                   <img class="icon-lock-closed" src="{% static 'icons/lock-icon.svg' %}">
@@ -116,61 +125,54 @@
         </thead>
 
         <tbody class="itemcard-tbody existing-tbody">
-          {{ existing_formset.management_form }}
-
-          {% if vorhandene_unloads %}
-            {% for f in existing_formset.forms %}
-              {% with u=f.instance %}
-              <tr class="itemcard-table-row" data-kind="existing" data-key="{{ u.pk }}">
+        {% if vorhandene_forms %}
+          {% for pair in vorhandene_forms %}
+            {% with form=pair.0 %}
+              <tr class="itemcard-table-row" data-kind="existing" data-key="{{ form.instance.pk }}">
                 <td class="checkbox-circle itemcard-action-left">
-                  <input type="checkbox"
-                    name="selected_unload"
-                    value="{{ u.pk }}"
-                    title="Fraktion verknüpfen"
-                    >
+                  {{ form.selected }}  {# checked/unchecked übernimmt Django, s.a. Forms #}
                 </td>
 
                 <td class="itemcard-id">{{ forloop.counter }}</td>
-                <td class="itemcard-material"><p>{{ u.material }}</p></td>
-                <td class="itemcard-boxtype"><p>{{ u.get_box_type_display }}</p></td>
+                <td class="itemcard-material"><p>{{ form.instance.material }}</p></td>
+                <td class="itemcard-boxtype"><p>{{ form.instance.get_box_type_display }}</p></td>
 
                 <td class="itemcard-status">
-                  {{ f.id }} {# verstecktes PK-Feld für das Form #}
-                  {{ f.status }}
+                  {{ form.id }}  {# verstecktes PK-Feld #}
+                  {{ form.status }}
                 </td>
 
-                <td class="itemcard-note">{{ f.note }}</td>
+                <td class="itemcard-note">{{ form.note }}</td>
 
                 <td class="itemcard-weight itemcard-weight-action">
                   <div class="weight-container">
-                    {{ f.weight }}
+                    {{ form.weight }}
                     <button type="button" class="btn btn-weight" title="Waage öffnen" data-weight-url="{% url 'warenwirtschaft_api:weight_input_api' %}">
                       <img src="{% static 'icons/dashboard-icon.svg' %}" alt="">
                     </button>
                   </div>
                 </td>
 
-                <td class="itemcard-action-wrapper">
-                  <div class="itemcard-action">
-                    <button type="button" class="btn btn-lock">
-                      <img class="icon-lock-closed" src="{% static 'icons/lock-icon.svg' %}">
-                    </button>
-                  </div>
-                </td>
+              <td class="itemcard-action-wrapper" hidden>
+                <div class="itemcard-action">
+                  <button type="button" class="btn btn-lock">
+                    <img class="icon-lock-closed" src="{% static 'icons/lock-icon.svg' %}">
+                  </button>
+                </div>
+              </td>
 
-                <td class="itemcard-action-wrapper">
-                  <div class="itemcard-action">
-                    <button type="button" class="btn btn-lock">
-                      <img class="icon-lock-open" src="{% static 'icons/lock-open-icon.svg' %}">
-                    </button>
+              <td class="itemcard-action-wrapper">
+                <div class="itemcard-action">
+                  <button type="button" class="btn btn-lock">
+                    <img class="icon-lock-open" src="{% static 'icons/lock-open-icon.svg' %}">
+                  </button>
 
-                    <button type="submit" class="btn btn-main btn-save">Speichern</button>
-                  </div>
-                </td>
-
-              </tr>
-              {% endwith %}
-            {% endfor %}
+                  <button type="submit" class="btn btn-main btn-save">Speichern</button>
+                </div>
+              </td>
+            </tr>
+            {% endwith %}
+          {% endfor %}
           {% else %}
             <tr class="itemcard-table-row">
               <td class="checkbox-circle itemcard-action-left">
@@ -184,6 +186,7 @@
         </tbody>
       </table>
     </section>
+
   </div>
 </form>
 
@@ -193,5 +196,3 @@
 <script src="{% static 'js/close-open.js' %}"></script>
 <script src="{% static 'js/weight.js' %}"></script>
 {% endblock %}
-
-

@@ -1,39 +1,43 @@
-document.addEventListener('DOMContentLoaded', function () {
-  const addButton = document.getElementById('form-add-btn');
-  const removeButton = document.getElementById('form-remove-btn');
-  const tableBody = document.querySelector('.add-row-js');
-  const template = document.getElementById('table-row-template');
-  const totalFormsInput = document.querySelector('input[name$="-TOTAL_FORMS"]');
+document.addEventListener("DOMContentLoaded", () => {
+  const body = document.querySelector("[data-formset-body]");
+  const template = document.querySelector("[data-formset-template]");
+  const addBtn = document.querySelector("[data-formset-add]");
+  const removeBtn = document.querySelector("[data-formset-remove]");
 
-  let formIndex = +totalFormsInput.value;
+  if (!body || !template || !addBtn || !removeBtn) return;
 
-  // die Anzahl der Zeilen zählen mit der Klasse .itemcard-table-row, die NICHT über die Klasse .dynamic-row verfügen (d.h. vorhandene Zeilen).
-  let rowNumber = tableBody.querySelectorAll('tr.itemcard-table-row:not(.dynamic-row)').length;
+  const prefix = body.dataset.formsetPrefix;
+  const totalForms = document.getElementById(`id_${prefix}-TOTAL_FORMS`);
 
-  addButton.addEventListener('click', function () {
-    const clone = template.content.cloneNode(true).firstElementChild;
+  if (!prefix || !totalForms) {
+    console.error("Formset prefix oder TOTAL_FORMS nicht gefunden.", { prefix, totalForms });
+    return;
+  }
+
+  let formIndex = parseInt(totalForms.value, 10) || 0;
+
+  const getRowNumber = () => body.querySelectorAll("tr").length + 1;
+
+  addBtn.addEventListener("click", () => {
+    const clone = template.content.firstElementChild.cloneNode(true);
 
     clone.innerHTML = clone.innerHTML
-      .replace(/__prefix__/g, formIndex)
-      .replace(/__index__/g, rowNumber + 1);
+      .replace(/__prefix__/g, String(formIndex))
+      .replace(/__index__/g, String(getRowNumber()));
 
-    tableBody.appendChild(clone);
+    body.appendChild(clone);
 
-    formIndex++;
-    rowNumber++;
-    totalFormsInput.value = formIndex;
+    formIndex += 1;
+    totalForms.value = String(formIndex);
   });
 
-  removeButton.addEventListener('click', function () {
-    const dynamicRows = tableBody.querySelectorAll('.dynamic-row');
+  removeBtn.addEventListener("click", () => {
+    const dynamicRows = body.querySelectorAll("tr[data-formset-row]");
+    if (dynamicRows.length === 0) return;
 
-    if (dynamicRows.length > 0) {
-      const lastRow = dynamicRows[dynamicRows.length - 1];
-      lastRow.remove();
+    dynamicRows[dynamicRows.length - 1].remove();
 
-      formIndex--;
-      rowNumber--;
-      totalFormsInput.value = formIndex;
-    }
+    formIndex = Math.max(0, formIndex - 1);
+    totalForms.value = String(formIndex);
   });
 });

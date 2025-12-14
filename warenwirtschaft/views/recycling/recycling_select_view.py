@@ -1,8 +1,6 @@
 # warenwirtschaft/views/recycling/recycling_select_view.py
-# -*- coding: utf-8 -*-
 from django.views import View
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse
 
 from warenwirtschaft.models import Unload
 from warenwirtschaft.models_common.choices import StatusChoices
@@ -12,14 +10,14 @@ class RecyclingSelectView(View):
     """
     Auswahlseite für Unloads, die in die Aufbereitung gehen.
     - AUFBEREITUNG_AUSSTEHEND  -> Weiterleitung zu recycling_create
-    - AUFBEREITUNG_LAUFEND     -> Weiterleitung zu recycling_update
+    - IN_AUFBEREITUNG     -> Weiterleitung zu recycling_update
     """
 
     template_name = "recycling/recycling_select.html"
 
     ALLOWED_STATUSES = {
-        StatusChoices.AUFBEREITUNG_AUSSTEHEND,
-        StatusChoices.AUFBEREITUNG_LAUFEND,
+        StatusChoices.WARTET_AUF_AUFBEREITUNG,
+        StatusChoices.IN_AUFBEREITUNG,
     }
 
     def get(self, request):
@@ -42,11 +40,4 @@ class RecyclingSelectView(View):
 
         unload = get_object_or_404(Unload, pk=int(pk_raw))
 
-        if unload.status == StatusChoices.AUFBEREITUNG_AUSSTEHEND:
-            return redirect("recycling_create", unload_pk=unload.pk)
-
-        if unload.status == StatusChoices.AUFBEREITUNG_LAUFEND:
-            return redirect("recycling_update", pk=unload.pk)
-
-        # falls Status inzwischen nicht mehr passt
-        return redirect("recycling_select")
+        return redirect("recycling_create", unload_pk=unload.pk)

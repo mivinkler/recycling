@@ -1,89 +1,205 @@
-# warenwirtschaft/views/unload/unload_create_view.py
-# -*- coding: utf-8 -*-
+# warenwirtschaft/views/unload/unload_manage_view.py
 from __future__ import annotations
 
+from django.contrib import messages
+from django.db import transaction
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.views import View
-from django.shortcuts import redirect
 
-from warenwirtschaft.forms.unload_form import ExistingEditFormSet
-from warenwirtschaft.models import Unload
-from warenwirtschaft.views.unload.unload_form_mixin import UnloadFormMixin
+from warenwirtschaft.forms.unload_form import ExistingEditFormSet, UnloadFormSet
+from warenwirtschaft.models import DeliveryUnit, Unload
+from warenwirtschaft.models_common.choices import StatusChoices
+from warenwirtschaft.services.barcode_number_service import BarcodeNumberService
 
 
-class UnloadCreateView(UnloadFormMixin, View):
+class UnloadCreateView(View):
     """
-    Erfassung der Vorsortierung für eine Liefereinheit (Create-Fall).
+    Ein gemeinsamer Screen für Create + Update der Vorsortierung zu einer Liefereinheit.
 
-    - Neue Unloads anlegen
-    - Bestehende offene Unloads mit der Liefereinheit verknüpfen
+    Idee:
+    - Es gibt immer zwei Bereiche:
+      (1) bestehende offene Unloads (jeweils Einzel-Form mit Checkbox 'selected')
+      (2) neue Unloads als Formset
+    - Der Unterschied Create/Update ist nur das Template (und dass beim Update
+      bereits verknüpfte Unloads als 'selected' vorausgewählt sind).
     """
 
-    template_name = "unload/unload_create.html"
+    # --- Konfiguration ---
+    mode: str = "update"  # wird über as_view(mode="create"/"update") gesetzt
+
+    template_name_create = "unload/unload_create.html"
+    template_name_update = "unload/unload_update.html"
+
+    OPEN_STATUS = StatusChoices.IN_VORSORTIERUNG
+    BARCODE_PREFIX = "S"
+    NEW_PREFIX = "new"
 
     # ----------------------------------------------------------
     # GET
     # ----------------------------------------------------------
     def get(self, request, delivery_unit_pk: int):
-        delivery_unit = self.get_delivery_unit(delivery_unit_pk)
+        delivery_unit = self._get_delivery_unit(delivery_unit_pk)
 
-        formset = self.get_new_formset()
-        offene_unloads_qs = self.get_open_unloads_qs()
-        existing_formset = ExistingEditFormSet(
-            queryset=offene_unloads_qs,
-            prefix="exist",
-        )
+        new_formset = self._get_new_formset()
+        vorhandene_forms = self._build_existing_forms(delivery_unit)
 
-        context = self.get_context_data(
+        context = self._get_context_data(
             delivery_unit=delivery_unit,
-            formset=formset,
-            vorhandene_unloads=offene_unloads_qs,
-            existing_formset=existing_formset,
+            formset=new_formset,
+            vorhandene_forms=vorhandene_forms,
         )
-        return self.render_response(request, context)
+        return self._render(request, context)
 
     # ----------------------------------------------------------
     # POST
     # ----------------------------------------------------------
     def post(self, request, delivery_unit_pk: int):
-        delivery_unit = self.get_delivery_unit(delivery_unit_pk)
+        delivery_unit = self._get_delivery_unit(delivery_unit_pk)
 
-        formset = self.get_new_formset(data=request.POST)
+        new_formset = self._get_new_formset(data=request.POST)
+        vorhandene_forms = self._build_existing_forms(delivery_unit, data=request.POST)
 
-        offene_unloads_qs = self.get_open_unloads_qs()
-        existing_formset = ExistingEditFormSet(
-            data=request.POST,
-            queryset=offene_unloads_qs,
-            prefix="exist",
-        )
+        valid_new = new_formset.is_valid()
+        valid_existing = all(f.is_valid() for f, _ in vorhandene_forms)
 
-        # ausgewählte bestehende Unloads (Checkboxen)
-        selected_pks = {
-            int(pk) for pk in request.POST.getlist("selected_unload") if pk.isdigit()
+        if not (valid_new and valid_existing):
+            messages.error(request, "⚠️ Bitte Eingaben prüfen.")
+            context = self._get_context_data(
+                delivery_unit=delivery_unit,
+                formset=new_formset,
+                vorhandene_forms=vorhandene_forms,
+            )
+            return self._render(request, context)
+
+        # IDs der ausgewählten bestehenden Unloads (Checkboxen in Einzel-Forms)
+        selected_ids = {
+            str(f.instance.pk)
+            for f, _ in vorhandene_forms
+            if f.cleaned_data.get("selected")
         }
 
-        has_new_rows = formset.total_form_count() > 0
+        # Nur geänderte bestehende speichern
+        changed_existing = [f for f, _ in vorhandene_forms if f.has_changed()]
 
-        # Validierung: neue + bestehende Einträge
-        if (has_new_rows and not formset.is_valid()) or not existing_formset.is_valid():
-            return self.form_invalid(
-                request,
-                delivery_unit,
-                formset,
-                vorhandene_unloads=offene_unloads_qs,
-                existing_formset=existing_formset,
-            )
+        with transaction.atomic():
+            # 1) bestehende Unloads speichern (status/weight/note)
+            for f in changed_existing:
+                f.save()
 
-        with self.atomic():
-            # 1) bestehende Unloads speichern
-            existing_formset.save()
-
-            # 2) M2M-Verknüpfung für ausgewählte bestehende Unloads
-            if selected_pks:
-                for unload in offene_unloads_qs.filter(pk__in=selected_pks):
-                    unload.delivery_units.add(delivery_unit)
+            # 2) M2M-Verknüpfung gemäß Auswahl synchronisieren
+            #    (für Create ist das ebenfalls ok – es gab vorher keine Auswahl)
+            open_qs = self._get_open_unloads_qs()
+            for obj in open_qs:
+                if str(obj.pk) in selected_ids:
+                    obj.delivery_units.add(delivery_unit)
+                else:
+                    obj.delivery_units.remove(delivery_unit)
 
             # 3) neue Unloads speichern + verknüpfen (inkl. Barcode)
-            if has_new_rows:
-                self.save_new_formset(formset, delivery_unit)
+            self._save_new_formset(new_formset, delivery_unit)
 
-        return redirect(self.get_success_url(delivery_unit.pk))
+        messages.success(request, "✅ Die Daten sind gespeichert.")
+        return redirect(self._get_success_url(delivery_unit.pk))
+
+    # ----------------------------------------------------------
+    # Helpers
+    # ----------------------------------------------------------
+    def _template_name(self) -> str:
+        """Wählt je nach Modus das Template aus."""
+        return self.template_name_create if self.mode == "create" else self.template_name_update
+
+    def _get_delivery_unit(self, pk: int) -> DeliveryUnit:
+        """Liefert die zugehörige Liefereinheit oder 404."""
+        return get_object_or_404(DeliveryUnit, pk=pk)
+
+    def _get_open_unloads_qs(self):
+        """Basis-Query für alle offenen, aktiven Unloads."""
+        return (
+            Unload.objects
+            .filter(is_active=True, status=self.OPEN_STATUS)
+            .order_by("pk")
+        )
+
+    def _get_new_formset(self, data=None):
+        """Formset für neue Unloads."""
+        kwargs = {"queryset": Unload.objects.none(), "prefix": self.NEW_PREFIX}
+        if data is not None:
+            kwargs["data"] = data
+        return UnloadFormSet(**kwargs)
+
+    def _build_existing_forms(self, delivery_unit: DeliveryUnit, data=None):
+        """
+        Erstellt Einzel-Forms für alle offenen, aktiven Unloads.
+
+        - GET: selected_initial kommt aus der M2M-Beziehung
+        - POST: data überschreibt initial automatisch
+        """
+        ExistingEditForm = ExistingEditFormSet.form
+
+        selected_ids_db = set(
+            Unload.objects
+            .filter(delivery_units=delivery_unit, is_active=True)
+            .values_list("pk", flat=True)
+        )
+
+        forms = []
+        for obj in self._get_open_unloads_qs():
+            form = ExistingEditForm(
+                data=data if data is not None else None,
+                instance=obj,
+                prefix=f"exist_{obj.pk}",
+                selected_initial=(obj.pk in selected_ids_db),
+            )
+            selected_flag = bool(form["selected"].value())
+            forms.append((form, selected_flag))
+        return forms
+
+    def _prepare_new_unloads(self, instances):
+        """Setzt Standard-Status und Barcodes für neue Unloads."""
+        for obj in instances:
+            if not obj.status:
+                obj.status = self.OPEN_STATUS
+
+        BarcodeNumberService.set_barcodes(
+            instances,
+            prefix=self.BARCODE_PREFIX,
+        )
+
+    def _save_new_formset(self, formset, delivery_unit: DeliveryUnit):
+        """Speichert neue Unloads und verknüpft sie mit der Liefereinheit."""
+        instances = formset.save(commit=False)
+        if not instances:
+            return
+
+        self._prepare_new_unloads(instances)
+
+        for obj in instances:
+            obj.save()
+            obj.delivery_units.add(delivery_unit)
+
+        # falls irgendwann can_delete=True wird
+        if hasattr(formset, "deleted_objects"):
+            for deleted in formset.deleted_objects:
+                deleted.delete()
+
+    def _get_success_url(self, delivery_unit_pk: int) -> str:
+        """Erfolgs-URL: immer zurück auf die Update-Seite."""
+        return reverse("unload_update", kwargs={"delivery_unit_pk": delivery_unit_pk})
+
+    def _get_context_data(self, **kwargs):
+        """Basis-Kontext für beide Seiten."""
+        formset = kwargs.get("formset")
+        context = {
+            "delivery_unit": kwargs.get("delivery_unit"),
+            "formset": formset,
+            "empty_form": formset.empty_form if formset is not None else None,
+            "selected_menu": "unload_form",
+            "mode": self.mode,  # optional für Template
+        }
+        context.update(kwargs)
+        return context
+
+    def _render(self, request, context):
+        """Rendert das passende Template."""
+        return render(request, self._template_name(), context)

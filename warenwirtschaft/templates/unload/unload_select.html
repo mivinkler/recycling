@@ -28,47 +28,65 @@
     </div>
 
     {# ------- Auswahl Liefereinheit ------- #}
-    <section class="itemcard-topbox itemcard-margin-left">
-        <div class="itemcard-topbox-row">
-            <label for="delivery_unit">
-                Wareneingang:
-            </label>
+    <form method="post">
+    {% csrf_token %}
 
-            <div class="itemcard-topbox-content">
-                <select id="delivery_unit">
-                    <option value="">--- Liefereinheit auswählen ---</option>
-                    {% for du in delivery_units %}
-                        <option value="{{ du.id }}">
-                            {{ du }} {# nutzt DeliveryUnit.__str__ #}
-                        </option>
-                    {% endfor %}
-                </select>
-            </div>
-
-            <aside class="itemcard-action-wrapper">
-                <div class="itemcard-topbox-btn"></div>
-            </aside>
+    <div class="itemcard">
+        <div class="itemcard-title itemcard-margin-left">
+            <h2>Aufbereitung: Unload auswählen</h2>
         </div>
-    </section>
-</div>
-{% endblock %}
 
-{% block extra_js %}
-<script src="{% static 'js/barcode/barcode-unload.js' %}"></script>
-<script>
-  // Automatische Weiterleitung beim Wechsel der Liefereinheit
-  document.addEventListener("DOMContentLoaded", function () {
-    const sel = document.getElementById("delivery_unit");
-    if (!sel) return;
+        <table class="itemcard-table">
+            <thead class="itemcard-thead">
+                <tr>
+                    <th class="itemcard-id">№</th>
+                    <th class="itemcard-id">VID</th>
+                    <th class="itemcard-material">Material</th>
+                    <th class="itemcard-boxtype">Behälter</th>
+                    <th class="itemcard-status">Status</th>
+                    <th class="itemcard-note">Anmerkung</th>
+                    <th class="itemcard-action"></th>
+                </tr>
+            </thead>
 
-    sel.addEventListener("change", function () {
-      const value = sel.value;
-      if (!value) return;
+            <tbody class="itemcard-tbody">
+                {% for delivery_unit in delivery_units %}
+                <tr class="itemcard-table-row">
+                    <td class="itemcard-id">
+                        <p>{{ forloop.counter }}</p>
+                    </td>
+                    <td class="itemcard-id">
+                        <p>{{ delivery_unit.id }}</p>
+                    </td>
+                    <td class="itemcard-material">
+                        <p>{{ delivery_unit.material }}</p>
+                    </td>
+                    <td class="iitemcard-boxtype">
+                        <p>{{ delivery_unit.get_box_type_display }}</p>
+                    </td>
+                    <td class="itemcard-status">
+                        {% if delivery_unit.status == status_choices.WARENEINGANG_AUSSTEHEND %}
+                            <p>Ausstehend</p>
+                        {% elif delivery_unit.status == status_choices.WARENEINGANG_ENTLADUNG %}
+                            <p>Aktiv</p>
+                        {% endif %}
+                    </td>
 
-      const url = new URL(window.location.href);
-      url.searchParams.set("delivery_unit", value);
-      window.location.href = url.toString();
-    });
-  });
-</script>
+                    <td class="itemcard-note">
+                        <p>{{ delivery_unit.note }}</p>
+                    </td>
+
+                    <td class="itemcard-action-wrapper">
+                        <div class="itemcard-action">
+                            <button type="submit"  name="delivery_unit_id" value="{{ delivery_unit.pk }}" class="btn btn-lock">
+                                <img class="icon-lock-closed" src="/static/icons/lock-icon.svg">
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</form>
 {% endblock %}

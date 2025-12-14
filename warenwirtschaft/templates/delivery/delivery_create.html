@@ -44,33 +44,38 @@
         </tr>
       </thead>
 
-      <tbody class="itemcard-tbody add-row-js">
+     <tbody class="itemcard-tbody add-row-js"
+        data-formset-body
+        data-formset-prefix="{{ formset.prefix }}">
         {{ formset.non_form_errors }}
+
         {% for item_form in formset %}
           <tr class="itemcard-table-row">
             <td class="itemcard-id">{{ forloop.counter }}</td>
             <td class="itemcard-material">{{ item_form.material }}</td>
             <td class="itemcard-boxtype">{{ item_form.box_type }}</td>
             <td class="itemcard-weight">{{ item_form.weight }}</td>
-            <td class="itemcard-weight">{{ item_form.note }}</td>
+            <td class="itemcard-note">{{ item_form.note }}</td>
           </tr>
         {% endfor %}
       </tbody>
     </table>
 
-    <template id="table-row-template">
-      <tr class="itemcard-table-row dynamic-row">
-        <td class="itemcard-id">__index__</td>
-        <td class="itemcard-material">{{ empty_form.material }}</td>
-        <td class="itemcard-boxtype">{{ empty_form.box_type }}</td>
-        <td class="itemcard-weight">{{ empty_form.weight }}</td>
-        <td class="itemcard-weight">{{ empty_form.note }}</td>
+    {# Template für JS; __prefix__ wird vom JS ersetzt #}
+    <template data-formset-template>
+      <tr class="itemcard-table-row dynamic-row" data-formset-row>
+        <td class="itemcard-id" data-formset-index>__index__</td>
+        <td class="itemcard-material">{{ formset.empty_form.material }}</td>
+        <td class="itemcard-boxtype">{{ formset.empty_form.box_type }}</td>
+        <td class="itemcard-weight">{{ formset.empty_form.weight }}</td>
+        <td class="itemcard-note">{{ formset.empty_form.note }}</td>
       </tr>
     </template>
 
+
     <div class="itemcard-action add-buttons">
-      <button class="btn btn-row-add" type="button" id="form-add-btn">+</button>
-      <button class="btn btn-row-add" type="button" id="form-remove-btn">–</button>
+      <button class="btn btn-row-add" type="button" data-formset-add>+</button>
+      <button class="btn btn-row-add" type="button" data-formset-remove>–</button>
     </div>
 
     <div class="buttons-form-footer">
@@ -78,8 +83,6 @@
     </div>
   </div>
 </form>
-
-
 {% endblock %}
 
 {% block extra_js %}

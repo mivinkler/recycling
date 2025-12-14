@@ -41,9 +41,9 @@
                         <p>{{ unload.get_box_type_display }}</p>
                     </td>
                     <td class="itemcard-status">
-                        {% if unload.status == status_choices.AUFBEREITUNG_LAUFEND %}
-                            <p>Laufend</p>
-                        {% elif unload.status == status_choices.AUFBEREITUNG_AUSSTEHEND %}
+                        {% if unload.status == status_choices.IN_AUFBEREITUNG %}
+                            <p>Aktiv</p>
+                        {% elif unload.status == status_choices.WARTET_AUF_AUFBEREITUNG %}
                             <p>Ausstehend</p>
                         {% endif %}
                     </td>

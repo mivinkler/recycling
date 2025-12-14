@@ -6,7 +6,7 @@ import sys
 from warenwirtschaft.views.material import MaterialListView, MaterialCreateView, MaterialUpdateView, MaterialDeleteView
 from warenwirtschaft.views.customer import CustomerListView, CustomerUpdateView, CustomerDetailView, CustomerCreateView,CustomerDeleteView
 from warenwirtschaft.views.delivery import DeliveryListView, DeliveryBarcodeView, DeliveryCreateView, DeliveryUpdateView, DeliveryDeleteView, DeliveryDeactivateView
-from warenwirtschaft.views.unload import UnloadListView, UnloadSelectView, UnloadCreateView, UnloadUpdateItemView, UnloadUpdateView, UnloadDeleteView, UnloadDetailBarcodeView, UnloadDetailWeightView
+from warenwirtschaft.views.unload import UnloadListView, UnloadSelectView, UnloadCreateView, UnloadUpdateItemView, UnloadUpdateView, UnloadDeleteView, UnloadDetailBarcodeView
 from warenwirtschaft.views.recycling import RecyclingListView, RecyclingSelectView, RecyclingCreateView, RecyclingUpdateView, RecyclingDeleteView, RecyclingDetailView
 from warenwirtschaft.views.daily_weight import DailyWeightUpdateView, DailyWeightListView
 from warenwirtschaft.views.shipping import ShippingListView, ShippingDetailView, ShippingCreateView, ShippingUpdateView, ShippingDeleteView
@@ -31,13 +31,13 @@ urlpatterns = [
     path('delivery/deactivate/<int:delivery_unit_pk>/', DeliveryDeactivateView.as_view(), name='delivery_deactivate'),
 
     path('unload/list/', UnloadListView.as_view(), name='unload_list'),
-    path('unload/create/<int:delivery_unit_pk>/', UnloadCreateView.as_view(), name='unload_create'),
     path("unload/select/", UnloadSelectView.as_view(), name="unload_select"),
+    path('unload/create/<int:delivery_unit_pk>/', UnloadCreateView.as_view(), name='unload_create'),
     path('unload/update/<int:delivery_unit_pk>/', UnloadUpdateView.as_view(), name='unload_update'),
     path('unload/update/item/<int:pk>/', UnloadUpdateItemView.as_view(), name='unload_update_item'),
     path('unload/delete/<int:pk>/', UnloadDeleteView.as_view(), name='unload_delete'),
     path('unload/detail/barcode/<int:pk>/', UnloadDetailBarcodeView.as_view(), name='unload_detail_barcode'),
-    path('unload/detail/weight/<int:pk>/', UnloadDetailWeightView.as_view(), name='unload_detail_weight'),
+    # path('unload/detail/weight/<int:pk>/', UnloadDetailWeightView.as_view(), name='unload_detail_weight'),
 
     path('recycling/list/', RecyclingListView.as_view(), name='recycling_list'),
     path("recycling/select/", RecyclingSelectView.as_view(), name="recycling_select"),
