@@ -1,4 +1,4 @@
-// 🇩🇪 Ein Scanner-Eingabefeld (#barcode) für G / S / A
+// Ein Scanner-Eingabefeld (#barcode) für G / S / A
 document.addEventListener('DOMContentLoaded', () => {
   const barcodeInput = document.getElementById('barcode');
    const imgActive    = document.getElementById('barcode-active');
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const api = barcodeInput.dataset.api;
   const $  = (id) => document.getElementById(id);
 
-  // 🇩🇪 Kopf-Felder
+  // Kopf-Felder
   const fld = {
     customer:   $('id_customer'),
     certificate:$('id_certificate'),
@@ -73,13 +73,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   barcodeInput.addEventListener('keydown', (e) => {
     if (e.key !== 'Enter' && e.key !== 'Tab') return;
-    e.preventDefault();                    // 🇩🇪 verhindert Default (z.B. Form-Submit/Focus-Wechsel)
+    e.preventDefault();                    // verhindert Default (z.B. Form-Submit/Focus-Wechsel)
     const v = barcodeInput.value;
     barcodeInput.value = '';
-    handle(v);                             // 🇩🇪 G → Kopf, S/A → Checkboxen
+    handle(v);                             // G → Kopf, S/A → Checkboxen
   });
 
-  // 🇩🇪 Verhindere Formular-Submit, solange der Scanner fokussiert ist
+  // Verhindere Formular-Submit, solange der Scanner fokussiert ist
   const form = barcodeInput.closest('form');
   if (form) {
     form.addEventListener('submit', (e) => {
