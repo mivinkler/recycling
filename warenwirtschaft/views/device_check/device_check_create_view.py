@@ -34,7 +34,7 @@ class DeviceCheckCreateView(View):
         source_obj, qs = self._get_source(source, pk)
         FormSet = get_device_check_formset(extra=self.EXTRA_ROWS)
         formset = FormSet(queryset=qs, prefix=self.NEW_PREFIX)
-        return render(request, self.template_name, {"source_obj": source_obj, "formset": formset})
+        return render(request, self.template_name, {"source_obj": source_obj, "formset": formset, "selected_menu": "device_check_form"})
 
     def post(self, request, source: str, pk: int):
         source_obj, qs = self._get_source(source, pk)
