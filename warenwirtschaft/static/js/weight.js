@@ -1,18 +1,16 @@
-// static/js/weight.js
-
-// --- Deutsch: Warten bis DOM bereit ist (falls Script nicht mit 'defer' eingebunden ist)
+// --- Warten bis DOM bereit ist (falls Script nicht mit 'defer' eingebunden ist)
 const ready = (fn) => {
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn);
   else fn();
 };
 
 ready(() => {
-  // --- Deutsch: Robuste Delegation auf das Dokument
+  // --- Robuste Delegation auf das Dokument
   document.addEventListener('click', async (e) => {
     const btn = e.target.closest('.btn-weight'); // Klasse muss mit Template übereinstimmen
     if (!btn) return;
 
-    // --- Deutsch: Zeile & Eingabefeld bestimmen
+    // --- Zeile & Eingabefeld bestimmen
     const row = btn.closest('tr') || btn.closest('.table-row');
     const weightInput = row?.querySelector('input[name$="-weight"]');
     if (!weightInput) {
@@ -20,7 +18,7 @@ ready(() => {
       return;
     }
 
-    // --- Deutsch: URL prüfen (aus data-Attribut oder Fallback)
+    // --- URL prüfen (aus data-Attribut oder Fallback)
     const url = btn.dataset.weightUrl || '/api/weight-data/';
     // Optional: debuggen
     // console.log('weight url:', url);
@@ -29,10 +27,10 @@ ready(() => {
       const res = await fetch(url, {
         method: 'GET',
         headers: { 'X-Requested-With': 'XMLHttpRequest' },
-        credentials: 'same-origin', // --- Deutsch: Session-Cookies mitschicken (Login/CSRF)
+        credentials: 'same-origin', // --- Session-Cookies mitschicken (Login/CSRF)
       });
 
-      // --- Deutsch: Text lesen und sicher zu JSON parsen (Abfangen von HTML-Redirects)
+      // --- Text lesen und sicher zu JSON parsen (Abfangen von HTML-Redirects)
       const text = await res.text();
       let data;
       try {
