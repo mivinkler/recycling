@@ -29,7 +29,7 @@
       
       <!-- Vorsortierung (unload) -->
       <tbody class="itemcard-tbody">
-        {% for unload in unload_list %}
+        {% for unload in unload_ready %}
           <tr class="itemcard-table-row">
             <input type="hidden" name="recycling_id_{{ unload.id }}" value="{{ unload.id }}">
 
@@ -72,9 +72,8 @@
           </tr>
         {% endfor %}
 
-
         <!-- Aufbereitung (recycling) -->
-        {% for recycling in recycling_list %}
+        {% for recycling in recycling_ready %}
           <tr class="itemcard-table-row">
             <input type="hidden" name="recycling_id_{{ recycling.id }}" value="{{ recycling.id }}">
 
@@ -122,8 +121,8 @@
 
 
   <!-- ==== Active Wagen in Halle === -->
-  <section name="unload" class="itemcard-topbox">
-    <div class="itemcard-table-title">Active Wagen in Halle 2</div>
+    <section name="unload" class="itemcard-topbox">
+    <div class="itemcard-table-title">Aktiv in Halle 2</div>
     <table class="itemcard-table">
       <thead class="itemcard-thead">
         <tr>
@@ -140,7 +139,7 @@
       
       <!-- Vorsortierung (unload) -->
       <tbody class="itemcard-tbody">
-        {% for unload in unload_list %}
+        {% for unload in unload_active %}
           <tr class="itemcard-table-row">
             <input type="hidden" name="recycling_id_{{ unload.id }}" value="{{ unload.id }}">
 
@@ -174,11 +173,56 @@
 
             <td class="itemcard-action-wrapper">
               <div class="itemcard-action">
-                <button type="button" class="btn btn-lock">
-                  <img class="icon-lock-closed" src="/static/icons/lock-icon.svg">
-                </button>
+                <a href="{% url 'device_check_create' 'unload' unload.pk %}" class="btn btn-lock">
+                  <img class="icon-lock-closed" src="{% static 'icons/lock-icon.svg' %}">
+                </a>
               </div>
             </td>
+
+          </tr>
+        {% endfor %}
+
+        <!-- Aufbereitung (recycling) -->
+        {% for recycling in recycling_active %}
+          <tr class="itemcard-table-row">
+            <input type="hidden" name="recycling_id_{{ recycling.id }}" value="{{ recycling.id }}">
+
+            <td class="itemcard-id">
+              {{ forloop.counter }}
+            </td>
+
+            <td class="itemcard-material">
+              <p>{{ recycling.material }}</p>
+            </td>
+
+            <td class="itemcard-boxtype">
+              <p>{{ recycling.get_box_type_display }}</p>
+            </td>
+
+            <td class="itemcard-status">
+              <p>{{ recycling.get_status_display }}</p>
+            </td>
+
+            <td class="itemcard-status">
+              <p>Aufbereitung</p>
+            </td>
+
+            <td class="itemcard-note">
+              <p>{{ recycling.note }}</p>
+            </td>
+
+            <td class="itemcard-weight">
+              <p>{{ recycling.weight }}</p>
+            </td>
+
+            <td class="itemcard-action-wrapper">
+              <div class="itemcard-action">
+                <a href="{% url 'device_check_create' 'recycling' recycling.pk %}" class="btn btn-lock">
+                  <img class="icon-lock-closed" src="{% static 'icons/lock-icon.svg' %}">
+                </a>
+              </div>
+            </td>
+
           </tr>
         {% endfor %}
       </tbody>

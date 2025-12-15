@@ -1,4 +1,4 @@
-# warenwirtschaft/views/unload/unload_manage_view.py
+# warenwirtschaft/views/unload/unload_create_view.py
 from __future__ import annotations
 
 from django.contrib import messages
@@ -55,7 +55,7 @@ class UnloadCreateView(View):
     def post(self, request, delivery_unit_pk: int):
         """
         Verarbeitet Formular-Submits:
-        - action=finish_unload  -> Entladung abschließen
+        - action=finish_unload -> Entladung abschließen
         - sonst                -> Vorsortierung speichern
         """
         delivery_unit = get_object_or_404(DeliveryUnit, pk=delivery_unit_pk)
@@ -86,7 +86,7 @@ class UnloadCreateView(View):
 
         # Validierung
         if not new_formset.is_valid() or not all(f.is_valid() for f, _ in vorhandene_forms):
-            messages.error(request, "⚠️ Bitte Eingaben prüfen.")
+            messages.error(request, "Bitte Eingaben prüfen.")
             return render(
                 request,
                 self.template_name,
