@@ -5,4 +5,4 @@ from warenwirtschaft.models.material import Material
 class MaterialForm(forms.ModelForm):
     class Meta:
         model = Material
-        fields = ['name', 'delivery', 'unload', 'recycling']
+        fields = ['name', 'delivery', 'unload', 'recycling', 'device_check']

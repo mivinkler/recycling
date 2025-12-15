@@ -15,8 +15,8 @@ class DeviceCheckListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["unload_list"] = Unload.objects.all()
-        context["recycling_list"] = Recycling.objects.all()
+        context["unload_list"] = Unload.objects.filter(is_active=True).order_by("pk")
+        context["recycling_list"] = Recycling.objects.filter(is_active=True).order_by("pk")
         context["selected_menu"] = "device_check_list"
 
         return context

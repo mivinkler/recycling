@@ -15,6 +15,7 @@
     <div class="table-header" title="Eingang">E</div>
     <div class="table-header" title="Vorsortierung">V</div>
     <div class="table-header" title="Aufbereitung">A</div>
+    <div class="table-header" title="Halle 2">H2</div>
     <div class="table-header"></div>
 
     {% for item in material_list %}
@@ -34,7 +35,6 @@
           {{ item.name }}
         </div>
 
-
         <div class="table-cell checkbox-circle">
           {% if item.id == edit_material.id %}
             <input type="checkbox" id="delivery" name="delivery" {% if item.delivery %}checked{% endif %}>
@@ -42,7 +42,6 @@
             <input type="checkbox" id="delivery" {% if item.delivery %}checked{% endif %} disabled>
           {% endif %}
         </div>
-
 
         <div class="table-cell checkbox-circle">
           {% if item.id == edit_material.id %}
@@ -52,12 +51,19 @@
           {% endif %}
         </div>
 
-
         <div class="table-cell checkbox-circle">
           {% if item.id == edit_material.id %}
             <input type="checkbox" id="recycling" name="recycling" {% if item.recycling %}checked{% endif %}>
           {% else %}
             <input type="checkbox" id="recycling" {% if item.recycling %}checked{% endif %} disabled>
+          {% endif %}
+        </div>
+
+        <div class="table-cell checkbox-circle">
+          {% if item.id == edit_material.id %}
+            <input type="checkbox" id="device_check" name="device_check" {% if item.device_check %}checked{% endif %}>
+          {% else %}
+            <input type="checkbox" id="device_check" {% if item.device_check %}checked{% endif %} disabled>
           {% endif %}
         </div>
 
@@ -88,11 +94,17 @@
     <div class="table-cell checkbox-circle">
       <input type="checkbox" id="material-delivery" disabled>
     </div>
+
     <div class="table-cell checkbox-circle">
       <input type="checkbox" id="material-unload" disabled>
     </div>
+
     <div class="table-cell checkbox-circle">
       <input type="checkbox" id="material-recycling" disabled>
+    </div>
+
+    <div class="table-cell checkbox-circle">
+      <input type="checkbox" id="material-device_check" disabled>
     </div>
 
     <div class="itemcard-action">

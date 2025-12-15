@@ -3,10 +3,16 @@ from django.views import View
 from django.shortcuts import render, redirect, get_object_or_404
 
 from warenwirtschaft.models import DeliveryUnit
+from warenwirtschaft.models_common.choices import StatusChoices
 
 
 class UnloadSelectView(View):
     template_name = "unload/unload_select.html"
+
+    ALLOWED_STATUSES = {
+        StatusChoices.WARTET_AUF_VORSORTIERUNG,
+        StatusChoices.IN_VORSORTIERUNG,
+        }
 
     def get(self, request):
         delivery_units = (
@@ -18,6 +24,7 @@ class UnloadSelectView(View):
         return render(request, self.template_name, {
             "delivery_units": delivery_units,
             "selected_menu": "unload_form",
+            'status_choices': StatusChoices,
         })
 
     def post(self, request):

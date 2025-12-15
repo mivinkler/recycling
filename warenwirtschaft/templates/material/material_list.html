@@ -13,6 +13,7 @@
   <div class="table-header" title="Wareneingang">E</div>
   <div class="table-header" title="Vorsortierung">V</div>
   <div class="table-header" title="Aufbereitung">A</div>
+  <div class="table-header" title="Halle 2">H2</div>
   <div class="table-header"></div>
 
   {% for item in material_list %}
@@ -28,6 +29,9 @@
       </div>
       <div class="table-cell checkbox-circle">
         <input type="checkbox" name="material-recycling-{{ item.id }}" disabled {% if item.recycling %}checked{% endif %}>
+      </div>
+      <div class="table-cell checkbox-circle">
+        <input type="checkbox" name="material-device_check-{{ item.id }}" disabled {% if item.device_check %}checked{% endif %}>
       </div>
       <div class="active-row"></div>
     </div>

@@ -63,11 +63,12 @@
 
             <td class="itemcard-action-wrapper">
               <div class="itemcard-action">
-                <button type="button" class="btn btn-lock">
-                  <img class="icon-lock-closed" src="/static/icons/lock-icon.svg">
-                </button>
+                <a href="{% url 'device_check_create' 'unload' unload.pk %}" class="btn btn-lock">
+                  <img class="icon-lock-closed" src="{% static 'icons/lock-icon.svg' %}">
+                </a>
               </div>
             </td>
+
           </tr>
         {% endfor %}
 
@@ -107,11 +108,12 @@
 
             <td class="itemcard-action-wrapper">
               <div class="itemcard-action">
-                <button type="button" class="btn btn-lock">
-                  <img class="icon-lock-closed" src="/static/icons/lock-icon.svg">
-                </button>
+                <a href="{% url 'device_check_create' 'recycling' recycling.pk %}" class="btn btn-lock">
+                  <img class="icon-lock-closed" src="{% static 'icons/lock-icon.svg' %}">
+                </a>
               </div>
             </td>
+
           </tr>
         {% endfor %}
       </tbody>

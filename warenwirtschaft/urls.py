@@ -65,7 +65,7 @@ urlpatterns = [
     path("material/update/<int:pk>/", MaterialUpdateView.as_view(), name="material_update"),
     path('material/delete/<int:pk>/', MaterialDeleteView.as_view(), name='material_delete'),
 
-    path('device-check/create/', DeviceCheckCreateView.as_view(), name='device_check_create'),
+    path('device-check/create/<str:source>/<int:pk>/', DeviceCheckCreateView.as_view(), name='device_check_create'),
     path('device-check/select/', DeviceCheckSelectView.as_view(), name='device_check_select'),
     path('device-check/list/', DeviceCheckListView.as_view(), name='device_check_list'),
 

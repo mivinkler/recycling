@@ -12,6 +12,7 @@
     <div class="table-header" title="Wareneingang">E</div>
     <div class="table-header" title="Vorsortierung">V</div>
     <div class="table-header" title="Aufbereitung">A</div>
+      <div class="table-header" title="Halle 2">H2</div>
     <div class="table-header"></div>
 
     {% for item in material_list %}
@@ -22,11 +23,17 @@
         <div class="table-cell checkbox-circle">
           <input type="checkbox" id="delivery" {% if item.delivery %}checked{% endif %} disabled>
         </div>
+
         <div class="table-cell checkbox-circle">
           <input type="checkbox" id="unload" {% if item.unload %}checked{% endif %} disabled>
         </div>
+
         <div class="table-cell checkbox-circle">
           <input type="checkbox" id="recycling" {% if item.recycling %}checked{% endif %} disabled>
+        </div>
+
+        <div class="table-cell checkbox-circle">
+          <input type="checkbox" name="material-device_check-{{ item.id }}" disabled {% if item.device_check %}checked{% endif %}>
         </div>
 
         <div class="itemcard-action">
@@ -46,14 +53,21 @@
         <div class="table-cell">
           {{ form.name }}
         </div>
+
         <div class="table-cell checkbox-circle">
           {{ form.delivery }}
         </div>
+
         <div class="table-cell checkbox-circle">
           {{ form.unload }}
         </div>
+
         <div class="table-cell checkbox-circle">
           {{ form.recycling }}
+        </div>
+        
+        <div class="table-cell checkbox-circle">
+          {{ form.device_check }}
         </div>
 
         <div class="itemcard-action">

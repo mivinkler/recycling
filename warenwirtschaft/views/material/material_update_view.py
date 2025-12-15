@@ -21,6 +21,7 @@ class MaterialUpdateView(View):
         material.delivery  = "delivery"  in request.POST
         material.unload    = "unload"    in request.POST
         material.recycling = "recycling" in request.POST
+        material.device_check = "device_check" in request.POST
 
         material.save()
         return redirect("material_create")
