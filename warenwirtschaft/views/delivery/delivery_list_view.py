@@ -13,11 +13,13 @@ class DeliveryListView(ListView):
 
     active_fields = [
         ("delivery__id", "LID"),
+        ("is_active", "Status"),
         ("delivery__customer__name", "Kunde"),
         ("delivery__delivery_receipt", "Lieferschein"),
         ("box_type", "Behälter"),
         ("material__name", "Material"),
         ("weight", "Gewicht"),
+        ("status", "Position"),
         ("created_at", "Datum"),
         ("note", "Anmerkung"),
     ]

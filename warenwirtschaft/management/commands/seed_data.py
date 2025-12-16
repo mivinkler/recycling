@@ -3,6 +3,7 @@ import re
 from datetime import timedelta
 from typing import List
 from uuid import uuid4
+from django.db import connection
 
 from django.core.management.base import BaseCommand
 from django.db import transaction
@@ -10,7 +11,7 @@ from django.utils import timezone
 
 from warenwirtschaft.models import (
     Material, Customer, Delivery, DeliveryUnit, Unload,
-    Recycling, Shipping
+    Recycling, Shipping, DeviceCheck
 )
 
 # ==============================
@@ -43,7 +44,7 @@ def _barcode(prefix: str) -> str:
     Erzeugt eine eindeutige Barcode-Nummer mit Prefix.
     Beispiel: L8F2A9C1
     """
-    return f"{prefix}{uuid4().hex[:8].upper()}"
+    return f"{prefix}{uuid4().hex[:16].upper()}"
 
 def _random_past_datetime(years: int = 15):
     """
@@ -56,6 +57,16 @@ def _random_past_datetime(years: int = 15):
     dt = timezone.now() - timedelta(days=days, seconds=seconds)
     return dt.replace(microsecond=0)  # ← keine Millisekunden
 
+def reset_sqlite_sequence(*table_names):
+    """
+    Setzt AUTOINCREMENT-Zähler für SQLite zurück.
+    """
+    with connection.cursor() as cursor:
+        for table in table_names:
+            cursor.execute(
+                "DELETE FROM sqlite_sequence WHERE name = %s;",
+                [table]
+            )
 
 class Command(BaseCommand):
     help = "Befüllt die Warenwirtschaft mit Testdaten inkl. Status-Verteilung und Shipping."
@@ -67,13 +78,23 @@ class Command(BaseCommand):
         # ==============================
         # 1) Tabellen leeren (in sicherer Reihenfolge)
         # ==============================
-        Recycling.objects.all().delete()
-        Unload.objects.all().delete()
         DeliveryUnit.objects.all().delete()
+        Unload.objects.all().delete()
+        Recycling.objects.all().delete()
         Shipping.objects.all().delete()
         Delivery.objects.all().delete()
         Customer.objects.all().delete()
         Material.objects.all().delete()
+
+        reset_sqlite_sequence(
+            "warenwirtschaft_deliveryunit",
+            "warenwirtschaft_unload",
+            "warenwirtschaft_recycling",
+            "warenwirtschaft_shipping",
+            "warenwirtschaft_delivery",
+            "warenwirtschaft_customer",
+            "warenwirtschaft_material",
+        )
 
         self.stdout.write(self.style.WARNING("Alle relevanten Tabellen wurden geleert."))
 
@@ -159,6 +180,7 @@ class Command(BaseCommand):
                     status=4,  # Standard-Status für Seeds
                     note=_note(),
                     barcode=_barcode("L"),
+                    is_active=False,
                 ))
         DeliveryUnit.objects.bulk_create(dus, batch_size=2000)
 
@@ -175,6 +197,7 @@ class Command(BaseCommand):
                         status=status_code,
                         note=_note(),
                         barcode=_barcode("L"),
+                        is_active=False,
                     ))
         if extra_du:
             DeliveryUnit.objects.bulk_create(extra_du, batch_size=2000)
@@ -199,7 +222,8 @@ class Command(BaseCommand):
                 weight=round(random.uniform(10, 150), 2),
                 status=4,  # Standard-Status
                 note=_note(),
-                barcode=_barcode("S"),
+                barcode=_barcode("V"),
+                is_active=False,
             )
             for _ in range(400)
         ]
@@ -216,7 +240,8 @@ class Command(BaseCommand):
                         weight=round(random.uniform(10, 150), 2),
                         status=status_code,
                         note=_note(),
-                        barcode=_barcode("S"),
+                        barcode=_barcode("V"),
+                        is_active=False,
                     ))
         if extra_unloads:
             Unload.objects.bulk_create(extra_unloads, batch_size=1000)
@@ -250,6 +275,7 @@ class Command(BaseCommand):
                 status=4,
                 note=_note(),
                 barcode=_barcode("A"),
+                is_active=False,
             )
             for _ in range(500)
         ]
@@ -267,6 +293,7 @@ class Command(BaseCommand):
                         status=status_code,
                         note=_note(),
                         barcode=_barcode("A"),
+                        is_active=False,
                     ))
         if extra_rec:
             Recycling.objects.bulk_create(extra_rec, batch_size=1000)
@@ -288,9 +315,8 @@ class Command(BaseCommand):
 
         # ==============================
         # 7) Shipping (finale Stufe)
-        #     - Bilden auf Basis von Status 3 („Bereit für Abholung“) – falls vorhanden.
-        #     - Mehrere Unloads/Recyclings verweisen via FK 'shipping' auf die Sendung.
-        #     - Shipping.unload erhält einen „repräsentativen“ Unload.
+        #     - Erzeugen Shipping-Objekte
+        #     - Unloads/Recyclings (falls FK shipping existiert) werden auf Shipping gesetzt
         # ==============================
         bereite_unloads = list(Unload.objects.filter(status=3).only("id"))
         bereite_recycling = list(Recycling.objects.filter(status=3).only("id"))
@@ -304,11 +330,11 @@ class Command(BaseCommand):
         shippings: List[Shipping] = [
             Shipping(
                 customer=random.choice(customers),
-                unload=None,  # setzen wir gleich nach dem Speichern
                 certificate=random.randint(100000, 999999),
                 transport=random.choice([1, 2]),
                 note=_note(),
-                # kein created_at hier
+                barcode=_barcode("V"),  # Versand-Barcode
+                # created_at wird per auto_now_add gesetzt
             )
             for _ in range(20)
         ]
@@ -320,20 +346,21 @@ class Command(BaseCommand):
             s.created_at = _random_past_datetime(15)
         Shipping.objects.bulk_update(s_all, ["created_at"], batch_size=1000)
 
-        # Zuweisung: pro Shipping ein paar Unloads/Recyclings
-        shippings = list(Shipping.objects.all().only("id", "unload"))
+        # Zuweisung: pro Shipping ein paar Unloads/Recyclings (über FK 'shipping', falls vorhanden)
+        shippings = list(Shipping.objects.all().only("id"))
         for ship in shippings:
-            picked_unloads = random.sample(bereite_unloads, k=min(len(bereite_unloads), random.randint(1, 5))) if bereite_unloads else []
-            picked_recs    = random.sample(bereite_recycling, k=min(len(bereite_recycling), random.randint(1, 5))) if bereite_recycling else []
+            picked_unloads = random.sample(
+                bereite_unloads, k=min(len(bereite_unloads), random.randint(1, 5))
+            ) if bereite_unloads else []
+            picked_recs = random.sample(
+                bereite_recycling, k=min(len(bereite_recycling), random.randint(1, 5))
+            ) if bereite_recycling else []
 
+            # FK setzen (nur wenn diese Felder in den Modellen existieren)
             if picked_unloads:
-                ship.unload_id = picked_unloads[0].id
-                ship.save(update_fields=["unload"])
+                Unload.objects.filter(id__in=[u.id for u in picked_unloads]).update(shipping=ship)
 
-            for u in picked_unloads:
-                Unload.objects.filter(id=u.id).update(shipping=ship)
-            for r in picked_recs:
-                Recycling.objects.filter(id=r.id).update(shipping=ship)
+            if picked_recs:
+                Recycling.objects.filter(id__in=[r.id for r in picked_recs]).update(shipping=ship)
 
         self.stdout.write(self.style.SUCCESS(f"Shipping total: {Shipping.objects.count()}"))
-        self.stdout.write(self.style.SUCCESS("FERTIG: Seeds wurden erfolgreich aufgebaut."))

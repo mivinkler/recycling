@@ -43,8 +43,8 @@
     <div class="table-cell table-cell-center">{{ item.created_at|date:'d.m.Y' }}</div>
     <div class="table-cell">{{ item.get_box_type_display }}</div>
     <div class="table-cell">{{ item.material.name|default:"-" }}</div>
-    <div class="table-cell table-cell-right">{{ item.weight }}</div>
-    <div class="table-cell table-cell-right">{{ item.get_purpose_display }}</div>
+    <div class="table-cell">{{ item.weight }}</div>
+    <div class="table-cell">{{ item.get_purpose_display }}</div>
     <div class="table-cell" title="{{ item.note }}">{{ item.note }}</div>
   </div>
   {% endfor %}
