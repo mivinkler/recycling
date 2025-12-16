@@ -1,73 +1,67 @@
 {% extends 'base.html' %}
-{% load static %}
 
-{% block title %}Device-Check{% endblock %}
+{% load static %}
+{% load sort_tags %}
+{% load custom_filters %}
+{% load pagination %}
+
+{% block title %}Halle 2{% endblock %}
 
 {% block content %}
-<div class="itemcard">
-  <div class="itemcard-title">
-    <h2>Halle 2: Geräteprüfung</h2>
+<div class="table-border"></div>
+<div class="table" data-type="device-check">
+  <div class="table-header">№</div>
+  <div class="table-header" title="Vorsortierung-ID">HID</div>
+  <div class="table-header" title="Vorsortierung-ID">Wagen</div>
+  <div class="table-header">Herkunft</div>
+  <div class="table-header">Datum</div>
+  <div class="table-header">Behälter</div>
+  <div class="table-header">Material</div>
+  <div class="table-header">Gewicht</div>
+  <div class="table-header">Zweck</div>
+  <div class="table-header">Anmerkung</div>
+
+  {% for item in page_obj %}
+  <div class="table-row js-select-row">
+    <div class="table-cell table-cell-counter">{{ forloop.counter }}</div>
+    <div class="table-cell">{{ item.id }}</div>
+    <div class="table-cell">
+      {% if item.unload %}
+        {{ item.unload }}
+      {% elif item.recycling %}
+        {{ item.recycling }}
+      {% endif %}
+    </div>
+
+    <div class="table-cell">
+      {% if item.unload %}
+        Vorsortierung
+      {% elif item.recycling %}
+        Aufbereitung
+      {% endif %}
+    </div>
+    <div class="table-cell table-cell-center">{{ item.created_at|date:'d.m.Y' }}</div>
+    <div class="table-cell">{{ item.get_box_type_display }}</div>
+    <div class="table-cell">{{ item.material.name|default:"-" }}</div>
+    <div class="table-cell table-cell-right">{{ item.weight }}</div>
+    <div class="table-cell table-cell-right">{{ item.get_purpose_display }}</div>
+    <div class="table-cell" title="{{ item.note }}">{{ item.note }}</div>
   </div>
-
-  <section name="unload" class="itemcard-topbox">
-    <div class="itemcard-table-title">Bereit für Halle 2</div>
-    <table class="itemcard-table">
-      <thead class="itemcard-thead">
-        <tr>
-          <th class="itemcard-id">№</th>
-          <th class="itemcard-material">Material</th>
-          <th class="itemcard-boxtype">Behälter</th>
-          <th class="itemcard-status">Status</th>
-          <th class="itemcard-origin">Herkunft</th>
-          <th class="itemcard-note">Anmerkung</th>
-          <th class="itemcard-weight">Gewicht</th>
-          <th class="itemcard-weight">Gewicht neu</th>
-          <th class="itemcard-action"></th>
-        </tr>
-      </thead>
-      
-      <tbody class="itemcard-tbody">
-        {% for unload in unload_list %}
-          <tr class="itemcard-table-row">
-            <input type="hidden" name="recycling_id_{{ unload.id }}" value="{{ unload.id }}">
-
-            <td class="itemcard-id">
-              {{ forloop.counter }}
-            </td>
-
-            <td class="itemcard-material">
-              <p>{{ unload.material }}</p>
-            </td>
-
-            <td class="itemcard-boxtype">
-              <p>{{ unload.get_box_type_display }}</p>
-            </td>
-
-            <td class="itemcard-status">
-              <p>{{ unload.get_status_display }}</p>
-            </td>
-
-            <td class="itemcard-status">
-              <p>Vorsortierung</p>
-            </td>
-
-            <td class="itemcard-note">
-              <p>{{ unload.note }}</p>
-            </td>
-
-            <td class="itemcard-weight">
-              <p>{{ unload.weight }}</p>
-            </td>
-
-            <td class="itemcard-weight">
-              <p>{{ unload.new_weight }}</p>
-            </td>
-
-           
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </section>
+  {% endfor %}
 </div>
+
+
+{% paginate page_obj %}
+
+<template id="context-menu-template">
+  <ul id="context-menu" class="context-menu">
+    <li data-action="urlUpdate">Inhalt ändern</li>
+  </ul>
+</template>
+
 {% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'js/mouse-right-click.js' %}"></script>
+{% endblock %}
+

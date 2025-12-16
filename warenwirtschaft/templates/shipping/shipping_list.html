@@ -29,7 +29,7 @@
     <div class="table-row js-select-row"
       {% if kind == "unload" %}
         data-url-detail-barcode="{% url 'unload_detail_barcode' pk=item.id %}"
-        data-url-update="{% url 'unload_update_item' pk=item.id %}"
+        data-url-update="{% url 'unload_update' pk=item.id %}"
       {% else %}
         data-url-detail-barcode="{% url 'recycling_detail' pk=item.id %}"
         data-url-update="{% url 'recycling_update' pk=item.id %}"

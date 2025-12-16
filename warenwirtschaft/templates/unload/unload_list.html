@@ -27,7 +27,7 @@
       data-status="{{ item.status }}"
       data-url-recycling-create="{% url 'recycling_create' unload_pk=item.id %}"
       data-url-shipping-create="{% url 'shipping_create' %}"
-      data-url-update="{% if delivery_unit %}{% url 'unload_update' delivery_unit_pk=delivery_unit.id %}{% endif %}"
+      data-url-update="{% url 'unload_update' pk=item.id %}"
       data-url-detail-barcode="{% url 'unload_detail_barcode' pk=item.id %}"
       {% comment %} data-url-detail-weight="{% if delivery_unit %}{% url 'unload_detail_weight' pk=delivery_unit.id %}{% endif %}" {% endcomment %}
       >

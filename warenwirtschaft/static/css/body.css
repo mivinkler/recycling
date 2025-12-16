@@ -21,6 +21,10 @@
   grid-template-columns: repeat(3, minmax(33px, max-content)) 1fr 3fr 3fr 1fr 2fr 4fr;
 }
 
+.table[data-type="device-check"] {
+  grid-template-columns: repeat(2, minmax(33px, max-content)) 2fr repeat(6, 1fr) 2fr;
+}
+
 .table[data-type="shipping"] {
   grid-template-columns: repeat(3, minmax(33px, max-content)) 1fr 3fr 1fr 1fr repeat(3, 2fr) 1fr 2fr 4fr;
 }

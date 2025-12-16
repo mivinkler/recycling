@@ -9,7 +9,7 @@ class UnloadDetailBarcodeView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context["box_type"] = Unload.BOX_TYPE_CHOICES
-        context["statuses"] = Unload.STATUS_CHOICES
+        context["box_type"] = Unload.box_type
+        context["statuses"] = Unload.status
 
         return context

@@ -15,6 +15,14 @@
     <section class="itemcard-topbox">
       {{ form.non_field_errors }}
 
+      {% for field in form %}
+        {% if field.errors %}
+          <div class="form-error itemcard-topbox-row">
+            <strong style="color: chocolate;">{{ field.errors }}</strong>
+          </div>
+        {% endif %}
+      {% endfor %}
+
       <div class="itemcard-topbox-row">
         <label for="id_name">Name:</label>
         <div class="itemcard-topbox-content">{{ form.name }}</div>
