@@ -1,96 +1,130 @@
-// static/js/barcode/barcode-recycling.js
-
 document.addEventListener('DOMContentLoaded', () => {
-  const input   = document.getElementById('barcode');
-  const select  = document.getElementById('id_unload');         // Ziel-Select
-  const imgOn   = document.getElementById('barcode-active');
-  const imgOff  = document.getElementById('barcode-inactive');
-  const label   = document.querySelector('label[for="barcode"]');
+  const input = document.getElementById('barcode');
+  const label = document.getElementById('barcode-label');
+  const imgOn = document.getElementById('barcode-active');
+  const imgOff = document.getElementById('barcode-inactive');
 
-  const apiUrl  = input?.dataset.api || '';
-  const accepted = (input?.dataset.accepted || '').toUpperCase();
+  if (!input) {
+    console.warn('[SCAN] #barcode fehlt');
+    return;
+  }
 
-  // --- Grundprüfung ---
-  if (!input)  { console.warn('[SCAN] #barcode fehlt'); return; }
-  if (!select) { console.warn('[SCAN] #id_unload fehlt'); return; }
-  if (!apiUrl) { console.warn('[SCAN] data-api am #barcode fehlt'); return; }
+  const apiUrl = input.dataset.api || '';
+  const createUrlTemplate = input.dataset.createUrl || '';
+  const acceptedPrefix = (input.dataset.accepted || '').toUpperCase();
 
-  // --- Helfer: Icon an/aus ---
+  if (!apiUrl) {
+    console.warn('[SCAN] data-api fehlt am #barcode');
+    return;
+  }
+  if (!createUrlTemplate.includes('/0/')) {
+    console.warn('[SCAN] data-create-url fehlt oder hat keinen /0/-Platzhalter');
+    return;
+  }
+
+  // Kommentar: Icon-Zustand setzen (aktiv/inaktiv)
   const toggleIcon = (active) => {
-    if (imgOn)  imgOn.hidden  = !active;
-    if (imgOff) imgOff.hidden =  active;
+    if (imgOn) imgOn.hidden = !active;
+    if (imgOff) imgOff.hidden = active;
   };
 
-  // Initial: Icon aktiv, solange Barcode-Feld im Fokus ist
+  // Kommentar: Klick auf Icon setzt Fokus in das Scanner-Feld
+  if (label) {
+    label.addEventListener('click', () => input.focus());
+  }
+
   input.addEventListener('focus', () => toggleIcon(true));
-  input.addEventListener('blur',  () => toggleIcon(false));
-  label?.addEventListener('click', () => input.focus());
+  input.addEventListener('blur', () => toggleIcon(false));
   toggleIcon(document.activeElement === input);
 
-  // Normalisierung: Großschreibung + Whitespace entfernen
-  const normalize = (raw) => (raw || '').toUpperCase().replace(/[\s\r\n]+/g, '');
+  // Kommentar: Barcode normalisieren (Trim + Uppercase + GS1-Präfixe entfernen)
+  const normalize = (raw) => {
+    let s = (raw || '').trim().toUpperCase();
 
-  // Option im Select sicherstellen + auswählen (kein Autosubmit)
-  const ensureOption = (id, text = `Einheit #${id}`) => {
-    let opt = select.querySelector(`option[value="${id}"]`);
-    if (!opt) {
-      opt = new Option(text, String(id));
-      select.add(opt);
-    }
-    select.value = String(id);
+    // Kommentar: GS1/Scanner-Präfixe entfernen (z.B. "]C1")
+    s = s.replace(/^\]C\d/, '');   // ]C1, ]C2 ...
+    // Kommentar: führende Sonderzeichen entfernen
+    s = s.replace(/^[^\w]+/, '');
+
+    return s;
   };
 
-  // Hauptlogik Scan → API → Select setzen
-  const scan = async (raw) => {
-    const code = normalize(raw);
-    if (!code) { console.warn('[SCAN] leerer Code'); return; }
+  // Kommentar: Robuster JSON-Fetch (falls Server HTML statt JSON liefert)
+  const fetchJsonSafe = async (url) => {
+    const res = await fetch(url, { method: 'GET' });
+    const ct = (res.headers.get('content-type') || '').toLowerCase();
 
-    // Präfix-Check
-    if (accepted && !code.startsWith(accepted)) {
-      alert(`Falscher Präfix: "${code}". Erlaubt: "${accepted}"`);
+    let payload = null;
+    if (ct.includes('application/json')) {
+      payload = await res.json().catch(() => null);
+    } else {
+      // Kommentar: z.B. Login-HTML oder Fehlerseite
+      await res.text().catch(() => '');
+      payload = { error: 'Server lieferte kein JSON.' };
+    }
+    return { res, payload };
+  };
+
+  // Kommentar: Weiterleitung zur Create-Seite (recycling_create/<unload_pk>/)
+  const goToCreate = (unloadId) => {
+    const target = createUrlTemplate.replace('/0/', `/${unloadId}/`);
+    window.location.assign(target);
+  };
+
+  // Kommentar: Hauptlogik Scan → API → Redirect
+  const scan = async (rawCode) => {
+    const code = normalize(rawCode);
+    if (!code) return;
+
+    // Kommentar: Präfix-Check ("S" für Unload)
+    if (acceptedPrefix && !code.startsWith(acceptedPrefix)) {
+      alert(`Nur Barcodes mit Präfix "${acceptedPrefix}" sind hier erlaubt.`);
       return;
     }
 
+    // Kommentar: Parameter-Name "barcode" (konsistent mit anderem Screen)
     const url = new URL(apiUrl, window.location.origin);
     url.searchParams.set('code', code);
-    if (accepted) url.searchParams.set('accepted', accepted);
 
-    console.debug('[SCAN] fetch:', url.toString());
-
-    let res, data;
-    try {
-      res = await fetch(url.toString(), { method: 'GET' });
-      data = await res.json().catch(() => null);
-    } catch (e) {
-      alert('Netzwerkfehler.');
-      return;
-    }
+    const { res, payload } = await fetchJsonSafe(url.toString());
 
     if (!res.ok) {
-      alert(data?.error || `Fehler ${res.status}`);
+      alert(payload?.error || `Fehler beim Barcode-Scan (Status ${res.status}).`);
       return;
     }
 
-    if (data?.type === 'unload' && data?.unload_id != null) {
-      ensureOption(data.unload_id, data.label || `Einheit #${data.unload_id}`);
-    } else {
-      alert('Unerwartetes Antwortformat.');
+    // Erwartet: { unload_id: <int> }  (optional: type: "unload")
+    const unloadId = payload?.unload_id ?? payload?.id ?? null;
+
+    if (unloadId == null) {
+      console.warn('[SCAN] Unerwartete Antwort:', payload);
+      alert('Barcode erkannt, aber keine unload_id erhalten.');
+      return;
     }
+
+    goToCreate(unloadId);
   };
 
-  // Scanner schickt meist Enter → hier abfangen
+  // Kommentar: Scanner sendet meistens Enter
   input.addEventListener('keydown', (e) => {
-    if (e.key !== 'Enter') return;
+    if (e.key !== 'Enter' && e.key !== 'NumpadEnter') return;
     e.preventDefault();
-    const value = input.value;  // zuerst lesen
-    input.value = '';           // dann für nächsten Scan leeren
-    scan(value);
+
+    const value = input.value;
+    input.value = '';
+    scan(value).catch((err) => {
+      console.error('[SCAN] Fehler:', err);
+      alert('Barcode konnte nicht verarbeitet werden.');
+    });
   });
 
-  // Fallback: einige Scanner feuern nur 'change'
+  // Kommentar: Fallback, falls Scanner nur "change" feuert
   input.addEventListener('change', (e) => {
     const value = e.target.value;
     e.target.value = '';
-    scan(value);
+    scan(value).catch((err) => {
+      console.error('[SCAN] Fehler (change):', err);
+      alert('Barcode konnte nicht verarbeitet werden.');
+    });
   });
 });

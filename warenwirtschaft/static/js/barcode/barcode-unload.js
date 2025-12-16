@@ -1,173 +1,102 @@
-// static/js/barcode/barcode-unload.js
-
 document.addEventListener('DOMContentLoaded', () => {
-  // --- Referenzen auf DOM-Elemente holen ---
-  const input   = document.getElementById('barcode');              // verstecktes Barcode-Eingabefeld
-  const select  = document.getElementById('id_delivery_unit');     // Ziel-Select (Wareneingang)
-  const imgOn   = document.getElementById('barcode-active');       // Icon: Scanner aktiv
-  const imgOff  = document.getElementById('barcode-inactive');     // Icon: Scanner inaktiv
-  const label   = document.querySelector('label[for="barcode"]');  // Icon-Wrapper
-  const apiUrl  = input?.dataset.api || '';                        // API-URL aus data-api
-  const acceptedPrefix = (input?.dataset.accepted || '').toUpperCase(); // z.B. "L"
+  const input = document.getElementById('barcode');
+  const label = document.getElementById('barcode-label');
+  const imgOn = document.getElementById('barcode-active');
+  const imgOff = document.getElementById('barcode-inactive');
 
-  // --- Grundvalidierung ---
-  if (!input)  { console.warn('[SCAN] #barcode nicht gefunden'); return; }
-  if (!select) { console.warn('[SCAN] #id_delivery_unit nicht gefunden'); return; }
-  if (!apiUrl) { console.warn('[SCAN] data-api am #barcode fehlt'); return; }
+  if (!input) return;
 
-  // === Hilfsfunktionen ======================================================
+  const apiUrl = input.dataset.api || '';
+  const createUrlTemplate = input.dataset.createUrl || '';
+  const acceptedPrefix = (input.dataset.accepted || '').toUpperCase();
 
-  /**
-   * Icon-Zustand setzen (aktiv/inaktiv).
-   * active = true  → "aktives" Icon anzeigen
-   * active = false → "inaktives" Icon anzeigen
-   */
+  if (!apiUrl) {
+    console.warn('[SCAN] data-api fehlt am #barcode');
+    return;
+  }
+  if (!createUrlTemplate.includes('/0/')) {
+    console.warn('[SCAN] data-create-url fehlt oder hat keinen /0/-Platzhalter');
+    return;
+  }
+
+  // Icon-Zustand setzen
   const toggleIcon = (active) => {
-    if (imgOn)  imgOn.hidden  = !active;
-    if (imgOff) imgOff.hidden =  active;
+    if (imgOn) imgOn.hidden = !active;
+    if (imgOff) imgOff.hidden = active;
   };
 
-  /**
-   * Option im Select sicherstellen und auswählen.
-   * Falls die Option noch nicht existiert, wird sie angelegt.
-   */
-  const ensureOption = (id, text = `Einheit #${id}`) => {
-    let opt = select.querySelector(`option[value="${id}"]`);
-    if (!opt) {
-      opt = new Option(text, String(id));
-      select.add(opt);
-    }
-    select.value = String(id);
+  // Beim Klick auf Icon Fokus setzen
+  if (label) {
+    label.addEventListener('click', () => input.focus());
+  }
 
-    // Optional: Formular automatisch abschicken, um Seite neu zu laden
-    const form = document.getElementById('du-select-form');
-    if (form) form.submit();
-  };
+  input.addEventListener('focus', () => toggleIcon(true));
+  input.addEventListener('blur', () => toggleIcon(false));
+  toggleIcon(document.activeElement === input);
 
-  /**
-   * Roh-Barcode aufbereiten:
-   * - Whitespace entfernen
-   * - Großschreibung erzwingen
-   */
   const normalize = (raw) => (raw || '').toUpperCase().trim();
 
-  /**
-   * Hauptfunktion: Barcode scannen, API aufrufen, Select setzen.
-   */
+  const goToCreate = (duId) => {
+    // URL-Template "/.../0/" → "/.../<id>/"
+    const target = createUrlTemplate.replace('/0/', `/${duId}/`);
+    window.location.assign(target);
+  };
+
+  const fetchJsonSafe = async (url) => {
+    const res = await fetch(url, { method: 'GET' });
+    const ct = (res.headers.get('content-type') || '').toLowerCase();
+
+    let payload = null;
+    if (ct.includes('application/json')) {
+      payload = await res.json().catch(() => null);
+    } else {
+      // falls HTML/Redirect/Login zurückkommt
+      const text = await res.text().catch(() => '');
+      payload = { error: text ? 'Server lieferte kein JSON.' : 'Serverantwort ungültig.' };
+    }
+    return { res, payload };
+  };
+
   const scan = async (rawCode) => {
     const code = normalize(rawCode);
-    if (!code) {
-      console.warn('[SCAN] leerer Code, Scan wird ignoriert');
-      return;
-    }
+    if (!code) return;
 
-    // Optionaler Präfix-Check (z.B. "L" für Unload)
     if (acceptedPrefix && !code.startsWith(acceptedPrefix)) {
-      alert(`Falscher Präfix: "${code}". Erlaubt: "${acceptedPrefix}"`);
+      alert(`Nur Barcodes mit Präfix "${acceptedPrefix}" sind hier erlaubt.`);
       return;
     }
 
-    // URL robust aufbauen
     const url = new URL(apiUrl, window.location.origin);
     url.searchParams.set('code', code);
 
-    let res;
-    try {
-      res = await fetch(url.toString(), { method: 'GET' });
-    } catch (err) {
-      console.error('[SCAN] Netzwerkfehler:', err);
-      alert('Netzwerkfehler beim Scannen des Barcodes.');
-      return;
-    }
+    const { res, payload } = await fetchJsonSafe(url.toString());
 
     if (!res.ok) {
-      console.warn('[SCAN] API antwortete mit Status', res.status);
-      let data = null;
-      try {
-        data = await res.json();
-      } catch {
-        // ignorieren, wir haben bereits den Statuscode
-      }
-      alert(data?.error || `Fehler beim Barcode-Scan (Status ${res.status}).`);
+      alert(payload?.error || `Fehler beim Barcode-Scan (Status ${res.status}).`);
       return;
     }
 
-    // Erwartetes JSON lesen
-    let data;
-    try {
-      data = await res.json();
-    } catch (err) {
-      console.error('[SCAN] Ungültiges JSON', err);
-      alert('Unerwartete Antwort vom Server (kein gültiges JSON).');
+    // Wartet auf: { delivery_unit_id: <int> }
+    const duId = payload?.delivery_unit_id;
+    if (duId == null) {
+      console.warn('[SCAN] Unerwartete Antwort:', payload);
+      alert('Barcode erkannt, aber keine delivery_unit_id erhalten.');
       return;
     }
 
-    // Erwartetes Format:
-    // { type: "delivery_unit", delivery_unit_id: <int>, label?: <string> }
-    if (data?.type === 'delivery_unit' && data?.delivery_unit_id != null) {
-      const text = data.label || `Einheit #${data.delivery_unit_id}`;
-      ensureOption(data.delivery_unit_id, text);
-    } else {
-      console.warn('[SCAN] Unerwartetes Antwortformat', data);
-      alert('Barcode wurde erkannt, aber die Antwort hat ein unerwartetes Format.');
-    }
+    goToCreate(duId);
   };
 
-  // === Fokus / UX für Icon & Scanner ========================================
-
-  // Klick auf das Icon → Fokus ins versteckte Barcode-Feld setzen
-  if (label) {
-    label.addEventListener('click', () => {
-      // Kommentar: Benutzer klickt auf das Icon → Scanner-Eingabefeld fokussieren
-      input.focus();
-    });
-  }
-
-  // Wenn das Barcode-Feld den Fokus bekommt, Icon "aktiv" anzeigen
-  input.addEventListener('focus', () => {
-    // Kommentar: Scanner-Feld hat Fokus → aktives Icon einblenden
-    toggleIcon(true);
-  });
-
-  // Wenn der Fokus das Feld verlässt (Benutzer klickt in ein anderes Feld),
-  // Icon wieder "inaktiv" anzeigen
-  input.addEventListener('blur', () => {
-    // Kommentar: Scanner-Feld verliert Fokus → inaktives Icon einblenden
-    toggleIcon(false);
-  });
-
-  // Initialzustand beim Laden (wegen autofocus meistens true)
-  toggleIcon(document.activeElement === input);
-
-  // === Tastatur-Handling (Scanner sendet meistens Enter) =====================
-
-  input.addEventListener('keydown', async (e) => {
-    if (e.key !== 'Enter') return;
-
-    // Verhindern, dass Enter das Formular direkt abschickt
+  // Scanner sendet meistens Enter
+  input.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' && e.key !== 'NumpadEnter') return;
     e.preventDefault();
 
-    // Wert sichern und Feld leeren, damit der nächste Scan sauber startet
     const value = input.value;
     input.value = '';
-
-    try {
-      await scan(value);
-      // Kommentar: Fokus kann nach erfolgreichem Scan im Feld bleiben,
-      // damit der nächste Scan ohne zusätzlichen Klick möglich ist.
-    } catch (err) {
-      console.error('[SCAN] Fehler beim Scan:', err);
-      alert('Barcode nicht erkannt oder Fehler beim Verarbeiten.');
-    }
-  });
-
-  // Optionaler Fallback: einige Scanner feuern ein "change"-Event
-  input.addEventListener('change', (e) => {
-    const value = e.target.value;
-    e.target.value = '';
     scan(value).catch((err) => {
-      console.error('[SCAN] Fehler beim Scan (change):', err);
-      alert('Barcode nicht erkannt oder Fehler beim Verarbeiten.');
+      console.error('[SCAN] Fehler:', err);
+      alert('Barcode konnte nicht verarbeitet werden.');
     });
   });
 });
