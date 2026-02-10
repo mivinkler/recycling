@@ -1,5 +1,4 @@
 # warenwirtschaft/api/barcode_shipping_api.py
-# -*- coding: utf-8 -*-
 from django.http import JsonResponse
 from django.views import View
 from warenwirtschaft.models.barcode_generator import BarcodeGenerator
@@ -7,7 +6,7 @@ from warenwirtschaft.models import Unload, Recycling  # <- neu
 
 class BarcodeShippingAPI(View):
     def get(self, request):
-        # 🇩🇪 Barcode lesen & normalisieren
+        # Barcode lesen & normalisieren
         code = (request.GET.get("barcode") or "").strip().upper()
         if not code:
             return JsonResponse({"error": "Kein Barcode übergeben."}, status=400)

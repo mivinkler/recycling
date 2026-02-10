@@ -22,7 +22,7 @@ class TimeSeriesParams:
 # ---------- Hilfsfunktionen (einfach gehalten) ----------
 
 def start_of_week(d: date) -> date:
-    # 🇩🇪 ISO-Wochenstart (Montag)
+    # ISO-Wochenstart (Montag)
     return d - timedelta(days=d.weekday())
 
 def start_of_month(d: date) -> date:
@@ -57,7 +57,7 @@ def choose_granularity(p: TimeSeriesParams) -> str:
 
 def to_local_date(val) -> date:
     """
-    🇩🇪 SQLite liefert häufig naive Datetimes aus TruncDay.
+    SQLite liefert häufig naive Datetimes aus TruncDay.
     Wir konvertieren sicher zu date.
     """
     if isinstance(val, date) and not isinstance(val, datetime):
@@ -99,12 +99,12 @@ def next_bucket(d: date, gran: str) -> date:
 
 def timeseries_weight(p: TimeSeriesParams) -> dict:
     """
-    🇩🇪 Holt tägliche Summen aus der DB und faltet diese in Python
+    Holt tägliche Summen aus der DB und faltet diese in Python
     auf week/month/quarter/year. Maximal einfach & SQLite-sicher.
     """
     gran = choose_granularity(p)
 
-    # 🇩🇪 Basisfilter (weiche Löschung ausschließen)
+    # Basisfilter (weiche Löschung ausschließen)
     base = (
         Q(created_at__date__gte=p.date_from, created_at__date__lte=p.date_to) &
         Q(deleted_at__isnull=True) &
@@ -115,7 +115,7 @@ def timeseries_weight(p: TimeSeriesParams) -> dict:
     if p.material_id:
         base &= Q(material_id=p.material_id)
 
-    # 🇩🇪 Einmalig nach Tag aggregieren
+    # Einmalig nach Tag aggregieren
     day_rows = (
         DeliveryUnit.objects
         .filter(base)
@@ -124,7 +124,7 @@ def timeseries_weight(p: TimeSeriesParams) -> dict:
         .annotate(weight_kg=Sum("weight"))
     )
 
-    # 🇩🇪 Tageswerte → Zielbucket (gran) aufsummieren
+    # Tageswerte → Zielbucket (gran) aufsummieren
     bucket_map = defaultdict(float)
     for r in day_rows:
         d = to_local_date(r["day"])

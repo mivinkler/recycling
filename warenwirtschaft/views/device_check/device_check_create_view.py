@@ -1,5 +1,5 @@
 # warenwirtschaft/views/device_check/device_check_create_view.py
-# -*- coding: utf-8 -*-
+
 from __future__ import annotations
 
 from django.db import transaction
