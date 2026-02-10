@@ -1,7 +1,5 @@
 from django.views.generic import ListView
-from django.db.models import Prefetch
 from warenwirtschaft.models.unload import Unload
-from warenwirtschaft.models.delivery_unit import DeliveryUnit
 from warenwirtschaft.services.search_service import SearchService
 from warenwirtschaft.services.sorting_service import SortingService
 from warenwirtschaft.services.pagination_service import PaginationService

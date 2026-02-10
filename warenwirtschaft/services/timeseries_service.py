@@ -133,7 +133,7 @@ def timeseries_weight(p: TimeSeriesParams) -> dict:
         b = bucket_start_for(d, gran)
         bucket_map[b] += float(r["weight_kg"] or 0.0)
 
-    # 🇩🇪 Vollständige Bucket-Liste (ohne Lücken)
+    #    Vollständige Bucket-Liste (ohne Lücken)
     #    Start-/Enddatum auf Bucket-Grenzen einschnappen
     start = bucket_start_for(p.date_from, gran)
     end = bucket_start_for(p.date_to, gran)
