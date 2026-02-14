@@ -1,13 +1,10 @@
 from django import forms
-from django.forms import modelformset_factory
+
 from warenwirtschaft.models import Unload
+from warenwirtschaft.models_common.choices import StatusChoices
 
 
 class UnloadForm(forms.ModelForm):
-    """
-    Formular für neue Vorsortierungs-Wagen.
-    """
-
     class Meta:
         model = Unload
         fields = ["box_type", "material", "weight", "status", "note"]
@@ -19,44 +16,23 @@ class UnloadForm(forms.ModelForm):
             "note": "Anmerkung",
         }
 
-
-class ExistingEditForm(forms.ModelForm):
-    """
-    Formular für bestehende Wagen inkl. Auswahl-Flag.
-    Das Feld 'selected' wird nicht in der DB gespeichert.
-    """
-
-    selected = forms.BooleanField(
-        required=False,
-        label="verknüpft",
-    )
-
     def __init__(self, *args, **kwargs):
-        selected_initial = kwargs.pop("selected_initial", False)
         super().__init__(*args, **kwargs)
-        self.fields["selected"].initial = selected_initial
 
-    class Meta:
-        model = Unload
-        fields = ["status", "weight", "note"]
-        labels = {
-            "status": "Status",
-            "weight": "Gewicht",
-            "note": "Anmerkung",
+        allowed = {
+            StatusChoices.WARTET_AUF_AUFBEREITUNG,
+            StatusChoices.WARTET_AUF_HALLE_ZWEI,
+            StatusChoices.IN_VORSORTIERUNG,
+            StatusChoices.ABHOLBEREIT,
         }
 
-# Formset für NEUE Unloads
-UnloadFormSet = modelformset_factory(
-    Unload,
-    form=UnloadForm,
-    extra=1,
-    can_delete=False,
-)
+        # Nur erlaubte Statuswerte im Dropdown anzeigen
+        self.fields["status"].choices = [
+            (value, label)
+            for value, label in self.fields["status"].choices
+            if value in allowed
+        ]
 
-# Formset für bestehende Unloads (nur in Create-View benutzt)
-ExistingEditFormSet = modelformset_factory(
-    Unload,
-    form=ExistingEditForm,
-    extra=0,
-    can_delete=False,
-)
+        # Optional: Standardwert für neue Unloads
+        if not self.instance.pk:
+            self.fields["status"].initial = StatusChoices.IN_VORSORTIERUNG

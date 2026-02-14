@@ -17,5 +17,5 @@ class DeliveryUnit(DeactivateTimeMixin, models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"ID: {self.id} - {self.get_box_type_display()} - {self.material} - {self.weight} kg"
+        return f"EID: {self.id} - {self.get_box_type_display()} - Material: {self.material} - Gewicht: {self.weight} kg"
     

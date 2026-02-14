@@ -1,9 +1,34 @@
-from django.views.generic.edit import DeleteView
-from django.urls import reverse_lazy
-from warenwirtschaft.models import DeliveryUnit
+from django.shortcuts import get_object_or_404
+from django.urls import reverse
+from django.views.generic import DeleteView
+
+from warenwirtschaft.models import DeliveryUnit, Unload
+
 
 class UnloadDeleteView(DeleteView):
-    model = DeliveryUnit
-    template_name = 'unload/unload_delete.html'
-    context_object_name = 'delivery_unit'
-    success_url = reverse_lazy('unload_list')
+    model = Unload
+    template_name = "unload/unload_delete.html"
+    context_object_name = "unload"
+
+    def get_object(self, queryset=None):
+        # Nur Unload löschen, der mit DeliveryUnit verknüpft ist
+        return get_object_or_404(
+            Unload,
+            pk=self.kwargs["unload_pk"],
+            delivery_units__pk=self.kwargs["delivery_unit_pk"],
+            is_active=True,
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["delivery_unit"] = get_object_or_404(
+            DeliveryUnit,
+            pk=self.kwargs["delivery_unit_pk"],
+        )
+        return context
+
+    def get_success_url(self):
+        return reverse(
+            "unload_create",
+            kwargs={"delivery_unit_pk": self.kwargs["delivery_unit_pk"]},
+        )

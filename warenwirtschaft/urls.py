@@ -6,8 +6,8 @@ import sys
 from warenwirtschaft.views.material import MaterialListView, MaterialCreateView, MaterialUpdateView, MaterialDeleteView
 from warenwirtschaft.views.customer import CustomerListView, CustomerUpdateView, CustomerDetailView, CustomerCreateView,CustomerDeleteView
 from warenwirtschaft.views.delivery import DeliveryListView, DeliveryBarcodeView, DeliveryCreateView, DeliveryUpdateView, DeliveryDeleteView
-from warenwirtschaft.views.unload import UnloadListView, UnloadSelectView, UnloadCreateView, UnloadUpdateView, UnloadDeleteView, UnloadDetailBarcodeView
-from warenwirtschaft.views.recycling import RecyclingListView, RecyclingSelectView, RecyclingCreateView, RecyclingUpdateView, RecyclingDeleteView, RecyclingDetailView
+from warenwirtschaft.views.unload import UnloadListView, UnloadSelectView, UnloadCreateView, UnloadUpdateView, UnloadDeleteView, UnloadBarcodeView
+from warenwirtschaft.views.recycling import RecyclingListView, RecyclingSelectView, RecyclingCreateView, RecyclingUpdateView, RecyclingDeleteView, RecyclingBarcodeView
 from warenwirtschaft.views.daily_weight import DailyWeightUpdateView, DailyWeightListView
 from warenwirtschaft.views.shipping import ShippingListView, ShippingDetailView, ShippingCreateView, ShippingUpdateView, ShippingDeleteView
 from warenwirtschaft.views.barcode import BarcodeGeneratorListView, BarcodeGeneratorDetailView, BarcodeGeneratorCreateView, BarcodeGeneratorUpdateView, BarcodeGeneratorDeleteView
@@ -17,62 +17,72 @@ from warenwirtschaft.views.export_excel import DeliveryExportExcelView, UnloadEx
 
 
 urlpatterns = [
+    # customer (Kunden)
     path('customer/list/', CustomerListView.as_view(), name='customer_list'),
     path('customer/detail/<int:pk>/', CustomerDetailView.as_view(), name='customer_detail'),
     path('customer/create/', CustomerCreateView.as_view(), name='customer_create'),
     path('customer/update/<int:pk>/', CustomerUpdateView.as_view(), name='customer_update'),
     path('customer/delete/<int:pk>/', CustomerDeleteView.as_view(), name='customer_delete'),
 
+    # delivery (Wareneingang)
     path('delivery/list/', DeliveryListView.as_view(), name='delivery_list'),
     path('delivery/barcode/<int:pk>/', DeliveryBarcodeView.as_view(), name='delivery_barcode'),
     path('delivery/create/', DeliveryCreateView.as_view(), name='delivery_create'),
     path('delivery/update/<int:pk>/', DeliveryUpdateView.as_view(), name='delivery_update'),
     path('delivery/delete/<int:pk>/', DeliveryDeleteView.as_view(), name='delivery_delete'),
 
+    # unload (Vorsortierung)
     path('unload/list/', UnloadListView.as_view(), name='unload_list'),
     path("unload/select/", UnloadSelectView.as_view(), name="unload_select"),
-    path('unload/create/<int:delivery_unit_pk>/', UnloadCreateView.as_view(), name='unload_create'),
-    path('unload/update/<int:pk>/', UnloadUpdateView.as_view(), name='unload_update'),
-    path('unload/delete/<int:pk>/', UnloadDeleteView.as_view(), name='unload_delete'),
-    path('unload/detail/barcode/<int:pk>/', UnloadDetailBarcodeView.as_view(), name='unload_detail_barcode'),
-    # path('unload/detail/weight/<int:pk>/', UnloadDetailWeightView.as_view(), name='unload_detail_weight'),
+    path('<int:delivery_unit_pk>/create/unload', UnloadCreateView.as_view(), name='unload_create'),
+    path('<int:delivery_unit_pk>/update/unload/<int:unload_pk>/', UnloadUpdateView.as_view(), name='unload_update'),
+    path('<int:delivery_unit_pk>/delete/unload/<int:unload_pk>/', UnloadDeleteView.as_view(), name='unload_delete'),
+    path('barcode/unload/<int:pk>/', UnloadBarcodeView.as_view(), name='unload_barcode'),
 
+    # recycling (Aufbereitung)
     path('recycling/list/', RecyclingListView.as_view(), name='recycling_list'),
     path("recycling/select/", RecyclingSelectView.as_view(), name="recycling_select"),
-    path('recycling/create/<int:unload_pk>/', RecyclingCreateView.as_view(), name='recycling_create'),
-    path('recycling/update/<int:pk>/', RecyclingUpdateView.as_view(), name='recycling_update'),
-    path('recycling/detail/<int:pk>/', RecyclingDetailView.as_view(), name='recycling_detail'),
-    path('recycling/delete/<int:pk>/', RecyclingDeleteView.as_view(), name='recycling_delete'),
+    path('<int:unload_pk>/create/recycling/', RecyclingCreateView.as_view(), name='recycling_create'),
+    path('<int:unload_pk>/update/recycling/<int:recycling_pk>/', RecyclingUpdateView.as_view(), name='recycling_update'),
+    path('<int:unload_pk>/delete/recycling/<int:recycling_pk>/', RecyclingDeleteView.as_view(), name='recycling_delete'),
+    path('barcode/recycling/<int:pk>/', RecyclingBarcodeView.as_view(), name='recycling_barcode'),
     
+    # daily-weight (Tägliches wiegen)
     path('daily-weight/list', DailyWeightListView.as_view(), name='daily_weight_list'),
     path('daily-weight/update/<str:model>/<int:pk>/', DailyWeightUpdateView.as_view(), name='daily_weight_update'),
 
+    # shipping (Abholung)
     path('shipping/list/', ShippingListView.as_view(), name='shipping_list'),
     path('shipping/detail/<int:pk>/', ShippingDetailView.as_view(), name='shipping_detail'),
     path('shipping/create/', ShippingCreateView.as_view(), name='shipping_create'),
     path('shipping/update/<int:pk>/', ShippingUpdateView.as_view(), name='shipping_update'),
     path('shipping/delete/<int:pk>/', ShippingDeleteView.as_view(), name='shipping_delete'),
 
+    # barcode-generator
     path('barcode-generator/list/', BarcodeGeneratorListView.as_view(), name='barcode_generator_list'),
     path('barcode-generator/detail/<int:pk>/', BarcodeGeneratorDetailView.as_view(), name='barcode_generator_detail'),
     path('barcode-generator/create/', BarcodeGeneratorCreateView.as_view(), name='barcode_generator_create'),
     path('barcode-generator/update/<int:pk>/', BarcodeGeneratorUpdateView.as_view(), name='barcode_generator_update'),
     path('barcode-generator/delete/<int:pk>/', BarcodeGeneratorDeleteView.as_view(), name='barcode_generator_delete'),
 
+    # material
     path('material/list/', MaterialListView.as_view(), name='material_list'),
     path('material/create/', MaterialCreateView.as_view(), name='material_create'),
     path("material/update/<int:pk>/", MaterialUpdateView.as_view(), name="material_update"),
     path('material/delete/<int:pk>/', MaterialDeleteView.as_view(), name='material_delete'),
 
+    # device-check (Halle 2)
     path('device-check/create/<str:source>/<int:pk>/', DeviceCheckCreateView.as_view(), name='device_check_create'),
     path('device-check/select/', DeviceCheckSelectView.as_view(), name='device_check_select'),
     path('device-check/list/', DeviceCheckListView.as_view(), name='device_check_list'),
 
+    # excel herunterladen
     path('delivery-export-excel/', DeliveryExportExcelView.as_view(), name='delivery_export_excel'),
     path('unload-export-excel/', UnloadExportExcelView.as_view(), name='unload_export_excel'),
     path('recycling-export-excel/', RecyclingExportExcelView.as_view(), name='recycling_export_excel'),
     path('shipping-export-excel/', ShippingExportExcelView.as_view(), name='shipping_export_excel'),
 
+    # statistic
     path("statistic/", TimeSeriesPageView.as_view(), name="statistic"),
 
     path("api/", include(("warenwirtschaft.api.urls", "warenwirtschaft_api"), namespace="warenwirtschaft_api")),

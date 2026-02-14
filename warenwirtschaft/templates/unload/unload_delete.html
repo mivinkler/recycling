@@ -1,25 +1,35 @@
+{# templates/unload/unload_delete.html #}
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Vorsortierung löschen{% endblock %}
+{% block title %}Wagen löschen{% endblock %}
 
 {% block content %}
-
-<div class="itemcard-small">
+<div class="itemcard">
   <form method="post">
     {% csrf_token %}
 
-    <h2>Vorsortierung löschen</h2>
-    
-    <div class="itemcard-topbox ">
-      <p>Sind Sie sicher, dass der Vorsortierung <strong>"{{ delivery_unit }}"</strong> gelöscht wird?</p>
+    <div class="itemcard-title">
+      <h2>Vorsortierung-Wagen löschen</h2>
+    </div>
+
+    <div class="itemcard-topbox">
+      <strong>Liefereinheit:</strong> {{ delivery_unit }}
+    </div>
+    <div class="itemcard-topbox">
+      <strong>Vorsortierung-Wagen:</strong> {{ unload }}
+    </div>
+
+    <div class="itemcard-topbox">
+      <p>
+        Sind Sie sicher, dass der Vorsortierung-Wagen gelöscht wird?
+      </p>
     </div>
 
     <div class="buttons-form-footer">
-        <button  type="submit" name="save" class="btn">Löschen</button>
-        <a href="{% url 'unload_list' %}" class="btn">Abbrechen</a>
+      <button type="submit" class="btn btn-main">Löschen</button>
+      <a href="{% url 'unload_update' delivery_unit_pk=delivery_unit.pk unload_pk=unload.pk %}" class="btn btn-main">Abbrechen</a>
     </div>
   </form>
 </div>
-
 {% endblock %}

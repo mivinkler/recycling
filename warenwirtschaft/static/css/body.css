@@ -14,7 +14,7 @@
 }
 
 .table[data-type="unload"] {
-  grid-template-columns: repeat(3, minmax(33px, max-content)) 1fr 1fr 3fr 3fr 1fr 4fr;
+  grid-template-columns: repeat(3, minmax(33px, max-content)) 1fr 1fr 3fr 3fr 3fr 1fr 4fr;
 }
 
 .table[data-type="recycling"] {
@@ -247,7 +247,7 @@ td p {
 .itemcard-status,
 .itemcard-boxtype,
 .itemcard-origin {
-  width: 120px;
+  width: 160px;
 }
 
 .itemcard-position {

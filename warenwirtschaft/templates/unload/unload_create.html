@@ -1,47 +1,35 @@
+{# templates/unload/unload_create.html #}
+
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Vorsortierung bearbeiten{% endblock %}
+{% block title %}Vorsortierung{% endblock %}
 
 {% block content %}
-<form method="post" id="unload-form">
+<form method="post">
   {% csrf_token %}
-  <input type="hidden" name="action" id="form-action" value="">
 
   <div class="itemcard">
-    <div class="itemcard-title itemcard-margin-left">
+    <div class="itemcard-title">
       <h2>Vorsortierung</h2>
     </div>
 
-    <section class="itemcard-topbox itemcard-margin-left">
+    <section class="itemcard-topbox">
       <div class="itemcard-topbox-row">
-        <span>Wareneingang:</span>
-        <p>{{ delivery_unit }}</p>
-
-        <button
-          type="button"
-          class="btn btn-main itemcard-topbox-btn"
-          id="finish-unload-btn"
-        >
-          Entladung abschließen
-        </button>
+        <h3>Liefereinheit: &emsp; {{ delivery_unit }}</h3>
       </div>
     </section>
 
-    {# ====== Neue Wagen ====== #}
     <section class="itemcard-topbox">
-      <div class="itemcard-table-title itemcard-margin-left">Neue Wagen:</div>
+      <h4>Vorsortierung-Wagen:</h4>
 
       <table class="itemcard-table">
-        {{ formset.management_form }}
-
         <thead class="itemcard-thead">
           <tr>
-            <th class="checkbox-circle itemcard-action-left"></th>
             <th class="itemcard-id">№</th>
             <th class="itemcard-material">Material</th>
             <th class="itemcard-boxtype">Behälter</th>
-            <th class="itemcard-status">Status</th>
+            <th class="itemcard-status">Position</th>
             <th class="itemcard-note">Anmerkung</th>
             <th class="itemcard-weight">Gewicht</th>
             <th class="itemcard-action"></th>
@@ -49,45 +37,36 @@
         </thead>
 
         <tbody class="itemcard-tbody">
-          {{ formset.non_form_errors }}
+          {% for item in unloads %}
+            <tr class="itemcard-table-row">
+              <td class="itemcard-id">{{ forloop.counter }}</td>
+              <td class="itemcard-material"><p>{{ item.material }}</p></td>
+              <td class="itemcard-boxtype"><p>{{ item.get_box_type_display }}</p></td>
+              <td class="itemcard-status"><p>{{ item.get_status_display }}</p></td>
+              <td class="itemcard-note"><p>{{ item.note }}</p></td>
+              <td class="itemcard-weight"><p>{{ item.weight }}</p></td>
+              <td class="itemcard-action-wrapper">
+                <div class="itemcard-action">
+                  <a href="{% url 'unload_update' delivery_unit_pk=delivery_unit.pk unload_pk=item.pk %}" class="btn btn-lock">
+                    <img src="{% static 'icons/lock-icon.svg' %}">
+                  </a>
+                </div>
+              </td>
+            </tr>
+          {% empty %}
+            <tr class="itemcard-table-row">
+              <td colspan="6" class="text-center">Keine Daten vorhanden</td>
+            </tr>
+          {% endfor %}
 
-          {% for f in formset.forms %}
-          <tr class="itemcard-table-row" data-kind="new" data-key="{{ f.prefix }}">
-            <td class="checkbox-circle itemcard-action-left">
-              <input type="checkbox"
-                     name="selected_unload"
-                     value="new:{{ f.prefix }}"
-                     title="Fraktion verknüpfen"
-                     checked>
-            </td>
-            <td class="itemcard-id">{{ forloop.counter }}</td>
-            <td class="itemcard-material">{{ f.material }}</td>
-            <td class="itemcard-boxtype">{{ f.box_type }}</td>
-
-            <td class="itemcard-status">
-              {% if f.id %}{{ f.id }}{% endif %}
-              {{ f.status }}
-            </td>
-
-            <td class="itemcard-boxtype">{{ f.note }}</td>
-
-            <td class="itemcard-weight itemcard-weight-action">
-              <div class="weight-container">
-                {{ f.weight }}
-                <button type="button" class="btn btn-weight" title="Gewicht anfragen" data-weight-url="{% url 'warenwirtschaft_api:weight_input_api' %}">
-                  <img src="{% static 'icons/dashboard-icon.svg' %}">
-                </button>
-              </div>
-            </td>
-
-            <td class="itemcard-action-wrapper" hidden>
-              <div class="itemcard-action">
-                <button type="button" class="btn btn-lock">
-                  <img class="icon-lock-closed" src="{% static 'icons/lock-icon.svg' %}">
-                </button>
-              </div>
-            </td>
-
+          {# --- Neue Zeile --- #}
+          <tr class="itemcard-table-row">
+            <td class="itemcard-id"></td>
+            <td class="itemcard-material">{{ form.material }}</td>
+            <td class="itemcard-boxtype">{{ form.box_type }}</td>
+            <td class="itemcard-status">{{ form.status }}</td>
+            <td class="itemcard-note">{{ form.note }}</td>
+            <td class="itemcard-weight">{{ form.weight }}</td>
             <td class="itemcard-action-wrapper">
               <div class="itemcard-action">
                 <button type="button" class="btn btn-lock">
@@ -98,150 +77,9 @@
               </div>
             </td>
           </tr>
-          {% endfor %}
         </tbody>
       </table>
     </section>
-
-    {# ====== Aktive Wagen ====== #}
-    <section>
-      <div class="itemcard-table-title itemcard-margin-left">Aktive Wagen:</div>
-
-      <table class="itemcard-table">
-        <thead class="itemcard-thead">
-          <tr>
-            <th class="checkbox-circle itemcard-action-left"></th>
-            <th class="itemcard-id">№</th>
-            <th class="itemcard-material">Material</th>
-            <th class="itemcard-boxtype">Behälter</th>
-            <th class="itemcard-status">Status</th>
-            <th class="itemcard-note">Anmerkung</th>
-            <th class="itemcard-weight">Gewicht</th>
-            <th class="itemcard-action"></th>
-          </tr>
-        </thead>
-
-        <tbody class="itemcard-tbody existing-tbody">
-        {% if vorhandene_forms %}
-          {% for pair in vorhandene_forms %}
-            {% with form=pair.0 %}
-              <tr class="itemcard-table-row" data-kind="existing" data-key="{{ form.instance.pk }}">
-                <td class="checkbox-circle itemcard-action-left">
-                  {{ form.selected }}  {# checked/unchecked übernimmt Django, s.a. Forms #}
-                </td>
-
-                <td class="itemcard-id">{{ forloop.counter }}</td>
-                <td class="itemcard-material"><p>{{ form.instance.material }}</p></td>
-                <td class="itemcard-boxtype"><p>{{ form.instance.get_box_type_display }}</p></td>
-
-                <td class="itemcard-status">
-                  {{ form.id }}  {# verstecktes PK-Feld #}
-                  {{ form.status }}
-                </td>
-
-                <td class="itemcard-note">{{ form.note }}</td>
-
-                <td class="itemcard-weight itemcard-weight-action">
-                  <div class="weight-container">
-                    {{ form.weight }}
-                    <button type="button" class="btn btn-weight" title="Waage öffnen" data-weight-url="{% url 'warenwirtschaft_api:weight_input_api' %}">
-                      <img src="{% static 'icons/dashboard-icon.svg' %}" alt="">
-                    </button>
-                  </div>
-                </td>
-
-              <td class="itemcard-action-wrapper" hidden>
-                <div class="itemcard-action">
-                  <button type="button" class="btn btn-lock">
-                    <img class="icon-lock-closed" src="{% static 'icons/lock-icon.svg' %}">
-                  </button>
-                </div>
-              </td>
-
-              <td class="itemcard-action-wrapper">
-                <div class="itemcard-action">
-                  <button type="button" class="btn btn-lock">
-                    <img class="icon-lock-open" src="{% static 'icons/lock-open-icon.svg' %}">
-                  </button>
-
-                  <button type="submit" class="btn btn-main btn-save">Speichern</button>
-                </div>
-              </td>
-            </tr>
-            {% endwith %}
-          {% endfor %}
-          {% else %}
-            <tr class="itemcard-table-row">
-              <td class="checkbox-circle itemcard-action-left">
-                <input type="checkbox" title="Keine Daten" disabled>
-              </td>
-              <td colspan="6" class="text-center">
-                Keine Daten vorhanden
-              </td>
-            </tr>
-          {% endif %}
-        </tbody>
-      </table>
-    </section>
-  </div>
-
-  <!-- Confirm modal -->
-  <div id="confirm-overlay" class="cm-overlay" hidden>
-    <div class="cm-modal" role="dialog" aria-modal="true">
-      <h3 class="cm-title">Entladung abschließen</h3>
-      <p class="cm-text">Sind Sie sicher, dass Sie die Entladung abschließen wollen?</p>
-
-      <div class="cm-actions">
-        <button type="button" class="btn btn-main" id="cm-yes">Ja</button>
-        <button type="button" class="btn btn-main" id="cm-no">Nein</button>
-      </div>
-    </div>
   </div>
 </form>
-
-<style>
-  .cm-overlay{ position:fixed; inset:0; background:rgba(0,0,0,.35);
-    z-index:10000; display:flex; align-items:center; justify-content:center; padding:16px; }
-  .cm-overlay[hidden]{ display:none !important; }
-  .cm-modal{ width:min(520px,100%); background:#fff; border-radius:10px;
-    padding:20px 22px; box-shadow:0 12px 34px rgba(0,0,0,.25); }
-  .cm-title{ margin:0 0 10px; font-size:1.25rem; }
-  .cm-text{ margin:0 0 16px; line-height:1.4; }
-  .cm-actions{ display:flex; gap:10px; justify-content:flex-end; }
-</style>
-{% endblock %}
-
-{% block extra_js %}
-<script src="{% static 'js/close-open.js' %}"></script>
-<script src="{% static 'js/weight.js' %}"></script>
-
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const openBtn = document.getElementById('finish-unload-btn');
-    const overlay = document.getElementById('confirm-overlay');
-    const yesBtn = document.getElementById('cm-yes');
-    const noBtn = document.getElementById('cm-no');
-    const form = document.getElementById('unload-form');
-    const actionInput = document.getElementById('form-action');
-
-    const open = () => { overlay.hidden = false; noBtn.focus(); };
-    const close = () => { overlay.hidden = true; actionInput.value = ""; };
-
-    openBtn.addEventListener('click', open);
-    noBtn.addEventListener('click', close);
-
-    yesBtn.addEventListener('click', () => {
-      actionInput.value = "finish_unload";
-      form.submit();
-    });
-
-    overlay.addEventListener('click', (e) => {
-      if (e.target === overlay) close();
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && !overlay.hidden) close();
-    });
-  });
-</script>
 {% endblock %}

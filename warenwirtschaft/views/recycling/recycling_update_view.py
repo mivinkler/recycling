@@ -1,7 +1,7 @@
 from django.urls import reverse
 from django.views.generic import UpdateView
 
-from warenwirtschaft.forms.recycling_form import RecyclingUpdateForm
+from warenwirtschaft.forms.recycling_form import RecyclingForm
 from warenwirtschaft.models import Recycling
 
 
@@ -11,7 +11,7 @@ class RecyclingUpdateView(UpdateView):
     Nach dem Speichern bleibt der Benutzer auf derselben Seite.
     """
     model = Recycling
-    form_class = RecyclingUpdateForm
+    form_class = RecyclingForm
     template_name = "recycling/recycling_update.html"
     context_object_name = "recycling"
 

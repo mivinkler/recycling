@@ -15,50 +15,53 @@
   <div class="table-header" title="Vorsortierung-ID">{% sort_header "id" "VID" %}</div>
   <div class="table-header">{% sort_header "created_at" "Datum" %}</div>
   <div class="table-header">{% sort_header "is_active" "Status" %}</div>
+  <div class="table-header">{% sort_header "status" "Status" %}</div>
   <div class="table-header">{% sort_header "box_type" "Behälter" %}</div>
   <div class="table-header">{% sort_header "material__name" "Material" %}</div>
   <div class="table-header">{% sort_header "weight" "Gewicht (kg)" %}</div>
   <div class="table-header">{% sort_header "note" "Anmerkung" %}</div>
 
   {% for item in page_obj %}
-    {% with delivery_unit=item.delivery_units.all|first %}
+  {% with delivery_unit=item.delivery_units.all|first %}
     <div class="table-row js-select-row"
-      data-id="{{ item.id }}"
+      data-id="{{ item.pk }}"
       data-status="{{ item.status }}"
-      data-url-recycling-create="{% url 'recycling_create' unload_pk=item.id %}"
-      data-url-shipping-create="{% url 'shipping_create' %}"
-      data-url-update="{% url 'unload_update' pk=item.id %}"
-      data-url-detail-barcode="{% url 'unload_detail_barcode' pk=item.id %}"
-      {% comment %} data-url-detail-weight="{% if delivery_unit %}{% url 'unload_detail_weight' pk=delivery_unit.id %}{% endif %}" {% endcomment %}
-      >
+      data-url-detail-barcode="{% url 'unload_barcode' pk=item.pk %}"
+      {% comment %} TODO: Nach der Entwicklungsphase {% if %}...{% endif %} löschen {% endcomment %}
+      {% if delivery_unit %}
+        data-url-update="{% url 'unload_update' delivery_unit_pk=delivery_unit.pk unload_pk=item.pk %}"
+      {% endif %}
+    >
 
       <div class="table-cell table-cell-counter">{{ forloop.counter }}</div>
 
       <div class="table-cell multiple-id">
-        {% for delivery in item.delivery_units.all %}
-          <span title="{% for d in item.delivery_units.all %}{{ d }}&#10;{% endfor %}"> {{ delivery.id }}</span> 
+        {% comment %} TODO: Nach der Entwicklungsphase {% for %}...{% endfor %} löschen {% endcomment %}
+        {% for delivery_unit in item.delivery_units.all %}
+          <span title="{% for du in item.delivery_units.all %}{{ du }}&#10;{% endfor %}">
+            {{ delivery_unit.pk }}
+          </span>
         {% empty %}
-        -----
+          -----
         {% endfor %}
       </div>
 
-      <div class="table-cell">{{ item.id }}</div>
+      <div class="table-cell">{{ item.pk }}</div>
       <div class="table-cell table-cell-center">{{ item.created_at|date:'d.m.Y' }}</div>
 
       <div class="table-cell">
-        {% if item.is_active == True %}
-          Aktiv
-        {% else %}
-          Erledigt
-        {% endif %}
+        {% comment %} Ternärer Operator in Django {% endcomment %}
+        {{ item.is_active|yesno:"Aktiv,Erledigt" }}
       </div>
+
+      <div class="table-cell">{{ item|getattr:"get_status_display" }}</div>
       <div class="table-cell">{{ item|getattr:"get_box_type_display" }}</div>
       <div class="table-cell">{{ item.material }}</div>
       <div class="table-cell table-cell-right">{{ item.weight }}</div>
       <div class="table-cell" title="{{ item.note }}">{{ item.note }}</div>
     </div>
-    {% endwith %}
-  {% endfor %}
+  {% endwith %}
+{% endfor %}
 </div>
 
 {% paginate page_obj %}
@@ -66,18 +69,7 @@
 <template id="context-menu-template">
   <ul id="context-menu" class="context-menu">
     <li data-action="urlDetailBarcode">Barcode drucken</li>
-    <li data-action="urlUpdate">Inhalt ändern</li>
-
-    <!-- Status 2 -> Aufbereitung -->
-    <li data-action="urlRecyclingCreate" data-require-status="2" data-param="unload">
-      In Aufbereitung übergeben
-    </li>
-
-    <!-- Status 3 -> Abholung -->
-    <li data-action="urlShippingCreate" data-require-status="3" data-param="unload">
-      In Abholung übergeben
-    </li>
-    
+    <li data-action="urlUpdate">Vorsortierung ändern</li>
   </ul>
 </template>
 
