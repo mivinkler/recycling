@@ -1,38 +1,151 @@
-{% extends "base.html" %}
+{# templates/recycling/recycling_update.html #}
+{% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Fraktion bearbeiten{% endblock %}
+{% block title %}Aufbereitung{% endblock %}
 
 {% block content %}
 <div class="itemcard">
   <div class="itemcard-title itemcard-margin-left">
-    <h2>Fraktion bearbeiten</h2>
-    <div><strong>ID:</strong> {{ recycling.id }}</div>
-    {% if recycling.barcode %}
-      <div><strong>Barcode:</strong> {{ recycling.barcode }}</div>
-    {% endif %}
+    <h2>Aufbereitung</h2>
   </div>
 
-  <form method="post">
-    {% csrf_token %}
-
-    {% if form.non_field_errors %}
-      <div class="form-errors">{{ form.non_field_errors }}</div>
-    {% endif %}
-
-    <div class="itemcard-topbox itemcard-margin-left">
-      {{ form.as_p }}
+  <section class="itemcard-topbox itemcard-margin-left">
+    <div class="itemcard-topbox-row">
+      <h3>Liefereinheit: &emsp; {{ unload }}</h3>
     </div>
+  </section>
 
-    <div class="buttons-form-footer">
-      <button type="submit" class="btn btn-main">Speichern</button>
+  <section class="itemcard-topbox">
+    <h4 class="itemcard-margin-left">Fraktionen:</h4>
 
-      {% with u=recycling.unloads.first %}
-        {% if u %}
-          <a class="btn" href="{% url 'recycling_create' unload_pk=u.pk %}">Zurück</a>
-        {% endif %}
-      {% endwith %}
-    </div>
-  </form>
+    <table class="itemcard-table">
+      <thead class="itemcard-thead">
+        <tr>
+          <th class="checkbox-circle itemcard-action-left"></th>
+          <th class="itemcard-id">№</th>
+          <th class="itemcard-material">ID</th>
+          <th class="itemcard-material">Material</th>
+          <th class="itemcard-boxtype">Behälter</th>
+          <th class="itemcard-weight">Gewicht</th>
+          <th class="itemcard-note">Anmerkung</th>
+          <th class="itemcard-action"></th>
+        </tr>
+      </thead>
+
+      <tbody class="itemcard-tbody">
+        {% for item in all_recyclings %}
+
+          {# ===================== EDIT ROW ===================== #}
+          {% if item.pk == edit_recycling.pk %}
+          <form method="post">
+            <tr class="itemcard-table-row">
+              <td class="checkbox-circle itemcard-action-left">
+                  {% csrf_token %}
+                  <input
+                    type="checkbox"
+                    name="selected_recycling"
+                    value="{{ item.id }}"
+                    checked
+                  >
+              </td>
+
+              <td class="itemcard-id">
+                <a
+                  href="{% url 'recycling_delete' unload_pk=unload.pk recycling_pk=item.pk %}"
+                  class="material-delete"
+                  title="Löschen"
+                >
+                  <img src="{% static 'icons/delete-icon.svg' %}" alt="">
+                </a>
+              </td>
+
+              <td class="itemcard-id">{{ item.id }}</td>
+              <td class="itemcard-material">{{ form.material }}</td>
+              <td class="itemcard-boxtype">{{ form.box_type }}</td>
+              <td class="itemcard-weight">{{ form.weight }}</td>
+              <td class="itemcard-note">{{ form.note }}</td>
+
+              <td class="itemcard-action-wrapper">
+                <div class="itemcard-action">
+                  <button type="submit" class="btn btn-main btn-save">Speichern</button>
+                </div>
+              </td>
+            </tr>
+          </form>
+
+          {# ===================== NORMAL ROW ===================== #}
+          {% else %}
+            <tr class="itemcard-table-row">
+              <td class="checkbox-circle itemcard-action-left">
+                <input
+                  type="checkbox"
+                  value="{{ item.id }}"
+                  {% if item.id in active_recycling_ids %}checked{% endif %}
+                  disabled
+                >
+              </td>
+
+              <td class="itemcard-id">{{ forloop.counter }}</td>
+              <td class="itemcard-id">{{ item.id }}</td>
+              <td class="itemcard-material"><p>{{ item.material }}</p></td>
+              <td class="itemcard-boxtype"><p>{{ item.get_box_type_display }}</p></td>
+              <td class="itemcard-weight"><p>{{ item.weight }}</p></td>
+              <td class="itemcard-note"><p>{{ item.note }}</p></td>
+
+              <td class="itemcard-action-wrapper">
+                <div class="itemcard-action">
+                  {% if item.id in active_recycling_ids %}
+                    <a
+                      href="{% url 'recycling_update' unload_pk=unload.pk recycling_pk=item.pk %}"
+                      class="btn btn-lock"
+                      title="Bearbeiten"
+                    >
+                      <img src="{% static 'icons/lock-icon.svg' %}" alt="">
+                    </a>
+                  {% else %}
+                    <form method="post">
+                      {% csrf_token %}
+                      <input type="hidden" name="recycling_id" value="{{ item.id }}">
+                      <button
+                        type="submit"
+                        class="btn btn-lock"
+                        title="Fraktion verknüpfen"
+                      >
+                        <img src="{% static 'icons/link-hyperlink-icon.svg' %}" alt="">
+                      </button>
+                    </form>
+                  {% endif %}
+                </div>
+              </td>
+            </tr>
+          {% endif %}
+        {% endfor %}
+
+        {# ===================== NEW ROW ===================== #}
+        <tr class="itemcard-table-row">
+          <td class="checkbox-circle itemcard-action-left"></td>
+          <td class="itemcard-id"></td>
+          <td class="itemcard-id"></td>
+          <td class="itemcard-material"></td>
+          <td class="itemcard-boxtype"></td>
+          <td class="itemcard-weight"></td>
+          <td class="itemcard-note"></td>
+          <td class="itemcard-action-wrapper">
+            <div class="itemcard-action">
+              <a
+                href="{% url 'recycling_create' unload_pk=unload.pk %}"
+                class="btn btn-lock"
+                title="Zurück"
+              >
+                <img src="{% static 'icons/lock-icon.svg' %}" alt="">
+              </a>
+            </div>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+  </section>
 </div>
 {% endblock %}

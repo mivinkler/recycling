@@ -36,6 +36,7 @@
           </tr>
         </thead>
 
+        {# ====== Aktive Wagen ====== #}
         <tbody class="itemcard-tbody">
           {% for item in unloads %}
             <tr class="itemcard-table-row">
@@ -59,7 +60,7 @@
             </tr>
           {% endfor %}
 
-          {# --- Neue Zeile --- #}
+          {# --- Neue Wagen --- #}
           <tr class="itemcard-table-row">
             <td class="itemcard-id"></td>
             <td class="itemcard-material">{{ form.material }}</td>

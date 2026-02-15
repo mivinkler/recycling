@@ -1,10 +1,12 @@
+{# templates/unload/recycling_create.html #}
+
 {% extends 'base.html' %}
 {% load static %}
 
 {% block title %}Aufbereitung{% endblock %}
 
 {% block content %}
-<form method="post" id="recycling-form">
+<form method="post">
   {% csrf_token %}
 
   <div class="itemcard">
@@ -14,22 +16,19 @@
 
     <section class="itemcard-topbox itemcard-margin-left">
       <div class="itemcard-topbox-row">
-        <span>Vorsortierung:</span>
-        <p>{{ unload }}</p>
+        <h3>Liefereinheit: &emsp; {{ unload }}</h3>
       </div>
     </section>
 
-    {# ====== Neue Fraktionen ====== #}
     <section class="itemcard-topbox">
-      <div class="itemcard-table-title itemcard-margin-left">Neue Fraktionen:</div>
+      <h4 class="itemcard-margin-left">Fraktionen:</h4>
 
       <table class="itemcard-table">
-        {{ formset.management_form }}
-
         <thead class="itemcard-thead">
           <tr>
             <th class="checkbox-circle itemcard-action-left"></th>
             <th class="itemcard-id">№</th>
+            <th class="itemcard-material">ID</th>
             <th class="itemcard-material">Material</th>
             <th class="itemcard-boxtype">Behälter</th>
             <th class="itemcard-weight">Gewicht</th>
@@ -38,25 +37,59 @@
           </tr>
         </thead>
 
+        {# ====== Aktive Fraktionen ====== #}
         <tbody class="itemcard-tbody">
-          {{ formset.non_form_errors }}
+          {% for item in all_recyclings %}
+            <tr class="itemcard-table-row">
+              <td class="checkbox-circle itemcard-action-left">
+                <input
+                  type="checkbox"
+                  name="selected_recycling"
+                  value="{{ item.id }}"
+                  {% if item.id in active_recycling_ids %}checked{% endif %}
+                  disabled
+                >
+              </td>
 
-          {% for f in formset.forms %}
-          <tr class="itemcard-table-row" data-kind="new" data-key="{{ f.prefix }}">
+              <td class="itemcard-id">{{ forloop.counter }}</td>
+              <td class="itemcard-id">{{ item.id }}</td>
+              <td class="itemcard-material"><p>{{ item.material }}</p></td>
+              <td class="itemcard-boxtype"><p>{{ item.get_box_type_display }}</p></td>
+              <td class="itemcard-weight"><p>{{ item.weight }}</p></td>
+              <td class="itemcard-note"><p>{{ item.note }}</p></td>
+              <td class="itemcard-action-wrapper">
+                <div class="itemcard-action">
+                  {% if item.id in active_recycling_ids %}
+                    <a href="{% url 'recycling_update' unload_pk=unload.pk recycling_pk=item.pk %}" class="btn btn-lock">
+                      <img src="{% static 'icons/lock-icon.svg' %}">
+                    </a>
+                  {% else %}
+                    <button
+                      type="submit"
+                      name="link_recycling"
+                      value="{{ item.id }}"
+                      class="btn btn-lock"
+                      title="Fraktion verknüpfen"
+                    >
+                      <img src="{% static 'icons/link-hyperlink-icon.svg' %}">
+                    </button>
+                  {% endif %}
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+
+          {# ====== Neue Fraktion ====== #}
+          <tr class="itemcard-table-row">
             <td class="checkbox-circle itemcard-action-left">
-              <input type="checkbox"
-                     name="selected_recycling"
-                     value="new:{{ f.prefix }}"
-                     title="Neue Fraktion verknüpfen"
-                     checked>
+              <input type="checkbox" name="selected_recycling" title="Fraktion verknüpfen" disabled>
             </td>
-
-            <td class="itemcard-id">{{ forloop.counter }}</td>
-            <td class="itemcard-material">{{ f.material }}</td>
-            <td class="itemcard-boxtype">{{ f.box_type }}</td>
-            <td class="itemcard-weight">{{ f.weight }}</td>
-            <td class="itemcard-note">{{ f.note }}</td>
-
+            <td class="itemcard-id">+</td>
+            <td class="itemcard-id">+</td>
+            <td class="itemcard-material">{{ form.material }}</td>
+            <td class="itemcard-boxtype">{{ form.box_type }}</td>
+            <td class="itemcard-weight">{{ form.weight }}</td>
+            <td class="itemcard-note">{{ form.note }}</td>
             <td class="itemcard-action-wrapper">
               <div class="itemcard-action">
                 <button type="button" class="btn btn-lock">
@@ -67,78 +100,9 @@
               </div>
             </td>
           </tr>
-          {% endfor %}
         </tbody>
       </table>
     </section>
-
-    {# ====== Aktive Fraktionen ====== #}
-    <section>
-      <div class="itemcard-table-title itemcard-margin-left">Aktive Fraktionen:</div>
-
-      <table class="itemcard-table">
-        <thead class="itemcard-thead">
-          <tr>
-            <th class="checkbox-circle itemcard-action-left"></th>
-            <th class="itemcard-id">№</th>
-            <th class="itemcard-id">AID</th>
-            <th class="itemcard-material">Material</th>
-            <th class="itemcard-boxtype">Behälter</th>
-            <th class="itemcard-weight">Gewicht</th>
-            <th class="itemcard-note">Anmerkung</th>
-            <th class="itemcard-action"></th>
-          </tr>
-        </thead>
-
-        <tbody class="itemcard-tbody">
-          {% if vorhandene_forms %}
-            {% for pair in vorhandene_forms %}
-              {% with form=pair.0 %}
-              <tr class="itemcard-table-row" data-kind="existing" data-key="{{ form.instance.pk }}">
-                <td class="checkbox-circle itemcard-action-left">
-                  {{ form.selected }}
-                </td>
-                <td class="itemcard-id">{{ forloop.counter }}</td>
-                <td class="itemcard-id"><p>{{ form.instance.id }}</p></td>
-                <td class="itemcard-material"><p>{{ form.instance.material }}</p></td>
-                <td class="itemcard-boxtype"><p>{{ form.instance.get_box_type_display }}</p></td>
-
-                <td class="itemcard-weight">
-                  {{ form.weight }}
-                </td>
-
-                <td class="itemcard-note">
-                  {{ form.note }}
-                </td>
-
-                <td class="itemcard-action-wrapper">
-                  <div class="itemcard-action">
-                    <button type="submit" class="btn btn-main btn-save">Speichern</button>
-                  </div>
-                </td>
-              </tr>
-              {% endwith %}
-            {% endfor %}
-          {% else %}
-            <tr class="itemcard-table-row">
-              <td class="checkbox-circle itemcard-action-left">
-                <input type="checkbox" disabled>
-              </td>
-              <td colspan="7" class="text-center">Keine aktiven Fraktionen vorhanden</td>
-            </tr>
-          {% endif %}
-        </tbody>
-      </table>
-    </section>
-
-    <div class="buttons-form-footer">
-      <button type="submit" class="btn btn-main">Speichern</button>
-    </div>
   </div>
 </form>
-{% endblock %}
-
-{% block extra_js %}
-  {# если нужно только правый клик — оставь, иначе убери #}
-  <script src="{% static 'js/mouse-right-click.js' %}"></script>
 {% endblock %}

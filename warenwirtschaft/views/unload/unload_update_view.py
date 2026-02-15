@@ -25,7 +25,6 @@ class UnloadUpdateView(View):
         ).order_by("pk")
 
     def _get_unload(self, delivery_unit, unload_pk):
-        # nur Unload erlauben, der mit DeliveryUnit verknüpft ist
         return get_object_or_404(
             Unload,
             pk=unload_pk,
