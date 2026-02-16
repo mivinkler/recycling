@@ -1,6 +1,6 @@
+from django.views.generic import DeleteView
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
-from django.views.generic import DeleteView
 
 from warenwirtschaft.models import DeliveryUnit, Unload
 

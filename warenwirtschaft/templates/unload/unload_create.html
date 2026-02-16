@@ -17,6 +17,13 @@
     <section class="itemcard-topbox">
       <div class="itemcard-topbox-row">
         <h3>Liefereinheit: &emsp; {{ delivery_unit }}</h3>
+        <button
+          type="button"
+          class="btn btn-main itemcard-topbox-btn"
+          id="finish-unload-btn"
+        >
+        Leerung abschließen
+      </button>
       </div>
     </section>
 
@@ -53,10 +60,6 @@
                   </a>
                 </div>
               </td>
-            </tr>
-          {% empty %}
-            <tr class="itemcard-table-row">
-              <td colspan="6" class="text-center">Keine Daten vorhanden</td>
             </tr>
           {% endfor %}
 

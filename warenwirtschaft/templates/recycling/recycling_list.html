@@ -23,9 +23,14 @@
 
   {% for item in page_obj %}
     <div class="table-row js-select-row"
-      data-id="{{ item.id }}"
-      data-url-update="{% url 'recycling_update' pk=item.id %}"
-      data-url-detail-barcode="{% url 'recycling_detail' pk=item.id %}"
+      data-id="{{ item.pk }}"
+      {% comment %} Nimmt den ersten Unload aus der Liste M2M {% endcomment %}
+      {% with first_unload=item.unloads.all.0 %}
+        {% if first_unload %}
+          data-url-update="{% url 'recycling_update' unload_pk=first_unload.pk recycling_pk=item.pk %}"
+        {% endif %}
+      {% endwith %}
+      data-url-barcode="{% url 'recycling_barcode' pk=item.id %}"
       >
       <div class="table-cell table-cell-counter">{{ forloop.counter }}</div>
       <div class="table-cell multiple-id">
@@ -56,8 +61,8 @@
 
 <template id="context-menu-template">
   <ul id="context-menu" class="context-menu">
-    <li data-action="urlDetailBarcode">Barcode drücken</li>
-    <li data-action="urlUpdate">Inhalt ändern</li>
+    <li data-action="urlBarcode">Barcode drücken</li>
+    <li data-action="urlUpdate">Aufbereitung ändern</li>
   </ul>
 </template>
 

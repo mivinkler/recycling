@@ -1,29 +1,36 @@
-<!-- TODO: Überlegen, ob Delete für Recycling notwendig ist. was soll gelöscht werden? -->
+{# templates/unload/recycling_delete.html #}
 
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Aufbereitung löschen{% endblock %}
+{% block title %}Fraktion löschen{% endblock %}
 
 {% block content %}
-
 <div class="itemcard">
   <form method="post">
     {% csrf_token %}
-    
+
     <div class="itemcard-title">
-      <h2>Aufbereitung löschen</h2>
+      <h2>Fraktion löschen</h2>
     </div>
 
-    <section class="itemcard-content">
-      <p>Sind Sie sicher, dass der Aufbereitung <strong>"{{ unload }}"</strong> gelöscht wird?</p>
-    </section>
+    <div class="itemcard-topbox">
+      <strong>Vorsortierung-Wagen:</strong> {{ unload }}
+    </div>
+    <div class="itemcard-topbox">
+      <strong>Fraktion:</strong> {{ recycling }}
+    </div>
+
+    <div class="itemcard-topbox">
+      <p>
+        Sind Sie sicher, dass der Vorsortierung-Wagen gelöscht wird?
+      </p>
+    </div>
 
     <div class="buttons-form-footer">
-        <button  type="submit" name="save" class="btn btn-main">Löschen</button>
-        <a href="{% url 'recycling_list' %}" class="btn btn-main">Abbrechen</a>
+      <button type="submit" class="btn btn-main">Löschen</button>
+      <a href="{% url 'recycling_update' unload_pk=unload.pk recycling_pk=recycling.pk %}" class="btn btn-main">Abbrechen</a>
     </div>
   </form>
 </div>
-
 {% endblock %}

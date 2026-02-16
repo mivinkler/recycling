@@ -88,7 +88,7 @@
           {% for unload in unloads %}
             <tr class="itemcard-table-row"
                 data-id="{{ unload.pk }}"
-                data-url-detail="{% url 'unload_detail_barcode' pk=unload.pk %}">
+                data-url-detail="{% url 'unload_barcode' pk=unload.pk %}">
               <td class="checkbox-circle itemcard-action-left">
                 <input type="checkbox"
                   name="selected_unload"

@@ -26,7 +26,7 @@
     <div class="table-row js-select-row"
       data-id="{{ item.pk }}"
       data-status="{{ item.status }}"
-      data-url-detail-barcode="{% url 'unload_barcode' pk=item.pk %}"
+      data-url-barcode="{% url 'unload_barcode' pk=item.pk %}"
       {% comment %} TODO: Nach der Entwicklungsphase {% if %}...{% endif %} löschen {% endcomment %}
       {% if delivery_unit %}
         data-url-update="{% url 'unload_update' delivery_unit_pk=delivery_unit.pk unload_pk=item.pk %}"
@@ -68,7 +68,7 @@
 
 <template id="context-menu-template">
   <ul id="context-menu" class="context-menu">
-    <li data-action="urlDetailBarcode">Barcode drucken</li>
+    <li data-action="urlBarcode">Barcode drucken</li>
     <li data-action="urlUpdate">Vorsortierung ändern</li>
   </ul>
 </template>

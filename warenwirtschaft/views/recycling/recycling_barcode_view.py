@@ -9,7 +9,7 @@ class RecyclingBarcodeView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context["box_type"] = Recycling.BOX_TYPE_CHOICES
-        context["statuses"] = Recycling.STATUS_CHOICES
+        context["box_type"] = Recycling.box_type
+        context["statuses"] = Recycling.status
 
         return context
