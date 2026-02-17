@@ -1,106 +1,105 @@
+{# templates/unload/unload_update.html #}
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Wareneingang ändern{% endblock %}
+{% block title %}Eingang erstellen{% endblock %}
 
 {% block content %}
-
-<form method="post" action="{% url 'delivery_update' delivery.pk %}" id="eingang-form">
+<form method="post">
   {% csrf_token %}
 
   <div class="itemcard">
     <div class="itemcard-title">
-      <h2>Wareneingang ändern</h2>
-      <a href="{% url 'delivery_delete' delivery.pk %}" class="delete-btn" title="Lieferung löschen">
-        <img src="{% static 'icons/delete-icon.svg' %}">
-      </a>
+      <h2>Wareneingang erstellen</h2>
     </div>
+
 
     <section class="itemcard-topbox">
       <div class="itemcard-topbox-row">
-        <label for="id_customer">Lieferant:</label>
-        <div class="itemcard-topbox-content">{{ form.customer }}</div>
+        <h4>Lieferant:</h4>
+        <p>{{ delivery.customer }}</p>
       </div>
 
       <div class="itemcard-topbox-row">
-        <label for="id_delivery_receipt">Lieferschein:</label>
-        <div class="itemcard-topbox-content">{{ form.delivery_receipt }}</div>
+        <h4 for="id_delivery_receipt">Lieferschein:</h4>
+        <p>{{ delivery.delivery_receipt }}</p>
       </div>
     </section>
 
-    <div class="itemcard-title">Liefereinheiten:</div>
 
-    <table class="itemcard-table add-row-js">
-      {{ formset.management_form }}
+    <section class="itemcard-topbox">
+      <h4>Liefereinheiten:</h4>
 
-      <thead class="itemcard-thead">
-        <tr>
-          <th class="itemcard-id">№</th>
-          <th class="itemcard-id">EID</th>
-          <th class="itemcard-boxtype">Behälter</th>
-          <th class="itemcard-material">Material</th>
-          <th class="itemcard-weight">Gewicht</th>
-          <th class="itemcard-weight">Anmerkung</th>
-          <th class="itemcard-row-delete"><img src="{% static 'icons/delete-icon.svg' %}" title="Zeile löschen"></th>
-        </tr>
-      </thead>
+      <table class="itemcard-table">
+        <thead class="itemcard-thead">
+          <tr>
+            <th class="itemcard-id">№</th>
+            <th class="itemcard-material">Material</th>
+            <th class="itemcard-boxtype">Behälter</th>
+            <th class="itemcard-note">Anmerkung</th>
+            <th class="itemcard-weight">Gewicht</th>
+            <th class="itemcard-action"></th>
+          </tr>
+        </thead>
 
-      <tbody class="itemcard-tbody"
-        data-formset-body
-        data-formset-prefix="{{ formset.prefix }}">
-        {{ formset.non_form_errors }}
+        <tbody class="itemcard-tbody">
+          {% for item in delivery_units %}
+            {% if item.pk == edit_delivery_unit.pk %}
+              <tr class="itemcard-table-row">
+                <td class="itemcard-id">
+                  <a href="#"
+                    class="material-delete" title="Löschen">
+                    <img src="{% static 'icons/delete-icon.svg' %}" alt="">
+                  </a>
+                </td>
+                <td class="itemcard-material">{{ form.material }}</td>
+                <td class="itemcard-boxtype">{{ form.box_type }}</td>
+                <td class="itemcard-note">{{ form.note }}</td>
+                <td class="itemcard-weight">{{ form.weight }} </td>
+                <td class="itemcard-action-wrapper">
+                  <div class="itemcard-action">
+                    <button type="button" class="btn btn-lock">
+                      <img class="icon-lock-open" src="{% static 'icons/lock-open-icon.svg' %}">
+                    </button>
 
-        {% for item_form in formset %}
+                    <button type="submit" class="btn btn-main btn-save">Speichern</button>
+                  </div>
+                </td>
+              </tr>
+            {% else %}
+              <tr class="itemcard-table-row">
+                <td class="itemcard-id">{{ forloop.counter }}</td>
+                <td class="itemcard-material">{{ form.material }}</td>
+                <td class="itemcard-boxtype">{{ form.box_type }}</td>
+                <td class="itemcard-weight">{{ form.weight }}</td>
+                <td class="itemcard-note">{{ form.note }}</td>
+                <td class="itemcard-action-wrapper">
+                  <div class="itemcard-action">
+                    <a href="{% url 'delivery_update' delivery_pk=delivery.pk delivery_unit_pk=delivery_unit.pk %}" class="btn btn-lock">
+                      <img src="{% static 'icons/lock-icon.svg' %}">
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            {% endif %}
+          {% endfor %}
           <tr class="itemcard-table-row">
-            {{ item_form.id }}  {# hidden input für PK #}
-            <td class="itemcard-id">{{ forloop.counter }}</td>
-            <td class="itemcard-id"><p>{{ item_form.instance.pk }}</p></td>
-            <td class="itemcard-boxtype">{{ item_form.box_type }}</td>
-            <td class="itemcard-material">{{ item_form.material }}</td>
-            <td class="itemcard-weight">{{ item_form.weight }}</td>
-            <td class="itemcard-note">{{ item_form.note }}</td>
-            <td class="itemcard-row-delete">
-              <label class="checkbox-square">
-                {{ item_form.DELETE }}
-                <span data-name="cross"></span>
-              </label>
+            <td class="itemcard-id"></td>
+            <td class="itemcard-material"></td>
+            <td class="itemcard-boxtype"></td>
+            <td class="itemcard-weight"></td>
+            <td class="itemcard-note"></td>
+            <td class="itemcard-action-wrapper">
+              <div class="itemcard-action">
+                <a href="{% url 'delivery_create' %}" class="btn btn-lock">
+                  <img src="{% static 'icons/lock-icon.svg' %}">
+                </a>
+              </div>
             </td>
           </tr>
-          {% endfor %}
-      </tbody>
-    </table>
-
-   {# Template für JS; __prefix__ wird vom JS ersetzt #}
-    <template data-formset-template>
-      <tr class="itemcard-table-row dynamic-row" data-formset-row>
-        <td class="itemcard-id" data-formset-index>__index__</td>
-        <td class="itemcard-id">--</td>
-        <td class="itemcard-boxtype">{{ formset.empty_form.box_type }}</td>
-        <td class="itemcard-material">{{ formset.empty_form.material }}</td>
-        <td class="itemcard-weight">{{ formset.empty_form.weight }}</td>
-        <td class="itemcard-note">{{ formset.empty_form.note }}</td>
-        <td class="itemcard-row-delete">
-          <label class="checkbox-square">
-            {{ formset.empty_form.DELETE }}
-            <span data-name="cross"></span>
-          </label>
-        </td>
-      </tr>
-    </template>
-
-    <div class="itemcard-action add-buttons">
-      <button class="btn btn-row-add" type="button" data-formset-add>+</button>
-      <button class="btn btn-row-add" type="button" data-formset-remove>–</button>
-    </div>
-
-    <div class="buttons-form-footer">
-      <button type="submit" name="save" class="btn btn-main">Speichern</button>
-    </div>
+        </tbody>
+      </table>
+    </section>
   </div>
 </form>
-
-{% endblock %}
-
-{% block extra_js %}
-  <script src="{% static 'js/add-table-row.js' %}"></script>
 {% endblock %}

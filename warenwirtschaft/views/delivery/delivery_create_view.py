@@ -1,47 +1,67 @@
-from django.db import transaction
-from django.shortcuts import redirect
-from django.views.generic.edit import CreateView
+from django.shortcuts import render, redirect
+from django.urls import reverse
+from django.views import View
 
-from warenwirtschaft.models.delivery import Delivery
 from warenwirtschaft.forms.delivery_form import DeliveryForm
+from warenwirtschaft.models import Delivery
 from warenwirtschaft.services.barcode_number_service import BarcodeNumberService
-from warenwirtschaft.views.delivery.delivery_form_mixin import DeliveryFormMixin
 
 
-class DeliveryCreateView(DeliveryFormMixin, CreateView):
+class DeliveryCreateView(View):
     template_name = "delivery/delivery_create.html"
-
-    model = Delivery
-    form_class = DeliveryForm
-    context_object_name = "delivery"
-
-    extra_units = 1
     BARCODE_PREFIX = "L"
 
-    def form_valid(self, form):
-        # Formset validieren
-        self.formset = self.get_units_formset()
-        if not self.formset.is_valid():
-            return self.form_invalid(form)
+    # --------------------------------------------------
+    # GET
+    # --------------------------------------------------
 
-        with transaction.atomic():
-            # 1) Lieferung speichern
-            self.object = form.save()
-            self.formset.instance = self.object
+    def get(self, request):
+        return render(
+            request,
+            self.template_name,
+            {
+                "selected_menu": "delivery_form",
+                "form": DeliveryForm(),
+            },
+        )
 
-            # 2) Units holen (noch nicht speichern)
-            units = self.formset.save(commit=False)
+    # --------------------------------------------------
+    # POST
+    # --------------------------------------------------
 
-            # 3) Create-spezifisch: Barcodes erzeugen
-            BarcodeNumberService.set_barcodes(units, prefix=self.BARCODE_PREFIX)
+    def post(self, request):
+        form = DeliveryForm(request.POST)
 
-            # 4) Units speichern
-            for unit in units:
-                unit.save()
+        if form.is_valid():
+            # 1) Delivery erstellen
+            delivery = Delivery.objects.create(
+                customer=form.cleaned_data["customer"],
+                delivery_receipt=form.cleaned_data.get("delivery_receipt", ""),
+            )
 
-            # 5) M2M speichern (falls vorhanden)
-            if hasattr(self.formset, "save_m2m"):
-                self.formset.save_m2m()
+            # 2) DeliveryUnit erstellen
+            delivery_unit = form.save(commit=False)
+            delivery_unit.is_active = True
 
-        # Nach Create auf Update umleiten
-        return redirect("delivery_update", pk=self.object.pk)
+            # FK setzen (NOT NULL constraint!)
+            delivery_unit.delivery = delivery
+
+            BarcodeNumberService.set_barcodes([delivery_unit], prefix=self.BARCODE_PREFIX)
+
+            delivery_unit.save()
+
+            return redirect(
+                reverse("delivery_update", kwargs={
+                "delivery_pk": delivery.pk,
+                "delivery_unit_pk": delivery_unit.pk
+                })
+            )
+
+        return render(
+            request,
+            self.template_name,
+            {
+                "selected_menu": "delivery_form",
+                "form": form,
+            },
+        )

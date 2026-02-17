@@ -1,49 +1,80 @@
-from django.db import transaction
-from django.views.generic.edit import UpdateView
-from django.http import HttpResponseRedirect
+# warenwirtschaft/views/delivery/delivery_update_view.py
 
-from warenwirtschaft.models.delivery import Delivery
-from warenwirtschaft.forms.delivery_form import DeliveryForm
-from warenwirtschaft.views.delivery.delivery_form_mixin import DeliveryFormMixin
+from django.shortcuts import get_object_or_404, render, redirect
+from django.urls import reverse
+from django.views import View
+
+from warenwirtschaft.forms.delivery_form import DeliveryForm  # ModelForm для DeliveryUnit
+from warenwirtschaft.models import Delivery, DeliveryUnit
 
 
-class DeliveryUpdateView(DeliveryFormMixin, UpdateView):
+class DeliveryUpdateView(View):
     template_name = "delivery/delivery_update.html"
 
-    model = Delivery
-    form_class = DeliveryForm
-    context_object_name = "delivery"
+    # --------------------------------------------------
+    # Hilfsmethoden
+    # --------------------------------------------------
 
-    # Beim Update keine zusätzlichen leeren Formulare
-    extra_units = 0
+    def _get_delivery(self, delivery_pk):
+        return get_object_or_404(Delivery, pk=delivery_pk)
 
-    def form_valid(self, form):
-        # Formset validieren
-        self.formset = self.get_units_formset()
-        if not self.formset.is_valid():
-            return self.form_invalid(form)
+    def _get_delivery_units(self, delivery):
+        return DeliveryUnit.objects.filter(delivery=delivery).order_by("pk")
 
-        with transaction.atomic():
-            # 1) Lieferung speichern
-            self.object = form.save()
-            self.formset.instance = self.object
+    def _get_delivery_unit(self, delivery, delivery_unit_pk):
+        return get_object_or_404(DeliveryUnit, pk=delivery_unit_pk, delivery=delivery, is_active=True)
 
-            # 2) Update-spezifisch: gelöschte Einheiten entfernen
-            for deleted_form in self.formset.deleted_forms:
-                instance = getattr(deleted_form, "instance", None)
-                if instance and instance.pk:
-                    instance.delete()
+    # --------------------------------------------------
+    # GET
+    # --------------------------------------------------
 
-            # 3) Units holen (neu/geändert)
-            units = self.formset.save(commit=False)
+    def get(self, request, delivery_pk, delivery_unit_pk):
+        delivery = self._get_delivery(delivery_pk)
+        delivery_units = self._get_delivery_units(delivery)
+        delivery_unit = self._get_delivery_unit(delivery, delivery_unit_pk)
 
-            # 4) Units speichern (keine Barcode-Erzeugung beim Update)
-            for unit in units:
-                unit.save()
+        form = DeliveryForm(instance=delivery_unit)
 
-            # 5) M2M speichern (falls vorhanden)
-            if hasattr(self.formset, "save_m2m"):
-                self.formset.save_m2m()
+        return render(
+            request,
+            self.template_name,
+            {
+                "selected_menu": "delivery_form",
+                "delivery": delivery,
+                "delivery_units": delivery_units,
+                "edit_delivery_unit": delivery_unit,
+                "form": form,
+            },
+        )
 
-        # Nach dem Speichern auf derselben Seite bleiben
-        return HttpResponseRedirect(self.request.get_full_path())
+    # --------------------------------------------------
+    # POST
+    # --------------------------------------------------
+
+    def post(self, request, delivery_pk, delivery_unit_pk):
+        delivery = self._get_delivery(delivery_pk)
+        delivery_units = self._get_delivery_units(delivery)
+        delivery_unit = self._get_delivery_unit(delivery, delivery_unit_pk)
+
+        form = DeliveryForm(request.POST, instance=delivery_unit)
+
+        if form.is_valid():
+            form.save()
+            return redirect(
+                reverse(
+                    "warenwirtschaft:delivery_update",
+                    kwargs={"delivery_pk": delivery.pk, "delivery_unit_pk": delivery_unit.pk},
+                )
+            )
+
+        return render(
+            request,
+            self.template_name,
+            {
+                "selected_menu": "delivery_form",
+                "delivery": delivery,
+                "delivery_units": delivery_units,
+                "edit_delivery_unit": delivery_unit,
+                "form": form,
+            },
+        )

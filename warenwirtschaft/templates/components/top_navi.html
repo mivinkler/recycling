@@ -19,7 +19,7 @@
 <!-- Vorsortierung -->
 <div class="header-menu-item">
   <a href="{% url 'unload_list' %}" class="header-menu-title{% if selected_menu == 'unload_list' %} title-selected{% endif %}">
-    Vorsortierung
+    Sortierung
     <span class="header-title-tooltip">Liste</span>
   </a>
   
@@ -33,10 +33,10 @@
 
 <span class="header-menu-splitter"></span>
 
-<!-- Aufbereitung -->
+<!-- Zerlegung -->
 <div class="header-menu-item">
   <a href="{% url 'recycling_list' %}" class="header-menu-title{% if selected_menu == 'recycling_list' %} title-selected{% endif %}">
-    Aufbereitung
+    Zerlegung
     <span class="header-title-tooltip">Liste</span>
   </a>
   <a href="{% url 'recycling_select' %}" class="header-menu-icon{% if selected_menu == 'recycling_form' %} icon-selected{% endif %}">
@@ -130,9 +130,9 @@
 
 <!-- Wiegen -->
 <div class="header-menu-item">
-  <a href="#" class="header-menu-title">
-    <!-- Wiegen
-    <span class="header-title-tooltip">Liste</span> -->
+  <a href="#">
+    <p style="text-align: center;">Zerlegung wiegen</p>
+    <!-- <span class="header-title-tooltip">Liste</span> -->
   </a>
   <a href="{% url 'daily_weight_list' %}" class="header-menu-icon svg-icon{% if selected_menu == 'daily_weight' %} icon-selected{% endif %}">
     <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="22px" height="22px" fill="#383838" viewBox="0 0 122.88 122.881" xml:space="preserve">
@@ -146,9 +146,9 @@
 
 <!-- Statistik -->
 <div class="header-menu-item">
-  <a href="#" class="header-menu-title">
-    <!-- Statistik
-    <span class="header-title-tooltip">Liste</span> -->
+  <a href="#">
+    Statistik
+    <!-- <span class="header-title-tooltip">Liste</span> -->
   </a>
   <a href="{% url 'statistic' %}" class="header-menu-icon svg-icon{% if selected_menu == 'statistic' %} icon-selected{% endif %}">
     <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" height="21px" fill="#606060" viewBox="0 0 135.42 122.88"><path d="M65.62,14.08H85.85a2,2,0,0,1,2,2V95.56a2,2,0,0,1-2,2H65.62a2,2,0,0,1-2-2V16a2,2,0,0,1,2-2Zm69.8,108.8H9.93v0A9.89,9.89,0,0,1,0,113H0V0H12.69V110.19H135.42v12.69ZM103.05,53.8h20.23a2,2,0,0,1,2,2V95.56a2,2,0,0,1-2,2H103.05a2,2,0,0,1-2-2V55.75a2,2,0,0,1,2-2ZM28.19,29.44H48.42a2,2,0,0,1,1.95,1.95V95.56a2,2,0,0,1-1.95,2H28.19a2,2,0,0,1-2-2V31.39a2,2,0,0,1,2-1.95Z"/></svg>

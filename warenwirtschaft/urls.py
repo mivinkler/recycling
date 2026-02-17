@@ -28,7 +28,7 @@ urlpatterns = [
     path('delivery/list/', DeliveryListView.as_view(), name='delivery_list'),
     path('delivery/barcode/<int:pk>/', DeliveryBarcodeView.as_view(), name='delivery_barcode'),
     path('delivery/create/', DeliveryCreateView.as_view(), name='delivery_create'),
-    path('delivery/update/<int:pk>/', DeliveryUpdateView.as_view(), name='delivery_update'),
+    path('<int:delivery_pk>/update/delivery_unit/<int:delivery_unit_pk>/', DeliveryUpdateView.as_view(), name='delivery_update'),
     path('delivery/delete/<int:pk>/', DeliveryDeleteView.as_view(), name='delivery_delete'),
 
     # unload (Vorsortierung)

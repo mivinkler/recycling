@@ -4,7 +4,7 @@
 {% block title %}Eingang erstellen{% endblock %}
 
 {% block content %}
-<form method="post" action="{% url 'delivery_create' %}" id="eingang-form">
+<form method="post">
   {% csrf_token %}
 
   <div class="itemcard">
@@ -12,81 +12,60 @@
       <h2>Wareneingang erstellen</h2>
     
       {% include 'components/barcode_scan_icon.html' %}
-      
     </div>
 
     <section class="itemcard-topbox">
-      {{ form.non_field_errors }}
-
       <div class="itemcard-topbox-row">
-        <label for="id_customer">Lieferant:</label>
-        <div class="itemcard-topbox-content">{{ form.customer_id }} {{ form.customer }}</div>
+        <h4>Lieferant:</h4>
+        <div class="itemcard-topbox-content">{{ form.customer }}</div>
       </div>
 
       <div class="itemcard-topbox-row">
-        <label for="id_delivery_receipt">Lieferschein:</label>
+        <h4 for="id_delivery_receipt">Lieferschein:</h4>
         <div class="itemcard-topbox-content">{{ form.delivery_receipt }}</div>
       </div>
     </section>
 
-    <div class="itemcard-table-title">Liefereinheiten:</div>
+    <section>
+      <h4>Liefereinheiten:</h4>
 
-    <table class="itemcard-table">
-      {{ formset.management_form }}
+      <table class="itemcard-table">
+        <thead class="itemcard-thead">
+          <tr>
+            <th class="itemcard-id">№</th>
+            <th class="itemcard-material">Material</th>
+            <th class="itemcard-boxtype">Behälter</th>
+            <th class="itemcard-weight">Gewicht</th>
+            <th class="itemcard-weight">Anmerkung</th>
+            <th class="itemcard-action"></th>
+          </tr>
+        </thead>
 
-      <thead class="itemcard-thead">
-        <tr>
-          <th class="itemcard-id">№</th>
-          <th class="itemcard-material">Material</th>
-          <th class="itemcard-boxtype">Behälter</th>
-          <th class="itemcard-weight">Gewicht</th>
-          <th class="itemcard-weight">Anmerkung</th>
-        </tr>
-      </thead>
-
-     <tbody class="itemcard-tbody add-row-js"
-        data-formset-body
-        data-formset-prefix="{{ formset.prefix }}">
-        {{ formset.non_form_errors }}
-
-        {% for item_form in formset %}
+        <tbody class="itemcard-tbody">
           <tr class="itemcard-table-row">
             <td class="itemcard-id">{{ forloop.counter }}</td>
-            <td class="itemcard-material">{{ item_form.material }}</td>
-            <td class="itemcard-boxtype">{{ item_form.box_type }}</td>
-            <td class="itemcard-weight">{{ item_form.weight }}</td>
-            <td class="itemcard-note">{{ item_form.note }}</td>
+            <td class="itemcard-material">{{ form.material }}</td>
+            <td class="itemcard-boxtype">{{ form.box_type }}</td>
+            <td class="itemcard-weight">{{ form.weight }}</td>
+            <td class="itemcard-note">{{ form.note }}</td>
+            <td class="itemcard-action-wrapper">
+              <div class="itemcard-action">
+                <button type="button" class="btn btn-lock">
+                  <img class="icon-lock-open" src="{% static 'icons/lock-open-icon.svg' %}">
+                </button>
+
+                <button type="submit" class="btn btn-main btn-save">Speichern</button>
+              </div>
+            </td>
           </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-
-    {# Template für JS; __prefix__ wird vom JS ersetzt #}
-    <template data-formset-template>
-      <tr class="itemcard-table-row dynamic-row" data-formset-row>
-        <td class="itemcard-id" data-formset-index>__index__</td>
-        <td class="itemcard-material">{{ formset.empty_form.material }}</td>
-        <td class="itemcard-boxtype">{{ formset.empty_form.box_type }}</td>
-        <td class="itemcard-weight">{{ formset.empty_form.weight }}</td>
-        <td class="itemcard-note">{{ formset.empty_form.note }}</td>
-      </tr>
-    </template>
-
-
-    <div class="itemcard-action add-buttons">
-      <button class="btn btn-row-add" type="button" id="form-add-btn" data-formset-add>+</button>
-      <button class="btn btn-row-add" type="button" data-formset-remove>–</button>
-    </div>
-
-    <div class="buttons-form-footer">
-      <button type="submit" name="save" class="btn btn-main">Speichern</button>
-    </div>
+        </tbody>
+      </table>
+    </section>
   </div>
 </form>
 {% endblock %}
 
 {% block extra_js %}
-  <script src="{% static 'js/add-table-row.js' %}"></script>
   <script src="{% static 'js/barcode/barcode-delivery.js' %}"></script>
 {% endblock %}
 
