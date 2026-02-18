@@ -1,4 +1,3 @@
-{# templates/unload/unload_select.html #}
 {% extends 'base.html' %}
 {% load static %}
 
@@ -6,31 +5,31 @@
 
 {% block content %}
 <div class="itemcard">
-  <div class="itemcard-title">
-    <h2>Vorsortierung</h2>
+  <section class="itemcard-title">
+    <h2>Vorsortierung erstellen</h2>
+    <div>
+      <input
+              type="text"
+              id="barcode"
+              placeholder="Barcode scannen..."
+              autocomplete="off"
+              data-accepted="L"
+              data-api="{% url 'barcode_unload_api' %}"
+              data-create-url="{% url 'unload_create' 0 %}"
+              autofocus
+              class="visually-hidden-input"
+            />
 
-    {# Verstecktes Input-Feld für Barcode-Scanner (muss fokussierbar bleiben!) #}
-    <input
-      type="text"
-      id="barcode"
-      placeholder="Barcode scannen..."
-      autocomplete="off"
-      data-accepted="L"
-      data-api="{% url 'barcode_unload_api' %}"
-      data-create-url="{% url 'unload_create' 0 %}"
-      autofocus
-      class="visually-hidden-input"
-    />
+      <label for="barcode" class="barcode-wrapper header-menu-icon svg-icon" id="barcode-label">
+        <img src="{% static 'icons/barcode-scan-active.svg' %}" id="barcode-active">
+        <img src="{% static 'icons/barcode-scan-inactive.svg' %}" id="barcode-inactive" hidden>
+      </label>
+    </div>
+  </section>
 
-    <label for="barcode" class="barcode-wrapper header-menu-icon svg-icon" id="barcode-label">
-      <img src="{% static 'icons/barcode-scan-active.svg' %}" id="barcode-active">
-      <img src="{% static 'icons/barcode-scan-inactive.svg' %}" id="barcode-inactive" hidden>
-    </label>
-  </div>
-
-  <form method="post" id="du-select-form">
-    {% csrf_token %}
-
+   <!-- ==== Bereit für Vorsortierung === -->
+  <section class="itemcard-topbox">
+    <h4>Liefereinheit wählen:</h4>
     <table class="itemcard-table">
       <thead class="itemcard-thead">
         <tr>
@@ -38,42 +37,74 @@
           <th class="itemcard-id">EID</th>
           <th class="itemcard-material">Material</th>
           <th class="itemcard-boxtype">Behälter</th>
-          <th class="itemcard-status">Status</th>
+          <th class="itemcard-weight">Gewicht</th>
           <th class="itemcard-note">Anmerkung</th>
           <th class="itemcard-action"></th>
         </tr>
       </thead>
 
       <tbody class="itemcard-tbody">
-        {% for delivery_unit in delivery_units %}
+        {% for du_active in delivery_units_ready %}
         <tr class="itemcard-table-row">
           <td class="itemcard-id"><p>{{ forloop.counter }}</p></td>
-          <td class="itemcard-id"><p>{{ delivery_unit.id }}</p></td>
-          <td class="itemcard-material"><p>{{ delivery_unit.material }}</p></td>
-          <td class="itemcard-boxtype"><p>{{ delivery_unit.get_box_type_display }}</p></td>
-
-          <td class="itemcard-status">
-            {% if delivery_unit.status == status_choices.WARTET_AUF_VORSORTIERUNG %}
-              <p>Ausstehend</p>
-            {% elif delivery_unit.status == status_choices.IN_VORSORTIERUNG %}
-              <p>Aktiv</p>
-            {% endif %}
-          </td>
-
-          <td class="itemcard-note"><p>{{ delivery_unit.note }}</p></td>
+          <td class="itemcard-id"><p>{{ du_active.id }}</p></td>
+          <td class="itemcard-material"><p>{{ du_active.material }}</p></td>
+          <td class="itemcard-boxtype"><p>{{ du_active.get_box_type_display }}</p></td>
+          <td class="itemcard-weight"><p>{{ du_active.weight }}</p></td>
+          <td class="itemcard-note"><p>{{ du_active.note }}</p></td>
 
           <td class="itemcard-action-wrapper">
             <div class="itemcard-action">
-              <button type="submit" name="delivery_unit_id" value="{{ delivery_unit.pk }}" class="btn btn-lock">
+              <a href="{% url 'unload_create' delivery_unit_pk=du_active.pk %}" class="btn btn-lock">
                 <img class="icon-lock-closed" src="{% static 'icons/lock-icon.svg' %}">
-              </button>
+              </a>
             </div>
           </td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
-  </form>
+  </section>
+
+
+    <!-- ==== Active Wagen in Halle === -->
+  <section class="itemcard-topbox">
+    <h4>Aktive Liefereinheiten:</h4>
+    <table class="itemcard-table">
+      <thead class="itemcard-thead">
+        <tr>
+          <th class="itemcard-id">№</th>
+          <th class="itemcard-id">EID</th>
+          <th class="itemcard-material">Material</th>
+          <th class="itemcard-boxtype">Behälter</th>
+          <th class="itemcard-weight">Gewicht</th>
+          <th class="itemcard-note">Anmerkung</th>
+          <th class="itemcard-action"></th>
+        </tr>
+      </thead>
+
+      <tbody class="itemcard-tbody">
+        {% for du_active in delivery_units_active %}
+        <tr class="itemcard-table-row">
+          <td class="itemcard-id"><p>{{ forloop.counter }}</p></td>
+          <td class="itemcard-id"><p>{{ du_active.id }}</p></td>
+          <td class="itemcard-material"><p>{{ du_active.material }}</p></td>
+          <td class="itemcard-boxtype"><p>{{ du_active.get_box_type_display }}</p></td>
+          <td class="itemcard-weight"><p>{{ du_active.weight }}</p></td>
+          <td class="itemcard-note"><p>{{ du_active.note }}</p></td>
+
+          <td class="itemcard-action-wrapper">
+            <div class="itemcard-action">
+              <a href="{% url 'unload_create' delivery_unit_pk=du_active.pk %}" class="btn btn-lock">
+                <img class="icon-lock-closed" src="{% static 'icons/lock-icon.svg' %}">
+              </a>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
 </div>
 
 <script src="{% static 'js/barcode/barcode-unload.js' %}" defer></script>

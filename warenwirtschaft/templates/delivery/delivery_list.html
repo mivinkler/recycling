@@ -28,7 +28,7 @@
     data-id="{{ item.id }}"
     data-status="{{ item.status }}"
     data-url-unload-create="{% url 'unload_select' %}"
-    data-url-update="{% url 'delivery_update' pk=item.delivery.id %}"
+    {% comment %} data-url-update="{% url 'delivery_update' pk=item.delivery.id %}" {% endcomment %}
     data-url-detail-barcode="{% url 'delivery_barcode' pk=item.id %}"
     
     {% comment %} data-url-detail-weight="{% url 'delivery_weight' pk=item.delivery.id %}" {% endcomment %}

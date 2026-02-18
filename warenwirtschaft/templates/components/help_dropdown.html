@@ -63,7 +63,7 @@
           <li>Ein "Neue Wagen" erscheint nach dem Speichern in der Liste "Aktive Wagen".</li>
           <li>
             Nach dem Befüllen eines Wagens sollte dessen Status auf <em>Bereit für Behandlung</em> oder <em>Bereit für Abholung</em> gesetzt werden.
-            Sobald der Wagen in der Abteilung <em>Aufbereitung</em> oder <em>Abholung</em> gescannt bzw. übernommen wurde, erhält er automatisch den Status <em>Erledigt</em>.
+            Sobald der Wagen in der Abteilung <em>Zerlegung</em> oder <em>Abholung</em> gescannt bzw. übernommen wurde, erhält er automatisch den Status <em>Erledigt</em>.
           </li>
           <li>
             Über das Symbol <img src="{% static 'icons/dashboard-icon.svg' %}" style="height:1.2em; vertical-align:middle;"> kann das Gewicht von der elektronischen Waage abgefragt werden. 
@@ -84,21 +84,21 @@
       </section>
 
  
-    <!-- Aufbereitung -->
+    <!-- Zerlegung -->
     {% elif selected_menu == "recycling_form" %}
       <section class="page-help">
-        <h3>Aufbereitung erfassen</h3>
+        <h3>Zerlegung erfassen</h3>
 
         <h4>Beschreibung</h4>
         <p>
-          Hier wird ein <em>Wagen</em> aus der <em>Vorsortierung</em> in der Abteilung <em>Aufbereitung</em> aufgenommen 
+          Hier wird ein <em>Wagen</em> aus der <em>Vorsortierung</em> in der Abteilung <em>Zerlegung</em> aufgenommen 
           und mit den zugehörigen Fraktionen verknüpft.
         </p>
 
         <h4>Vorsortierung</h4>
         <ul>
           <li>
-            Es werden alle Wagen mit dem Status <em>Bereit für Aufbereitung</em> angezeigt.  
+            Es werden alle Wagen mit dem Status <em>Bereit für Zerlegung</em> angezeigt.  
             Wählen Sie einen Wagen aus (<em>Pflichtfeld</em>).
           </li>
         </ul>
@@ -112,7 +112,7 @@
 
         <h4>Speicherung</h4>
         <ul>
-          <li>Neue Fraktionen erhalten beim Speichern automatisch einen Barcode mit dem Präfix <code>A</code> (Aufbereitung) und werden dem gewählten Wagen zugeordnet.</li>
+          <li>Neue Fraktionen erhalten beim Speichern automatisch einen Barcode mit dem Präfix <code>A</code> (Zerlegung) und werden dem gewählten Wagen zugeordnet.</li>
           <li>Sobald eine Fraktion in der Abteilung <em>Abholung</em> übernommen wurde, erhält sie automatisch den Status <em>Erledigt</em>.</li>
         </ul>
 
@@ -135,7 +135,7 @@
 
         <h4>Beschreibung</h4>
         <p>
-          Hier werden die abholbereiten Positionen (<em>Wagen</em> aus der Vorsortierung und <em>Fraktionen</em> aus der Aufbereitung) einer Abholung zugeordnet.
+          Hier werden die abholbereiten Positionen (<em>Wagen</em> aus der Vorsortierung und <em>Fraktionen</em> aus der Zerlegung) einer Abholung zugeordnet.
         </p>
 
         <h4>Prozess</h4>
@@ -152,7 +152,7 @@
             kann ein Barcode eingelesen werden.
           </li>
           <li>Für die Kopfdaten (Abholer, Abholschein usw.) werden Barcodes mit dem Präfix <code>"G"</code> akzeptiert.</li>
-          <li>Für den Abschnitt <em>Abholbereit</em> werden Barcodes mit den Präfixen <code>"S"</code> (Wagen aus der Vorsortierung) und <code>"A"</code> (Fraktion aus der Aufbereitung) akzeptiert.
+          <li>Für den Abschnitt <em>Abholbereit</em> werden Barcodes mit den Präfixen <code>"S"</code> (Wagen aus der Vorsortierung) und <code>"A"</code> (Fraktion aus der Zerlegung) akzeptiert.
               Beim Scannen eines Barcodes wird die entsprechende Position in der Liste automatisch ausgewählt (Checkbox wird aktiviert).
           </li>
         </ul>
@@ -196,7 +196,7 @@
           Hier verwalten Sie die Material-Liste und legen fest, in welchen Formularen das Material verwendet wird:
           </br>E - &nbsp;Eingang,
           </br>V - &nbsp;Vorsortierung,
-          </br>A - &nbsp;Aufbereitung.
+          </br>A - &nbsp;Zerlegung.
         </p>
 
         <h4>Bearbeitung</h4>
@@ -224,7 +224,7 @@
 
         <h4>Beschreibung</h4>
         <p>
-          Auf dieser Seite werden die <em>Fraktionen</em> aus der Abteilung <em>Aufbereitung</em> täglich gewogen.
+          Auf dieser Seite werden die <em>Fraktionen</em> aus der Abteilung <em>Zerlegung</em> täglich gewogen.
         </p>
 
         <h4>Vorgang</h4>

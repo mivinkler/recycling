@@ -75,7 +75,7 @@ class RecyclingUpdateView(View):
     def post(self, request, unload_pk, recycling_pk):
         unload = self._get_unload(unload_pk)
 
-        # Variante 2: Mini-Form pro Button -> recycling_id kommt als hidden input
+        # Mini-Form pro Button -> recycling_id kommt als hidden input
         if request.POST.get("recycling_id"):
             recycling_id = request.POST.get("recycling_id")
             recycling = get_object_or_404(Recycling, pk=recycling_id, is_active=True)

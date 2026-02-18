@@ -20,7 +20,7 @@ class UnloadForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         allowed = {
-            StatusChoices.WARTET_AUF_AUFBEREITUNG,
+            StatusChoices.WARTET_AUF_ZERLEGUNG,
             StatusChoices.WARTET_AUF_HALLE_ZWEI,
             StatusChoices.IN_VORSORTIERUNG,
             StatusChoices.ABHOLBEREIT,

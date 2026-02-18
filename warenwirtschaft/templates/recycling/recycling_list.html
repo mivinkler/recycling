@@ -13,7 +13,7 @@
 <div class="table" data-type="recycling">
   <div class="table-header">№</div>
   <div class="table-header" title="Vorsortierung-ID">{% sort_header "unload_id" "VID" %}</div>
-  <div class="table-header" title="Aufbereitung-ID">{% sort_header "recycling_id" "AID" %}</div>
+  <div class="table-header" title="Zerlegung-ID">{% sort_header "recycling_id" "AID" %}</div>
   <div class="table-header">{% sort_header "created_at" "Datum" %}</div>
   <div class="table-header">{% sort_header "is_active" "Status" %}</div>
   <div class="table-header">{% sort_header "box_type" "Behälter" %}</div>
@@ -62,7 +62,7 @@
 <template id="context-menu-template">
   <ul id="context-menu" class="context-menu">
     <li data-action="urlBarcode">Barcode drücken</li>
-    <li data-action="urlUpdate">Aufbereitung ändern</li>
+    <li data-action="urlUpdate">Zerlegung ändern</li>
   </ul>
 </template>
 

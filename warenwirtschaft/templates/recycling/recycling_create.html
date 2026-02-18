@@ -3,7 +3,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Aufbereitung{% endblock %}
+{% block title %}Zerlegung{% endblock %}
 
 {% block content %}
 <form method="post">
@@ -11,12 +11,12 @@
 
   <div class="itemcard">
     <div class="itemcard-title itemcard-margin-left">
-      <h2>Aufbereitung</h2>
+      <h2>Zerlegung erstellen</h2>
     </div>
 
     <section class="itemcard-topbox itemcard-margin-left">
       <div class="itemcard-topbox-row">
-        <h3>Liefereinheit: &emsp; {{ unload }}</h3>
+        <h3>Vorsortierung-wagen: &emsp; {{ unload }}</h3>
         <button
           type="button"
           class="btn btn-main itemcard-topbox-btn"
@@ -28,7 +28,7 @@
     </section>
 
     <section>
-      <h4 class="itemcard-margin-left">Fraktionen:</h4>
+      <h4 class="itemcard-margin-left">Zerlegung-Fraktion:</h4>
 
       <table class="itemcard-table">
         <thead class="itemcard-thead">

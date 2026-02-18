@@ -25,11 +25,11 @@ class ShippingListView(ListView):
         ("unloads__box_type", "Behälter (Vorsort.)"),
         ("unloads__status", "Status (Vorsort.)"),
 
-        # Recycling (Aufbereitung)
-        ("recyclings__material__name", "Material (Aufbereitung)"),
-        ("recyclings__weight", "Gewicht (Aufbereitung)"),
-        ("recyclings__box_type", "Behälter (Aufbereitung)"),
-        ("recyclings__status", "Status (Aufbereitung)"),
+        # Recycling (Zerlegung)
+        ("recyclings__material__name", "Material (Zerlegung)"),
+        ("recyclings__weight", "Gewicht (Zerlegung)"),
+        ("recyclings__box_type", "Behälter (Zerlegung)"),
+        ("recyclings__status", "Status (Zerlegung)"),
     ]
 
     def get_queryset(self):

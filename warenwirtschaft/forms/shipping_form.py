@@ -21,7 +21,7 @@ class UnloadChoiceForm(forms.Form):
 class RecyclingChoiceForm(forms.Form):
     recycling = forms.ModelChoiceField(
         queryset=Recycling.objects.filter(status=1),
-        label="Aufbereitung wählen"
+        label="Zerlegung wählen"
     )
 
 class ShippingForm(forms.ModelForm):

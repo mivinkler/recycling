@@ -16,7 +16,7 @@ class DeviceCheckListView(ListView):
     active_fields = [
         ("id", "HID"),
         ("unloads__id", "Vorsortierung"),
-        ("recyclins__id", "Aufbereitung"),
+        ("recyclins__id", "Zerlegung"),
         ("box_type", "Behälter"),
         ("material__name", "Material"),
         ("weight", "Gewicht"),

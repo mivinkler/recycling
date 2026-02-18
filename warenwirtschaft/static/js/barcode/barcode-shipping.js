@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (cb) { cb.checked = true; flashRow(cb); } else { alert('Gefundene Vorsortierung ist nicht in der Liste.'); }
       } else if (data.type === 'recycling') {
         const cb = getCb('selected_recycling', String(data.id ?? data.recycling_id));
-        if (cb) { cb.checked = true; flashRow(cb); } else { alert('Gefundene Aufbereitung ist nicht in der Liste.'); }
+        if (cb) { cb.checked = true; flashRow(cb); } else { alert('Gefundene Zerlegung ist nicht in der Liste.'); }
       } else {
         alert('Unerwartetes Antwortformat.');
       }

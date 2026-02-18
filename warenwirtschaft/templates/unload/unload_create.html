@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Vorsortierung{% endblock %}
+{% block title %}Vorsortierung erfassen{% endblock %}
 
 {% block content %}
 <form method="post">
@@ -9,24 +9,24 @@
 
   <div class="itemcard">
     <div class="itemcard-title">
-      <h2>Vorsortierung</h2>
+      <h2>Vorsortierung erstellen</h2>
     </div>
 
     <section class="itemcard-topbox">
       <div class="itemcard-topbox-row">
         <h3>Liefereinheit: &emsp; {{ delivery_unit }}</h3>
         <button
-          type="button"
-          class="btn btn-main itemcard-topbox-btn"
-          id="finish-unload-btn"
-        >
-        Leerung abschließen
-      </button>
+            type="button"
+            class="btn btn-main itemcard-topbox-btn"
+            id="finish-unload-btn"
+          >
+          Leerung abschließen
+        </button>
       </div>
     </section>
 
     <section>
-      <h4>Vorsortierung-Wagen:</h4>
+      <h4>Vorsortierung-Wagen wählen:</h4>
 
       <table class="itemcard-table">
         <thead class="itemcard-thead">

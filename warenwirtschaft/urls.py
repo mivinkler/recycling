@@ -39,7 +39,7 @@ urlpatterns = [
     path('<int:delivery_unit_pk>/delete/unload/<int:unload_pk>/', UnloadDeleteView.as_view(), name='unload_delete'),
     path('barcode/unload/<int:pk>/', UnloadBarcodeView.as_view(), name='unload_barcode'),
 
-    # recycling (Aufbereitung)
+    # recycling (Zerlegung)
     path('recycling/list/', RecyclingListView.as_view(), name='recycling_list'),
     path("recycling/select/", RecyclingSelectView.as_view(), name="recycling_select"),
     path('<int:unload_pk>/create/recycling/', RecyclingCreateView.as_view(), name='recycling_create'),

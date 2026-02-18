@@ -11,7 +11,7 @@
 
 
   <!-- ==== Bereit für Halle 2 === -->
-  <section name="unload" class="itemcard-topbox">
+  <section class="itemcard-topbox">
     <div class="itemcard-table-title">Bereit für Halle 2</div>
     <table class="itemcard-table">
       <thead class="itemcard-thead">
@@ -21,8 +21,8 @@
           <th class="itemcard-boxtype">Behälter</th>
           <th class="itemcard-status">Status</th>
           <th class="itemcard-origin">Herkunft</th>
-          <th class="itemcard-note">Anmerkung</th>
           <th class="itemcard-weight">Gewicht</th>
+          <th class="itemcard-note">Anmerkung</th>
           <th class="itemcard-action"></th>
         </tr>
       </thead>
@@ -68,11 +68,10 @@
                 </a>
               </div>
             </td>
-
           </tr>
         {% endfor %}
 
-        <!-- Aufbereitung (recycling) -->
+        <!-- Zerlegung (recycling) -->
         {% for recycling in recycling_ready %}
           <tr class="itemcard-table-row">
             <input type="hidden" name="recycling_id_{{ recycling.id }}" value="{{ recycling.id }}">
@@ -94,7 +93,7 @@
             </td>
 
             <td class="itemcard-status">
-              <p>Aufbereitung</p>
+              <p>Zerlegung</p>
             </td>
 
             <td class="itemcard-note">
@@ -121,7 +120,7 @@
 
 
   <!-- ==== Active Wagen in Halle === -->
-    <section name="unload" class="itemcard-topbox">
+    <section class="itemcard-topbox">
     <div class="itemcard-table-title">Aktiv in Halle 2</div>
     <table class="itemcard-table">
       <thead class="itemcard-thead">
@@ -182,7 +181,7 @@
           </tr>
         {% endfor %}
 
-        <!-- Aufbereitung (recycling) -->
+        <!-- Zerlegung (recycling) -->
         {% for recycling in recycling_active %}
           <tr class="itemcard-table-row">
             <input type="hidden" name="recycling_id_{{ recycling.id }}" value="{{ recycling.id }}">
@@ -204,7 +203,7 @@
             </td>
 
             <td class="itemcard-status">
-              <p>Aufbereitung</p>
+              <p>Zerlegung</p>
             </td>
 
             <td class="itemcard-note">

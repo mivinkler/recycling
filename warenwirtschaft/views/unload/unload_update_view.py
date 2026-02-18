@@ -47,6 +47,7 @@ class UnloadUpdateView(View):
             request,
             self.template_name,
             {
+                "selected_menu": "unload_form",
                 "delivery_unit": delivery_unit,
                 "unloads": unloads,
                 "edit_unload": unload,

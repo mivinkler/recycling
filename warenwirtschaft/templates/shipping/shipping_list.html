@@ -27,13 +27,13 @@
   {% for row in rows %}
   {% with shipping=row.shipping item=row.item kind=row.kind %}
     <div class="table-row js-select-row"
-      {% if kind == "unload" %}
-        data-url-detail-barcode="{% url 'unload_detail_barcode' pk=item.id %}"
+      {% comment %}{% if kind == "unload" %}
+        data-url-barcode="{% url 'unload_barcode' pk=item.id %}"
         data-url-update="{% url 'unload_update' pk=item.id %}"
       {% else %}
-        data-url-detail-barcode="{% url 'recycling_detail' pk=item.id %}"
-        data-url-update="{% url 'recycling_update' pk=item.id %}"
-      {% endif %}
+        data-url-barcode="{% url 'recycling_barcode' pk=item.id %}"
+        data-url-update="{% url 'recycling_update' unload_pk=unload.pk recycling_pk=item.pk %}"
+      {% endif %}{% endcomment %}
     >
       <div class="table-cell table-cell-counter">
         {{ forloop.counter }}
@@ -53,7 +53,7 @@
         {% if kind == "unload" %}
           Vorsortierung
         {% else %}
-          Aufbereitung
+          Zerlegung
         {% endif %}
       </div>
 
