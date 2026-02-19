@@ -18,8 +18,8 @@ class DailyWeightListView(TemplateView):
                 edit_recycling = get_object_or_404(Recycling, pk=pk)
 
         context = {
-            "unload_list": Unload.objects.filter(is_active=True),
-            "recycling_list": Recycling.objects.filter(is_active=True),
+            "unload_list": Unload.objects.filter(status=StatusChoices.AKTIV_IN_ZERLEGUNG),
+            "recycling_list": Recycling.objects.filter(status=StatusChoices.AKTIV_IN_ZERLEGUNG),
             "edit_unload": edit_unload,
             "edit_recycling": edit_recycling,
             "status_choices_unload": StatusChoices.CHOICES,

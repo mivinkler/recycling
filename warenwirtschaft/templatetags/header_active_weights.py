@@ -1,20 +1,12 @@
 from django import template
 from django.db.models import Sum
-from warenwirtschaft.models import Unload, Recycling, DeviceCheck
+from warenwirtschaft.models import Unload, Recycling
 
 register = template.Library()
 
 @register.inclusion_tag("components/header_active_weights.html")
 def header_active_weights():
-    """
-    Liefert die Gesamtgewichte aller aktiven Einheiten nach Bereichen
-    zur Anzeige in der Kopfzeile.
-    """
-
     def get_weight_by_status(model, status):
-        """
-        Die Funktion gibt 0 zurück, wenn keine Daten vorhanden sind.
-        """
         return model.objects.filter(status=status).aggregate(total=Sum("weight")).get("total") or 0
 
     unload_aktiv = get_weight_by_status(Unload, 1)

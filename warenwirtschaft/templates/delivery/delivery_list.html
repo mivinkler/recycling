@@ -15,7 +15,7 @@
   <div class="table-header" title="Lieferung-ID">{% sort_header "delivery__id" "LID" %}</div>
   <div class="table-header" title="Lieferung-Einheit-ID">{% sort_header "id" "EID" %}</div>
   <div class="table-header">{% sort_header "delivery__created_at" "Datum" %}</div>
-  <div class="table-header">{% sort_header "is_active" "Status" %}</div>
+  <div class="table-header">{% sort_header "status" "Status" %}</div>
   <div class="table-header">{% sort_header "delivery__customer__name" "Kunde" %}</div>
   <div class="table-header">{% sort_header "delivery__delivery_receipt" "Lieferschein" %}</div>
   <div class="table-header">{% sort_header "box_type" "Behälter" %}</div>
@@ -38,13 +38,7 @@
     <div class="table-cell">{{ item.id }}</div>
     <div class="table-cell table-cell-center">{{ item.created_at|date:'d.m.Y' }}</div>
 
-    <div class="table-cell">
-      {% if item.is_active == True %}
-        Aktiv
-      {% else %}
-        Erledigt
-      {% endif %}
-    </div>
+    <div class="table-cell">{{ item.get_status_display }}</div>
 
     <div class="table-cell">{{ item.delivery.customer.name }}</div>
     <div class="table-cell">{{ item.delivery.delivery_receipt }}</div>

@@ -41,7 +41,7 @@ class DeliveryCreateView(View):
 
             # 2) DeliveryUnit erstellen
             delivery_unit = form.save(commit=False)
-            delivery_unit.is_active = True
+            # delivery_unit.is_active = True
 
             # FK setzen (NOT NULL constraint!)
             delivery_unit.delivery = delivery

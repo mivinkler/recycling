@@ -6,6 +6,7 @@ from django.views import View
 
 from warenwirtschaft.forms.unload_form import UnloadForm
 from warenwirtschaft.models import DeliveryUnit, Unload
+from warenwirtschaft.models_common.choices import StatusChoices
 
 
 class UnloadUpdateView(View):
@@ -19,17 +20,16 @@ class UnloadUpdateView(View):
         return get_object_or_404(DeliveryUnit, pk=delivery_unit_pk)
 
     def _get_unloads(self, delivery_unit):
-        return Unload.objects.filter(
-            delivery_units=delivery_unit,
-            is_active=True,
-        ).order_by("pk")
+        return (
+            Unload.objects.filter(delivery_units=delivery_unit)
+            .exclude(status=StatusChoices.ERLEDIGT)
+            .order_by("pk")
+        )
 
     def _get_unload(self, delivery_unit, unload_pk):
         return get_object_or_404(
-            Unload,
+            Unload.objects.filter(delivery_units=delivery_unit).exclude(status=StatusChoices.ERLEDIGT),
             pk=unload_pk,
-            delivery_units=delivery_unit,
-            is_active=True,
         )
 
     # --------------------------------------------------
@@ -68,14 +68,13 @@ class UnloadUpdateView(View):
 
         if form.is_valid():
             form.save()
-            return redirect(
-                reverse("unload_create", kwargs={"delivery_unit_pk": delivery_unit.pk})
-            )
+            return redirect(reverse("unload_create", kwargs={"delivery_unit_pk": delivery_unit.pk}))
 
         return render(
             request,
             self.template_name,
             {
+                "selected_menu": "unload_form",
                 "delivery_unit": delivery_unit,
                 "unloads": unloads,
                 "edit_unload": unload,

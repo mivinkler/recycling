@@ -7,6 +7,7 @@ from django.views import View
 from warenwirtschaft.forms.unload_form import UnloadForm
 from warenwirtschaft.models import DeliveryUnit, Unload
 from warenwirtschaft.services.barcode_number_service import BarcodeNumberService
+from warenwirtschaft.models_common.choices import StatusChoices
 
 
 class UnloadCreateView(View):
@@ -23,7 +24,8 @@ class UnloadCreateView(View):
     def _get_unloads(self, delivery_unit):
         return Unload.objects.filter(
             delivery_units=delivery_unit,
-            is_active=True,
+        ).exclude(
+            status=StatusChoices.ERLEDIGT
         ).order_by("pk")
 
     # --------------------------------------------------

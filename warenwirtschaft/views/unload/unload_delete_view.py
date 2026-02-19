@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse
 
 from warenwirtschaft.models import DeliveryUnit, Unload
+from warenwirtschaft.models_common.choices import StatusChoices
 
 
 class UnloadDeleteView(DeleteView):
@@ -16,7 +17,8 @@ class UnloadDeleteView(DeleteView):
             Unload,
             pk=self.kwargs["unload_pk"],
             delivery_units__pk=self.kwargs["delivery_unit_pk"],
-            is_active=True,
+            ).exclude(
+            status=StatusChoices.ERLEDIGT
         )
 
     def get_context_data(self, **kwargs):

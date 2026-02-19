@@ -1,13 +1,11 @@
 from .box_type_choices import BoxTypeChoices
 from .status_choices import StatusChoices
 from .transport_choices import TransportChoices
-from .purpose_choices import PurposeChoices
 
 __all__ = [
     "BoxTypeChoices",
     "StatusChoices",
     "TransportChoices",
-    "PurposeChoices",
 ]
 
 # Hinweis:

@@ -8,6 +8,7 @@ from warenwirtschaft.forms.recycling_form import RecyclingForm
 from warenwirtschaft.models.recycling import Recycling
 from warenwirtschaft.models.unload import Unload
 from warenwirtschaft.services.barcode_number_service import BarcodeNumberService
+from warenwirtschaft.models_common.choices import StatusChoices
 
 
 class RecyclingUpdateView(View):
@@ -26,7 +27,7 @@ class RecyclingUpdateView(View):
             Recycling,
             pk=recycling_pk,
             unloads=unload,
-            is_active=True,
+            status=StatusChoices.AKTIV_IN_ZERLEGUNG,
         )
 
     def _redirect_create(self, unload):
@@ -41,7 +42,7 @@ class RecyclingUpdateView(View):
         )
 
     def _build_context(self, unload, edit_recycling, form):
-        active_recyclings = Recycling.objects.filter(unloads=unload, is_active=True).order_by("pk")
+        active_recyclings = Recycling.objects.filter(unloads=unload, status=StatusChoices.AKTIV_IN_ZERLEGUNG).order_by("pk")
         active_recycling_ids = set(active_recyclings.values_list("id", flat=True))
 
         return {
@@ -49,7 +50,7 @@ class RecyclingUpdateView(View):
             "unload": unload,
             "active_recyclings": active_recyclings,
             "active_recycling_ids": active_recycling_ids,
-            "all_recyclings": Recycling.objects.filter(is_active=True).order_by("pk"),
+            "all_recyclings": Recycling.objects.exclude(status=StatusChoices.ERLEDIGT).order_by("pk"),
             "edit_recycling": edit_recycling,
             "form": form,
         }
@@ -78,7 +79,7 @@ class RecyclingUpdateView(View):
         # Mini-Form pro Button -> recycling_id kommt als hidden input
         if request.POST.get("recycling_id"):
             recycling_id = request.POST.get("recycling_id")
-            recycling = get_object_or_404(Recycling, pk=recycling_id, is_active=True)
+            recycling = get_object_or_404(Recycling, pk=recycling_id, status=StatusChoices.AKTIV_IN_ZERLEGUNG)
 
             recycling.unloads.add(unload)
             return self._redirect_update(unload, recycling_id)

@@ -12,7 +12,7 @@ class UnloadListView(ListView):
 
     active_fields = [
         ("id", "Vorsortierung"),
-        ("is_active", "Status"),
+        ("status", "Status"),
         ("delivery_units__delivery__id", "Lieferung"),
         ("box_type", "Behälter"),
         ("material__name", "Material"),

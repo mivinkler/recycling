@@ -15,7 +15,7 @@
   <div class="table-header" title="Vorsortierung-ID">{% sort_header "unload_id" "VID" %}</div>
   <div class="table-header" title="Zerlegung-ID">{% sort_header "recycling_id" "AID" %}</div>
   <div class="table-header">{% sort_header "created_at" "Datum" %}</div>
-  <div class="table-header">{% sort_header "is_active" "Status" %}</div>
+  <div class="table-header">{% sort_header "status" "Status" %}</div>
   <div class="table-header">{% sort_header "box_type" "Behälter" %}</div>
   <div class="table-header">{% sort_header "material" "Material" %}</div>
   <div class="table-header">{% sort_header "weight" "Gewicht (kg)" %}</div>
@@ -42,13 +42,7 @@
       </div>
       <div class="table-cell table-cell-center">{{ item.id }}</div>
       <div class="table-cell table-cell-center">{{ item.created_at|date:'d.m.Y' }}</div>
-      <div class="table-cell table-cell-center">
-        {% if item.is_active == True %}
-          Aktiv
-        {% else %}
-          Erledigt
-        {% endif %}
-      </div>
+      <div class="table-cell">{{ item|getattr:"get_status_display" }}</div>
       <div class="table-cell">{{ item|getattr:"get_box_type_display" }}</div>
       <div class="table-cell">{{ item.material }}</div>
       <div class="table-cell table-cell-right">{{ item.weight }}</div>

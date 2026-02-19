@@ -5,7 +5,7 @@
 {% load custom_filters %}
 {% load pagination %}
 
-{% block title %}Leerungen{% endblock %}
+{% block title %}Vorsortierung{% endblock %}
 
 {% block content %}
 <div class="table-border"></div>
@@ -14,7 +14,7 @@
   <div class="table-header" title="Lieferung-Einheit-ID">{% sort_header "delivery_units__id" "EID" %}</div>
   <div class="table-header" title="Vorsortierung-ID">{% sort_header "id" "VID" %}</div>
   <div class="table-header">{% sort_header "created_at" "Datum" %}</div>
-  <div class="table-header">{% sort_header "is_active" "Status" %}</div>
+  <div class="table-header">{% sort_header "status" "Status" %}</div>
   <div class="table-header">{% sort_header "status" "Status" %}</div>
   <div class="table-header">{% sort_header "box_type" "Behälter" %}</div>
   <div class="table-header">{% sort_header "material__name" "Material" %}</div>
@@ -49,10 +49,7 @@
       <div class="table-cell">{{ item.pk }}</div>
       <div class="table-cell table-cell-center">{{ item.created_at|date:'d.m.Y' }}</div>
 
-      <div class="table-cell">
-        {% comment %} Ternärer Operator in Django {% endcomment %}
-        {{ item.is_active|yesno:"Aktiv,Erledigt" }}
-      </div>
+      <div class="table-cell">-</div>
 
       <div class="table-cell">{{ item|getattr:"get_status_display" }}</div>
       <div class="table-cell">{{ item|getattr:"get_box_type_display" }}</div>

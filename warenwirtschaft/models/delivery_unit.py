@@ -13,6 +13,7 @@ class DeliveryUnit(models.Model):
     note = models.CharField(max_length=255, null=True, blank=True)
     barcode = models.CharField(max_length=64, blank=True, null=True, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    inactive_at = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return f"EID: {self.id} - {self.get_box_type_display()} - Material: {self.material} - Gewicht: {self.weight} kg"

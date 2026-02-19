@@ -16,7 +16,6 @@ class RecyclingDeleteView(DeleteView):
             Recycling,
             pk=self.kwargs["recycling_pk"],
             unloads__pk=self.kwargs["unload_pk"],
-            is_active=True,
         )
     
     def get_context_data(self, **kwargs):

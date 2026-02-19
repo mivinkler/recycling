@@ -12,7 +12,7 @@ class RecyclingListView(ListView):
 
     active_fields = [
         ("id", "ID"),
-        ("is_active", "Status"),
+        ("status", "Status"),
         ("box_type", "Behälter"),
         ("weight", "Gewicht"),
         ("material__name", "Material"),

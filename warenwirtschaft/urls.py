@@ -11,7 +11,7 @@ from warenwirtschaft.views.recycling import RecyclingListView, RecyclingSelectVi
 from warenwirtschaft.views.daily_weight import DailyWeightUpdateView, DailyWeightListView
 from warenwirtschaft.views.shipping import ShippingListView, ShippingDetailView, ShippingCreateView, ShippingUpdateView, ShippingDeleteView
 from warenwirtschaft.views.barcode import BarcodeGeneratorListView, BarcodeGeneratorDetailView, BarcodeGeneratorCreateView, BarcodeGeneratorUpdateView, BarcodeGeneratorDeleteView
-from warenwirtschaft.views.device_check import DeviceCheckCreateView, DeviceCheckSelectView, DeviceCheckListView
+from warenwirtschaft.views.device_check import DeviceCheckUpdateView, DeviceCheckListView, DeviceCheckSelectView
 from warenwirtschaft.views.statistic.timeseries_view import TimeSeriesPageView
 from warenwirtschaft.views.export_excel import DeliveryExportExcelView, UnloadExportExcelView, RecyclingExportExcelView, ShippingExportExcelView
 
@@ -72,9 +72,9 @@ urlpatterns = [
     path('material/delete/<int:pk>/', MaterialDeleteView.as_view(), name='material_delete'),
 
     # device-check (Halle 2)
-    path('device-check/create/<str:source>/<int:pk>/', DeviceCheckCreateView.as_view(), name='device_check_create'),
-    path('device-check/select/', DeviceCheckSelectView.as_view(), name='device_check_select'),
+    path('device-check/create/<int:unload_pk>/', DeviceCheckUpdateView.as_view(), name='device_check_update'),
     path('device-check/list/', DeviceCheckListView.as_view(), name='device_check_list'),
+    path('device-check/select/', DeviceCheckSelectView.as_view(), name='device_check_select'),
 
     # excel herunterladen
     path('delivery-export-excel/', DeliveryExportExcelView.as_view(), name='delivery_export_excel'),

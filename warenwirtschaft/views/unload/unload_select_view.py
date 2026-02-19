@@ -11,12 +11,10 @@ class UnloadSelectView(View):
     def get(self, request):
         delivery_units_ready = DeliveryUnit.objects.filter(
             status=StatusChoices.WARTET_AUF_VORSORTIERUNG,
-            is_active=True,
         ).order_by("-pk")
 
         delivery_units_active = DeliveryUnit.objects.filter(
-            status=StatusChoices.IN_VORSORTIERUNG,
-            is_active=True,
+            status=StatusChoices.AKTIV_IN_VORSORTIERUNG,
         ).order_by("-pk")
 
         return render(

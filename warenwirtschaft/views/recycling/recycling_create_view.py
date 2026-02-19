@@ -7,6 +7,7 @@ from django.views import View
 from warenwirtschaft.forms.recycling_form import RecyclingForm
 from warenwirtschaft.models import Unload, Recycling
 from warenwirtschaft.services.barcode_number_service import BarcodeNumberService
+from warenwirtschaft.models_common.choices import StatusChoices
 
 
 class RecyclingCreateView(View):
@@ -21,12 +22,12 @@ class RecyclingCreateView(View):
         return get_object_or_404(Unload, pk=unload_pk)
 
     def _get_all_recyclings(self):
-        return Recycling.objects.filter(is_active=True)
+        return Recycling.objects.filter(status=StatusChoices.AKTIV_IN_ZERLEGUNG)
     
     def _get_active_recyclings(self, unload):
         return Recycling.objects.filter(
             unloads=unload,
-            is_active=True,
+            status=StatusChoices.AKTIV_IN_ZERLEGUNG,
         ).order_by("pk")
 
     # --------------------------------------------------
