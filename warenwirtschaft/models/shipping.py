@@ -1,10 +1,9 @@
 from django.db import models
 from warenwirtschaft.models.customer import Customer
 from warenwirtschaft.models_common.choices import TransportChoices
-from warenwirtschaft.models_common.mixins import DeactivateTimeMixin
 
 
-class Shipping(DeactivateTimeMixin, models.Model):
+class Shipping(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='shippings')
     certificate = models.PositiveIntegerField(null=True, blank=True)
     transport = models.PositiveSmallIntegerField(choices=TransportChoices.CHOICES)

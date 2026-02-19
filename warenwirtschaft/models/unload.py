@@ -1,10 +1,9 @@
 from django.db import models
 from warenwirtschaft.models.material import Material
 from warenwirtschaft.models_common.choices import BoxTypeChoices, StatusChoices
-from warenwirtschaft.models_common.mixins import DeactivateTimeMixin, WeightHistoryMixin
 
 
-class Unload(WeightHistoryMixin, DeactivateTimeMixin, models.Model):
+class Unload(models.Model):
     delivery_units = models.ManyToManyField("warenwirtschaft.DeliveryUnit", related_name="unloads")
     box_type = models.PositiveSmallIntegerField(choices=BoxTypeChoices.CHOICES, blank=True, null=True)
     material = models.ForeignKey(Material, on_delete=models.SET_NULL, null=True, blank=True, related_name="unloads")

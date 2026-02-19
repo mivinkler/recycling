@@ -29,7 +29,7 @@
 
    <!-- ==== Bereit für Vorsortierung === -->
   <section class="itemcard-topbox">
-    <h4>Liefereinheit wählen:</h4>
+    <h4>Bereit für Vorsortierung:</h4>
     <table class="itemcard-table">
       <thead class="itemcard-thead">
         <tr>
@@ -44,18 +44,18 @@
       </thead>
 
       <tbody class="itemcard-tbody">
-        {% for du_active in delivery_units_ready %}
+        {% for du_ready in delivery_units_ready %}
         <tr class="itemcard-table-row">
           <td class="itemcard-id"><p>{{ forloop.counter }}</p></td>
-          <td class="itemcard-id"><p>{{ du_active.id }}</p></td>
-          <td class="itemcard-material"><p>{{ du_active.material }}</p></td>
-          <td class="itemcard-boxtype"><p>{{ du_active.get_box_type_display }}</p></td>
-          <td class="itemcard-weight"><p>{{ du_active.weight }}</p></td>
-          <td class="itemcard-note"><p>{{ du_active.note }}</p></td>
+          <td class="itemcard-id"><p>{{ du_ready.pk }}</p></td>
+          <td class="itemcard-material"><p>{{ du_ready.material }}</p></td>
+          <td class="itemcard-boxtype"><p>{{ du_ready.get_box_type_display }}</p></td>
+          <td class="itemcard-weight"><p>{{ du_ready.weight }}</p></td>
+          <td class="itemcard-note"><p>{{ du_ready.note }}</p></td>
 
           <td class="itemcard-action-wrapper">
             <div class="itemcard-action">
-              <a href="{% url 'unload_create' delivery_unit_pk=du_active.pk %}" class="btn btn-lock">
+              <a href="{% url 'unload_create' delivery_unit_pk=du_ready.pk %}" class="btn btn-lock">
                 <img class="icon-lock-closed" src="{% static 'icons/lock-icon.svg' %}">
               </a>
             </div>
@@ -69,7 +69,7 @@
 
     <!-- ==== Active Wagen in Halle === -->
   <section class="itemcard-topbox">
-    <h4>Aktive Liefereinheiten:</h4>
+    <h4>Aktiv in Vorsortierung:</h4>
     <table class="itemcard-table">
       <thead class="itemcard-thead">
         <tr>
@@ -87,7 +87,7 @@
         {% for du_active in delivery_units_active %}
         <tr class="itemcard-table-row">
           <td class="itemcard-id"><p>{{ forloop.counter }}</p></td>
-          <td class="itemcard-id"><p>{{ du_active.id }}</p></td>
+          <td class="itemcard-id"><p>{{ du_active.pk }}</p></td>
           <td class="itemcard-material"><p>{{ du_active.material }}</p></td>
           <td class="itemcard-boxtype"><p>{{ du_active.get_box_type_display }}</p></td>
           <td class="itemcard-weight"><p>{{ du_active.weight }}</p></td>

@@ -1,12 +1,10 @@
 from django.db import models
 from warenwirtschaft.models.delivery import Delivery
 from warenwirtschaft.models.material import Material
-from warenwirtschaft.models_common.choices import BoxTypeChoices
-from warenwirtschaft.models_common.choices.status_choices import StatusChoices
-from warenwirtschaft.models_common.mixins import DeactivateTimeMixin
+from warenwirtschaft.models_common.choices import BoxTypeChoices, StatusChoices
 
 
-class DeliveryUnit(DeactivateTimeMixin, models.Model):
+class DeliveryUnit(models.Model):
     delivery = models.ForeignKey(Delivery, on_delete=models.CASCADE, related_name='delivery_units')
     box_type = models.PositiveSmallIntegerField(choices=BoxTypeChoices.CHOICES, blank=True, null=True)
     material = models.ForeignKey(Material, on_delete=models.SET_NULL, null=True, blank=True, related_name='delivery_units')

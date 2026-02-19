@@ -1,8 +1,8 @@
-from .deactivate_time_mixin import DeactivateTimeMixin
+# from .deactivate_time_mixin import DeactivateTimeMixin
 from .weight_history_mixin import WeightHistoryMixin
 
 __all__ = [
-    "DeactivateTimeMixin",
+    # "DeactivateTimeMixin",
     "WeightHistoryMixin",
 ]
 

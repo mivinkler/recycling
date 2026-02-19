@@ -22,7 +22,6 @@ class UnloadForm(forms.ModelForm):
         allowed = {
             StatusChoices.WARTET_AUF_ZERLEGUNG,
             StatusChoices.WARTET_AUF_HALLE_ZWEI,
-            StatusChoices.IN_VORSORTIERUNG,
             StatusChoices.ABHOLBEREIT,
         }
 
