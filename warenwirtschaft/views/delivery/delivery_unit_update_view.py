@@ -7,8 +7,8 @@ from warenwirtschaft.models import Delivery, DeliveryUnit
 from warenwirtschaft.models_common.choices import StatusChoices
 
 
-class DeliveryUpdateView(View):
-    template_name = "delivery/delivery_update.html"
+class DeliveryUnitUpdateView(View):
+    template_name = "delivery/delivery_unit_update.html"
 
     # --------------------------------------------------
     # Hilfsmethoden

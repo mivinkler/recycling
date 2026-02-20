@@ -12,7 +12,7 @@ from warenwirtschaft.models_common.choices import StatusChoices
 
 class UnloadCreateView(View):
     template_name = "unload/unload_create.html"
-    BARCODE_PREFIX = "S"
+    BARCODE_PREFIX = "V"
 
     # --------------------------------------------------
     # Hilfsmethoden

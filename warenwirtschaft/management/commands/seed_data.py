@@ -11,7 +11,7 @@ from django.utils import timezone
 
 from warenwirtschaft.models import (
     Material, Customer, Delivery, DeliveryUnit, Unload,
-    Recycling, Shipping, DeviceCheck
+    Recycling, Shipping
 )
 
 # ==============================
@@ -163,7 +163,7 @@ class Command(BaseCommand):
 
         # ==============================
         # 4) DeliveryUnits
-        #     a) Standard: Status = 4 (Erledigt)
+        #     a) Standard: Status = 8 (Erledigt)
         #     b) Zusätzlich: je 10 mit Status 1/2/3, wenn vorhanden
         # ==============================
         dus: List[DeliveryUnit] = []
@@ -177,16 +177,15 @@ class Command(BaseCommand):
                     box_type=random.choice([1, 2, 3, 4]),
                     material=random.choice(materials),
                     weight=round(random.uniform(80, 800), 2),
-                    status=4,  # Standard-Status für Seeds
+                    status=8, 
                     note=_note(),
                     barcode=_barcode("L"),
-                    is_active=False,
                 ))
         DeliveryUnit.objects.bulk_create(dus, batch_size=2000)
 
         # b) Zusatz je Status (1/2/3) – je 10 Einträge, falls vorhanden
         extra_du: List[DeliveryUnit] = []
-        for status_code in (1, 2, 3):
+        for status_code in (1, 2):
             if _has_status(DeliveryUnit, status_code):
                 for _ in range(10):
                     extra_du.append(DeliveryUnit(
@@ -197,7 +196,6 @@ class Command(BaseCommand):
                         status=status_code,
                         note=_note(),
                         barcode=_barcode("L"),
-                        is_active=False,
                     ))
         if extra_du:
             DeliveryUnit.objects.bulk_create(extra_du, batch_size=2000)
@@ -212,7 +210,7 @@ class Command(BaseCommand):
 
         # ==============================
         # 5) Unloads (m2m zu DeliveryUnit)
-        #     a) Standard: Status = 4 (Erledigt)
+        #     a) Standard: Status = 8 (Erledigt)
         #     b) Zusätzlich: je 10 für 1/2/3 (falls vorhanden)
         # ==============================
         unload_objs: List[Unload] = [
@@ -220,10 +218,9 @@ class Command(BaseCommand):
                 box_type=random.choice([1, 2, 3, 4]),
                 material=random.choice(materials),
                 weight=round(random.uniform(10, 150), 2),
-                status=4,  # Standard-Status
+                status=8,  # Standard-Status
                 note=_note(),
                 barcode=_barcode("V"),
-                is_active=False,
             )
             for _ in range(400)
         ]
@@ -231,7 +228,7 @@ class Command(BaseCommand):
 
         # b) Zusatz je Status (1/2/3) — je 10 Einträge
         extra_unloads: List[Unload] = []
-        for status_code in (1, 2, 3):
+        for status_code in (3, 4, 7):
             if _has_status(Unload, status_code):
                 for _ in range(10):
                     extra_unloads.append(Unload(
@@ -241,7 +238,6 @@ class Command(BaseCommand):
                         status=status_code,
                         note=_note(),
                         barcode=_barcode("V"),
-                        is_active=False,
                     ))
         if extra_unloads:
             Unload.objects.bulk_create(extra_unloads, batch_size=1000)
@@ -269,13 +265,12 @@ class Command(BaseCommand):
         # ==============================
         recycling_objs: List[Recycling] = [
             Recycling(
-                box_type=random.choice([1, 2, 3, 4]),
+                box_type=random.choice([5, 6]),
                 material=random.choice(materials),
                 weight=round(random.uniform(5, 120), 2),
-                status=4,
+                status=8,
                 note=_note(),
-                barcode=_barcode("A"),
-                is_active=False,
+                barcode=_barcode("Z"),
             )
             for _ in range(500)
         ]
@@ -283,7 +278,7 @@ class Command(BaseCommand):
 
         # b) Zusatz je Status (1 und 3) — je 10 Einträge
         extra_rec: List[Recycling] = []
-        for status_code in (1, 3):
+        for status_code in (5, 6, 7):
             if _has_status(Recycling, status_code):
                 for _ in range(10):
                     extra_rec.append(Recycling(
@@ -293,7 +288,6 @@ class Command(BaseCommand):
                         status=status_code,
                         note=_note(),
                         barcode=_barcode("A"),
-                        is_active=False,
                     ))
         if extra_rec:
             Recycling.objects.bulk_create(extra_rec, batch_size=1000)
