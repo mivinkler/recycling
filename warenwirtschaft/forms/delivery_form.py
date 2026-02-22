@@ -1,21 +1,12 @@
 from django import forms
-
-from warenwirtschaft.models.customer import Customer
-from warenwirtschaft.models.delivery_unit import DeliveryUnit
-
+from warenwirtschaft.models import Delivery, DeliveryUnit
 
 class DeliveryForm(forms.ModelForm):
-    customer = forms.ModelChoiceField(
-        queryset=Customer.objects.order_by("name"),
-        required=True,
-        label="Lieferant",
-    )
+    class Meta:
+        model = Delivery
+        fields = ["customer", "delivery_receipt"]
 
-    delivery_receipt = forms.CharField(
-        required=False,
-        label="Lieferschein",
-    )
-
+class DeliveryUnitForm(forms.ModelForm):
     class Meta:
         model = DeliveryUnit
         fields = ["material", "box_type", "weight", "note"]

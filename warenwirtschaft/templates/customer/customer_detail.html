@@ -57,7 +57,7 @@
             <div class="table-row js-select-row"
             data-id="{{ unit.delivery.id }}"
             data-url-detail="{% url 'delivery_detail' pk=unit.delivery.id %}"
-            data-url-update="{% url 'delivery_update' pk=unit.delivery.id %}">
+            data-url-update="{% url 'delivery_unit_update' pk=unit.delivery.id %}">
     
             <div>{{ forloop.counter }}</div>
             <div>{{ unit.delivery.delivery_receipt }}</div>

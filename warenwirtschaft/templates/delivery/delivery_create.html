@@ -10,19 +10,18 @@
   <div class="itemcard">
     <div class="itemcard-title">
       <h2>Wareneingang erstellen</h2>
-    
       {% include 'components/barcode_scan_icon.html' %}
     </div>
 
     <section class="itemcard-topbox">
       <div class="itemcard-topbox-row">
         <h4>Lieferant:</h4>
-        <div class="itemcard-topbox-content">{{ form.customer }}</div>
+        <div class="itemcard-topbox-content">{{ delivery_form.customer }}</div>
       </div>
 
       <div class="itemcard-topbox-row">
         <h4 for="id_delivery_receipt">Lieferschein:</h4>
-        <div class="itemcard-topbox-content">{{ form.delivery_receipt }}</div>
+        <div class="itemcard-topbox-content">{{ delivery_form.delivery_receipt }}</div>
       </div>
     </section>
 
@@ -36,18 +35,18 @@
             <th class="itemcard-material">Material</th>
             <th class="itemcard-boxtype">Behälter</th>
             <th class="itemcard-weight">Gewicht</th>
-            <th class="itemcard-weight">Anmerkung</th>
+            <th class="itemcard-note">Anmerkung</th>
             <th class="itemcard-action"></th>
           </tr>
         </thead>
 
         <tbody class="itemcard-tbody">
           <tr class="itemcard-table-row">
-            <td class="itemcard-id">{{ forloop.counter }}</td>
-            <td class="itemcard-material">{{ form.material }}</td>
-            <td class="itemcard-boxtype">{{ form.box_type }}</td>
-            <td class="itemcard-weight">{{ form.weight }}</td>
-            <td class="itemcard-note">{{ form.note }}</td>
+            <td class="itemcard-id">1</td>
+            <td class="itemcard-material">{{ unit_form.material }}</td>
+            <td class="itemcard-boxtype">{{ unit_form.box_type }}</td>
+            <td class="itemcard-weight">{{ unit_form.weight }}</td>
+            <td class="itemcard-note">{{ unit_form.note }}</td>
             <td class="itemcard-action-wrapper">
               <div class="itemcard-action">
                 <button type="button" class="btn btn-lock">
@@ -60,6 +59,59 @@
           </tr>
         </tbody>
       </table>
+
+      <!-- {{ delivery_form.errors }}
+      {{ unit_form.errors }} -->
+    </section>
+  </div>
+
+  <div class="itemcard">
+    <section>
+      <h4>Aktive Lieferungen:</h4>
+
+      <table class="itemcard-table" style="width: 100%;">
+        <thead class="itemcard-thead" style="width: 100%;">
+          <tr style="width: 100%;">
+            <th class="itemcard-id">№</th>
+            <th class="itemcard-id">LID</th>
+            <th>Lieferant</th>
+            <th>Lieferschein</th>
+            <th>Liefereinheiten</th>
+            <th class="itemcard-action" style="width: auto;"></th>
+          </tr>
+        </thead>
+        
+        <tbody class="itemcard-tbody">
+          {% for delivery in active_deliveries %}
+          <tr class="itemcard-table-row">
+            <td class="itemcard-id">{{ forloop.counter }}</td>
+            <td class="itemcard-id">{{ delivery.pk }}</td>
+            <td><p>{{ delivery.customer.name }}</p></td>
+            <td><p>{{ delivery.delivery_receipt }}</p></td>
+            <td> 
+              <p>
+                {% for item in delivery.delivery_units.all %}
+                  {% if item.status == 1 or item.status == 2 %}
+                    {{ item }}<br />
+                  {% else %}
+                    <strike>{{ item }}</strike><br />
+                  {% endif %}
+                {% endfor %}
+              </p>
+            </td>
+            <td class="itemcard-action-wrapper" style="width: auto;">
+              <div class="itemcard-action" style="width: auto;">
+                <a href="{% url 'delivery_unit_new' delivery_pk=delivery.pk %}" class="btn btn-lock">
+                  <img src="{% static 'icons/lock-icon.svg' %}" alt="">
+                </a>
+              </div>
+            </td>
+            </tr>
+          {% empty %}
+            <tr><td colspan="6">Keine aktuelle Wareneingänge vorhanden.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </section>
   </div>
 </form>
@@ -68,6 +120,3 @@
 {% block extra_js %}
   <script src="{% static 'js/barcode/barcode-delivery.js' %}"></script>
 {% endblock %}
-
-
-

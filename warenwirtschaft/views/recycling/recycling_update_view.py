@@ -13,7 +13,7 @@ from warenwirtschaft.models_common.choices import StatusChoices
 
 class RecyclingUpdateView(View):
     template_name = "recycling/recycling_update.html"
-    BARCODE_PREFIX = "A"
+    BARCODE_PREFIX = "Z"
 
     # --------------------------------------------------
     # Hilfsmethoden

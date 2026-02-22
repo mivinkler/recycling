@@ -1,5 +1,4 @@
-{# templates/unload/recycling_create.html #}
-
+{# templates/recycling/recycling_update.html #}
 {% extends 'base.html' %}
 {% load static %}
 
@@ -11,31 +10,24 @@
 
   <div class="itemcard">
     <div class="itemcard-title itemcard-margin-left">
-      <h2>Zerlegung erstellen</h2>
+      <h2>Zerlegung</h2>
     </div>
 
     <section class="itemcard-topbox itemcard-margin-left">
       <div class="itemcard-topbox-row">
         <h3>Vorsortierung-wagen: &emsp; {{ unload }}</h3>
-        <button
-          type="button"
-          class="btn btn-main itemcard-topbox-btn"
-          id="finish-recycling-btn"
-        >
-        Leerung abschließen
-      </button>
       </div>
     </section>
 
-    <section>
-      <h4 class="itemcard-margin-left">Zerlegung-Fraktion:</h4>
+    <section class="itemcard-topbox">
+      <h4 class="itemcard-margin-left">Zerlegung-Fraktionen:</h4>
 
       <table class="itemcard-table">
         <thead class="itemcard-thead">
           <tr>
             <th class="checkbox-circle itemcard-action-left"></th>
             <th class="itemcard-id">№</th>
-            <th class="itemcard-material">ID</th>
+            <th class="itemcard-id">ID</th>
             <th class="itemcard-material">Material</th>
             <th class="itemcard-boxtype">Behälter</th>
             <th class="itemcard-weight">Gewicht</th>
@@ -44,72 +36,80 @@
           </tr>
         </thead>
 
-        {# ====== Aktive Fraktionen ====== #}
         <tbody class="itemcard-tbody">
           {% for item in all_recyclings %}
             <tr class="itemcard-table-row">
               <td class="checkbox-circle itemcard-action-left">
                 <input
                   type="checkbox"
-                  name="selected_recycling"
-                  value="{{ item.id }}"
-                  {% if item.id in active_recycling_ids %}checked{% endif %}
-                  disabled
+                  name="recycling_ids"
+                  value="{{ item.pk }}"
+                  data-checkbox="{{ item.pk }}"
+                  {% if item.pk in active_recycling_ids %}checked{% endif %}
                 >
               </td>
 
               <td class="itemcard-id">{{ forloop.counter }}</td>
-              <td class="itemcard-id">{{ item.id }}</td>
+              <td class="itemcard-id">{{ item.pk }}</td>
               <td class="itemcard-material"><p>{{ item.material }}</p></td>
               <td class="itemcard-boxtype"><p>{{ item.get_box_type_display }}</p></td>
               <td class="itemcard-weight"><p>{{ item.weight }}</p></td>
               <td class="itemcard-note"><p>{{ item.note }}</p></td>
+
               <td class="itemcard-action-wrapper">
                 <div class="itemcard-action">
-                  {% if item.id in active_recycling_ids %}
-                    <a href="{% url 'recycling_update' unload_pk=unload.pk recycling_pk=item.pk %}" class="btn btn-lock">
-                      <img src="{% static 'icons/lock-icon.svg' %}">
-                    </a>
-                  {% else %}
-                    <button
-                      type="submit"
-                      name="link_recycling"
-                      value="{{ item.id }}"
-                      class="btn btn-lock"
-                      title="Fraktion verknüpfen"
-                    >
-                      <img src="{% static 'icons/link-hyperlink-icon.svg' %}">
-                    </button>
-                  {% endif %}
+                  <button
+                    type="button"
+                    class="btn btn-lock"
+                    title="Verbinden (Checkbox aktivieren)"
+                    data-toggle="{{ item.pk }}"
+                  >
+                    <img src="{% static 'icons/link-hyperlink-icon.svg' %}" alt="">
+                  </button>
                 </div>
               </td>
             </tr>
           {% endfor %}
 
-          {# ====== Neue Fraktion ====== #}
+          {# ===== NEUE ZEILE ===== #}
           <tr class="itemcard-table-row">
-            <td class="checkbox-circle itemcard-action-left">
-              <input type="checkbox" name="selected_recycling" title="Fraktion verknüpfen" disabled>
-            </td>
-            <td class="itemcard-id">+</td>
-            <td class="itemcard-id">+</td>
-            <td class="itemcard-material">{{ form.material }}</td>
-            <td class="itemcard-boxtype">{{ form.box_type }}</td>
-            <td class="itemcard-weight">{{ form.weight }}</td>
-            <td class="itemcard-note">{{ form.note }}</td>
-            <td class="itemcard-action-wrapper">
-              <div class="itemcard-action">
-                <button type="button" class="btn btn-lock">
-                  <img class="icon-lock-open" src="{% static 'icons/lock-open-icon.svg' %}">
-                </button>
-
-                <button type="submit" class="btn btn-main btn-save">Speichern</button>
-              </div>
-            </td>
+            <td class="checkbox-circle itemcard-action-left"></td>
+            <td class="itemcard-id"></td>
+            <td class="itemcard-id">neu</td>
+            <td class="itemcard-material">{{ new_form.material }}</td>
+            <td class="itemcard-boxtype">{{ new_form.box_type }}</td>
+            <td class="itemcard-weight">{{ new_form.weight }}</td>
+            <td class="itemcard-note">{{ new_form.note }}</td>
+            <td class="itemcard-action-wrapper"></td>
           </tr>
         </tbody>
       </table>
+
+      {% if new_form.errors %}
+        <div class="itemcard-margin-left">
+          {{ new_form.errors }}
+        </div>
+      {% endif %}
+
+      <div class="itemcard-margin-left" style="margin-top: 12px;">
+        <button type="submit" class="btn btn-main btn-save">Speichern</button>
+      </div>
     </section>
   </div>
 </form>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  document.addEventListener("click", function (e) {
+    const btn = e.target.closest("[data-toggle]");
+    if (!btn) return;
+
+    const id = btn.dataset.toggle;
+    const checkbox = document.querySelector('[data-checkbox="' + id + '"]');
+    if (!checkbox) return;
+
+    checkbox.checked = !checkbox.checked;
+  });
+</script>
 {% endblock %}
