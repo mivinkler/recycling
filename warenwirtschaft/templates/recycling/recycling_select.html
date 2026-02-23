@@ -28,7 +28,7 @@
   </section>
 
   <section class="itemcard-topbox">
-    <h4>Bereit für Vorsortierung:</h4>
+    <h4>Vorsortierung-Wagen zufügen:</h4>
     <table class="itemcard-table">
       <thead class="itemcard-thead">
         <tr>
@@ -55,7 +55,7 @@
           <td class="itemcard-action-wrapper">
             <div class="itemcard-action">
               <a href="{% url 'recycling_create' unload_pk=u_ready.pk %}" class="btn btn-lock">
-                <img class="icon-lock-closed" src="{% static 'icons/lock-icon.svg' %}">
+                Zufügen
               </a>
             </div>
           </td>
@@ -65,40 +65,72 @@
     </table>
   </section>
 
-  <section>
-    <h4>Aktiv in Vorsortierung:</h4>
+  <section name="recycling">
+    <div class="itemcard-table-title">Aktiv in Zerlegung</div>
     <table class="itemcard-table">
       <thead class="itemcard-thead">
         <tr>
           <th class="itemcard-id">№</th>
-          <th class="itemcard-id">VID</th>
           <th class="itemcard-material">Material</th>
           <th class="itemcard-boxtype">Behälter</th>
-          <th class="itemcard-weight">Gewicht</th>
+          <th class="itemcard-status">Status</th>
           <th class="itemcard-note">Anmerkung</th>
+          <th class="itemcard-weight">Gewicht</th>
+          <th class="itemcard-weight">Gewicht neu</th>
           <th class="itemcard-action"></th>
         </tr>
       </thead>
 
       <tbody class="itemcard-tbody">
-        {% for u_active in unloads_active %}
-        <tr class="itemcard-table-row">
-          <td class="itemcard-id"><p>{{ forloop.counter }}</p></td>
-          <td class="itemcard-id"><p>{{ u_active.id }}</p></td>
-          <td class="itemcard-material"><p>{{ u_active.material }}</p></td>
-          <td class="itemcard-boxtype"><p>{{ u_active.get_box_type_display }}</p></td>
-          <td class="itemcard-weight"><p>{{ u_active.weight }}</p></td>
-          <td class="itemcard-note"><p>{{ u_active.note }}</p></td>
+        <form method="post">
+          {% csrf_token %}
+          {% for recycling in recyclings %}
+          <tr class="itemcard-table-row">
+            <input type="hidden" name="recycling_id_{{ recycling.id }}" value="{{ recycling.id }}">
 
-          <td class="itemcard-action-wrapper">
-            <div class="itemcard-action">
-              <a href="{% url 'recycling_create' unload_pk=u_active.pk %}" class="btn btn-lock">
-                <img class="icon-lock-closed" src="{% static 'icons/lock-icon.svg' %}">
-              </a>
-            </div>
-          </td>
-        </tr>
-        {% endfor %}
+            <td class="itemcard-id">{{ forloop.counter }}</td>
+            <td class="itemcard-material"><p>{{ recycling.material }}</p></td>
+            <td class="itemcard-boxtype"><p>{{ recycling.get_box_type_display }}</p></td>
+
+            {% if edit_recycling and recycling.id == edit_recycling.id %}
+              <td class="itemcard-status">
+                <select name="recycling_status" class="active-border">
+                  {% for key, value in status_choices_recycling %}
+                  <option value="{{ key }}" {% if recycling.status == key %}selected{% endif %}>{{ value }}</option>
+                  {% endfor %}
+                </select>
+              </td>
+              <td class="itemcard-note"><input class="active-border" type="text" name="new_note" value="{{ recycling.note }}"></td>
+              <td class="itemcard-weight"><p>{{ recycling.weight }}</p></td>
+
+              <!-- Gewicht neu -->
+              <td class="itemcard-weight">
+                <input class="active-border" type="number" name="new_weight" autofocus>
+              </td>
+
+              <!-- Button -->
+              <td class="itemcard-action">
+                <a href="{% url 'daily_weight_list' %}" class="btn btn-lock">
+                  <img src="{% static 'icons/lock-open-icon.svg' %}">
+                </a>
+                <button type="submit" class="btn btn-main">Speichern</button>
+              </td>
+            {% else %}
+              <td class="itemcard-status"><p>{{ recycling.get_status_display }}</p></td>
+              <td class="itemcard-note"><p>{{ recycling.note }}</p></td>
+              <td class="itemcard-weight"><p>{{ recycling.weight }}</p></td>
+              <td class="itemcard-weight">
+                <a href="{% url 'daily_weight_update' model='recycling' pk=recycling.id %}"></a>
+              </td>
+              <td class="itemcard-action">
+                <a href="{% url 'daily_weight_update' model='recycling' pk=recycling.id %}" class="btn btn-lock">
+                  <img src="{% static 'icons/lock-icon.svg' %}">
+                </a>
+              </td>
+            {% endif %}
+          </tr>
+          {% endfor %}
+        </form>
       </tbody>
     </table>
   </section>
