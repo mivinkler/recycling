@@ -7,7 +7,7 @@ from warenwirtschaft.views.material import MaterialListView, MaterialCreateView,
 from warenwirtschaft.views.customer import CustomerListView, CustomerUpdateView, CustomerDetailView, CustomerCreateView,CustomerDeleteView
 from warenwirtschaft.views.delivery import DeliveryListView, DeliveryBarcodeView, DeliveryCreateView, DeliveryUnitUpdateView, DeliveryDeleteView
 from warenwirtschaft.views.unload import UnloadListView, UnloadSelectView, UnloadCreateView, UnloadUpdateView, UnloadDeleteView, UnloadBarcodeView
-from warenwirtschaft.views.recycling import RecyclingListView, RecyclingSelectView, RecyclingCreateView, RecyclingUpdateView, RecyclingDeleteView, RecyclingBarcodeView
+from warenwirtschaft.views.recycling import RecyclingListView, RecyclingCreateView, RecyclingUpdateView, RecyclingDeleteView, RecyclingBarcodeView
 from warenwirtschaft.views.daily_weight import DailyWeightUpdateView, DailyWeightListView
 from warenwirtschaft.views.shipping import ShippingListView, ShippingDetailView, ShippingCreateView, ShippingUpdateView, ShippingDeleteView
 from warenwirtschaft.views.barcode import BarcodeGeneratorListView, BarcodeGeneratorDetailView, BarcodeGeneratorCreateView, BarcodeGeneratorUpdateView, BarcodeGeneratorDeleteView
@@ -35,11 +35,10 @@ urlpatterns = [
 
     # recycling (Zerlegung)
     path('recycling/list/', RecyclingListView.as_view(), name='recycling_list'),
-    # path("recycling/select/", RecyclingSelectView.as_view(), name="recycling_select"),
     path('recycling/create/', RecyclingCreateView.as_view(), name='recycling_create'),
-    path('<int:unload_pk>/update/recycling/<int:recycling_pk>/', RecyclingUpdateView.as_view(), name='recycling_update'),
-    path('<int:unload_pk>/delete/recycling/<int:recycling_pk>/', RecyclingDeleteView.as_view(), name='recycling_delete'),
-    path('barcode/recycling/<int:pk>/', RecyclingBarcodeView.as_view(), name='recycling_barcode'),
+    path('recycling/update/<int:recycling_pk>/', RecyclingUpdateView.as_view(), name='recycling_update'),
+    path('recycling/delete<int:recycling_pk>/', RecyclingDeleteView.as_view(), name='recycling_delete'),
+    path('recycling/barcode/<int:pk>/', RecyclingBarcodeView.as_view(), name='recycling_barcode'),
     
     # daily-weight (Tägliches wiegen)
     path('daily-weight/list', DailyWeightListView.as_view(), name='daily_weight_list'),

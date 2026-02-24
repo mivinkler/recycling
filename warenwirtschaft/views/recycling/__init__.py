@@ -1,5 +1,4 @@
 from .recycling_list_view import RecyclingListView
-from .recycling_select_view import RecyclingSelectView
 from .recycling_create_view import RecyclingCreateView
 from .recycling_update_view import RecyclingUpdateView
 from .recycling_barcode_view import RecyclingBarcodeView

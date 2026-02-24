@@ -13,7 +13,7 @@ class UnloadChoiceForm(forms.Form):
 class RecyclingForm(forms.ModelForm):
     class Meta:
         model = Recycling
-        fields = [ "material", "box_type", "weight", "note"]
+        fields = [ "material", "box_type", "weight", "status", "note"]
 
 
 # Formset nur für neue Recycling-Zeilen

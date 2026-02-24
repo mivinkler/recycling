@@ -7,103 +7,58 @@ from django.views import View
 from warenwirtschaft.forms.recycling_form import RecyclingForm
 from warenwirtschaft.models.recycling import Recycling
 from warenwirtschaft.models.unload import Unload
-from warenwirtschaft.services.barcode_number_service import BarcodeNumberService
 from warenwirtschaft.models_common.choices import StatusChoices
 
 
 class RecyclingUpdateView(View):
-    template_name = "recycling/recycling_update.html"
-    BARCODE_PREFIX = "Z"
+    template_name = "recycling/recycling_create.html"  # тот же шаблон, что и список
 
     # --------------------------------------------------
-    # Hilfsmethoden
+    # Hilfsfunktionen
     # --------------------------------------------------
 
-    def _get_unload(self, unload_pk):
-        return get_object_or_404(Unload, pk=unload_pk)
+    def _get_recycling(self, recycling_pk):
+        """Recycling laden (404, falls nicht vorhanden)."""
+        return get_object_or_404(Recycling, pk=recycling_pk)
 
-    def _get_recycling(self, unload, recycling_pk):
-        return get_object_or_404(
-            Recycling,
-            pk=recycling_pk,
-            unloads=unload,
-            status=StatusChoices.AKTIV_IN_ZERLEGUNG,
-        )
+    def _get_unloads_ready(self):
+        """Unloads im Status WARTET_AUF_ZERLEGUNG anzeigen."""
+        return Unload.objects.filter(status=StatusChoices.WARTET_AUF_ZERLEGUNG).order_by("pk")
 
-    def _redirect_create(self, unload):
-        return redirect(reverse("recycling_create", kwargs={"unload_pk": unload.pk}))
+    def _get_recyclings_active(self):
+        """Recyclings im Status AKTIV_IN_ZERLEGUNG anzeigen."""
+        return Recycling.objects.filter(status=StatusChoices.AKTIV_IN_ZERLEGUNG).order_by("pk")
 
-    def _redirect_update(self, unload, recycling_pk):
-        return redirect(
-            reverse(
-                "recycling_update",
-                kwargs={"unload_pk": unload.pk, "recycling_pk": recycling_pk},
-            )
-        )
-
-    def _build_context(self, unload, edit_recycling, form):
-        active_recyclings = Recycling.objects.filter(unloads=unload, status=StatusChoices.AKTIV_IN_ZERLEGUNG).order_by("pk")
-        active_recycling_ids = set(active_recyclings.values_list("id", flat=True))
-
+    def _build_context(self, edit_recycling=None, form=None):
         return {
             "selected_menu": "recycling_form",
-            "unload": unload,
-            "active_recyclings": active_recyclings,
-            "active_recycling_ids": active_recycling_ids,
-            "all_recyclings": Recycling.objects.exclude(status=StatusChoices.ERLEDIGT).order_by("pk"),
+            "unloads_ready": self._get_unloads_ready(),
+            "recyclings": self._get_recyclings_active(),
             "edit_recycling": edit_recycling,
             "form": form,
+            "status_choices_recycling": StatusChoices.CHOICES,
         }
 
     # --------------------------------------------------
     # GET
     # --------------------------------------------------
 
-    def get(self, request, unload_pk, recycling_pk):
-        unload = self._get_unload(unload_pk)
-        edit_recycling = self._get_recycling(unload, recycling_pk)
+    def get(self, request, recycling_pk):
+        edit_recycling = self._get_recycling(recycling_pk)
+        form = RecyclingForm(instance=edit_recycling)
 
-        return render(
-            request,
-            self.template_name,
-            self._build_context(unload, edit_recycling, RecyclingForm(instance=edit_recycling)),
-        )
+        return render(request, self.template_name, self._build_context(edit_recycling, form))
 
     # --------------------------------------------------
     # POST
     # --------------------------------------------------
 
-    def post(self, request, unload_pk, recycling_pk):
-        unload = self._get_unload(unload_pk)
-
-        # Mini-Form pro Button -> recycling_id kommt als hidden input
-        if request.POST.get("recycling_id"):
-            recycling_id = request.POST.get("recycling_id")
-            recycling = get_object_or_404(Recycling, pk=recycling_id, status=StatusChoices.AKTIV_IN_ZERLEGUNG)
-
-            recycling.unloads.add(unload)
-            return self._redirect_update(unload, recycling_id)
-
-        edit_recycling = self._get_recycling(unload, recycling_pk)
+    def post(self, request, recycling_pk):
+        edit_recycling = self._get_recycling(recycling_pk)
         form = RecyclingForm(request.POST, instance=edit_recycling)
 
         if form.is_valid():
-            recycling = form.save(commit=False)
+            form.save()
+            return redirect(reverse("recycling_create"))
 
-            BarcodeNumberService.set_barcodes([unload], prefix=self.BARCODE_PREFIX)
-
-            recycling.save()
-
-            # Checkbox: wenn nicht gesetzt -> unlink und zurück
-            is_checked = request.POST.get("selected_recycling") == str(recycling.pk)
-            if not is_checked:
-                recycling.unloads.remove(unload)
-                return self._redirect_create(unload)
-
-            return self._redirect_update(unload, recycling.pk)
-
-        return render(
-            request,
-            self.template_name,
-            self._build_context(unload, edit_recycling, form),
-        )
+        return render(request, self.template_name, self._build_context(edit_recycling, form))

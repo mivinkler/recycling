@@ -36,6 +36,7 @@
           <th class="itemcard-id">VID</th>
           <th class="itemcard-material">Material</th>
           <th class="itemcard-boxtype">Behälter</th>
+          <th class="itemcard-status">Status</th>
           <th class="itemcard-weight">Gewicht</th>
           <th class="itemcard-note">Anmerkung</th>
           <th class="itemcard-action"></th>
@@ -49,13 +50,13 @@
           <td class="itemcard-id"><p>{{ u_ready.id }}</p></td>
           <td class="itemcard-material"><p>{{ u_ready.material }}</p></td>
           <td class="itemcard-boxtype"><p>{{ u_ready.get_box_type_display }}</p></td>
+          <td class="itemcard-material"><p>{{ u_ready.get_status_display }}</p></td>
           <td class="itemcard-weight"><p>{{ u_ready.weight }}</p></td>
           <td class="itemcard-note"><p>{{ u_ready.note }}</p></td>
 
           <td class="itemcard-action-wrapper">
             <div class="itemcard-action">
-              {# WICHTIG: Datenänderung -> POST #}
-              <form method="post" style="display:inline;">
+              <form method="post">
                 {% csrf_token %}
                 <input type="hidden" name="unload_id" value="{{ u_ready.pk }}">
                 <button type="submit" class="btn btn-lock">
@@ -70,51 +71,113 @@
     </table>
   </section>
 
-  <section name="recycling">
-    <div class="itemcard-table-title">Aktiv in Zerlegung</div>
-    <table class="itemcard-table">
-      <thead class="itemcard-thead">
-        <tr>
-          <th class="itemcard-id">№</th>
-          <th class="itemcard-material">Material</th>
-          <th class="itemcard-boxtype">Behälter</th>
-          <th class="itemcard-status">Status</th>
-          <th class="itemcard-note">Anmerkung</th>
-          <th class="itemcard-weight">Gewicht</th>
-          <th class="itemcard-weight">Gewicht neu</th>
-          <th class="itemcard-action"></th>
-        </tr>
-      </thead>
+<section name="recycling">
+  <div class="itemcard-table-title">Aktiv in Zerlegung</div>
 
-      <tbody class="itemcard-tbody">
-        {% for recycling in recyclings %}
+  <table class="itemcard-table">
+    <thead class="itemcard-thead">
+      <tr>
+        <th class="itemcard-id">№</th>
+        <th class="itemcard-id">ID</th>
+        <th class="itemcard-material">Material</th>
+        <th class="itemcard-boxtype">Behälter</th>
+        <th class="itemcard-status">Status</th>
+        <th class="itemcard-note">Anmerkung</th>
+        <th class="itemcard-weight">Gewicht</th>
+        <th class="itemcard-weight">Gewicht neu</th>
+        <th class="itemcard-action"></th>
+      </tr>
+    </thead>
+
+    <tbody class="itemcard-tbody">
+      {# ---------- FORM: UPDATE (nur wenn edit_recycling) ---------- #}
+      {% if edit_recycling %}
+        <form method="post" action="{% url 'recycling_update' recycling_pk=edit_recycling.pk %}">
+          {% csrf_token %}
+
+          {% for recycling in recyclings %}
+            {% if recycling.pk == edit_recycling.pk %}
+              <tr class="itemcard-table-row">
+                <td class="itemcard-id">{{ forloop.counter }}</td>
+                <td class="itemcard-id"><p>{{ recycling.id }}</p></td>
+                <td class="itemcard-material">{{ form.material }}</td>
+                <td class="itemcard-boxtype">{{ form.box_type }}</td>
+                <td class="itemcard-status">{{ form.status }}</td>
+                <td class="itemcard-note">{{ form.note }}</td>
+                <td class="itemcard-weight"><p>{{ recycling.weight }}</p></td>
+                <td class="itemcard-weight">{{ form.weight }}</td>
+                <td class="itemcard-action">
+                  <a href="{% url 'recycling_create' %}" class="btn btn-lock">
+                    <img src="{% static 'icons/lock-open-icon.svg' %}">
+                  </a>
+                  <button type="submit" class="btn btn-main">Speichern</button>
+                </td>
+              </tr>
+            {% endif %}
+          {% endfor %}
+
+          {% if form.errors %}
+            <tr class="itemcard-table-row">
+              <td colspan="9">{{ form.errors }}</td>
+            </tr>
+          {% endif %}
+        </form>
+      {% endif %}
+
+      {# ---------- NORMAL ROWS (immer anzeigen) ---------- #}
+      {% for recycling in recyclings %}
+        {% if not edit_recycling or recycling.pk != edit_recycling.pk %}
+          <tr class="itemcard-table-row">
+            <td class="itemcard-id"><p>{{ forloop.counter }}</p></td>
+            <td class="itemcard-id"><p>{{ recycling.id }}</p></td>
+            <td class="itemcard-material"><p>{{ recycling.material }}</p></td>
+            <td class="itemcard-boxtype"><p>{{ recycling.get_box_type_display }}</p></td>
+            <td class="itemcard-status"><p>{{ recycling.get_status_display }}</p></td>
+            <td class="itemcard-note"><p>{{ recycling.note }}</p></td>
+            <td class="itemcard-weight"><p>{{ recycling.weight }}</p></td>
+            <td class="itemcard-weight"><p></p></td>
+            <td class="itemcard-action">
+              <a href="{% url 'recycling_update' recycling_pk=recycling.pk %}" class="btn btn-lock">
+                <img src="{% static 'icons/lock-icon.svg' %}">
+              </a>
+            </td>
+          </tr>
+        {% endif %}
+      {% empty %}
         <tr class="itemcard-table-row">
-          <td class="itemcard-id">{{ forloop.counter }}</td>
-          <td class="itemcard-material"><p>{{ recycling.material }}</p></td>
-          <td class="itemcard-boxtype"><p>{{ recycling.get_box_type_display }}</p></td>
-          <td class="itemcard-status"><p>{{ recycling.get_status_display }}</p></td>
-          <td class="itemcard-note"><p>{{ recycling.note }}</p></td>
-          <td class="itemcard-weight"><p>{{ recycling.weight }}</p></td>
+          <td colspan="9">Keine Recyclings im Status "Aktiv in Zerlegung".</td>
+        </tr>
+      {% endfor %}
+
+      {# ---------- FORM: CREATE NEW ROW (immer unten) ---------- #}
+      <tr class="itemcard-table-row">
+        <form method="post" action="{% url 'recycling_create' %}">
+          {% csrf_token %}
+
+          <td class="itemcard-id"></td>
+          <td class="itemcard-id">neu</td>
+
+          <td class="itemcard-material">{{ new_form.material }}</td>
+          <td class="itemcard-boxtype">{{ new_form.box_type }}</td>
+          <td class="itemcard-status">{{ new_form.status }}</td>
+          <td class="itemcard-note">{{ new_form.note }}</td>
+          <td class="itemcard-weight">{{ new_form.weight }}</td>
           <td class="itemcard-weight"></td>
-          <td class="itemcard-action-wrapper">
-            <div class="itemcard-action">
-                <a
-                  href=""
-                  class="btn btn-lock"
-                >
-                  <img src="{% static 'icons/lock-icon.svg' %}" alt="">
-                </a>
-            </div>
+
+          <td class="itemcard-action">
+            <button type="submit" class="btn btn-main">Speichern</button>
           </td>
-        </tr>
-        {% empty %}
+        </form>
+      </tr>
+
+      {% if new_form and new_form.errors %}
         <tr class="itemcard-table-row">
-          <td colspan="8">Keine Recyclings im Status "Aktiv in Zerlegung".</td>
+          <td colspan="9">{{ new_form.errors }}</td>
         </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </section>
+      {% endif %}
+    </tbody>
+  </table>
+</section>
 </div>
 
 <script src="{% static 'js/barcode/barcode-recycling.js' %}" defer></script>
