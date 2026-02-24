@@ -40,7 +40,7 @@ class UnloadCreateView(View):
             self.template_name,
             {
                 "selected_menu": "unload_form",
-                "delivery_unit": delivery_unit,
+                "delivery_unit": self._get_delivery_unit(delivery_unit_pk),
                 "unloads": self._get_unloads(delivery_unit),
                 "form": UnloadForm(),
             },

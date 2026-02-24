@@ -1,115 +1,121 @@
-{# templates/recycling/recycling_update.html #}
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Zerlegung{% endblock %}
+{% block title %}Zerlegung auswählen{% endblock %}
 
 {% block content %}
-<form method="post">
-  {% csrf_token %}
+<div class="itemcard">
+  <section class="itemcard-title">
+    <h2>Zerlegung erstellen</h2>
+    <div>
+      <input
+        type="text"
+        id="barcode"
+        placeholder="Barcode scannen..."
+        autocomplete="off"
+        data-accepted="S"
+        data-api="{% url 'barcode_recycling_api' %}"
+        data-create-url="{% url 'recycling_create' %}"
+        autofocus
+        class="visually-hidden-input"
+      />
 
-  <div class="itemcard">
-    <div class="itemcard-title itemcard-margin-left">
-      <h2>Zerlegung</h2>
+      <label for="barcode" class="barcode-wrapper header-menu-icon svg-icon" id="barcode-label">
+        <img src="{% static 'icons/barcode-scan-active.svg' %}" id="barcode-active">
+        <img src="{% static 'icons/barcode-scan-inactive.svg' %}" id="barcode-inactive" hidden>
+      </label>
     </div>
+  </section>
 
-    <section class="itemcard-topbox itemcard-margin-left">
-      <div class="itemcard-topbox-row">
-        <h3>Vorsortierung-wagen: &emsp; {{ unload }}</h3>
-      </div>
-    </section>
+  <section class="itemcard-topbox">
+    <h4>Vorsortierung-Wagen zufügen:</h4>
+    <table class="itemcard-table">
+      <thead class="itemcard-thead">
+        <tr>
+          <th class="itemcard-id">№</th>
+          <th class="itemcard-id">VID</th>
+          <th class="itemcard-material">Material</th>
+          <th class="itemcard-boxtype">Behälter</th>
+          <th class="itemcard-weight">Gewicht</th>
+          <th class="itemcard-note">Anmerkung</th>
+          <th class="itemcard-action"></th>
+        </tr>
+      </thead>
 
-    <section class="itemcard-topbox">
-      <h4 class="itemcard-margin-left">Zerlegung-Fraktionen:</h4>
+      <tbody class="itemcard-tbody">
+        {% for u_ready in unloads_ready %}
+        <tr class="itemcard-table-row">
+          <td class="itemcard-id"><p>{{ forloop.counter }}</p></td>
+          <td class="itemcard-id"><p>{{ u_ready.id }}</p></td>
+          <td class="itemcard-material"><p>{{ u_ready.material }}</p></td>
+          <td class="itemcard-boxtype"><p>{{ u_ready.get_box_type_display }}</p></td>
+          <td class="itemcard-weight"><p>{{ u_ready.weight }}</p></td>
+          <td class="itemcard-note"><p>{{ u_ready.note }}</p></td>
 
-      <table class="itemcard-table">
-        <thead class="itemcard-thead">
-          <tr>
-            <th class="checkbox-circle itemcard-action-left"></th>
-            <th class="itemcard-id">№</th>
-            <th class="itemcard-id">ID</th>
-            <th class="itemcard-material">Material</th>
-            <th class="itemcard-boxtype">Behälter</th>
-            <th class="itemcard-weight">Gewicht</th>
-            <th class="itemcard-note">Anmerkung</th>
-            <th class="itemcard-action"></th>
-          </tr>
-        </thead>
+          <td class="itemcard-action-wrapper">
+            <div class="itemcard-action">
+              {# WICHTIG: Datenänderung -> POST #}
+              <form method="post" style="display:inline;">
+                {% csrf_token %}
+                <input type="hidden" name="unload_id" value="{{ u_ready.pk }}">
+                <button type="submit" class="btn btn-lock">
+                  Zufügen
+                </button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
 
-        <tbody class="itemcard-tbody">
-          {% for item in all_recyclings %}
-            <tr class="itemcard-table-row">
-              <td class="checkbox-circle itemcard-action-left">
-                <input
-                  type="checkbox"
-                  name="recycling_ids"
-                  value="{{ item.pk }}"
-                  data-checkbox="{{ item.pk }}"
-                  {% if item.pk in active_recycling_ids %}checked{% endif %}
+  <section name="recycling">
+    <div class="itemcard-table-title">Aktiv in Zerlegung</div>
+    <table class="itemcard-table">
+      <thead class="itemcard-thead">
+        <tr>
+          <th class="itemcard-id">№</th>
+          <th class="itemcard-material">Material</th>
+          <th class="itemcard-boxtype">Behälter</th>
+          <th class="itemcard-status">Status</th>
+          <th class="itemcard-note">Anmerkung</th>
+          <th class="itemcard-weight">Gewicht</th>
+          <th class="itemcard-weight">Gewicht neu</th>
+          <th class="itemcard-action"></th>
+        </tr>
+      </thead>
+
+      <tbody class="itemcard-tbody">
+        {% for recycling in recyclings %}
+        <tr class="itemcard-table-row">
+          <td class="itemcard-id">{{ forloop.counter }}</td>
+          <td class="itemcard-material"><p>{{ recycling.material }}</p></td>
+          <td class="itemcard-boxtype"><p>{{ recycling.get_box_type_display }}</p></td>
+          <td class="itemcard-status"><p>{{ recycling.get_status_display }}</p></td>
+          <td class="itemcard-note"><p>{{ recycling.note }}</p></td>
+          <td class="itemcard-weight"><p>{{ recycling.weight }}</p></td>
+          <td class="itemcard-weight"></td>
+          <td class="itemcard-action-wrapper">
+            <div class="itemcard-action">
+                <a
+                  href=""
+                  class="btn btn-lock"
                 >
-              </td>
+                  <img src="{% static 'icons/lock-icon.svg' %}" alt="">
+                </a>
+            </div>
+          </td>
+        </tr>
+        {% empty %}
+        <tr class="itemcard-table-row">
+          <td colspan="8">Keine Recyclings im Status "Aktiv in Zerlegung".</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+</div>
 
-              <td class="itemcard-id">{{ forloop.counter }}</td>
-              <td class="itemcard-id">{{ item.pk }}</td>
-              <td class="itemcard-material"><p>{{ item.material }}</p></td>
-              <td class="itemcard-boxtype"><p>{{ item.get_box_type_display }}</p></td>
-              <td class="itemcard-weight"><p>{{ item.weight }}</p></td>
-              <td class="itemcard-note"><p>{{ item.note }}</p></td>
-
-              <td class="itemcard-action-wrapper">
-                <div class="itemcard-action">
-                  <button
-                    type="button"
-                    class="btn btn-lock"
-                    title="Verbinden (Checkbox aktivieren)"
-                    data-toggle="{{ item.pk }}"
-                  >
-                    <img src="{% static 'icons/link-hyperlink-icon.svg' %}" alt="">
-                  </button>
-                </div>
-              </td>
-            </tr>
-          {% endfor %}
-
-          {# ===== NEUE ZEILE ===== #}
-          <tr class="itemcard-table-row">
-            <td class="checkbox-circle itemcard-action-left"></td>
-            <td class="itemcard-id"></td>
-            <td class="itemcard-id">neu</td>
-            <td class="itemcard-material">{{ new_form.material }}</td>
-            <td class="itemcard-boxtype">{{ new_form.box_type }}</td>
-            <td class="itemcard-weight">{{ new_form.weight }}</td>
-            <td class="itemcard-note">{{ new_form.note }}</td>
-            <td class="itemcard-action-wrapper"></td>
-          </tr>
-        </tbody>
-      </table>
-
-      {% if new_form.errors %}
-        <div class="itemcard-margin-left">
-          {{ new_form.errors }}
-        </div>
-      {% endif %}
-
-      <div class="itemcard-margin-left" style="margin-top: 12px;">
-        <button type="submit" class="btn btn-main btn-save">Speichern</button>
-      </div>
-    </section>
-  </div>
-</form>
-{% endblock %}
-
-{% block extra_js %}
-<script>
-  document.addEventListener("click", function (e) {
-    const btn = e.target.closest("[data-toggle]");
-    if (!btn) return;
-
-    const id = btn.dataset.toggle;
-    const checkbox = document.querySelector('[data-checkbox="' + id + '"]');
-    if (!checkbox) return;
-
-    checkbox.checked = !checkbox.checked;
-  });
-</script>
+<script src="{% static 'js/barcode/barcode-recycling.js' %}" defer></script>
 {% endblock %}
