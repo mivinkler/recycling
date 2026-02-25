@@ -30,7 +30,7 @@ urlpatterns = [
     path("unload/select/", UnloadSelectView.as_view(), name="unload_select"),
     path('<int:delivery_unit_pk>/create/unload', UnloadCreateView.as_view(), name='unload_create'),
     path('<int:delivery_unit_pk>/update/unload/<int:unload_pk>/', UnloadUpdateView.as_view(), name='unload_update'),
-    path('<int:delivery_unit_pk>/delete/unload/<int:unload_pk>/', UnloadDeleteView.as_view(), name='unload_delete'),
+    path("recycling/delete/<int:recycling_pk>/", RecyclingDeleteView.as_view(), name="recycling_delete"),
     path('barcode/unload/<int:pk>/', UnloadBarcodeView.as_view(), name='unload_barcode'),
 
     # recycling (Zerlegung)
