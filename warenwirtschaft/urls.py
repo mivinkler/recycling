@@ -8,7 +8,6 @@ from warenwirtschaft.views.customer import CustomerListView, CustomerUpdateView,
 from warenwirtschaft.views.delivery import DeliveryListView, DeliveryBarcodeView, DeliveryCreateView, DeliveryUnitUpdateView, DeliveryDeleteView
 from warenwirtschaft.views.unload import UnloadListView, UnloadSelectView, UnloadCreateView, UnloadUpdateView, UnloadDeleteView, UnloadBarcodeView
 from warenwirtschaft.views.recycling import RecyclingListView, RecyclingCreateView, RecyclingUpdateView, RecyclingDeleteView, RecyclingBarcodeView
-from warenwirtschaft.views.daily_weight import DailyWeightUpdateView, DailyWeightListView
 from warenwirtschaft.views.shipping import ShippingListView, ShippingDetailView, ShippingCreateView, ShippingUpdateView, ShippingDeleteView
 from warenwirtschaft.views.barcode import BarcodeGeneratorListView, BarcodeGeneratorDetailView, BarcodeGeneratorCreateView, BarcodeGeneratorUpdateView, BarcodeGeneratorDeleteView
 from warenwirtschaft.views.device_check import DeviceCheckUpdateView, DeviceCheckListView, DeviceCheckSelectView
@@ -40,10 +39,6 @@ urlpatterns = [
     path('recycling/delete<int:recycling_pk>/', RecyclingDeleteView.as_view(), name='recycling_delete'),
     path('recycling/barcode/<int:pk>/', RecyclingBarcodeView.as_view(), name='recycling_barcode'),
     
-    # daily-weight (Tägliches wiegen)
-    path('daily-weight/list', DailyWeightListView.as_view(), name='daily_weight_list'),
-    path('daily-weight/update/<str:model>/<int:pk>/', DailyWeightUpdateView.as_view(), name='daily_weight_update'),
-
     # device-check (Halle 2)
     path('device-check/create/<int:unload_pk>/', DeviceCheckUpdateView.as_view(), name='device_check_update'),
     path('device-check/list/', DeviceCheckListView.as_view(), name='device_check_list'),
