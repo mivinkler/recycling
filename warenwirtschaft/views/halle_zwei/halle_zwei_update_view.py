@@ -6,8 +6,8 @@ from warenwirtschaft.forms.unload_form import UnloadForm
 from warenwirtschaft.models_common.choices import StatusChoices
 
 
-class DeviceCheckUpdateView(View):
-    template_name = "device_check/device_check_update.html"
+class HalleZweiUpdateView(View):
+    template_name = "halle_zwei_check/halle_zwei_check_update.html"
 
     # --------------------------------------------------
     # GET

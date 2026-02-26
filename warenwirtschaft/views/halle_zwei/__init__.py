@@ -1,0 +1,3 @@
+from .halle_zwei_update_view import HalleZweiUpdateView
+from .halle_zwei_select_view import HalleZweiSelectView
+from .halle_zwei_list_view import HalleZweiListView

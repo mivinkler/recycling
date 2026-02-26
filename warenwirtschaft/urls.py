@@ -10,7 +10,7 @@ from warenwirtschaft.views.unload import UnloadListView, UnloadSelectView, Unloa
 from warenwirtschaft.views.recycling import RecyclingListView, RecyclingCreateView, RecyclingUpdateView, RecyclingDeleteView, RecyclingBarcodeView
 from warenwirtschaft.views.shipping import ShippingListView, ShippingDetailView, ShippingCreateView, ShippingUpdateView, ShippingDeleteView
 from warenwirtschaft.views.barcode import BarcodeGeneratorListView, BarcodeGeneratorDetailView, BarcodeGeneratorCreateView, BarcodeGeneratorUpdateView, BarcodeGeneratorDeleteView
-from warenwirtschaft.views.device_check import DeviceCheckUpdateView, DeviceCheckListView, DeviceCheckSelectView
+from warenwirtschaft.views.halle_zwei import HalleZweiUpdateView, HalleZweiListView, HalleZweiSelectView
 from warenwirtschaft.views.statistic.timeseries_view import TimeSeriesPageView
 from warenwirtschaft.views.export_excel import DeliveryExportExcelView, UnloadExportExcelView, RecyclingExportExcelView, ShippingExportExcelView
 
@@ -40,9 +40,9 @@ urlpatterns = [
     path('recycling/barcode/<int:pk>/', RecyclingBarcodeView.as_view(), name='recycling_barcode'),
     
     # device-check (Halle 2)
-    path('device-check/create/<int:unload_pk>/', DeviceCheckUpdateView.as_view(), name='device_check_update'),
-    path('device-check/list/', DeviceCheckListView.as_view(), name='device_check_list'),
-    path('device-check/select/', DeviceCheckSelectView.as_view(), name='device_check_select'),
+    path('halle-zwei/create/<int:unload_pk>/', HalleZweiUpdateView.as_view(), name='device_check_update'),
+    path('halle-zwei/list/', HalleZweiListView.as_view(), name='device_check_list'),
+    path('halle-zwei/select/', HalleZweiSelectView.as_view(), name='device_check_select'),
 
     # shipping (Abholung)
     path('shipping/list/', ShippingListView.as_view(), name='shipping_list'),

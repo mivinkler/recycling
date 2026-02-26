@@ -1,3 +1,0 @@
-from .device_check_update_view import DeviceCheckUpdateView
-from .device_check_select_view import DeviceCheckSelectView
-from .device_check_list_view import DeviceCheckListView

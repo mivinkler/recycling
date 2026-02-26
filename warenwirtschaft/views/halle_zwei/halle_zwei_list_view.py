@@ -6,7 +6,7 @@ from warenwirtschaft.services.sorting_service import SortingService
 from warenwirtschaft.services.pagination_service import PaginationService
 
 
-class DeviceCheckListView(ListView):
+class HalleZweiListView(ListView):
     model = Unload
     template_name = "device_check/device_check_list.html"
     context_object_name = "device-checks"
