@@ -9,7 +9,7 @@
 
 {% block content %}
 <div class="table-border"></div>
-<div class="table" data-type="device-check">
+<div class="table" data-type="halle-zwei">
   <div class="table-header">№</div>
   <div class="table-header" title="Vorsortierung-ID">HID</div>
   <div class="table-header" title="Vorsortierung-ID">Wagen</div>
@@ -26,19 +26,7 @@
     <div class="table-cell table-cell-counter">{{ forloop.counter }}</div>
     <div class="table-cell">{{ item.id }}</div>
     <div class="table-cell">
-      {% if item.unload %}
-        {{ item.unload }}
-      {% elif item.recycling %}
-        {{ item.recycling }}
-      {% endif %}
-    </div>
-
-    <div class="table-cell">
-      {% if item.unload %}
-        Vorsortierung
-      {% elif item.recycling %}
-        Zerlegung
-      {% endif %}
+        {{ item }}
     </div>
     <div class="table-cell table-cell-center">{{ item.created_at|date:'d.m.Y' }}</div>
     <div class="table-cell">{{ item.get_box_type_display }}</div>

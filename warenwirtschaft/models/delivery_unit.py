@@ -12,6 +12,12 @@ class DeliveryUnit(models.Model):
     status = models.PositiveSmallIntegerField(choices=StatusChoices.CHOICES, default=StatusChoices.WARTET_AUF_VORSORTIERUNG)
     note = models.CharField(max_length=255, null=True, blank=True)
     barcode = models.CharField(max_length=64, blank=True, null=True, unique=True)
+
+    halle_zwei = models.BooleanField(null=True, blank=True)
+    halle_zwei_at = models.DateTimeField(null=True, blank=True)
+    shipping = models.ForeignKey("warenwirtschaft.Shipping", on_delete=models.SET_NULL, null=True, blank=True, related_name="halle_zwei")
+
+
     created_at = models.DateTimeField(auto_now_add=True)
     inactive_at = models.DateTimeField(null=True, blank=True)
 

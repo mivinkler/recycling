@@ -12,8 +12,6 @@ class Unload(models.Model):
     note = models.CharField(max_length=255, null=True, blank=True)
     shipping = models.ForeignKey("warenwirtschaft.Shipping", on_delete=models.SET_NULL, null=True, blank=True, related_name="unloads")
     barcode = models.CharField(max_length=64, blank=True, null=True, unique=True)
-    device_check = models.BooleanField(null=True, blank=True)
-    device_check_at = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     inactive_at = models.DateTimeField(null=True, blank=True)
 

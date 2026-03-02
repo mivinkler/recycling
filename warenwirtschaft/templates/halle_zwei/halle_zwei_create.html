@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Device-Check{% endblock %}
+{% block title %}Halle 2{% endblock %}
 
 {% block content %}
 <div class="itemcard">
@@ -27,91 +27,49 @@
         </tr>
       </thead>
       
-      <!-- Vorsortierung (unload) -->
+      <!-- DeliveryUnit -->
       <tbody class="itemcard-tbody">
-        {% for unload in unload_ready %}
+        {% for item in delivery_unit_ready %}
           <tr class="itemcard-table-row">
-            <input type="hidden" name="recycling_id_{{ unload.id }}" value="{{ unload.id }}">
-
             <td class="itemcard-id">
               {{ forloop.counter }}
             </td>
 
             <td class="itemcard-material">
-              <p>{{ unload.material }}</p>
+              <p>{{ item.material }}</p>
             </td>
 
             <td class="itemcard-boxtype">
-              <p>{{ unload.get_box_type_display }}</p>
+              <p>{{ item.get_box_type_display }}</p>
             </td>
 
             <td class="itemcard-status">
-              <p>{{ unload.get_status_display }}</p>
+              <p>{{ item.get_status_display }}</p>
             </td>
 
-            <td class="itemcard-status">
+            <td class="itemcard-origin">
               <p>Vorsortierung</p>
             </td>
 
-            <td class="itemcard-note">
-              <p>{{ unload.note }}</p>
+            <td class="itemcard-weight">
+              <p>{{ item.weight }}</p>
             </td>
 
-            <td class="itemcard-weight">
-              <p>{{ unload.weight }}</p>
+            <td class="itemcard-note">
+              <p>{{ item.note }}</p>
             </td>
 
             <td class="itemcard-action-wrapper">
               <div class="itemcard-action">
-                <a href="{% url 'device_check_create' 'unload' unload.pk %}" class="btn btn-lock">
+                <a href="{% url 'halle_zwei_create' pk=item.pk %}" class="btn btn-lock">
                   <img class="icon-lock-closed" src="{% static 'icons/lock-icon.svg' %}">
                 </a>
               </div>
             </td>
           </tr>
-        {% endfor %}
-
-        <!-- Zerlegung (recycling) -->
-        {% for recycling in recycling_ready %}
-          <tr class="itemcard-table-row">
-            <input type="hidden" name="recycling_id_{{ recycling.id }}" value="{{ recycling.id }}">
-
-            <td class="itemcard-id">
-              {{ forloop.counter }}
-            </td>
-
-            <td class="itemcard-material">
-              <p>{{ recycling.material }}</p>
-            </td>
-
-            <td class="itemcard-boxtype">
-              <p>{{ recycling.get_box_type_display }}</p>
-            </td>
-
-            <td class="itemcard-status">
-              <p>{{ recycling.get_status_display }}</p>
-            </td>
-
-            <td class="itemcard-status">
-              <p>Zerlegung</p>
-            </td>
-
-            <td class="itemcard-note">
-              <p>{{ recycling.note }}</p>
-            </td>
-
-            <td class="itemcard-weight">
-              <p>{{ recycling.weight }}</p>
-            </td>
-
-            <td class="itemcard-action-wrapper">
-              <div class="itemcard-action">
-                <a href="{% url 'device_check_create' 'recycling' recycling.pk %}" class="btn btn-lock">
-                  <img class="icon-lock-closed" src="{% static 'icons/lock-icon.svg' %}">
-                </a>
-              </div>
-            </td>
-
+        {% empty %}
+          <tr>
+            <td colspan="8">Keine Einheiten verfügbar</td>
           </tr>
         {% endfor %}
       </tbody>
@@ -120,7 +78,7 @@
 
 
   <!-- ==== Active Wagen in Halle === -->
-    <section class="itemcard-topbox">
+    <!-- <section class="itemcard-topbox">
     <div class="itemcard-table-title">Aktiv in Halle 2</div>
     <table class="itemcard-table">
       <thead class="itemcard-thead">
@@ -134,10 +92,10 @@
           <th class="itemcard-weight">Gewicht</th>
           <th class="itemcard-action"></th>
         </tr>
-      </thead>
+      </thead> -->
       
       <!-- Vorsortierung (unload) -->
-      <tbody class="itemcard-tbody">
+      <!-- <tbody class="itemcard-tbody">
         {% for unload in unload_active %}
           <tr class="itemcard-table-row">
             <input type="hidden" name="recycling_id_{{ unload.id }}" value="{{ unload.id }}">
@@ -172,59 +130,14 @@
 
             <td class="itemcard-action-wrapper">
               <div class="itemcard-action">
-                <a href="{% url 'device_check_create' 'unload' unload.pk %}" class="btn btn-lock">
+                <a href="{% url 'halle_zwei_create' 'unload' unload.pk %}" class="btn btn-lock">
                   <img class="icon-lock-closed" src="{% static 'icons/lock-icon.svg' %}">
                 </a>
               </div>
             </td>
-
           </tr>
         {% endfor %}
-
-        <!-- Zerlegung (recycling) -->
-        {% for recycling in recycling_active %}
-          <tr class="itemcard-table-row">
-            <input type="hidden" name="recycling_id_{{ recycling.id }}" value="{{ recycling.id }}">
-
-            <td class="itemcard-id">
-              {{ forloop.counter }}
-            </td>
-
-            <td class="itemcard-material">
-              <p>{{ recycling.material }}</p>
-            </td>
-
-            <td class="itemcard-boxtype">
-              <p>{{ recycling.get_box_type_display }}</p>
-            </td>
-
-            <td class="itemcard-status">
-              <p>{{ recycling.get_status_display }}</p>
-            </td>
-
-            <td class="itemcard-status">
-              <p>Zerlegung</p>
-            </td>
-
-            <td class="itemcard-note">
-              <p>{{ recycling.note }}</p>
-            </td>
-
-            <td class="itemcard-weight">
-              <p>{{ recycling.weight }}</p>
-            </td>
-
-            <td class="itemcard-action-wrapper">
-              <div class="itemcard-action">
-                <a href="{% url 'device_check_create' 'recycling' recycling.pk %}" class="btn btn-lock">
-                  <img class="icon-lock-closed" src="{% static 'icons/lock-icon.svg' %}">
-                </a>
-              </div>
-            </td>
-
-          </tr>
-        {% endfor %}
-      </tbody>
+      </tbody> -->
     </table>
   </section>
 </div>

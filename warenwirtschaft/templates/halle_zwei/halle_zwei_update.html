@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Device-Check{% endblock %}
+{% block title %}Halle 2{% endblock %}
 
 {% block content %}
 <div class="itemcard">
@@ -19,16 +19,15 @@
           <th class="itemcard-material">Material</th>
           <th class="itemcard-boxtype">Behälter</th>
           <th class="itemcard-status">Status</th>
-          <th class="itemcard-status">Herkunft</th>
-          <th class="itemcard-note">Anmerkung</th>
           <th class="itemcard-weight">Gewicht</th>
-          <th class="itemcard-weight">Gewicht neu</th>
+          <th class="itemcard-weight">Geprüft</th>
+          <th class="itemcard-note">Anmerkung</th>
           <th class="itemcard-action"></th>
         </tr>
       </thead>
       
       <tbody class="itemcard-tbody">
-        {% for item in unload_list %}
+        {% for item in delivery_units %}
         <form method="post">
           {% csrf_token %}
             <tr class="itemcard-table-row">
@@ -50,20 +49,12 @@
                 <p>{{ item.get_status_display }}</p>
               </td>
 
-              <td class="itemcard-status">
-                <p>Vorsortierung</p>
-              </td>
-
               <td class="itemcard-note">
                 <p>{{ item.note }}</p>
               </td>
 
               <td class="itemcard-weight">
                 <p>{{ item.weight }}</p>
-              </td>
-
-              <td class="itemcard-weight">
-                <p>{{ item.new_weight }}</p>
               </td>
 
               <td class="itemcard-action">

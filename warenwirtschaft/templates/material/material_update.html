@@ -61,9 +61,9 @@
 
         <div class="table-cell checkbox-circle">
           {% if item.id == edit_material.id %}
-            <input type="checkbox" id="device_check" name="device_check" {% if item.device_check %}checked{% endif %}>
+            <input type="checkbox" id="halle_zwei" name="halle_zwei" {% if item.halle_zwei %}checked{% endif %}>
           {% else %}
-            <input type="checkbox" id="device_check" {% if item.device_check %}checked{% endif %} disabled>
+            <input type="checkbox" id="halle_zwei" {% if item.halle_zwei %}checked{% endif %} disabled>
           {% endif %}
         </div>
 
@@ -104,7 +104,7 @@
     </div>
 
     <div class="table-cell checkbox-circle">
-      <input type="checkbox" id="material-device_check" disabled>
+      <input type="checkbox" id="material-halle_zwei" disabled>
     </div>
 
     <div class="itemcard-action">

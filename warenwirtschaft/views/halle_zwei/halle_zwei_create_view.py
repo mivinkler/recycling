@@ -3,8 +3,8 @@ from warenwirtschaft.models import DeliveryUnit
 from warenwirtschaft.models_common.choices import StatusChoices
 
 
-class HalleZweiSelectView(TemplateView):
-    template_name = "halle_zwei/halle_zwei_select.html"
+class HalleZweiCreateView(TemplateView):
+    template_name = "halle_zwei/halle_zwei_create.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
