@@ -1,3 +1,2 @@
 from .halle_zwei_create_view import HalleZweiCreateView
-from .halle_zwei_select_view import HalleZweiSelectView
 from .halle_zwei_list_view import HalleZweiListView

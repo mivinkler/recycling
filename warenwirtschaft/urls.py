@@ -10,7 +10,7 @@ from warenwirtschaft.views.unload import UnloadListView, UnloadSelectView, Unloa
 from warenwirtschaft.views.recycling import RecyclingListView, RecyclingCreateView, RecyclingUpdateView, RecyclingDeleteView, RecyclingBarcodeView
 from warenwirtschaft.views.shipping import ShippingListView, ShippingDetailView, ShippingCreateView, ShippingUpdateView, ShippingDeleteView
 from warenwirtschaft.views.barcode import BarcodeGeneratorListView, BarcodeGeneratorDetailView, BarcodeGeneratorCreateView, BarcodeGeneratorUpdateView, BarcodeGeneratorDeleteView
-from warenwirtschaft.views.halle_zwei import HalleZweiCreateView, HalleZweiListView, HalleZweiSelectView
+from warenwirtschaft.views.halle_zwei import HalleZweiListView, HalleZweiCreateView
 from warenwirtschaft.views.statistic.timeseries_view import TimeSeriesPageView
 from warenwirtschaft.views.export_excel import DeliveryExportExcelView, UnloadExportExcelView, RecyclingExportExcelView, ShippingExportExcelView
 
@@ -36,13 +36,12 @@ urlpatterns = [
     path('recycling/list/', RecyclingListView.as_view(), name='recycling_list'),
     path('recycling/create/', RecyclingCreateView.as_view(), name='recycling_create'),
     path('recycling/update/<int:recycling_pk>/', RecyclingUpdateView.as_view(), name='recycling_update'),
-    path('recycling/delete<int:recycling_pk>/', RecyclingDeleteView.as_view(), name='recycling_delete'),
+    path('recycling/delete/<int:recycling_pk>/', RecyclingDeleteView.as_view(), name='recycling_delete'),
     path('recycling/barcode/<int:pk>/', RecyclingBarcodeView.as_view(), name='recycling_barcode'),
     
     # halle-zwei
-    path('halle-zwei/create/<int:pk>/', HalleZweiCreateView.as_view(), name='halle_zwei_create'),
     path('halle-zwei/list/', HalleZweiListView.as_view(), name='halle_zwei_list'),
-    path('halle-zwei/select/', HalleZweiSelectView.as_view(), name='halle_zwei_select'),
+    path('halle-zwei/create/', HalleZweiCreateView.as_view(), name='halle_zwei_create'),
 
     # shipping (Abholung)
     path('shipping/list/', ShippingListView.as_view(), name='shipping_list'),
