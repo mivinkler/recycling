@@ -16,7 +16,6 @@ class HalleZweiListView(ListView):
     active_fields = [
         ("id", "HID"),
         ("delivery_units__id", "Liefereinheiten"),
-        ("recyclins__id", "Zerlegung"),
         ("created_at", "Datum"),
     ]
 

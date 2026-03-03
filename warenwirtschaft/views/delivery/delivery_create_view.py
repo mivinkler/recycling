@@ -76,7 +76,7 @@ class DeliveryCreateView(View):
             BarcodeNumberService.set_barcodes([delivery_unit], prefix=self.BARCODE_PREFIX)
             delivery_unit.save()
 
-            return redirect(reverse("delivery_update", kwargs={"delivery_pk": delivery.pk}))
+            return redirect(reverse("delivery_unit_update", kwargs={"delivery_pk": delivery.pk, "delivery_unit_pk": delivery_unit.pk}))
 
         return render(
             request,

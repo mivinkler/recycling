@@ -1,6 +1,7 @@
 from django.views import View
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db import transaction
+from django.utils import timezone
 
 from warenwirtschaft.models import DeliveryUnit
 from warenwirtschaft.models.halle_zwei import HalleZwei
@@ -16,7 +17,7 @@ class HalleZweiCreateView(View):
         ).order_by("pk")
 
         today_checked = HalleZwei.objects.filter(
-            delivery_unit__status=StatusChoices.WARTET_AUF_ABHOLUNG
+            delivery_unit__status=StatusChoices.ERLEDIGT
         ).select_related("delivery_unit").order_by("-created_at")
 
         context = {
@@ -43,7 +44,8 @@ class HalleZweiCreateView(View):
                 },
             )
 
-            delivery_unit.status = StatusChoices.WARTET_AUF_ABHOLUNG
+            delivery_unit.status = StatusChoices.ERLEDIGT
+            delivery_unit.inactive_at = timezone.now()
             delivery_unit.save()
 
         elif action == "uncheck":
@@ -51,6 +53,7 @@ class HalleZweiCreateView(View):
             HalleZwei.objects.filter(delivery_unit=delivery_unit).delete()
 
             delivery_unit.status = StatusChoices.WARTET_AUF_HALLE_ZWEI
+            delivery_unit.inactive_at = None
             delivery_unit.save()
 
         return redirect("halle_zwei_create")

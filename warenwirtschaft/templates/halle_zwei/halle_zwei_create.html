@@ -20,33 +20,33 @@
     <table class="itemcard-table">
       <thead>
         <tr>
-          <th>№</th>
-          <th>Material</th>
-          <th>Behälter</th>
-          <th>Status</th>
-          <th>Gewicht</th>
-          <th>Geprüft</th>
-          <th>Anmerkung</th>
+          <th class="itemcard-id">№</th>
+          <th class="itemcard-material">Material</th>
+          <th class="itemcard-boxtype">Behälter</th>
+          <th class="itemcard-status">Status</th>
+          <th class="itemcard-weight">Gewicht</th>
+          <th class="itemcard-weight">Geprüft</th>
+          <th class="itemcard-note">Anmerkung</th>
         </tr>
       </thead>
 
       <tbody>
         {% for item in delivery_unit_ready %}
         <tr>
-          <td>{{ forloop.counter }}</td>
-          <td>{{ item.material }}</td>
-          <td>{{ item.get_box_type_display }}</td>
-          <td>{% if item.delivery_to_halle_zwei %}
+          <td class="itemcard-id">{{ forloop.counter }}</td>
+          <td class="itemcard-material"><p>{{ item.material }}</p></td>
+          <td class="itemcard-boxtype"><p>{{ item.get_box_type_display }}</p></td>
+          <td class="itemcard-status">{% if item.delivery_to_halle_zwei %}
                 {{ item.delivery_to_halle_zwei.get_status_display }}
               {% else %}
                 {{ item.get_status_display }}
               {% endif %}
           </td>
-          <td>{{ item.weight }}</td>
+          <td class="itemcard-weight"><p>{{ item.weight }}</p></td>
 
           <!-- CHECK -->
-          <td>
-            <form method="post" style="margin:0;">
+          <td class="itemcard-weight">
+            <form method="post" class="checkbox-circle text-center">
               {% csrf_token %}
               <input type="hidden" name="delivery_unit_id" value="{{ item.id }}">
               <input type="hidden" name="action" value="check">
@@ -56,13 +56,13 @@
             </form>
           </td>
 
-          <td>{{ item.note|default:"—" }}</td>
+          <td class="itemcard-note"><p>{{ item.note }}</p></td>
         </tr>
 
         {% empty %}
         <tr>
           <td colspan="7" class="text-xenter">
-            Keine Einheiten verfügbar
+            <p class="text-center">Keine Einheiten verfügbar</p>
           </td>
         </tr>
         {% endfor %}
@@ -81,44 +81,44 @@
     <table class="itemcard-table">
       <thead>
         <tr>
-          <th>№</th>
-          <th>Material</th>
-          <th>Behälter</th>
-          <th>Status</th>
-          <th>Gewicht</th>
-          <th>Geprüft</th>
-          <th>Anmerkung</th>
+          <th class="itemcard-id">№</th>
+          <th class="itemcard-material">Material</th>
+          <th class="itemcard-boxtype">Behälter</th>
+          <th class="itemcard-status">Status</th>
+          <th class="itemcard-weight">Gewicht</th>
+          <th class="itemcard-weight">Geprüft</th>
+          <th class="itemcard-note">Anmerkung</th>
         </tr>
       </thead>
 
       <tbody>
         {% for hz in today_checked %}
         <tr>
-          <td>{{ forloop.counter }}</td>
-          <td>{{ hz.delivery_unit.material }}</td>
-          <td>{{ hz.delivery_unit.get_box_type_display }}</td>
-          <td>{{ hz.delivery_unit.get_status_display }}</td>
-          <td>{{ hz.delivery_unit.weight }}</td>
+          <td class="itemcard-id">{{ forloop.counter }}</td>
+          <td class="itemcard-material"><p>{{ hz.delivery_unit.material }}</p></td>
+          <td class="itemcard-boxtype"><p>{{ hz.delivery_unit.get_box_type_display }}</p></td>
+          <td class="itemcard-status"><p>{{ hz.delivery_unit.get_status_display }}</p></td>
+          <td class="itemcard-weight"><p>{{ hz.delivery_unit.weight }}</p></td>
 
-          <td>
-            <form method="post" style="margin:0;">
+          <td class="itemcard-weight">
+            <form method="post" class="checkbox-circle text-center">
               {% csrf_token %}
               <input type="hidden" name="delivery_unit_id" value="{{ hz.delivery_unit.id }}">
               <input type="hidden" name="action" value="uncheck">
-
+            
               <input type="checkbox"
-                     checked
-                     onchange="if(confirm('Prüfung rückgängig machen?')){this.form.submit();}">
+                    checked
+                    onchange="if(confirm('Prüfung rückgängig machen?')){this.form.submit();}">
             </form>
           </td>
 
-          <td>{{ hz.note|default:"—" }}</td>
+          <td><p>{{ hz.note }}</p></td>
         </tr>
 
         {% empty %}
         <tr>
-          <td colspan="7" class="text-center">
-            Heute noch nichts geprüft
+          <td colspan="7" class="text-xenter">
+            <p class="text-center">Heute noch nichts geprüft</p>
           </td>
         </tr>
         {% endfor %}

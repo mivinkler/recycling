@@ -22,7 +22,7 @@
 }
 
 .table[data-type="halle-zwei"] {
-  grid-template-columns: repeat(2, minmax(33px, max-content)) 3fr 2fr 1fr 2fr 2fr 1fr 2fr 4fr;
+  grid-template-columns: repeat(3, minmax(33px, max-content)) repeat(2, 1fr) repeat(2, 2fr) 1fr 4fr;
 }
 
 .table[data-type="shipping"] {

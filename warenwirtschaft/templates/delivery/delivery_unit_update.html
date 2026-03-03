@@ -11,11 +11,18 @@
 
   <section class="itemcard-topbox">
     <div class="itemcard-topbox-row">
-      <h3>Lieferant: &emsp; {{ delivery.customer }}</h3>
+      <h4>Lieferant:</h4>
+      <p>{{ delivery.customer }}</p>
     </div>
 
     <div class="itemcard-topbox-row">
-      <h3>Lieferschein: &emsp; {{ delivery.delivery_receipt }}</h3>
+      <h4>Lieferschein:</h4>
+      <p>{{ delivery.delivery_receipt }}</p>
+    </div>
+
+    <div class="itemcard-topbox-row">
+      <h4>B2B:</h4>
+      <p>{{ delivery.b2b|yesno:"Ja, Nein" }}</p>
     </div>
   </section>
 

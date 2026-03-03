@@ -9,10 +9,11 @@
 
   <div class="itemcard">
     <div class="itemcard-title">
-      <h2>Wareneingang erstellen</h2>
+      <h2>Wareneingang</h2>
       {% include 'components/barcode_scan_icon.html' %}
     </div>
 
+    <!-- ======= Lieferung ======= -->
     <section class="itemcard-topbox">
       <div class="itemcard-topbox-row">
         <h4>Lieferant:</h4>
@@ -20,11 +21,18 @@
       </div>
 
       <div class="itemcard-topbox-row">
-        <h4 for="id_delivery_receipt">Lieferschein:</h4>
+        <h4>Lieferschein:</h4>
         <div class="itemcard-topbox-content">{{ delivery_form.delivery_receipt }}</div>
       </div>
+
+      <div class="itemcard-topbox-row">
+        <h4>B2B</h4>
+        <div class="itemcard-topbox-content">{{ delivery_form.b2b }}</div>
+      </div>
+
     </section>
 
+    <!-- ======= Liefereinheiten ======= -->
     <section>
       <h4>Liefereinheiten:</h4>
 
