@@ -19,4 +19,4 @@ class Unload(models.Model):
         indexes = [models.Index(fields=["status"])]
 
     def __str__(self):
-        return f"VID: {self.id} - {self.get_box_type_display()} - Material: {self.material} - Gewicht: {self.weight} kg"
+        return f"VID:{self.id} - {self.material} - {self.weight} kg"

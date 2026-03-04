@@ -69,7 +69,7 @@
           {% for rec in recyclings %}
             <tr class="itemcard-table-row"
                 data-id="{{ rec.pk }}"
-                data-url-detail="{% url 'recycling_detail' pk=rec.pk %}">
+                data-url-detail="#">
               <td class="checkbox-circle itemcard-action-left">
                 <input type="checkbox"
                   name="selected_recycling"
@@ -103,11 +103,28 @@
               <td class="itemcard-status"><p>Vorsortierung</p></td>
             </tr>
           {% endfor %}
+
+          {% for hz in halle_zwei_units %}
+            <tr class="itemcard-table-row"
+                data-id="{{ hz.pk }}"
+                data-url-detail="">
+              <td class="checkbox-circle itemcard-action-left">
+                <input type="checkbox"
+                  name="selected_halle_zwei"
+                  value="{{ hz.pk }}"
+                  title="Zur Abholung hinzufügen"
+                  {% if hz.pk in preselected_ids %}checked{% endif %}>
+              </td>
+              <td class="itemcard-id">{{ forloop.counter }}</td>
+              <td class="itemcard-material"><p>{{ hz.material }}</p></td>
+              <td class="itemcard-boxtype"><p>{{ hz.get_box_type_display }}</p></td>
+              <td class="itemcard-weight"><p>{{ hz.weight }}</p></td>
+              <td class="itemcard-status"><p>Halle 2</p></td>
+            </tr>
+          {% endfor %}
+          
           {% else %}
            <tr class="itemcard-table-row">
-              <td class="checkbox-circle itemcard-action-left">
-                  <input type="radio" name="selected_unload" title="Keine Daten">
-                </td>
               <td colspan="5" class="text-center">
                 Keine Daten vorhanden
               </td>
@@ -121,6 +138,7 @@
     </div>
   </div>
 </form>
+{% include "components/message.html" %}
 {% endblock %}
 
 {% block extra_js %}

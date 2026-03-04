@@ -15,7 +15,16 @@
 
     <section class="itemcard-topbox">
       <div class="itemcard-topbox-row">
-        <h3>Liefereinheit: &emsp; {{ delivery_unit }}</h3>
+        <h4>Liefereinheit:</h4>
+        <p>{{ delivery_unit }}</p>
+        <button
+            type="submit"
+            name="finish_unload"
+            class="btn btn-main itemcard-topbox-btn"
+            onclick="return confirm('Leerung wirklich abschließen?')"
+        >
+          Leerung abschließen
+        </button>
       </div>
     </section>
 
@@ -56,7 +65,9 @@
                       <img class="icon-lock-open" src="{% static 'icons/lock-open-icon.svg' %}">
                     </button>
 
-                    <button type="submit" class="btn btn-main btn-save">Speichern</button>
+                    <button type="submit" name="save_unload" class="btn btn-main btn-save">
+                      Speichern
+                    </button>
                   </div>
                 </td>
               </tr>

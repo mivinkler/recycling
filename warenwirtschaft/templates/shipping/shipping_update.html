@@ -1,3 +1,4 @@
+{# templates/shipping/shipping_update.html #}
 {% extends 'base.html' %}
 {% load static %}
 
@@ -10,19 +11,20 @@
   <div class="itemcard">
     <div class="itemcard-title itemcard-margin-left">
       <h2>Abholung bearbeiten</h2>
-        <input 
-          type="text" 
-          id="barcode" 
-          placeholder="Barcode scannen..." 
-          autocomplete="off" 
-          data-api="{% url 'barcode_shipping_api' %}" 
-          autofocus 
-          class="visually-hidden-input"
-        />
+
+      <input 
+        type="text" 
+        id="barcode" 
+        placeholder="Barcode scannen..." 
+        autocomplete="off" 
+        data-api="{% url 'barcode_shipping_api' %}" 
+        autofocus 
+        class="visually-hidden-input"
+      />
 
       <label for="barcode" class="barcode-wrapper header-menu-icon svg-icon">
-          <img src="{% static 'icons/barcode-scan-active.svg' %}" id="barcode-active">
-          <img src="{% static 'icons/barcode-scan-inactive.svg' %}" id="barcode-inactive" hidden>
+        <img src="{% static 'icons/barcode-scan-active.svg' %}" id="barcode-active">
+        <img src="{% static 'icons/barcode-scan-inactive.svg' %}" id="barcode-inactive" hidden>
       </label>
     </div>
 
@@ -50,7 +52,7 @@
       </div>
     </section>
 
-  <div class="itemcard-table-title itemcard-margin-left">Abholbereit:</div>
+    <div class="itemcard-table-title itemcard-margin-left">Abholbereit / Zugeordnet:</div>
 
     <table class="itemcard-table">
       <thead class="itemcard-thead">
@@ -65,53 +67,74 @@
       </thead>
 
       <tbody class="itemcard-tbody">
-        {% if recyclings or unloads %}
+        {% if recyclings or unloads or halle_zwei_units %}
+
+          {# -------- Recyclings -------- #}
           {% for rec in recyclings %}
-            <tr class="itemcard-table-row"
-                data-id="{{ rec.pk }}"
-                data-url-detail="{% url 'recycling_detail' pk=rec.pk %}">
+            <tr class="itemcard-table-row" data-id="{{ rec.pk }}" data-url-detail="#">
               <td class="checkbox-circle itemcard-action-left">
-                <input type="checkbox"
-                      name="selected_recycling"
-                      value="{{ rec.pk }}"
-                      title="Zur Abholung hinzufügen"
-                      {% if rec.pk in preselected_recycling_ids %}checked{% endif %}>
+                <input
+                  type="checkbox"
+                  name="selected_recycling"
+                  value="{{ rec.pk }}"
+                  title="Zur Abholung hinzufügen"
+                  {% if rec.pk in preselected_recycling_ids %}checked{% endif %}
+                >
               </td>
               <td class="itemcard-id">{{ forloop.counter }}</td>
-              <td class="itemcard-material"><p>{{ rec.material|default:rec.material_other }}</p></td>
+              <td class="itemcard-material"><p>{{ rec.material }}</p></td>
               <td class="itemcard-boxtype"><p>{{ rec.get_box_type_display }}</p></td>
               <td class="itemcard-weight"><p>{{ rec.weight }}</p></td>
               <td class="itemcard-status"><p>Zerlegung</p></td>
             </tr>
           {% endfor %}
 
+          {# -------- Unloads -------- #}
           {% for unload in unloads %}
-            <tr class="itemcard-table-row"
-                data-id="{{ unload.pk }}"
-                data-url-detail="{% url 'unload_detail_barcode' pk=unload.pk %}">
+            <tr class="itemcard-table-row" data-id="{{ unload.pk }}" data-url-detail="{% url 'unload_barcode' pk=unload.pk %}">
               <td class="checkbox-circle itemcard-action-left">
-                <input type="checkbox"
-                      name="selected_unload"
-                      value="{{ unload.pk }}"
-                      title="Zur Abholung hinzufügen"
-                      {% if unload.pk in preselected_unload_ids %}checked{% endif %}>
+                <input
+                  type="checkbox"
+                  name="selected_unload"
+                  value="{{ unload.pk }}"
+                  title="Zur Abholung hinzufügen"
+                  {% if unload.pk in preselected_unload_ids %}checked{% endif %}
+                >
               </td>
               <td class="itemcard-id">{{ forloop.counter }}</td>
-              <td class="itemcard-material"><p>{{ unload.material|default:unload.material_other }}</p></td>
+              <td class="itemcard-material"><p>{{ unload.material }}</p></td>
               <td class="itemcard-boxtype"><p>{{ unload.get_box_type_display }}</p></td>
               <td class="itemcard-weight"><p>{{ unload.weight }}</p></td>
               <td class="itemcard-status"><p>Vorsortierung</p></td>
             </tr>
           {% endfor %}
-           {% else %}
-           <tr class="itemcard-table-row">
+
+          {# -------- Halle 2 -------- #}
+          {% for hz in halle_zwei_units %}
+            <tr class="itemcard-table-row" data-id="{{ hz.pk }}" data-url-detail="#">
               <td class="checkbox-circle itemcard-action-left">
-                  <input type="radio" name="selected_unload" title="Keine Daten">
-                </td>
-              <td colspan="5" class="text-center">
-                Keine Daten vorhanden
+                <input
+                  type="checkbox"
+                  name="selected_halle_zwei"
+                  value="{{ hz.pk }}"
+                  title="Zur Abholung hinzufügen"
+                  {% if hz.pk in preselected_halle_zwei_ids %}checked{% endif %}
+                >
               </td>
+              <td class="itemcard-id">{{ forloop.counter }}</td>
+              <td class="itemcard-material"><p>{{ hz.material }}</p></td>
+              <td class="itemcard-boxtype"><p>{{ hz.get_box_type_display }}</p></td>
+              <td class="itemcard-weight"><p>{{ hz.weight }}</p></td>
+              <td class="itemcard-status"><p>Halle 2</p></td>
             </tr>
+          {% endfor %}
+
+        {% else %}
+          <tr class="itemcard-table-row">
+            <td colspan="6" class="text-center">
+              Keine Daten vorhanden
+            </td>
+          </tr>
         {% endif %}
       </tbody>
     </table>

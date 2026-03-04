@@ -9,7 +9,7 @@
 
   <div class="itemcard">
     <div class="itemcard-title">
-      <h2>Vorsortierung erstellen</h2>
+      <h2>Vorsortierung</h2>
     </div>
 
     <section class="itemcard-topbox">
@@ -17,10 +17,11 @@
         <h4>Liefereinheit:</h4>
         <p>{{ delivery_unit }}</p>
         <button
-            type="button"
+            type="submit"
+            name="finish_unload"
             class="btn btn-main itemcard-topbox-btn"
-            id="finish-unload-btn"
-          >
+            onclick="return confirm('Leerung wirklich abschließen?')"
+        >
           Leerung abschließen
         </button>
       </div>
@@ -76,7 +77,9 @@
                   <img class="icon-lock-open" src="{% static 'icons/lock-open-icon.svg' %}">
                 </button>
 
-                <button type="submit" class="btn btn-main btn-save">Speichern</button>
+                <button type="submit" name="save_unload" class="btn btn-main btn-save">
+                  Speichern
+                </button>
               </div>
             </td>
           </tr>
