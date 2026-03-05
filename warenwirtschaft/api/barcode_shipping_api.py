@@ -1,8 +1,8 @@
-# warenwirtschaft/api/barcode_shipping_api.py
 from django.http import JsonResponse
 from django.views import View
 from warenwirtschaft.models.barcode_generator import BarcodeGenerator
-from warenwirtschaft.models import Unload, Recycling  # <- neu
+from warenwirtschaft.models_common.choices import StatusChoices
+from warenwirtschaft.models import Unload, Recycling
 
 class BarcodeShippingAPI(View):
     def get(self, request):
@@ -40,20 +40,20 @@ class BarcodeShippingAPI(View):
             }
             return JsonResponse(data)
 
-        # ---------- S: Unload (abholbereit: status=3, noch nicht versendet) ----------
-        if pfx == "S":
+        # ---------- V: Unload (abholbereit: status=3, noch nicht versendet) ----------
+        if pfx == "V":
             du = (Unload.objects
-                  .filter(status=3, shipping__isnull=True, barcode__iexact=code)
+                  .filter(status=StatusChoices.WARTET_AUF_ABHOLUNG, shipping__isnull=True, barcode__iexact=code)
                   .only("id")
                   .first())
             if not du:
                 return JsonResponse({"error": "Nicht gefunden oder nicht abholbereit.", "where": "unload"}, status=404)
             return JsonResponse({"ok": True, "type": "unload", "id": du.id})
 
-        # ---------- A: Recycling (abholbereit) ----------
-        if pfx == "A":
+        # ---------- Z: Recycling (abholbereit) ----------
+        if pfx == "Z":
             rec = (Recycling.objects
-                   .filter(status=3, shipping__isnull=True, barcode__iexact=code)
+                   .filter(status=StatusChoices.WARTET_AUF_ABHOLUNG, shipping__isnull=True, barcode__iexact=code)
                    .only("id")
                    .first())
             if not rec:
@@ -61,4 +61,4 @@ class BarcodeShippingAPI(View):
             return JsonResponse({"ok": True, "type": "recycling", "id": rec.id})
 
         # ---------- andere Präfixe ----------
-        return JsonResponse({"error": "Falscher Präfix. Erlaubt: G,S,A"}, status=400)
+        return JsonResponse({"error": "Falscher Barcode-Präfix. Erlaubt: G, V, Z"}, status=400)

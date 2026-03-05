@@ -1,5 +1,7 @@
 # --- Tests für das WeightInputAPI mit Mock der Netzwerkanfrage
 
+import os
+from unittest import skipUnless
 from unittest.mock import patch, MagicMock
 from django.test import TestCase, Client
 from django.urls import reverse
@@ -48,6 +50,14 @@ class WeightInputAPITest(TestCase):
         res = self.client.get(self.url)
         self.assertEqual(res.status_code, 400)
         self.assertIn("error", res.json())
+
+    RUN_OPTIONAL = os.getenv("RUN_OPTIONAL_TESTS") == "1"
+
+    @skipUnless(RUN_OPTIONAL, "Optionaler Test, manuell gestartett")
+    
+    # Starten in PowerShell mit:
+    # $env:RUN_OPTIONAL_TESTS="1"
+    # .\venv\Scripts\python.exe manage.py test warenwirtschaft.api.tests.test_weight_input_api -v 2
 
     def test_mock_query_param(self):
         # --- ?mock=1 gibt immer einen stabilen Testwert zurück

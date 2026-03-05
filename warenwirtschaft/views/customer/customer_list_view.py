@@ -2,7 +2,6 @@ from django.shortcuts import render
 from django.views.generic import ListView
 from warenwirtschaft.services.search_service import SearchService
 from warenwirtschaft.services.sorting_service import SortingService
-from warenwirtschaft.services.pagination_service import PaginationService
 from warenwirtschaft.models.customer import Customer
 
 class CustomerListView(ListView):
@@ -41,12 +40,7 @@ class CustomerListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        paginator = PaginationService(self.request, self.paginate_by)
-        page_obj = paginator.get_paginated_queryset(self.get_queryset())
-
-        context["page_obj"] = page_obj
-
+        
         context["active_fields"] = self.active_fields
         context["search_query"] = self.request.GET.get("search", "")
         context["sort_param"] = self.request.GET.get("sort", "")

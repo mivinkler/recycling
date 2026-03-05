@@ -39,7 +39,7 @@ ready(() => {
         throw new Error('Unerwartete Antwort (kein JSON) – evtl. Login-Redirect?');
       }
 
-      if (!res.ok || !data?.weight) {
+      if (!res.ok || data?.weight == null || data.weight === "") {
         throw new Error(data?.error || 'Kein Gewicht erhalten.');
       }
 

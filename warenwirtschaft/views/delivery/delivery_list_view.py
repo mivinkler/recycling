@@ -2,7 +2,6 @@ from django.views.generic import ListView
 from warenwirtschaft.models.delivery_unit import DeliveryUnit
 from warenwirtschaft.services.search_service import SearchService
 from warenwirtschaft.services.sorting_service import SortingService
-from warenwirtschaft.services.pagination_service import PaginationService
 
 
 class DeliveryListView(ListView):
@@ -12,7 +11,8 @@ class DeliveryListView(ListView):
     paginate_by = 28
 
     active_fields = [
-        ("delivery__id", "LID"),
+        ("id", "LID"),
+        ("delivery__id", "EID"),
         ("delivery__customer__name", "Kunde"),
         ("delivery__delivery_receipt", "Lieferschein"),
         ("box_type", "Behälter"),
@@ -24,11 +24,11 @@ class DeliveryListView(ListView):
     ]
 
     def get_queryset(self):
-        queryset = super().get_queryset()
+        queryset = (super().get_queryset().select_related("delivery", "delivery__customer", "material"))
         fields = [field[0] for field in self.active_fields]
 
         choices_fields = {
-            "box_type": DeliveryUnit.box_type,
+            "box_type": DeliveryUnit._meta.get_field("box_type").choices,
         }
 
         search_service = SearchService(self.request, fields, choices_fields)
@@ -43,18 +43,12 @@ class DeliveryListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        paginator = PaginationService(self.request, self.paginate_by)
-        page_obj = paginator.get_paginated_queryset(self.get_queryset())
-
-        context["page_obj"] = page_obj
         context['request'] = self.request
         context["active_fields"] = self.active_fields
         context["search_query"] = self.request.GET.get("search", "")
         context["sort_param"] = self.request.GET.get("sort", "")
         context["box_types"] = DeliveryUnit.box_type
         context["selected_menu"] = "delivery_list"
-        
-        # Panel mit Suche und Sortierung
         context["dashboard"] = True
 
         context["filters"] = {

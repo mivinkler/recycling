@@ -105,11 +105,8 @@ def timeseries_weight(p: TimeSeriesParams) -> dict:
     gran = choose_granularity(p)
 
     # Basisfilter (weiche Löschung ausschließen)
-    base = (
-        Q(created_at__date__gte=p.date_from, created_at__date__lte=p.date_to) &
-        Q(deleted_at__isnull=True) &
-        Q(delivery__deleted_at__isnull=True)
-    )
+    base = Q(created_at__date__gte=p.date_from, created_at__date__lte=p.date_to)
+    
     if p.customer_id:
         base &= Q(delivery__customer_id=p.customer_id)
     if p.material_id:

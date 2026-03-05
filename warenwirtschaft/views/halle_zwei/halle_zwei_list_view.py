@@ -3,7 +3,6 @@ from django.views.generic import ListView
 from warenwirtschaft.models.halle_zwei import HalleZwei
 from warenwirtschaft.services.search_service import SearchService
 from warenwirtschaft.services.sorting_service import SortingService
-from warenwirtschaft.services.pagination_service import PaginationService
 
 
 class HalleZweiListView(ListView):
@@ -25,7 +24,7 @@ class HalleZweiListView(ListView):
         fields = [field[0] for field in self.active_fields]
 
         choices_fields = {
-            "status": HalleZwei.status,
+            "status": HalleZwei._meta.get_field("status").choices,
         }
 
         search_service = SearchService(self.request, fields, choices_fields)
@@ -39,15 +38,10 @@ class HalleZweiListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        paginator = PaginationService(self.request, self.paginate_by)
-        page_obj = paginator.get_paginated_queryset(self.get_queryset())
-
-        context["page_obj"] = page_obj
         context["active_fields"] = self.active_fields
         context["search_query"] = self.request.GET.get("search", "")
         context["sort_param"] = self.request.GET.get("sort", "")
         context["selected_menu"] = "halle_zwei_list"
-        
         context["dashboard"] = True
 
         return context

@@ -5,7 +5,7 @@ from warenwirtschaft.models import Unload
 
 
 class BarcodeRecyclingAPI(View):
-    ACCEPTED_PREFIX = "S"
+    ACCEPTED_PREFIX = "V"
 
     def _ok(self, du):
         """Erfolgsantwort vereinheitlichen."""

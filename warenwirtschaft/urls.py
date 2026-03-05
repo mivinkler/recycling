@@ -36,7 +36,7 @@ urlpatterns = [
     path('recycling/list/', RecyclingListView.as_view(), name='recycling_list'),
     path('recycling/create/', RecyclingCreateView.as_view(), name='recycling_create'),
     path('recycling/update/<int:recycling_pk>/', RecyclingUpdateView.as_view(), name='recycling_update'),
-    path('recycling/delete/<int:recycling_pk>/', RecyclingDeleteView.as_view(), name='recycling_delete'),
+    path("<int:delivery_unit_pk>/delete/unload/<int:unload_pk>/", UnloadDeleteView.as_view(), name="unload_delete"),
     path('recycling/barcode/<int:pk>/', RecyclingBarcodeView.as_view(), name='recycling_barcode'),
     
     # halle-zwei

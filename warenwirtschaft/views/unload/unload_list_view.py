@@ -1,8 +1,10 @@
 from django.views.generic import ListView
+from django.db.models import Prefetch
+from warenwirtschaft.models.delivery_unit import DeliveryUnit
+
 from warenwirtschaft.models.unload import Unload
 from warenwirtschaft.services.search_service import SearchService
 from warenwirtschaft.services.sorting_service import SortingService
-from warenwirtschaft.services.pagination_service import PaginationService
 
 class UnloadListView(ListView):
     model = Unload
@@ -11,22 +13,33 @@ class UnloadListView(ListView):
     paginate_by = 28
 
     active_fields = [
-        ("id", "Vorsortierung"),
+        ("id", "Vorsortierung-ID"),
         ("status", "Status"),
-        ("delivery_units__delivery__id", "Lieferung"),
+        ("delivery_units__id", "Lieferung-ID"),
         ("box_type", "Behälter"),
         ("material__name", "Material"),
         ("weight", "Gewicht"),
         ("created_at", "Datum"),
+        ("note", "Anmerkung"),
     ]
 
     def get_queryset(self):
-        queryset = super().get_queryset()
+        delivery_units_prefetch = Prefetch(
+            "delivery_units",
+            queryset=DeliveryUnit.objects.select_related("delivery", "material"),
+        )
+
+        queryset = (
+            super()
+            .get_queryset()
+            .select_related("material")
+            .prefetch_related(delivery_units_prefetch)
+        )
 
         fields = [field[0] for field in self.active_fields]
 
         choices_fields = {
-            "box_type": Unload.box_type,
+            "box_type": Unload._meta.get_field("box_type").choices,
         }
 
         search_service = SearchService(self.request, fields, choices_fields)
@@ -40,17 +53,11 @@ class UnloadListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        paginator = PaginationService(self.request, self.paginate_by)
-        page_obj = paginator.get_paginated_queryset(self.get_queryset())
-
-        context["page_obj"] = page_obj
         context["active_fields"] = self.active_fields
         context["search_query"] = self.request.GET.get("search", "")
         context["sort_param"] = self.request.GET.get("sort", "")
         context["box_type"] = Unload.box_type
         context["selected_menu"] = "unload_list"
-        
-        # Panel mit Suche und Sortierung
         context["dashboard"] = True
 
         return context

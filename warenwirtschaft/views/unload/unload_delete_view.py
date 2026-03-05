@@ -12,14 +12,13 @@ class UnloadDeleteView(DeleteView):
     context_object_name = "unload"
 
     def get_object(self, queryset=None):
-        # Nur Unload löschen, der mit DeliveryUnit verknüpft ist
-        return get_object_or_404(
-            Unload,
+        qs = Unload.objects.filter(
             pk=self.kwargs["unload_pk"],
             delivery_units__pk=self.kwargs["delivery_unit_pk"],
-            ).exclude(
+        ).exclude(
             status=StatusChoices.ERLEDIGT
         )
+        return get_object_or_404(qs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

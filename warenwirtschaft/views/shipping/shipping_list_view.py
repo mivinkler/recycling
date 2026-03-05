@@ -51,11 +51,11 @@ class ShippingListView(ListView):
         fields = [field_name for field_name, _ in self.active_fields]
 
         choices_fields = {
-            "transport": Shipping.transport,
-            "unloads__box_type": Unload.box_type,
-            "recyclings__box_type": Recycling.box_type,
-            "unloads__status": Unload.status,
-            "recyclings__status": Recycling.status,
+            "transport": Shipping._meta.get_field("transport").choices,
+            "unloads__box_type": Unload._meta.get_field("box_type").choices,
+            "recyclings__box_type": Recycling._meta.get_field("box_type").choices,
+            "unloads__status": Unload._meta.get_field("status").choices,
+            "recyclings__status": Recycling._meta.get_field("status").choices,
         }
 
         search_service = SearchService(self.request, fields, choices_fields)

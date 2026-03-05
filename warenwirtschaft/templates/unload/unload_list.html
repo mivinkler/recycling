@@ -15,7 +15,6 @@
   <div class="table-header" title="Vorsortierung-ID">{% sort_header "id" "VID" %}</div>
   <div class="table-header">{% sort_header "created_at" "Datum" %}</div>
   <div class="table-header">{% sort_header "status" "Status" %}</div>
-  <div class="table-header">{% sort_header "status" "Status" %}</div>
   <div class="table-header">{% sort_header "box_type" "Behälter" %}</div>
   <div class="table-header">{% sort_header "material__name" "Material" %}</div>
   <div class="table-header">{% sort_header "weight" "Gewicht (kg)" %}</div>
@@ -48,9 +47,6 @@
 
       <div class="table-cell">{{ item.pk }}</div>
       <div class="table-cell table-cell-center">{{ item.created_at|date:'d.m.Y' }}</div>
-
-      <div class="table-cell">-</div>
-
       <div class="table-cell">{{ item|getattr:"get_status_display" }}</div>
       <div class="table-cell">{{ item|getattr:"get_box_type_display" }}</div>
       <div class="table-cell">{{ item.material }}</div>

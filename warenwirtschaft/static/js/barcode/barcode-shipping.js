@@ -1,7 +1,7 @@
-// Ein Scanner-Eingabefeld (#barcode) für G / S / A
+// Ein Scanner-Eingabefeld (#barcode) für G / V
 document.addEventListener('DOMContentLoaded', () => {
   const barcodeInput = document.getElementById('barcode');
-   const imgActive    = document.getElementById('barcode-active');
+  const imgActive    = document.getElementById('barcode-active');
   const imgInactive  = document.getElementById('barcode-inactive');
 
   if (!barcodeInput) return;
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    if (pfx === 'S' || pfx === 'A') {
+    if (pfx === 'V' || pfx === 'Z') {
       const { ok, status, data } = await fetchApi(code);
       if (!ok) { alert(data?.error || `Fehler ${status}`); return; }
       if (data.type === 'unload') {
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    alert('Unbekannter Präfix. Erlaubt: G (Kopf), S/A (Liste).');
+    alert('Unbekannter Präfix. Erlaubt: G ,V, Z');
   };
 
   barcodeInput.addEventListener('keydown', (e) => {
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();                    // verhindert Default (z.B. Form-Submit/Focus-Wechsel)
     const v = barcodeInput.value;
     barcodeInput.value = '';
-    handle(v);                             // G → Kopf, S/A → Checkboxen
+    handle(v);
   });
 
   // Verhindere Formular-Submit, solange der Scanner fokussiert ist

@@ -9,7 +9,7 @@ class ShippingDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context["transport"] = Shipping.TRANSPORT_CHOICES
+        context["transport"] = Shipping._meta.get_field("transport").choices
 
         return context
 
