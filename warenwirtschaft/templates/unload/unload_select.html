@@ -40,8 +40,8 @@
           <th class="itemcard-boxtype">Behälter</th>
           <th class="itemcard-weight">Gewicht</th>
           <th class="itemcard-note">Anmerkung</th>
-          <th class="itemcard-note">Vorsortierung-Wagen</th>
-          <th class="itemcard-action"></th>
+          <th class="itemcard-children">Vorsortierung-Wagen</th>
+          <th class="itemcard-action-icon"></th>
         </tr>
       </thead>
 
@@ -55,14 +55,11 @@
           <td class="itemcard-boxtype"><p>{{ du_ready.get_box_type_display }}</p></td>
           <td class="itemcard-weight"><p>{{ du_ready.weight }}</p></td>
           <td class="itemcard-note"><p>{{ du_ready.note }}</p></td>
-          <td class="itemcard-note"><p> -- </p></td>
-
-          <td class="itemcard-action-wrapper">
-            <div class="itemcard-action">
-              <a href="{% url 'unload_create' delivery_unit_pk=du_ready.pk %}" class="btn btn-lock">
-                <img class="icon-lock-closed" src="{% static 'icons/lock-icon.svg' %}">
-              </a>
-            </div>
+          <td class="itemcard-children"><p> -- </p></td>
+          <td class="itemcard-action-icon">
+            <a href="{% url 'unload_create' delivery_unit_pk=du_ready.pk %}" class="btn btn-lock">
+              <img class="icon-lock-closed" src="{% static 'icons/lock-icon.svg' %}">
+            </a>
           </td>
         </tr>
         {% endfor %}
@@ -84,8 +81,8 @@
           <th class="itemcard-boxtype">Behälter</th>
           <th class="itemcard-weight">Gewicht</th>
           <th class="itemcard-note">Anmerkung</th>
-          <th class="itemcard-note">Vorsortierung-Wagen</th>
-          <th class="itemcard-action"></th>
+          <th class="itemcard-children">Vorsortierung-Wagen</th>
+          <th class="itemcard-action-icon"></th>
         </tr>
       </thead>
 
@@ -99,28 +96,24 @@
           <td class="itemcard-boxtype"><p>{{ du_active.get_box_type_display }}</p></td>
           <td class="itemcard-weight"><p>{{ du_active.weight }}</p></td>
           <td class="itemcard-note"><p>{{ du_active.note }}</p></td>
-          <td class="itemcard-note" style="padding: 4px;">
-             {% for item in du_active.unloads.all %}
+          <td class="itemcard-children">
+            {% for item in du_active.unloads.all %}
+             <p>
                 {% if item.status == 8 %}
-                    <div class="weight-container">
-                      <span style="font-size: 18px; color: red;">&bull;</span>
-                      {{ item }}
-                    </div>
+                  <span style="font-size: 18px; color: red;">&bull;</span>
                 {% else %}
-                    <div class="weight-container">
-                      <span style="font-size: 18px; color: green;">&bull;</span>
-                      {{ item }}
-                    </div>
+                  <span style="font-size: 18px; color: green;">&bull;</span>
                 {% endif %}
+
+                {{ item }}
+              </p>
               {% endfor %}
           </td>
-
-          <td class="itemcard-action-wrapper">
-            <div class="itemcard-action">
-              <a href="{% url 'unload_create' delivery_unit_pk=du_active.pk %}" class="btn btn-lock">
-                <img class="icon-lock-closed" src="{% static 'icons/lock-icon.svg' %}">
-              </a>
-            </div>
+            
+          <td class="itemcard-action-icon">
+            <a href="{% url 'unload_create' delivery_unit_pk=du_active.pk %}" class="btn btn-lock">
+              <img class="icon-lock-closed" src="{% static 'icons/lock-icon.svg' %}">
+            </a>
           </td>
         </tr>
         {% endfor %}

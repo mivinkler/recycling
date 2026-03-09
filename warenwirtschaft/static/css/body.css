@@ -166,6 +166,7 @@
   min-height: 29px;
 }
 
+.itemcard-children p,
 .weight-container { 
   display: flex; 
   align-items: center; 
@@ -191,16 +192,6 @@
   width: 114px; 
   background: transparent; 
   border: none;
-}
-
-.itemcard-table-row.is-locked * { 
-  color: var(--color-gray-800); 
-}
-
-.itemcard-table-row.is-locked input:not([type="hidden"]),
-.itemcard-table-row.is-locked select,
-.itemcard-table-row.is-locked button:not(.btn-lock) {
-  pointer-events: none;
 }
 
 /* ================ Itemcard Body ================ */
@@ -239,7 +230,6 @@ td p {
   border: 1px solid var(--color-hero);
 }
 
-
 .itemcard-weight {
   width: 100px;
 }
@@ -250,14 +240,11 @@ td p {
   width: 160px;
 }
 
-.itemcard-position {
-   width: 180px;
-}
-
 .itemcard-material {
   width: 160px;
 }
 
+.itemcard-children,
 .itemcard-note {
   width: 240px;
 }
@@ -267,6 +254,20 @@ td p {
   box-sizing: border-box;
 }
 
+.itemcard-children span {
+  margin-right: 4px;
+  font-size: 18px;
+}
+
+.itemcard-action {
+  width: 106px;
+  margin-left: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.itemcard-action-icon,
 .itemcard-action,
 .itemcard-action-left {
   background-color: transparent;
@@ -279,28 +280,14 @@ td p {
   width: 0;
 }
 
-.itemcard-action {
-  width: 106px;
-  margin-left: 6px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.itemcard-action.add-buttons {
-  margin-left: 0;
-  gap: 2px
+.itemcard-action-icon {
+  width: 27px;
+  padding-left: 10px;
 }
 
 .itemcard-content {
   margin-bottom: 20px;
   line-height: 1.8;
-}
-
-.itemcard-row-delete {
-  background-color: transparent;
-  border: none;
-  padding-left: 6px;
 }
 
 .table-cell.checkbox-circle {
@@ -347,6 +334,11 @@ td p {
   box-shadow: 0 1px 3px var(--color-gray-350);
 }
 
+.btn-active-children {
+  width: max-content; 
+  margin: 0 60px 10px auto;
+}
+
 .btn-margin-top {
   margin-top: 10px;
 }
@@ -354,13 +346,6 @@ td p {
 .btn-lock {
   padding: 0 5px;
   width: fit-content;
-}
-
-.btn-row-add {
-  padding: 0 9px;
-  margin-top: 4px;
-  font-weight: bold;
-  font-size: 16px;
 }
 
 .active-row > td {
@@ -413,17 +398,6 @@ td p {
   font-weight: bold;
   width: 150px;
   padding-left: 30px;
-}
-
-.detail-barcode {
-  text-align: left;
-}
-
-.barcode-print-icon {
-  display: block;
-  text-align: center;
-  padding: 0;
-  width: 100%;
 }
 
 .barcode-wrapper { 
@@ -548,3 +522,40 @@ td p {
   background-color: white;
   
 }
+
+/* =========== help_dropdown =========== */
+
+  .page-help-wrapper {
+    right: 0; 
+    left: auto; 
+    width: 25vw;
+    padding-left: 12px;
+  }
+
+  .page-help-wrapper {
+    line-height: 1.5em;
+  }
+
+  .page-help li {
+    margin-left: 30px;
+  }
+
+  .page-help h3 {
+    color: var(--color-hero);
+    font-size: 1.2em;
+    margin-bottom: 18px;
+  }
+
+  .page-help h4 {
+    margin: 10px 0 5px;
+  }
+
+  .page-help-barcode {
+    height: 1.5em; 
+    vertical-align: middle;
+  }
+
+  .page-help-icon {
+    height: 1.2em; 
+    vertical-align: middle;
+  }

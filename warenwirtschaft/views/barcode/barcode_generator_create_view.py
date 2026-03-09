@@ -1,4 +1,3 @@
-# views/barcode_generator_create.py
 import uuid
 from django.views.generic.edit import CreateView
 from django.urls import reverse

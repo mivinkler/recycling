@@ -73,7 +73,7 @@
     </section>
   </div>
 
-  <div class="itemcard" style="width: 866px; margin-top: 60px;">
+  <div class="itemcard">
     <h4>Aktive Lieferungen in Vorsortierung:</h4>
 
     <table class="itemcard-table">
@@ -84,39 +84,35 @@
           <th>Lieferant</th>
           <th>Lieferschein</th>
           <th>Liefereinheiten</th>
-          <th class="itemcard-action" style="width: auto;"></th>
+          <th class="itemcard-action-icon"></th>
         </tr>
       </thead>
       
       <tbody class="itemcard-tbody">
         {% for delivery in active_deliveries %}
-        <tr class="itemcard-table-row">
-          <td class="itemcard-id">{{ forloop.counter }}</td>
-          <td><p>{{ delivery.pk }}</p></td>
-          <td><p>{{ delivery.customer.name }}</p></td>
-          <td><p>{{ delivery.delivery_receipt }}</p></td>
-          <td style="padding: 4px;"> 
-            {% for item in delivery.delivery_units.all %}
-              {% if item.status == 1 or item.status == 2 %}
-                  <div class="weight-container">
-                    <span style="font-size: 18px; color: green;">&bull;</span>
-                    {{ item }}
-                  </div>
-              {% else %}
-                  <div class="weight-container">
-                    <span style="font-size: 18px; color: red;">&bull;</span>
-                    {{ item }}
-                  </div>
-              {% endif %}
-            {% endfor %}
-          </td>
-          <td class="itemcard-action-wrapper" style="width: auto;">
-            <div class="itemcard-action" style="width: auto;">
+          <tr class="itemcard-table-row">
+            <td class="itemcard-id">{{ forloop.counter }}</td>
+            <td><p>{{ delivery.pk }}</p></td>
+            <td><p>{{ delivery.customer.name }}</p></td>
+            <td><p>{{ delivery.delivery_receipt }}</p></td>
+            <td class="itemcard-children"> 
+              {% for item in delivery.delivery_units.all %}
+              <p>
+                {% if item.status == 1 or item.status == 2 %}
+                  <span style="font-size: 18px; color: green;">&bull;</span>
+                {% else %}
+                  <span style="font-size: 18px; color: red;">&bull;</span>
+                {% endif %}
+                
+                {{ item }}  
+              </p>
+              {% endfor %}
+            </td>
+            <td class="itemcard-action-icon">
               <a href="{% url 'delivery_unit_new' delivery_pk=delivery.pk %}" class="btn btn-lock">
                 <img src="{% static 'icons/lock-icon.svg' %}" alt="">
               </a>
-            </div>
-          </td>
+            </td>
           </tr>
         {% empty %}
           <tr><td colspan="6">Keine aktuelle Wareneingänge vorhanden.</td></tr>
