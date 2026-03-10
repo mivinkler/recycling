@@ -3,23 +3,32 @@ from django.utils.safestring import mark_safe
 
 register = template.Library()
 
-@register.simple_tag
-def paginate(page_obj):
+@register.simple_tag(takes_context=True)
+def paginate(context, page_obj):
     # Wenn es nur eine Seite gibt, zeigen wir keine Paginierung an
     if page_obj.paginator.num_pages <= 1:
         return ''
 
     pagination = []
+    request = context.get("request")
+    query_params = request.GET.copy() if request else None
+
+    def page_link(page_number):
+        if query_params is None:
+            return f"?page={page_number}"
+        params = query_params.copy()
+        params["page"] = page_number
+        return f"?{params.urlencode()}"
 
     # "Zurück"-Button
     if page_obj.has_previous():
-        pagination.append(f'<a href="?page={page_obj.previous_page_number()}">&laquo;</a>')
+        pagination.append(f'<a href="{page_link(page_obj.previous_page_number())}">&laquo;</a>')
     else:
         pagination.append('<span>&laquo;</span>')  # Deaktiviert, wenn keine vorherige Seite existiert
 
     # Erste Seite und "..."
     if page_obj.number > 3:
-        pagination.append(f'<a href="?page=1">1</a>')  # Erster Seitenlink
+        pagination.append(f'<a href="{page_link(1)}">1</a>')  # Erster Seitenlink
         if page_obj.number > 4:
             pagination.append('<span>...</span>')  # "..." wenn mehr als 4 Seiten davor sind
 
@@ -28,17 +37,17 @@ def paginate(page_obj):
         if num == page_obj.number:
             pagination.append(f'<span class="current">{num}</span>')  # Markiert die aktuelle Seite
         else:
-            pagination.append(f'<a href="?page={num}">{num}</a>')
+            pagination.append(f'<a href="{page_link(num)}">{num}</a>')
 
     # "..." und letzte Seite anzeigen, falls nötig
     if page_obj.number < page_obj.paginator.num_pages - 2:
         if page_obj.number < page_obj.paginator.num_pages - 3:
             pagination.append('<span>...</span>')  # "..." wenn mehr als 4 Seiten danach sind
-        pagination.append(f'<a href="?page={page_obj.paginator.num_pages}">{page_obj.paginator.num_pages}</a>')
+        pagination.append(f'<a href="{page_link(page_obj.paginator.num_pages)}">{page_obj.paginator.num_pages}</a>')
 
     # "Weiter"-Button
     if page_obj.has_next():
-        pagination.append(f'<a href="?page={page_obj.next_page_number()}">&raquo;</a>')
+        pagination.append(f'<a href="{page_link(page_obj.next_page_number())}">&raquo;</a>')
     else:
         pagination.append('<span>&raquo;</span>')  # Deaktiviert, wenn keine nächste Seite existiert
 

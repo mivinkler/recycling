@@ -10,19 +10,19 @@
 }
 
 .table[data-type="deliveryunits"] {
-  grid-template-columns: repeat(3, minmax(33px, max-content)) 1fr 1fr 3fr 1fr 2fr 2fr 1fr 4fr;
+  grid-template-columns: repeat(3, minmax(33px, max-content)) 1fr 1fr 2fr 3fr 1fr 2fr 2fr 1fr 1fr 4fr;
 }
 
 .table[data-type="unload"] {
-  grid-template-columns: repeat(3, minmax(33px, max-content)) 1fr 3fr 3fr 3fr 1fr 4fr;
+  grid-template-columns: repeat(3, minmax(33px, max-content)) 1fr 1fr 3fr 3fr 3fr 1fr 1fr 4fr;
 }
 
 .table[data-type="recycling"] {
-  grid-template-columns: repeat(3, minmax(33px, max-content)) 1fr 1fr 2fr 2fr 1fr 4fr;
+  grid-template-columns: repeat(3, minmax(33px, max-content)) 1fr 1fr 1fr 2fr 2fr 1fr 1fr 4fr;
 }
 
 .table[data-type="halle-zwei"] {
-  grid-template-columns: repeat(3, minmax(33px, max-content)) repeat(2, 1fr) repeat(2, 2fr) 1fr 4fr;
+  grid-template-columns: repeat(3, minmax(33px, max-content)) 3fr repeat(3, 1fr) repeat(2, 2fr) 1fr 1fr 4fr;
 }
 
 .table[data-type="shipping"] {

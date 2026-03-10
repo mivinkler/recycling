@@ -14,8 +14,15 @@ class HalleZweiListView(ListView):
     
     active_fields = [
         ("id", "HID"),
-        ("delivery_units__id", "Liefereinheiten"),
-        ("created_at", "Datum"),
+        ("delivery_unit__id", "EID"),
+        ("delivery_unit__delivery__customer__name", "Kunde"),
+        ("created_at", "Erstellt am"),
+        ("inactive_at", "Erledigt am"),
+        ("delivery_unit__box_type", "Behälter"),
+        ("delivery_unit__material__name", "Material"),
+        ("delivery_unit__weight", "Gewicht"),
+        ("delivery_unit__barcode", "Barcode"),
+        ("note", "Anmerkung"),
     ]
 
     def get_queryset(self):

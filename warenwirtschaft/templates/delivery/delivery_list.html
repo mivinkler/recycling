@@ -14,13 +14,15 @@
   <div class="table-header">№</div>
   <div class="table-header" title="Lieferung-ID">{% sort_header "delivery__id" "LID" %}</div>
   <div class="table-header" title="Lieferung-Einheit-ID">{% sort_header "id" "EID" %}</div>
-  <div class="table-header">{% sort_header "created_at" "Datum" %}</div>
+  <div class="table-header">{% sort_header "created_at" "Erstellt am" %}</div>
+  <div class="table-header">{% sort_header "inactive_at" "Erledigt am" %}</div>
   <div class="table-header">{% sort_header "status" "Status" %}</div>
   <div class="table-header">{% sort_header "delivery__customer__name" "Kunde" %}</div>
   <div class="table-header">{% sort_header "delivery__delivery_receipt" "Lieferschein" %}</div>
   <div class="table-header">{% sort_header "box_type" "Behälter" %}</div>
   <div class="table-header">{% sort_header "material__name" "Material" %}</div>
   <div class="table-header">{% sort_header "weight" "Gewicht (kg)" %}</div>
+  <div class="table-header">{% sort_header "barcode" "Barcode" %}</div>
   <div class="table-header">{% sort_header "note" "Anmerkung" %}</div>
 
   {% for item in page_obj %}
@@ -28,15 +30,14 @@
     data-id="{{ item.id }}"
     data-status="{{ item.status }}"
     data-url-unload-create="{% url 'unload_select' %}"
-    {% comment %} data-url-update="{% url 'delivery_unit_update' pk=item.delivery.id %}" {% endcomment %}
+    data-url-update="{% url 'delivery_unit_update' delivery_pk=item.delivery.id delivery_unit_pk=item.pk%}"
     data-url-detail-barcode="{% url 'delivery_barcode' pk=item.id %}"
-    
-    {% comment %} data-url-detail-weight="{% url 'delivery_weight' pk=item.delivery.id %}" {% endcomment %}
   >
     <div class="table-cell table-cell-counter">{{ forloop.counter }}</div>
     <div class="table-cell">{{ item.delivery.id }}</div>
     <div class="table-cell">{{ item.id }}</div>
     <div class="table-cell table-cell-center">{{ item.created_at|date:'d.m.Y' }}</div>
+    <div class="table-cell table-cell-center">{{ item.inactive_at|date:'d.m.Y' }}</div>
 
     <div class="table-cell">{{ item.get_status_display }}</div>
 
@@ -45,6 +46,7 @@
     <div class="table-cell">{{ item.get_box_type_display }}</div>
     <div class="table-cell">{{ item.material.name|default:"-" }}</div>
     <div class="table-cell table-cell-right">{{ item.weight }}</div>
+    <div class="table-cell">{{ item.barcode }}</div>
     <div class="table-cell" title="{{ item.note }}">{{ item.note }}</div>
   </div>
   {% endfor %}

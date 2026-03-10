@@ -19,7 +19,9 @@ class DeliveryListView(ListView):
         ("material__name", "Material"),
         ("weight", "Gewicht"),
         ("status", "Status"),
-        ("created_at", "Datum"),
+        ("created_at", "Erstellt am"),
+        ("inactive_at", "Erledigt am"),
+        ("barcode", "Barcode"),
         ("note", "Anmerkung"),
     ]
 

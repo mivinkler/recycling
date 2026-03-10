@@ -13,27 +13,34 @@
   <div class="table-header">№</div>
   <div class="table-header" title="Lieferungseinheit-ID">EID</div>
   <div class="table-header" title="Halle-Zwei-ID">HID</div>
-  <div class="table-header">Geprüft am</div>
-  <div class="table-header">Abholung</div>
+  <div class="table-header">{% sort_header "delivery_unit__delivery__customer__name" "Kunde" %}</div>
+  <div class="table-header">{% sort_header "created_at" "Erstellt am" %}</div>
+  <div class="table-header">{% sort_header "inactive_at" "Erledigt am" %}</div>
+  <div class="table-header">Abholung am</div>
 
-  <div class="table-header">Behälter</div>
-  <div class="table-header">Material</div>
-  <div class="table-header">Gewicht</div>
-  <div class="table-header">Anmerkung</div>
+  <div class="table-header">{% sort_header "delivery_unit__box_type" "Behälter" %}</div>
+  <div class="table-header">{% sort_header "delivery_unit__material__name" "Material" %}</div>
+  <div class="table-header">{% sort_header "delivery_unit__weight" "Gewicht (kg)" %}</div>
+  <div class="table-header">{% sort_header "delivery_unit__barcode" "Barcode" %}</div>
+  <div class="table-header">{% sort_header "delivery_unit__note" "Anmerkung" %}</div>
 
   {% for item in page_obj %}
   <div class="table-row js-select-row">
     <div class="table-cell table-cell-counter">{{ forloop.counter }}</div>
     <div class="table-cell">{{ item.delivery_unit.id }}</div>
     <div class="table-cell">{{ item.id }}</div>
+    <div class="table-cell">{{ item.delivery_unit.delivery.customer.name }}</div>
+
 
     <div class="table-cell table-cell-center">{{ item.created_at|date:'d.m.Y' }}</div>
     <div class="table-cell table-cell-center">{{ item.inactive_at|date:'d.m.Y' }}</div>
+    <div class="table-cell table-cell-center"></div>
 
     <div class="table-cell">{{ item.delivery_unit.get_box_type_display }}</div>
     <div class="table-cell">{{ item.delivery_unit.material.name|default:"-" }}</div>
-    <div class="table-cell">{{ item.delivery_unit.weight }}</div>
-    <div class="table-cell" title="{{ item.note }}">{{ item..delivery_unit.note }}</div>
+    <div class="table-cell table-cell-right">{{ item.delivery_unit.weight }}</div>
+    <div class="table-cell" title="{{ item.note }}">{{ item.delivery_unit.note }}</div>
+    <div class="table-cell" title="{{ item.note }}">{{ item.delivery_unit.barcode }}</div>
   </div>
   {% endfor %}
 </div>

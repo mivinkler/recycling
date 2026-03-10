@@ -19,7 +19,9 @@ class UnloadListView(ListView):
         ("box_type", "Behälter"),
         ("material__name", "Material"),
         ("weight", "Gewicht"),
-        ("created_at", "Datum"),
+        ("created_at", "Erstellt am"),
+        ("inactive_at", "Erledigt am"),
+        ("barcode", "Barcode"),
         ("note", "Anmerkung"),
     ]
 

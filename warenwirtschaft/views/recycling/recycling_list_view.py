@@ -18,7 +18,9 @@ class RecyclingListView(ListView):
         ("box_type", "Behälter"),
         ("weight", "Gewicht"),
         ("material__name", "Material"),
-        ("created_at", "Datum"),
+        ("created_at", "Erstellt am"),
+        ("inactive_at", "Erledigt am"),
+        ("barcode", "Barcode"),
         ("note", "Anmerkung"),
     ]
 

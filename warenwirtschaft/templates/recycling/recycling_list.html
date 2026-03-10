@@ -14,11 +14,13 @@
   <div class="table-header">№</div>
   <div class="table-header" title="Vorsortierung-ID">{% sort_header "unloads__id" "VID" %}</div>
   <div class="table-header" title="Zerlegung-ID">{% sort_header "id" "ZID" %}</div>
-  <div class="table-header">{% sort_header "created_at" "Datum" %}</div>
+  <div class="table-header">{% sort_header "created_at" "Erstellt am" %}</div>
+  <div class="table-header">{% sort_header "inactive_at" "Erledigt am" %}</div>
   <div class="table-header">{% sort_header "status" "Status" %}</div>
   <div class="table-header">{% sort_header "box_type" "Behälter" %}</div>
   <div class="table-header">{% sort_header "material__name" "Material" %}</div>
   <div class="table-header">{% sort_header "weight" "Gewicht (kg)" %}</div>
+  <div class="table-header">{% sort_header "barcode" "Barcode" %}</div>
   <div class="table-header">{% sort_header "note" "Anmerkung" %}</div>
 
   {% for item in page_obj %}
@@ -42,10 +44,12 @@
       </div>
       <div class="table-cell table-cell-center">{{ item.id }}</div>
       <div class="table-cell table-cell-center">{{ item.created_at|date:'d.m.Y' }}</div>
+      <div class="table-cell table-cell-center">{{ item.inactive_at|date:'d.m.Y' }}</div>
       <div class="table-cell">{{ item|getattr:"get_status_display" }}</div>
       <div class="table-cell">{{ item|getattr:"get_box_type_display" }}</div>
       <div class="table-cell">{{ item.material }}</div>
       <div class="table-cell table-cell-right">{{ item.weight }}</div>
+      <div class="table-cell">{{ item.barcode }}</div>
       <div class="table-cell" title="{{ item.note }}">{{ item.note }}</div>
     </div>
   {% endfor %}
