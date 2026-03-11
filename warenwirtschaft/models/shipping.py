@@ -13,3 +13,33 @@ class Shipping(models.Model):
 
     def __str__(self):
         return f"{self.customer} - {self.certificate} - {self.get_transport_display()}"
+
+    @property
+    def einheiten(self):
+        einheiten = []
+
+        for unload in self.unloads.all():
+            einheiten.append({
+                "typ": "Unload",
+                "obj": unload,
+                "sortierung": 1,
+                "pk": unload.pk,
+            })
+
+        for recycling in self.recyclings.all():
+            einheiten.append({
+                "typ": "Recycling",
+                "obj": recycling,
+                "sortierung": 2,
+                "pk": recycling.pk,
+            })
+
+        for halle_zwei in self.halle_zwei.all():
+            einheiten.append({
+                "typ": "Halle 2",
+                "obj": halle_zwei,
+                "sortierung": 3,
+                "pk": halle_zwei.pk,
+            })
+
+        return sorted(einheiten, key=lambda item: (item["sortierung"], item["pk"]))

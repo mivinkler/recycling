@@ -12,62 +12,37 @@
 <div class="table" data-type="shipping">
   <div class="table-header">№</div>
   <div class="table-header">{% sort_header "id" "ID" %}</div>
-  <div class="table-header">VID/AID</div>
   <div class="table-header">{% sort_header "created_at" "Datum" %}</div>
   <div class="table-header">{% sort_header "customer__name" "Abholer" %}</div>
   <div class="table-header">{% sort_header "certificate" "Übernahmeschein" %}</div>
   <div class="table-header">{% sort_header "transport" "Transport" %}</div>
-  <div class="table-header">Herkunft</div>
-  <div class="table-header">{% sort_header "box_type" "Behälter" %}</div>
-  <div class="table-header">{% sort_header "material" "Material" %}</div>
-  <div class="table-header">{% sort_header "weight" "Gewicht (kg)" %}</div>
-  <div class="table-header">{% sort_header "status" "Status" %}</div>
+  <div class="table-header">Einheit</div>
   <div class="table-header">{% sort_header "note" "Notiz" %}</div>
 
-  {% for row in rows %}
-  {% with shipping=row.shipping item=row.item kind=row.kind %}
-    <div class="table-row js-select-row"
-      {% comment %}{% if kind == "unload" %}
-        data-url-barcode="{% url 'unload_barcode' pk=item.id %}"
-        data-url-update="{% url 'unload_update' pk=item.id %}"
-      {% else %}
-        data-url-barcode="{% url 'recycling_barcode' pk=item.id %}"
-        data-url-update="{% url 'recycling_update' unload_pk=unload.pk recycling_pk=item.pk %}"
-      {% endif %}{% endcomment %}
-    >
-      <div class="table-cell table-cell-counter">
-        {{ forloop.counter }}
-      </div>
-
-      <div class="table-cell table-cell-center">{{ shipping.id }}</div>
-      <div class="table-cell">{{ item.id }}</div>
-      <div class="table-cell table-cell-center">
-        {{ shipping.created_at|date:"d.m.Y" }}
-      </div>
-      <div class="table-cell">{{ shipping.customer.name }}</div>
-      <div class="table-cell">{{ shipping.certificate }}</div>
-      <div class="table-cell">{{ shipping.get_transport_display }}</div>
-
+  {% for item in page_obj %}
+    <div class="table-row js-select-row">
+      <div class="table-cell table-cell-counter">{{ forloop.counter }}</div>
+      <div class="table-cell table-cell-center">{{ item.id }}</div>
+      <div class="table-cell table-cell-center">{{ item.created_at|date:"d.m.Y" }}</div>
+      <div class="table-cell">{{ item.customer.name }}</div>
+      <div class="table-cell">{{ item.certificate|default:"—" }}</div>
+      <div class="table-cell">{{ item.get_transport_display }}</div>
 
       <div class="table-cell">
-        {% if kind == "unload" %}
-          Vorsortierung
+        {% if item.einheiten %}
+          {% for einheit in item.einheiten %}
+            <div>{{ einheit.obj }}</div>
+          {% endfor %}
         {% else %}
-          Zerlegung
+          —
         {% endif %}
       </div>
 
-      <div class="table-cell">{{ item.get_box_type_display }}</div>
-      <div class="table-cell">{{ item.material.name }}</div>
-      <div class="table-cell table-cell-right">{{ item.weight }}</div>
-      <div class="table-cell">{{ item.get_status_display }}</div>
-      <div class="table-cell" title="{{ shipping.note }}">
-        {{ shipping.note|default:"—" }}
+      <div class="table-cell" title="{{ item.note|default:'' }}">
+        {{ item.note|default:"—" }}
       </div>
     </div>
-  {% endwith %}
-{% endfor %}
-
+  {% endfor %}
 </div>
 
 {% paginate page_obj %}

@@ -1,6 +1,7 @@
 from django.views.generic import ListView
 from django.db.models import Prefetch
-from warenwirtschaft.models import Shipping, Unload, Recycling
+
+from warenwirtschaft.models import Shipping, Unload, Recycling, HalleZwei
 from warenwirtschaft.services.search_service import SearchService
 from warenwirtschaft.services.sorting_service import SortingService
 
@@ -18,89 +19,55 @@ class ShippingListView(ListView):
         ("note", "Anmerkung"),
         ("created_at", "Datum"),
         ("transport", "Transport"),
-
-        # Unload (Vorsortierung)
-        ("unloads__material__name", "Material (Vorsort.)"),
-        ("unloads__weight", "Gewicht (Vorsort.)"),
-        ("unloads__box_type", "Behälter (Vorsort.)"),
-        ("unloads__status", "Status (Vorsort.)"),
-
-        # Recycling (Zerlegung)
-        ("recyclings__material__name", "Material (Zerlegung)"),
-        ("recyclings__weight", "Gewicht (Zerlegung)"),
-        ("recyclings__box_type", "Behälter (Zerlegung)"),
-        ("recyclings__status", "Status (Zerlegung)"),
     ]
 
     def get_queryset(self):
         unload_prefetch = Prefetch(
             "unloads",
-            queryset=Unload.objects.select_related("material"),
+            queryset=Unload.objects.all().order_by("pk"),
         )
         recycling_prefetch = Prefetch(
             "recyclings",
-            queryset=Recycling.objects.select_related("material"),
+            queryset=Recycling.objects.all().order_by("pk"),
+        )
+        halle_zwei_prefetch = Prefetch(
+            "halle_zwei",
+            queryset=HalleZwei.objects.all().order_by("pk"),
         )
 
-        qs = (
-            Shipping.objects
+        queryset = (
+            super()
+            .get_queryset()
             .select_related("customer")
-            .prefetch_related(unload_prefetch, recycling_prefetch)
+            .prefetch_related(
+                unload_prefetch,
+                recycling_prefetch,
+                halle_zwei_prefetch,
+            )
         )
 
         fields = [field_name for field_name, _ in self.active_fields]
 
         choices_fields = {
             "transport": Shipping._meta.get_field("transport").choices,
-            "unloads__box_type": Unload._meta.get_field("box_type").choices,
-            "recyclings__box_type": Recycling._meta.get_field("box_type").choices,
-            "unloads__status": Unload._meta.get_field("status").choices,
-            "recyclings__status": Recycling._meta.get_field("status").choices,
         }
 
         search_service = SearchService(self.request, fields, choices_fields)
         sorting_service = SortingService(self.request, fields)
 
-        qs = search_service.apply_search(qs)
-        qs = sorting_service.apply_sorting(qs)
+        queryset = search_service.apply_search(queryset)
+        queryset = sorting_service.apply_sorting(queryset)
 
-        # distinct zur Sicherheit (SearchService/SortingService)
-        return qs.distinct()
+        # distinct zur Sicherheit bei Suche und Sortierung
+        return queryset.distinct()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        page_obj = context["page_obj"]
-
-        # Eine Zeile für Unload und Recycling
-        rows = []
-        for shipping in page_obj:
-            for unload in shipping.unloads.all():
-                rows.append({
-                    "shipping": shipping,
-                    "item": unload,
-                    "kind": "unload",
-                })
-
-            for recycling in shipping.recyclings.all():
-                rows.append({
-                    "shipping": shipping,
-                    "item": recycling,
-                    "kind": "recycling",
-                })
-
-        context["rows"] = rows
-
         context["active_fields"] = self.active_fields
         context["search_query"] = self.request.GET.get("search", "")
         context["sort_param"] = self.request.GET.get("sort", "")
-
-        context["transport_choices"] = Shipping.transport
-        context["unload_box_type_choices"] = Unload.box_type
-        context["unload_status_choices"] = Unload.status
-        context["recycling_box_type_choices"] = Recycling.box_type
-        context["recycling_status_choices"] = Recycling.status
-
+        context["transport_choices"] = Shipping._meta.get_field("transport").choices
         context["selected_menu"] = "shipping_list"
         context["dashboard"] = True
 

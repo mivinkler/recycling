@@ -8,7 +8,7 @@ class HalleZwei(models.Model):
     note = models.CharField(max_length=255, null=True, blank=True)
 
     halle_zwei = models.BooleanField(null=True, blank=True)
-    shipping = models.ForeignKey("warenwirtschaft.Shipping", on_delete=models.PROTECT, null=True, blank=True, related_name="shipping_to_halle_zwei")
+    shipping = models.ForeignKey("warenwirtschaft.Shipping", on_delete=models.PROTECT, null=True, blank=True, related_name="halle_zweis")
 
     created_at = models.DateTimeField(auto_now_add=True)
     inactive_at = models.DateTimeField(null=True, blank=True)

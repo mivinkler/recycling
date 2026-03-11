@@ -26,7 +26,7 @@
 }
 
 .table[data-type="shipping"] {
-  grid-template-columns: repeat(3, minmax(33px, max-content)) 1fr 3fr 1fr 1fr repeat(3, 2fr) 1fr 2fr 4fr;
+  grid-template-columns: repeat(2, minmax(33px, max-content)) repeat(4, 1fr) 3fr 3fr;
 }
 
 .table[data-type="barcode"] {
@@ -47,13 +47,11 @@
 .table-cell {
   border-right: 1px solid var(--color-gray-200);
   border-bottom: 1px solid var(--color-gray-200);
-  height: 26px;
-  padding: 2px 8px;
+  padding: 4px 3px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   cursor: pointer;
-  align-content: end;
 }
 
 .table-header,
