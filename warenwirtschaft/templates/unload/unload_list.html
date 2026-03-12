@@ -28,16 +28,12 @@
       data-id="{{ item.pk }}"
       data-status="{{ item.status }}"
       data-url-barcode="{% url 'unload_barcode' pk=item.pk %}"
-      {% comment %} TODO: Nach der Entwicklungsphase {% if %}...{% endif %} löschen {% endcomment %}
-      {% if delivery_unit %}
-        data-url-update="{% url 'unload_update' delivery_unit_pk=delivery_unit.pk unload_pk=item.pk %}"
-      {% endif %}
+      data-url-update="{% url 'unload_update' delivery_unit_pk=delivery_unit.pk unload_pk=item.pk %}"
     >
 
       <div class="table-cell table-cell-counter">{{ forloop.counter }}</div>
 
       <div class="table-cell multiple-id">
-        {% comment %} TODO: Nach der Entwicklungsphase {% for %}...{% endfor %} löschen {% endcomment %}
         {% for delivery_unit in item.delivery_units.all %}
           <span title="{% for du in item.delivery_units.all %}{{ du }}&#10;{% endfor %}">
             {{ delivery_unit.pk }}
@@ -65,8 +61,12 @@
 
 <template id="context-menu-template">
   <ul id="context-menu" class="context-menu">
-    <li data-action="urlBarcode">Barcode drucken</li>
-    <li data-action="urlUpdate">Vorsortierung ändern</li>
+    <li data-action="urlBarcode">
+      Barcode drucken
+    </li>
+    <li data-action="urlUpdate">
+      Entladung ändern
+    </li>
   </ul>
 </template>
 

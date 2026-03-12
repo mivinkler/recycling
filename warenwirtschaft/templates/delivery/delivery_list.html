@@ -29,9 +29,9 @@
   <div class="table-row js-select-row"
     data-id="{{ item.id }}"
     data-status="{{ item.status }}"
-    data-url-unload-create="{% url 'unload_select' %}"
-    data-url-update="{% url 'delivery_unit_update' delivery_pk=item.delivery.id delivery_unit_pk=item.pk%}"
     data-url-detail-barcode="{% url 'delivery_barcode' pk=item.id %}"
+    data-url-unload-create="{% url 'unload_create' delivery_unit_pk=item.pk %}"
+    data-url-delivery-update="{% url 'delivery_unit_update' delivery_pk=item.delivery.id delivery_unit_pk=item.pk%}"
   >
     <div class="table-cell table-cell-counter">{{ forloop.counter }}</div>
     <div class="table-cell">{{ item.delivery.id }}</div>
@@ -55,14 +55,21 @@
 
 {% paginate page_obj %}
 
+<!-- Wenn status 1 wird unload_create aufgerufen, wenn status 2 wird unload_update aufgerufen -->
+
 <template id="context-menu-template">
   <ul id="context-menu" class="context-menu">
-    <li data-action="urlDetailBarcode">Barcode drucken</li>
-    <li data-action="urlUpdate">Inhalt ändern</li>
-
-     <!-- Status 1 -> Übergabe an Vorsortierung (Delivery -> Unload) -->
+    <li data-action="urlDetailBarcode">
+      Barcode drucken
+    </li>
     <li data-action="urlUnloadCreate" data-require-status="1" data-param="delivery_unit">
-      Zum Formular
+      Entladung erfassen
+    </li>
+    <li data-action="urlUnloadCreate" data-require-status="2" data-param="delivery_unit">
+      Entladung ändern
+    </li>
+    <li data-action="urlDeliveryUpdate">
+      Lieferung ändern
     </li>
   </ul>
 </template>

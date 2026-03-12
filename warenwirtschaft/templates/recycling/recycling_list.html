@@ -26,12 +26,7 @@
   {% for item in page_obj %}
     <div class="table-row js-select-row"
       data-id="{{ item.pk }}"
-      {% comment %} Nimmt den ersten Unload aus der Liste M2M {% endcomment %}
-      {% with first_unload=item.unloads.all.0 %}
-        {% if first_unload %}
-          data-url-update="{% url 'recycling_update' recycling_pk=item.pk %}"
-        {% endif %}
-      {% endwith %}
+      data-url-update="{% url 'recycling_update' recycling_pk=item.pk %}"
       data-url-barcode="{% url 'recycling_barcode' pk=item.id %}"
       >
       <div class="table-cell table-cell-counter">{{ forloop.counter }}</div>
@@ -60,7 +55,7 @@
 <template id="context-menu-template">
   <ul id="context-menu" class="context-menu">
     <li data-action="urlBarcode">Barcode drücken</li>
-    <li data-action="urlUpdate">Zerlegung ändern</li>
+    <li data-action="urlUpdate" data-require-status="4" data-param="recycling">Inhalt ändern</li>
   </ul>
 </template>
 

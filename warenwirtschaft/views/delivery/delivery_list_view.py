@@ -53,10 +53,10 @@ class DeliveryListView(ListView):
         context["selected_menu"] = "delivery_list"
         context["dashboard"] = True
 
-        context["filters"] = {
-            "search": self.request.GET.get("search", ""),
-            "date_start": self.request.GET.get("date_start", "")[:10],
-            "date_end": self.request.GET.get("date_end", "")[:10],
-        }
+        # context["filters"] = {
+        #     "search": self.request.GET.get("search", ""),
+        #     "date_start": self.request.GET.get("date_start", "")[:10],
+        #     "date_end": self.request.GET.get("date_end", "")[:10],
+        # }
 
         return context

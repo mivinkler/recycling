@@ -6,10 +6,12 @@ from warenwirtschaft.forms.recycling_form import RecyclingForm
 from warenwirtschaft.models.unload import Unload
 from warenwirtschaft.models.recycling import Recycling
 from warenwirtschaft.models_common.choices import StatusChoices
+from warenwirtschaft.services.barcode_number_service import BarcodeNumberService
 
 
 class RecyclingCreateView(View):
     template_name = "recycling/recycling_create.html"
+    BARCODE_PREFIX = "Z"
 
     # --------------------------------------------------
     # Hilfsfunktionen
@@ -101,6 +103,9 @@ class RecyclingCreateView(View):
         new_form = RecyclingForm(request.POST)
         if new_form.is_valid():
             new_recycling = new_form.save(commit=False)
+
+            BarcodeNumberService.set_barcodes([new_recycling], prefix=self.BARCODE_PREFIX)
+
             new_recycling.status = StatusChoices.AKTIV_IN_ZERLEGUNG
             new_recycling.save()
             return redirect("recycling_create")
