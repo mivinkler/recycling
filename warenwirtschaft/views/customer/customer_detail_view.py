@@ -1,10 +1,10 @@
 from django.views.generic.detail import DetailView
-from warenwirtschaft.services.pagination_service import PaginationPreferenceMixin, PaginationService
-from warenwirtschaft.services.search_service import SearchService
-from warenwirtschaft.services.sorting_service import SortingService
 
 from warenwirtschaft.models.customer import Customer
 from warenwirtschaft.models.delivery_unit import DeliveryUnit
+from warenwirtschaft.services.pagination_service import PaginationPreferenceMixin, PaginationService
+from warenwirtschaft.services.search_service import SearchService
+from warenwirtschaft.services.sorting_service import SortingService
 
 
 class CustomerDetailView(PaginationPreferenceMixin, DetailView):
@@ -28,9 +28,11 @@ class CustomerDetailView(PaginationPreferenceMixin, DetailView):
         sort_fields = [field[0] for field in self.sortable_fields]
         customer = self.get_object()
 
-        queryset = DeliveryUnit.objects.select_related("delivery", "delivery__customer", "material").filter(delivery__customer=customer)
+        queryset = DeliveryUnit.objects.select_related("delivery", "delivery__customer", "material").filter(
+            delivery__customer=customer
+        )
 
-        queryset = SearchService(self.request, sort_fields).apply_search(queryset)
+        queryset = SearchService(self.request, search_fields=sort_fields).apply_search(queryset)
         queryset = SortingService(self.request, sort_fields).apply_sorting(queryset)
 
         return queryset
@@ -49,13 +51,15 @@ class CustomerDetailView(PaginationPreferenceMixin, DetailView):
             max_page_size=self.max_page_size,
         ).get_paginated_queryset(deliveryunits)
 
-        context.update({
-            "page_obj": page_obj,
-            "deliveryunits": page_obj,
-            "search_query": self.request.GET.get("search", ""),
-            "sort_param": self.request.GET.get("sort", ""),
-            "sortable_fields": self.sortable_fields,
-            "selected_menu": "customer_list",
-        })
+        context.update(
+            {
+                "page_obj": page_obj,
+                "deliveryunits": page_obj,
+                "search_query": self.request.GET.get("search", ""),
+                "sort_param": self.request.GET.get("sort", ""),
+                "sortable_fields": self.sortable_fields,
+                "selected_menu": "customer_list",
+            }
+        )
         context.update(self.get_page_size_context(page_obj.paginator.per_page))
         return context

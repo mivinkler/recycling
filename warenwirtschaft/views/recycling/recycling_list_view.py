@@ -4,7 +4,18 @@ from django.views.generic import ListView
 from warenwirtschaft.models.material import Material
 from warenwirtschaft.models.recycling import Recycling
 from warenwirtschaft.models.unload import Unload
-from warenwirtschaft.services.search_service import SearchableListViewMixin
+from warenwirtschaft.services.search_service import (
+    SearchableListViewMixin,
+    barcode_filter,
+    box_type_filter,
+    created_at_filter,
+    id_filter,
+    inactive_at_filter,
+    material_filter,
+    note_filter,
+    status_filter,
+    weight_filter,
+)
 
 
 class RecyclingListView(SearchableListViewMixin, ListView):
@@ -14,32 +25,16 @@ class RecyclingListView(SearchableListViewMixin, ListView):
     paginate_by = 28
 
     field_configs = [
-        {"field": "unloads__id", "label": "VID", "type": "text", "lookup": "exact"},
-        {"field": "id", "label": "ZID", "type": "text", "lookup": "exact"},
-        {"field": "created_at", "label": "Erstellt am", "type": "date"},
-        {"field": "inactive_at", "label": "Erledigt am", "type": "date"},
-        {
-            "field": "status",
-            "label": "Status",
-            "type": "choice",
-            "choices": lambda: Recycling._meta.get_field("status").choices,
-        },
-        {
-            "field": "box_type",
-            "label": "Behälter",
-            "type": "choice",
-            "choices": lambda: Recycling._meta.get_field("box_type").choices,
-        },
-        {
-            "field": "material__name",
-            "label": "Material",
-            "type": "choice",
-            "filter_field": "material_id",
-            "choices": lambda: Material.objects.filter(recycling=True).order_by("name").values_list("id", "name"),
-        },
-        {"field": "weight", "label": "Gewicht (kg)", "type": "text", "lookup": "exact"},
-        {"field": "barcode", "label": "Barcode", "type": "text", "lookup": "icontains"},
-        {"field": "note", "label": "Anmerkung", "type": "text", "lookup": "icontains"},
+        id_filter("unloads__id", "VID"),
+        id_filter("id", "ZID"),
+        created_at_filter(label="Erstellt am"),
+        inactive_at_filter(),
+        status_filter(Recycling),
+        box_type_filter(Recycling),
+        material_filter(lambda: Material.objects.filter(recycling=True)),
+        weight_filter(),
+        barcode_filter(),
+        note_filter(),
     ]
 
     def get_queryset(self):

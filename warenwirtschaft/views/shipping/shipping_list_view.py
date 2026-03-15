@@ -3,7 +3,14 @@ from django.views.generic import ListView
 
 from warenwirtschaft.models import HalleZwei, Recycling, Shipping, Unload
 from warenwirtschaft.models.customer import Customer
-from warenwirtschaft.services.search_service import SearchableListViewMixin
+from warenwirtschaft.services.search_service import (
+    SearchableListViewMixin,
+    created_at_filter,
+    customer_filter,
+    id_filter,
+    note_filter,
+    transport_filter,
+)
 
 
 class ShippingListView(SearchableListViewMixin, ListView):
@@ -14,23 +21,12 @@ class ShippingListView(SearchableListViewMixin, ListView):
     search_distinct = True
 
     field_configs = [
-        {"field": "id", "label": "ID", "type": "text", "lookup": "exact"},
-        {"field": "created_at", "label": "Datum", "type": "date"},
-        {
-            "field": "customer__name",
-            "label": "Abholer",
-            "type": "choice",
-            "filter_field": "customer_id",
-            "choices": lambda: Customer.objects.order_by("name").values_list("id", "name"),
-        },
-        {"field": "certificate", "label": "Übernahmeschein", "type": "text", "lookup": "exact"},
-        {
-            "field": "transport",
-            "label": "Transport",
-            "type": "choice",
-            "choices": lambda: Shipping._meta.get_field("transport").choices,
-        },
-        {"field": "note", "label": "Notiz", "type": "text", "lookup": "icontains"},
+        id_filter(),
+        created_at_filter(),
+        customer_filter(lambda: Customer.objects.all(), label="Abholer"),
+        id_filter("certificate", "\u00dcbernahmeschein"),
+        transport_filter(Shipping),
+        note_filter(label="Notiz"),
     ]
 
     def get_queryset(self):

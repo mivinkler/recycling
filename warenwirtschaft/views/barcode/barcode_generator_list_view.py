@@ -3,7 +3,17 @@ from django.views.generic import ListView
 from warenwirtschaft.models import BarcodeGenerator
 from warenwirtschaft.models.customer import Customer
 from warenwirtschaft.models.material import Material
-from warenwirtschaft.services.search_service import SearchableListViewMixin
+from warenwirtschaft.services.search_service import (
+    SearchableListViewMixin,
+    barcode_filter,
+    box_type_filter,
+    created_at_filter,
+    customer_filter,
+    id_filter,
+    material_filter,
+    text_filter,
+    transport_filter,
+)
 
 
 class BarcodeGeneratorListView(SearchableListViewMixin, ListView):
@@ -13,36 +23,14 @@ class BarcodeGeneratorListView(SearchableListViewMixin, ListView):
     paginate_by = 28
 
     field_configs = [
-        {"field": "id", "label": "ID", "type": "text", "lookup": "exact"},
-        {"field": "created_at", "label": "Datum", "type": "date"},
-        {"field": "barcode", "label": "Barcode", "type": "text", "lookup": "icontains"},
-        {
-            "field": "transport",
-            "label": "Transport",
-            "type": "choice",
-            "choices": lambda: BarcodeGenerator._meta.get_field("transport").choices,
-        },
-        {
-            "field": "customer__name",
-            "label": "Customer",
-            "type": "choice",
-            "filter_field": "customer_id",
-            "choices": lambda: Customer.objects.order_by("name").values_list("id", "name"),
-        },
-        {
-            "field": "box_type",
-            "label": "Behälter",
-            "type": "choice",
-            "choices": lambda: BarcodeGenerator._meta.get_field("box_type").choices,
-        },
-        {
-            "field": "material__name",
-            "label": "Material",
-            "type": "choice",
-            "filter_field": "material_id",
-            "choices": lambda: Material.objects.order_by("name").values_list("id", "name"),
-        },
-        {"field": "receipt", "label": "Lieferschein", "type": "text", "lookup": "icontains"},
+        id_filter(),
+        created_at_filter(),
+        barcode_filter(),
+        transport_filter(BarcodeGenerator),
+        customer_filter(lambda: Customer.objects.all(), label="Customer"),
+        box_type_filter(BarcodeGenerator),
+        material_filter(lambda: Material.objects.all()),
+        text_filter("receipt", "Lieferschein"),
     ]
 
     def get_queryset(self):

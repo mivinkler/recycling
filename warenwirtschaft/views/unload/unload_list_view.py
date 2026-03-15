@@ -4,7 +4,18 @@ from django.views.generic import ListView
 from warenwirtschaft.models.delivery_unit import DeliveryUnit
 from warenwirtschaft.models.material import Material
 from warenwirtschaft.models.unload import Unload
-from warenwirtschaft.services.search_service import SearchableListViewMixin
+from warenwirtschaft.services.search_service import (
+    SearchableListViewMixin,
+    barcode_filter,
+    box_type_filter,
+    created_at_filter,
+    id_filter,
+    inactive_at_filter,
+    material_filter,
+    note_filter,
+    status_filter,
+    weight_filter,
+)
 
 
 class UnloadListView(SearchableListViewMixin, ListView):
@@ -14,32 +25,16 @@ class UnloadListView(SearchableListViewMixin, ListView):
     paginate_by = 28
 
     field_configs = [
-        {"field": "delivery_units__id", "label": "EID", "type": "text", "lookup": "exact"},
-        {"field": "id", "label": "VID", "type": "text", "lookup": "exact"},
-        {"field": "created_at", "label": "Erstellt am", "type": "date"},
-        {"field": "inactive_at", "label": "Erledigt am", "type": "date"},
-        {
-            "field": "status",
-            "label": "Status",
-            "type": "choice",
-            "choices": lambda: Unload._meta.get_field("status").choices,
-        },
-        {
-            "field": "box_type",
-            "label": "Behälter",
-            "type": "choice",
-            "choices": lambda: Unload._meta.get_field("box_type").choices,
-        },
-        {
-            "field": "material__name",
-            "label": "Material",
-            "type": "choice",
-            "filter_field": "material_id",
-            "choices": lambda: Material.objects.filter(unload=True).order_by("name").values_list("id", "name"),
-        },
-        {"field": "weight", "label": "Gewicht (kg)", "type": "text", "lookup": "exact"},
-        {"field": "barcode", "label": "Barcode", "type": "text", "lookup": "icontains"},
-        {"field": "note", "label": "Anmerkung", "type": "text", "lookup": "icontains"},
+        id_filter("delivery_units__id", "EID"),
+        id_filter("id", "VID"),
+        created_at_filter(label="Erstellt am"),
+        inactive_at_filter(),
+        status_filter(Unload),
+        box_type_filter(Unload),
+        material_filter(lambda: Material.objects.filter(unload=True)),
+        weight_filter(),
+        barcode_filter(),
+        note_filter(),
     ]
 
     def get_queryset(self):

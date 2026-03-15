@@ -2,7 +2,13 @@ from django.shortcuts import render
 from django.views.generic import ListView
 
 from warenwirtschaft.models.customer import Customer
-from warenwirtschaft.services.search_service import SearchableListViewMixin
+from warenwirtschaft.services.search_service import (
+    SearchableListViewMixin,
+    created_at_filter,
+    id_filter,
+    note_filter,
+    text_filter,
+)
 
 
 class CustomerListView(SearchableListViewMixin, ListView):
@@ -12,16 +18,16 @@ class CustomerListView(SearchableListViewMixin, ListView):
     paginate_by = 28
 
     field_configs = [
-        {"field": "id", "label": "ID", "type": "text", "lookup": "exact"},
-        {"field": "created_at", "label": "Datum", "type": "date"},
-        {"field": "avv_number", "label": "AVV", "type": "text", "lookup": "exact"},
-        {"field": "name", "label": "Lieferant", "type": "text", "lookup": "icontains"},
-        {"field": "street", "label": "Straße", "type": "text", "lookup": "icontains"},
-        {"field": "postal_code", "label": "PLZ", "type": "text", "lookup": "icontains"},
-        {"field": "city", "label": "Stadt", "type": "text", "lookup": "icontains"},
-        {"field": "phone", "label": "Telefon", "type": "text", "lookup": "icontains"},
-        {"field": "email", "label": "Email", "type": "text", "lookup": "icontains"},
-        {"field": "note", "label": "Anmerkung", "type": "text", "lookup": "icontains"},
+        id_filter(),
+        created_at_filter(),
+        id_filter("avv_number", "AVV"),
+        text_filter("name", "Lieferant"),
+        text_filter("street", "Stra\u00dfe"),
+        text_filter("postal_code", "PLZ"),
+        text_filter("city", "Stadt"),
+        text_filter("phone", "Telefon"),
+        text_filter("email", "Email"),
+        note_filter(),
     ]
 
     def get_queryset(self):
