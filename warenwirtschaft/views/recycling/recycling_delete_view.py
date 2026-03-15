@@ -12,9 +12,7 @@ class RecyclingDeleteView(DeleteView):
     pk_url_kwarg = "recycling_pk"
 
     def get_object(self, queryset=None):
-        # Recycling nur nach ID laden
         return get_object_or_404(Recycling, pk=self.kwargs["recycling_pk"])
 
     def get_success_url(self):
-        # Nach dem Löschen zurück zur Übersicht
         return reverse("recycling_create")

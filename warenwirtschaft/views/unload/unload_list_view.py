@@ -4,18 +4,26 @@ from django.views.generic import ListView
 from warenwirtschaft.models.delivery_unit import DeliveryUnit
 from warenwirtschaft.models.material import Material
 from warenwirtschaft.models.unload import Unload
+from warenwirtschaft.models_common.choices import StatusChoices
 from warenwirtschaft.services.search_service import (
     SearchableListViewMixin,
     barcode_filter,
     box_type_filter,
+    choice_filter,
     created_at_filter,
     id_filter,
     inactive_at_filter,
     material_filter,
     note_filter,
-    status_filter,
     weight_filter,
 )
+
+
+UNLOAD_LIST_STATUS_CHOICES = [
+    (value, label)
+    for value, label in StatusChoices.CHOICES
+    if value != StatusChoices.WARTET_AUF_VORSORTIERUNG
+]
 
 
 class UnloadListView(SearchableListViewMixin, ListView):
@@ -29,7 +37,7 @@ class UnloadListView(SearchableListViewMixin, ListView):
         id_filter("id", "VID"),
         created_at_filter(label="Erstellt am"),
         inactive_at_filter(),
-        status_filter(Unload),
+        choice_filter("status", "Status", lambda: UNLOAD_LIST_STATUS_CHOICES),
         box_type_filter(Unload),
         material_filter(lambda: Material.objects.filter(unload=True)),
         weight_filter(),

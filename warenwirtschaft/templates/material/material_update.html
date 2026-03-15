@@ -15,7 +15,6 @@
     <div class="table-header" title="Eingang">E</div>
     <div class="table-header" title="Vorsortierung">V</div>
     <div class="table-header" title="Zerlegung">A</div>
-    <div class="table-header" title="Halle 2">H2</div>
     <div class="table-header"></div>
 
     {% for item in material_list %}
@@ -56,14 +55,6 @@
             <input type="checkbox" id="recycling" name="recycling" {% if item.recycling %}checked{% endif %}>
           {% else %}
             <input type="checkbox" id="recycling" {% if item.recycling %}checked{% endif %} disabled>
-          {% endif %}
-        </div>
-
-        <div class="table-cell checkbox-circle">
-          {% if item.id == edit_material.id %}
-            <input type="checkbox" id="halle_zwei" name="halle_zwei" {% if item.halle_zwei %}checked{% endif %}>
-          {% else %}
-            <input type="checkbox" id="halle_zwei" {% if item.halle_zwei %}checked{% endif %} disabled>
           {% endif %}
         </div>
 

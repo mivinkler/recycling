@@ -7,7 +7,7 @@
 <div class="itemcard">
   <section class="itemcard-title">
     <h2>Zerlegung erstellen</h2>
-    <form method="post">
+    <form method="post" action="{% url 'recycling_create' %}">
       {% csrf_token %}
       <input type="hidden" name="action" value="scan_unload">
       {% include 'components/barcode_scan_icon.html' with accepted='V' input_value=scan_form.scan_barcode.value %}
@@ -52,7 +52,7 @@
             <td class="itemcard-note"><p>{{ u_ready.note }}</p></td>
             <td class="itemcard-action-wrapper">
               <div class="itemcard-action">
-                <form method="post">
+                <form method="post" action="{% url 'recycling_create' %}">
                   {% csrf_token %}
                   <input type="hidden" name="unload_id" value="{{ u_ready.pk }}">
                   <button type="submit" class="btn btn-lock">Zufuegen</button>
@@ -96,7 +96,7 @@
               <td class="itemcard-note"><p>{{ u.note }}</p></td>
               <td class="itemcard-action-wrapper">
                 <div class="itemcard-action">
-                  <form method="post">
+                  <form method="post" action="{% url 'recycling_create' %}">
                     {% csrf_token %}
                     <input type="hidden" name="unload_id" value="{{ u.pk }}">
                     <button
