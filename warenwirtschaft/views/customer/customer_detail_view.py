@@ -1,13 +1,13 @@
 from django.views.generic.detail import DetailView
+from warenwirtschaft.services.pagination_service import PaginationPreferenceMixin, PaginationService
 from warenwirtschaft.services.search_service import SearchService
 from warenwirtschaft.services.sorting_service import SortingService
-from warenwirtschaft.services.pagination_service import PaginationService
 
 from warenwirtschaft.models.customer import Customer
 from warenwirtschaft.models.delivery_unit import DeliveryUnit
 
 
-class CustomerDetailView(DetailView):
+class CustomerDetailView(PaginationPreferenceMixin, DetailView):
     model = Customer
     template_name = "customer/customer_detail.html"
     context_object_name = "customer"
@@ -39,7 +39,15 @@ class CustomerDetailView(DetailView):
         context = super().get_context_data(**kwargs)
 
         deliveryunits = self.get_deliveryunits_queryset()
-        page_obj = PaginationService(self.request, self.paginate_by).get_paginated_queryset(deliveryunits)
+        current_page_size = self.get_current_page_size(self.paginate_by)
+        page_obj = PaginationService(
+            self.request,
+            current_page_size,
+            page_size_param=self.page_size_param,
+            cookie_name=self.page_size_cookie_name,
+            min_page_size=self.min_page_size,
+            max_page_size=self.max_page_size,
+        ).get_paginated_queryset(deliveryunits)
 
         context.update({
             "page_obj": page_obj,
@@ -49,4 +57,5 @@ class CustomerDetailView(DetailView):
             "sortable_fields": self.sortable_fields,
             "selected_menu": "customer_list",
         })
+        context.update(self.get_page_size_context(page_obj.paginator.per_page))
         return context

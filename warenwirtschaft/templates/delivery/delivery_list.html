@@ -9,7 +9,6 @@
 
 {% block content %}
 <div class="table-border"></div>
-
 <div class="table" data-type="deliveryunits">
   <div class="table-header">№</div>
   <div class="table-header" title="Lieferung-ID">{% sort_header "delivery__id" "LID" %}</div>
@@ -51,7 +50,6 @@
   </div>
   {% endfor %}
 </div>
-
 
 {% paginate page_obj %}
 

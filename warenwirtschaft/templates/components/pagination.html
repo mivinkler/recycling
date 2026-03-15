@@ -1,0 +1,32 @@
+<div class="pagination">
+  <form method="GET" class="pagination-size-form">
+    {% for param in hidden_params %}
+      <input type="hidden" name="{{ param.key }}" value="{{ param.value }}">
+    {% endfor %}
+    <label for="page-size-input" class="pagination-size-label">Zeilen:</label>
+    <input
+      type="number"
+      id="page-size-input"
+      name="{{ page_size_param }}"
+      min="{{ page_size_min }}"
+      max="{{ page_size_max }}"
+      value="{{ current_page_size }}"
+      class="pagination-size-input"
+    >
+    <button type="submit" class="pagination-size-submit">OK</button>
+  </form>
+
+  {% if has_multiple_pages %}
+    <div class="pagination-links">
+      {% for item in page_links %}
+        {% if item.type == "link" %}
+          <a href="{{ item.href }}">{{ item.label }}</a>
+        {% elif item.type == "current" %}
+          <span class="current">{{ item.label }}</span>
+        {% else %}
+          <span>{{ item.label }}</span>
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>

@@ -1,17 +1,13 @@
 from django import template
-from django.utils.safestring import mark_safe
 
 register = template.Library()
 
-@register.simple_tag(takes_context=True)
-def paginate(context, page_obj):
-    # Wenn es nur eine Seite gibt, zeigen wir keine Paginierung an
-    if page_obj.paginator.num_pages <= 1:
-        return ''
 
-    pagination = []
+@register.inclusion_tag("components/pagination.html", takes_context=True)
+def paginate(context, page_obj):
     request = context.get("request")
     query_params = request.GET.copy() if request else None
+    page_size_param = context.get("page_size_param", "per_page")
 
     def page_link(page_number):
         if query_params is None:
@@ -20,35 +16,53 @@ def paginate(context, page_obj):
         params["page"] = page_number
         return f"?{params.urlencode()}"
 
-    # "Zurück"-Button
+    page_links = []
+
     if page_obj.has_previous():
-        pagination.append(f'<a href="{page_link(page_obj.previous_page_number())}">&laquo;</a>')
+        page_links.append({"type": "link", "href": page_link(page_obj.previous_page_number()), "label": "\u00ab"})
     else:
-        pagination.append('<span>&laquo;</span>')  # Deaktiviert, wenn keine vorherige Seite existiert
+        page_links.append({"type": "span", "label": "\u00ab"})
 
-    # Erste Seite und "..."
     if page_obj.number > 3:
-        pagination.append(f'<a href="{page_link(1)}">1</a>')  # Erster Seitenlink
+        page_links.append({"type": "link", "href": page_link(1), "label": "1"})
         if page_obj.number > 4:
-            pagination.append('<span>...</span>')  # "..." wenn mehr als 4 Seiten davor sind
+            page_links.append({"type": "span", "label": "..."})
 
-    # Aktuelle Seite und die angrenzenden Seiten anzeigen
     for num in range(max(1, page_obj.number - 2), min(page_obj.paginator.num_pages + 1, page_obj.number + 3)):
         if num == page_obj.number:
-            pagination.append(f'<span class="current">{num}</span>')  # Markiert die aktuelle Seite
+            page_links.append({"type": "current", "label": str(num)})
         else:
-            pagination.append(f'<a href="{page_link(num)}">{num}</a>')
+            page_links.append({"type": "link", "href": page_link(num), "label": str(num)})
 
-    # "..." und letzte Seite anzeigen, falls nötig
     if page_obj.number < page_obj.paginator.num_pages - 2:
         if page_obj.number < page_obj.paginator.num_pages - 3:
-            pagination.append('<span>...</span>')  # "..." wenn mehr als 4 Seiten danach sind
-        pagination.append(f'<a href="{page_link(page_obj.paginator.num_pages)}">{page_obj.paginator.num_pages}</a>')
+            page_links.append({"type": "span", "label": "..."})
+        page_links.append({
+            "type": "link",
+            "href": page_link(page_obj.paginator.num_pages),
+            "label": str(page_obj.paginator.num_pages),
+        })
 
-    # "Weiter"-Button
     if page_obj.has_next():
-        pagination.append(f'<a href="{page_link(page_obj.next_page_number())}">&raquo;</a>')
+        page_links.append({"type": "link", "href": page_link(page_obj.next_page_number()), "label": "\u00bb"})
     else:
-        pagination.append('<span>&raquo;</span>')  # Deaktiviert, wenn keine nächste Seite existiert
+        page_links.append({"type": "span", "label": "\u00bb"})
 
-    return mark_safe(f'<div class="pagination">{" ".join(pagination)}</div>')
+    hidden_params = []
+    if query_params is not None:
+        hidden_params = [
+            {"key": key, "value": value}
+            for key, value in query_params.items()
+            if key not in {"page", page_size_param}
+        ]
+
+    return {
+        "page_obj": page_obj,
+        "page_links": page_links,
+        "has_multiple_pages": page_obj.paginator.num_pages > 1,
+        "hidden_params": hidden_params,
+        "current_page_size": context.get("current_page_size", page_obj.paginator.per_page),
+        "page_size_param": page_size_param,
+        "page_size_min": context.get("page_size_min", 5),
+        "page_size_max": context.get("page_size_max", 100),
+    }

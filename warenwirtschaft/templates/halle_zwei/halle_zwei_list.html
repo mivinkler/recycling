@@ -10,7 +10,7 @@
 {% block content %}
 <div class="table-border"></div>
 <div class="table" data-type="halle-zwei">
-  <div class="table-header">№</div>
+  <div class="table-header">â„–</div>
   <div class="table-header" title="Lieferungseinheit-ID">EID</div>
   <div class="table-header" title="Halle-Zwei-ID">HID</div>
   <div class="table-header">{% sort_header "delivery_unit__delivery__customer__name" "Kunde" %}</div>
@@ -18,7 +18,7 @@
   <div class="table-header">{% sort_header "inactive_at" "Erledigt am" %}</div>
   <div class="table-header">Abholung am</div>
 
-  <div class="table-header">{% sort_header "delivery_unit__box_type" "Behälter" %}</div>
+  <div class="table-header">{% sort_header "delivery_unit__box_type" "BehÃ¤lter" %}</div>
   <div class="table-header">{% sort_header "delivery_unit__material__name" "Material" %}</div>
   <div class="table-header">{% sort_header "delivery_unit__weight" "Gewicht (kg)" %}</div>
   <div class="table-header">{% sort_header "delivery_unit__barcode" "Barcode" %}</div>
@@ -45,12 +45,11 @@
   {% endfor %}
 </div>
 
-
 {% paginate page_obj %}
 
 <template id="context-menu-template">
   <ul id="context-menu" class="context-menu">
-    <li data-action="urlUpdate">Inhalt ändern</li>
+    <li data-action="urlUpdate">Inhalt Ã¤ndern</li>
   </ul>
 </template>
 
@@ -59,4 +58,3 @@
 {% block extra_js %}
   <script src="{% static 'js/mouse-right-click.js' %}"></script>
 {% endblock %}
-

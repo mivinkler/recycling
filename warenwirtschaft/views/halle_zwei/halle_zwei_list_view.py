@@ -1,54 +1,64 @@
-from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import ListView
+
+from warenwirtschaft.models.customer import Customer
+from warenwirtschaft.models.delivery_unit import DeliveryUnit
 from warenwirtschaft.models.halle_zwei import HalleZwei
-from warenwirtschaft.services.search_service import SearchService
-from warenwirtschaft.services.sorting_service import SortingService
+from warenwirtschaft.models.material import Material
+from warenwirtschaft.services.search_service import SearchableListViewMixin
 
 
-class HalleZweiListView(ListView):
+class HalleZweiListView(SearchableListViewMixin, ListView):
     model = HalleZwei
     template_name = "halle_zwei/halle_zwei_list.html"
     context_object_name = "halle-zwei"
     paginate_by = 28
 
-    
-    active_fields = [
-        ("id", "HID"),
-        ("delivery_unit__id", "EID"),
-        ("delivery_unit__delivery__customer__name", "Kunde"),
-        ("created_at", "Erstellt am"),
-        ("inactive_at", "Erledigt am"),
-        ("delivery_unit__box_type", "Behälter"),
-        ("delivery_unit__material__name", "Material"),
-        ("delivery_unit__weight", "Gewicht"),
-        ("delivery_unit__barcode", "Barcode"),
-        ("note", "Anmerkung"),
+    field_configs = [
+        {"field": "delivery_unit__id", "label": "EID", "type": "text", "lookup": "exact"},
+        {"field": "id", "label": "HID", "type": "text", "lookup": "exact"},
+        {
+            "field": "delivery_unit__delivery__customer__name",
+            "label": "Kunde",
+            "type": "choice",
+            "filter_field": "delivery_unit__delivery__customer_id",
+            "choices": lambda: Customer.objects.order_by("name").values_list("id", "name"),
+        },
+        {"field": "created_at", "label": "Erstellt am", "type": "date"},
+        {"field": "inactive_at", "label": "Erledigt am", "type": "date"},
+        {
+            "field": "delivery_unit__box_type",
+            "label": "Behälter",
+            "type": "choice",
+            "choices": lambda: DeliveryUnit._meta.get_field("box_type").choices,
+        },
+        {
+            "field": "delivery_unit__material__name",
+            "label": "Material",
+            "type": "choice",
+            "filter_field": "delivery_unit__material_id",
+            "choices": lambda: Material.objects.filter(halle_zwei=True).order_by("name").values_list("id", "name"),
+        },
+        {"field": "delivery_unit__weight", "label": "Gewicht (kg)", "type": "text", "lookup": "exact"},
+        {"field": "delivery_unit__barcode", "label": "Barcode", "type": "text", "lookup": "icontains"},
+        {"field": "delivery_unit__note", "label": "Anmerkung", "type": "text", "lookup": "icontains"},
     ]
 
     def get_queryset(self):
-        queryset = super().get_queryset()
-
-        fields = [field[0] for field in self.active_fields]
-
-        choices_fields = {
-            "status": HalleZwei._meta.get_field("status").choices,
-        }
-
-        search_service = SearchService(self.request, fields, choices_fields)
-        sorting_service = SortingService(self.request, fields)
-
-        queryset = search_service.apply_search(queryset)
-        queryset = sorting_service.apply_sorting(queryset)
-
-        return queryset
+        queryset = (
+            super()
+            .get_queryset()
+            .select_related(
+                "delivery_unit",
+                "delivery_unit__delivery",
+                "delivery_unit__delivery__customer",
+                "delivery_unit__material",
+                "shipping",
+            )
+        )
+        return self.apply_search_and_sort(queryset)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        context["active_fields"] = self.active_fields
-        context["search_query"] = self.request.GET.get("search", "")
-        context["sort_param"] = self.request.GET.get("sort", "")
         context["selected_menu"] = "halle_zwei_list"
         context["dashboard"] = True
-
         return context

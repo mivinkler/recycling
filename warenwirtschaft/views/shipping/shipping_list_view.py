@@ -1,24 +1,36 @@
-from django.views.generic import ListView
 from django.db.models import Prefetch
+from django.views.generic import ListView
 
-from warenwirtschaft.models import Shipping, Unload, Recycling, HalleZwei
-from warenwirtschaft.services.search_service import SearchService
-from warenwirtschaft.services.sorting_service import SortingService
+from warenwirtschaft.models import HalleZwei, Recycling, Shipping, Unload
+from warenwirtschaft.models.customer import Customer
+from warenwirtschaft.services.search_service import SearchableListViewMixin
 
 
-class ShippingListView(ListView):
+class ShippingListView(SearchableListViewMixin, ListView):
     model = Shipping
     template_name = "shipping/shipping_list.html"
     context_object_name = "shippings"
     paginate_by = 28
+    search_distinct = True
 
-    active_fields = [
-        ("id", "LID"),
-        ("customer__name", "Abholer"),
-        ("certificate", "Begleitschein"),
-        ("note", "Anmerkung"),
-        ("created_at", "Datum"),
-        ("transport", "Transport"),
+    field_configs = [
+        {"field": "id", "label": "ID", "type": "text", "lookup": "exact"},
+        {"field": "created_at", "label": "Datum", "type": "date"},
+        {
+            "field": "customer__name",
+            "label": "Abholer",
+            "type": "choice",
+            "filter_field": "customer_id",
+            "choices": lambda: Customer.objects.order_by("name").values_list("id", "name"),
+        },
+        {"field": "certificate", "label": "Übernahmeschein", "type": "text", "lookup": "exact"},
+        {
+            "field": "transport",
+            "label": "Transport",
+            "type": "choice",
+            "choices": lambda: Shipping._meta.get_field("transport").choices,
+        },
+        {"field": "note", "label": "Notiz", "type": "text", "lookup": "icontains"},
     ]
 
     def get_queryset(self):
@@ -46,29 +58,11 @@ class ShippingListView(ListView):
             )
         )
 
-        fields = [field_name for field_name, _ in self.active_fields]
-
-        choices_fields = {
-            "transport": Shipping._meta.get_field("transport").choices,
-        }
-
-        search_service = SearchService(self.request, fields, choices_fields)
-        sorting_service = SortingService(self.request, fields)
-
-        queryset = search_service.apply_search(queryset)
-        queryset = sorting_service.apply_sorting(queryset)
-
-        # distinct zur Sicherheit bei Suche und Sortierung
-        return queryset.distinct()
+        return self.apply_search_and_sort(queryset)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        context["active_fields"] = self.active_fields
-        context["search_query"] = self.request.GET.get("search", "")
-        context["sort_param"] = self.request.GET.get("sort", "")
         context["transport_choices"] = Shipping._meta.get_field("transport").choices
         context["selected_menu"] = "shipping_list"
         context["dashboard"] = True
-
         return context
