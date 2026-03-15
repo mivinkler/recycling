@@ -1,47 +1,63 @@
 from django.db import transaction
-from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse
-from django.views import View
 from django.contrib import messages
+from django.shortcuts import redirect, render
+from django.utils import timezone
+from django.views import View
 
+from warenwirtschaft.forms.barcode_scan_form import BarcodeScanForm
 from warenwirtschaft.forms.shipping_form import ShippingHeaderForm
-from warenwirtschaft.models import Shipping, Recycling, Unload, HalleZwei
+from warenwirtschaft.models import HalleZwei, Recycling, Shipping, Unload
 from warenwirtschaft.models_common.choices import StatusChoices
+from warenwirtschaft.services.barcode_scan_service import (
+    BarcodeNotFoundError,
+    BarcodeScanError,
+    BarcodeScanService,
+)
 
 
 class ShippingCreateView(View):
     template_name = "shipping/shipping_create.html"
-
-    # --------------------------------------------------
-    # Hilfsfunktionen
-    # --------------------------------------------------
+    GENERATED_FIELD_MAP = {
+        "customer": "customer_id",
+        "certificate": "certificate",
+        "transport": "transport",
+    }
 
     def _recyclings_ready(self):
-        """Recyclings, die auf Abholung warten."""
-        return Recycling.objects.filter(
-            status=StatusChoices.WARTET_AUF_ABHOLUNG,
-            shipping__isnull=True,
-        ).order_by("pk")
+        return (
+            Recycling.objects.filter(
+                status=StatusChoices.WARTET_AUF_ABHOLUNG,
+                shipping__isnull=True,
+            )
+            .select_related("material")
+            .order_by("pk")
+        )
 
     def _unloads_ready(self):
-        """Unloads, die auf Abholung warten."""
-        return Unload.objects.filter(
-            status=StatusChoices.WARTET_AUF_ABHOLUNG,
-            shipping__isnull=True,
-        ).order_by("pk")
+        return (
+            Unload.objects.filter(
+                status=StatusChoices.WARTET_AUF_ABHOLUNG,
+                shipping__isnull=True,
+            )
+            .select_related("material")
+            .order_by("pk")
+        )
 
     def _halle_zwei_ready(self):
-        """HalleZwei-Einheiten, die auf Abholung warten."""
-        return HalleZwei.objects.filter(
-            status=StatusChoices.WARTET_AUF_ABHOLUNG,
-            shipping__isnull=True,
-        ).order_by("pk")
+        return (
+            HalleZwei.objects.filter(
+                status=StatusChoices.WARTET_AUF_ABHOLUNG,
+                shipping__isnull=True,
+            )
+            .select_related("delivery_unit", "delivery_unit__material")
+            .order_by("pk")
+        )
 
-    def _context(self, *, form, pre_rec=None, pre_unl=None, pre_hz=None):
-        """Gemeinsamer Template-Kontext."""
+    def _context(self, *, form, scan_form=None, pre_rec=None, pre_unl=None, pre_hz=None):
         return {
             "selected_menu": "shipping_create",
             "form": form,
+            "scan_form": scan_form or BarcodeScanForm(),
             "recyclings": self._recyclings_ready(),
             "unloads": self._unloads_ready(),
             "halle_zwei_units": self._halle_zwei_ready(),
@@ -50,59 +66,179 @@ class ShippingCreateView(View):
             "preselected_halle_zwei_ids": pre_hz or set(),
         }
 
-    # --------------------------------------------------
-    # GET
-    # --------------------------------------------------
+    def _selected_ids(self, request):
+        rec_ids = {
+            int(value)
+            for value in request.POST.getlist("selected_recycling")
+            if value.isdigit()
+        }
+        unl_ids = {
+            int(value)
+            for value in request.POST.getlist("selected_unload")
+            if value.isdigit()
+        }
+        hz_ids = {
+            int(value)
+            for value in request.POST.getlist("selected_halle_zwei")
+            if value.isdigit()
+        }
+        return rec_ids, unl_ids, hz_ids
+
+    def _has_selected_entries(self, rec_ids, unl_ids, hz_ids):
+        return bool(rec_ids or unl_ids or hz_ids)
+
+    def _set_default_value(self, form_data, field_name, value):
+        if value in (None, ""):
+            return
+
+        current_value = form_data.get(field_name, "")
+        if isinstance(current_value, str):
+            current_value = current_value.strip()
+
+        if current_value:
+            return
+
+        form_data[field_name] = str(value)
+
+    def _build_prefilled_form(self, post_data):
+        form_data = post_data.copy()
+        barcode_data = BarcodeScanService.get_shipping_prefill_data(
+            form_data.get("scan_barcode")
+        )
+
+        for form_field, barcode_field in self.GENERATED_FIELD_MAP.items():
+            self._set_default_value(
+                form_data, form_field, barcode_data.get(barcode_field)
+            )
+
+        form_data["scan_barcode"] = ""
+        return ShippingHeaderForm(form_data), BarcodeScanForm()
+
+    def _add_scanned_target(self, target, rec_ids, unl_ids, hz_ids):
+        if target["type"] == "recycling":
+            rec_ids.add(target["id"])
+        elif target["type"] == "unload":
+            unl_ids.add(target["id"])
+        elif target["type"] == "halle_zwei":
+            hz_ids.add(target["id"])
+
+    def _attach_to_shipping(self, shipping, rec_ids, unl_ids, hz_ids):
+        inactive_at = timezone.now()
+
+        if rec_ids:
+            Recycling.objects.filter(pk__in=rec_ids).update(
+                shipping=shipping,
+                status=StatusChoices.ERLEDIGT,
+                inactive_at=inactive_at,
+            )
+
+        if unl_ids:
+            Unload.objects.filter(pk__in=unl_ids).update(
+                shipping=shipping,
+                status=StatusChoices.ERLEDIGT,
+                inactive_at=inactive_at,
+            )
+
+        if hz_ids:
+            HalleZwei.objects.filter(pk__in=hz_ids).update(
+                shipping=shipping,
+                status=StatusChoices.ERLEDIGT,
+                inactive_at=inactive_at,
+            )
 
     def get(self, request):
-        return render(request, self.template_name, self._context(form=ShippingHeaderForm()))
-
-    # --------------------------------------------------
-    # POST
-    # --------------------------------------------------
+        return render(
+            request,
+            self.template_name,
+            self._context(form=ShippingHeaderForm()),
+        )
 
     def post(self, request):
+        rec_ids, unl_ids, hz_ids = self._selected_ids(request)
+        action = request.POST.get("action")
+
+        if action == "scan_barcode":
+            scan_form = BarcodeScanForm(request.POST)
+
+            try:
+                target = BarcodeScanService.get_shipping_target(
+                    request.POST.get("scan_barcode")
+                )
+            except (BarcodeScanError, BarcodeNotFoundError) as exc:
+                form = ShippingHeaderForm(request.POST)
+                scan_form.add_error("scan_barcode", str(exc))
+                return render(
+                    request,
+                    self.template_name,
+                    self._context(
+                        form=form,
+                        scan_form=scan_form,
+                        pre_rec=rec_ids,
+                        pre_unl=unl_ids,
+                        pre_hz=hz_ids,
+                    ),
+                )
+
+            if target["type"] == "generated":
+                form, scan_form = self._build_prefilled_form(request.POST)
+                return render(
+                    request,
+                    self.template_name,
+                    self._context(
+                        form=form,
+                        scan_form=scan_form,
+                        pre_rec=rec_ids,
+                        pre_unl=unl_ids,
+                        pre_hz=hz_ids,
+                    ),
+                )
+
+            self._add_scanned_target(target, rec_ids, unl_ids, hz_ids)
+            form = ShippingHeaderForm(request.POST)
+            return render(
+                request,
+                self.template_name,
+                self._context(
+                    form=form,
+                    scan_form=BarcodeScanForm(),
+                    pre_rec=rec_ids,
+                    pre_unl=unl_ids,
+                    pre_hz=hz_ids,
+                ),
+            )
+
         form = ShippingHeaderForm(request.POST)
-
-        # IDs aus Checkboxen lesen
-        rec_ids = [int(x) for x in request.POST.getlist("selected_recycling") if x.isdigit()]
-        unl_ids = [int(x) for x in request.POST.getlist("selected_unload") if x.isdigit()]
-        hz_ids = [int(x) for x in request.POST.getlist("selected_halle_zwei") if x.isdigit()]
-
-        # Wenn Fehler: Seite mit markierten Checkboxen neu anzeigen
         if not form.is_valid():
             return render(
                 request,
                 self.template_name,
                 self._context(
                     form=form,
-                    pre_rec=set(rec_ids),
-                    pre_unl=set(unl_ids),
-                    pre_hz=set(hz_ids),
+                    pre_rec=rec_ids,
+                    pre_unl=unl_ids,
+                    pre_hz=hz_ids,
                 ),
             )
 
-        # Speichern + Zuordnen
+        if not self._has_selected_entries(rec_ids, unl_ids, hz_ids):
+            form.add_error(
+                None,
+                "Bitte mindestens einen Eintrag aus 'Abholbereit / Zugeordnet' auswaehlen.",
+            )
+            return render(
+                request,
+                self.template_name,
+                self._context(
+                    form=form,
+                    pre_rec=rec_ids,
+                    pre_unl=unl_ids,
+                    pre_hz=hz_ids,
+                ),
+            )
+
         with transaction.atomic():
             shipping = form.save()
+            self._attach_to_shipping(shipping, rec_ids, unl_ids, hz_ids)
 
-            if rec_ids:
-                Recycling.objects.filter(pk__in=rec_ids).update(
-                    shipping=shipping,
-                    status=StatusChoices.ERLEDIGT,
-                )
-
-            if unl_ids:
-                Unload.objects.filter(pk__in=unl_ids).update(
-                    shipping=shipping,
-                    status=StatusChoices.ERLEDIGT,
-                )
-
-            if hz_ids:
-                HalleZwei.objects.filter(pk__in=hz_ids).update(
-                    shipping=shipping,
-                    status=StatusChoices.ERLEDIGT,
-                )
-
-        messages.success(request, "Daten wurden gespeichert.")
+        messages.success(request, "Beladung wurde abgeschlossen.")
         return redirect("shipping_create")

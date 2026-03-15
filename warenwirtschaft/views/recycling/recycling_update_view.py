@@ -9,6 +9,8 @@ from warenwirtschaft.models_common.choices import StatusChoices
 
 class RecyclingUpdateView(View):
     template_name = "recycling/recycling_create.html"
+    CREATE_FORM_ID = "recycling-create-form"
+    UPDATE_FORM_ID = "recycling-update-form"
 
     # --------------------------------------------------
     # Hilfsfunktionen
@@ -22,8 +24,19 @@ class RecyclingUpdateView(View):
         """Recyclings, die aktiv in Zerlegung sind."""
         return Recycling.objects.filter(status=StatusChoices.AKTIV_IN_ZERLEGUNG).order_by("pk")
 
+    def _assign_form_id(self, form, form_id):
+        if form is None:
+            return None
+
+        for field in form.fields.values():
+            field.widget.attrs["form"] = form_id
+
+        return form
+
     def _context(self, *, edit_recycling=None, form=None):
         """Gemeinsamer Template-Kontext (inkl. New-Row-Form)."""
+        form = self._assign_form_id(form, self.UPDATE_FORM_ID)
+        new_form = self._assign_form_id(RecyclingForm(), self.CREATE_FORM_ID)
         return {
             "selected_menu": "recycling_form",
             "unloads_ready": self._unloads_ready(),
@@ -31,7 +44,9 @@ class RecyclingUpdateView(View):
             "status_choices_recycling": StatusChoices.CHOICES,
             "edit_recycling": edit_recycling,
             "form": form,
-            "new_form": RecyclingForm(),  # Neue Zeile bleibt sichtbar
+            "new_form": new_form,  # Neue Zeile bleibt sichtbar
+            "create_form_id": self.CREATE_FORM_ID,
+            "update_form_id": self.UPDATE_FORM_ID,
         }
 
     # --------------------------------------------------

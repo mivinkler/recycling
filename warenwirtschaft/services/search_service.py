@@ -388,7 +388,7 @@ class SearchableListViewMixin(PaginationPreferenceMixin):
         return self._search_service
 
     def apply_search_and_sort(self, queryset):
-        """Fuehrt die drei typischen ListView-Schritte zentral aus."""
+        """Fuehrt typische Schritte für ListView aus."""
         search_service = self.get_search_service()
         sorting_service = SortingService(self.request, search_service.get_sort_fields())
 

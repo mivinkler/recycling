@@ -34,7 +34,7 @@ class Shipping(models.Model):
                 "pk": recycling.pk,
             })
 
-        for halle_zwei in self.halle_zwei.all():
+        for halle_zwei in self.halle_zweis.all():
             einheiten.append({
                 "typ": "Halle 2",
                 "obj": halle_zwei,

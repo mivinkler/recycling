@@ -5,127 +5,126 @@
 
 {% block content %}
 <div class="itemcard">
-  
   <div class="itemcard-title">
-    <h2>Halle 2: Geräteprüfung</h2>
+    <h2>Halle 2: Geraetepruefung</h2>
+    <form method="post">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="scan_check">
+      {% include 'components/barcode_scan_icon.html' with accepted='L' input_value=scan_form.scan_barcode.value %}
+      <button type="submit" hidden aria-hidden="true"></button>
+    </form>
   </div>
 
-  <!-- ================= BLOCK 1 =========================== -->
   <section class="itemcard-topbox">
+    {% if scan_form.scan_barcode.errors %}
+      <div class="itemcard-topbox-row">
+        <h4>Barcode:</h4>
+        <div>{{ scan_form.scan_barcode.errors }}</div>
+      </div>
+    {% endif %}
+  </section>
 
+  <section class="itemcard-topbox">
     <div class="itemcard-table-title">
-      Bereit für Halle 2
+      Bereit fuer Halle 2
     </div>
 
     <table class="itemcard-table">
       <thead>
         <tr>
-          <th class="itemcard-id">№</th>
+          <th class="itemcard-id">Nr.</th>
           <th class="itemcard-material">Material</th>
-          <th class="itemcard-boxtype">Behälter</th>
+          <th class="itemcard-boxtype">Behaelter</th>
           <th class="itemcard-status">Status</th>
           <th class="itemcard-weight">Gewicht</th>
-          <th class="itemcard-weight">Geprüft</th>
+          <th class="itemcard-weight">Geprueft</th>
           <th class="itemcard-note">Anmerkung</th>
         </tr>
       </thead>
 
       <tbody>
         {% for item in delivery_unit_ready %}
-        <tr>
-          <td class="itemcard-id">{{ forloop.counter }}</td>
-          <td class="itemcard-material"><p>{{ item.material }}</p></td>
-          <td class="itemcard-boxtype"><p>{{ item.get_box_type_display }}</p></td>
-          <td class="itemcard-status">{% if item.delivery_to_halle_zwei %}
+          <tr>
+            <td class="itemcard-id">{{ forloop.counter }}</td>
+            <td class="itemcard-material"><p>{{ item.material }}</p></td>
+            <td class="itemcard-boxtype"><p>{{ item.get_box_type_display }}</p></td>
+            <td class="itemcard-status">
+              {% if item.delivery_to_halle_zwei %}
                 {{ item.delivery_to_halle_zwei.get_status_display }}
               {% else %}
                 {{ item.get_status_display }}
               {% endif %}
-          </td>
-          <td class="itemcard-weight"><p>{{ item.weight }}</p></td>
-
-          <!-- CHECK -->
-          <td class="itemcard-weight">
-            <form method="post" class="checkbox-circle text-center">
-              {% csrf_token %}
-              <input type="hidden" name="delivery_unit_id" value="{{ item.id }}">
-              <input type="hidden" name="action" value="check">
-
-              <input type="checkbox"
-                     onchange="if(confirm('Gerät wirklich geprüft?')){this.form.submit();} else {this.checked=false;}">
-            </form>
-          </td>
-
-          <td class="itemcard-note"><p>{{ item.note }}</p></td>
-        </tr>
-
+            </td>
+            <td class="itemcard-weight"><p>{{ item.weight }}</p></td>
+            <td class="itemcard-weight">
+              <form method="post" class="checkbox-circle text-center">
+                {% csrf_token %}
+                <input type="hidden" name="delivery_unit_id" value="{{ item.id }}">
+                <input type="hidden" name="action" value="check">
+                <input type="checkbox"
+                       onchange="if(confirm('Geraet wirklich geprueft?')){this.form.submit();} else {this.checked=false;}">
+              </form>
+            </td>
+            <td class="itemcard-note"><p>{{ item.note }}</p></td>
+          </tr>
         {% empty %}
-        <tr>
-          <td colspan="7" class="text-xenter">
-            <p class="text-center">Keine Einheiten verfügbar</p>
-          </td>
-        </tr>
+          <tr>
+            <td colspan="7" class="text-xenter">
+              <p class="text-center">Keine Einheiten verfuegbar</p>
+            </td>
+          </tr>
         {% endfor %}
       </tbody>
     </table>
   </section>
 
-
-  <!-- ================= BLOCK 2 =========================== -->
   <section class="itemcard-topbox">
-
     <div class="itemcard-table-title">
-      Heute geprüft
+      Heute geprueft
     </div>
 
     <table class="itemcard-table">
       <thead>
         <tr>
-          <th class="itemcard-id">№</th>
+          <th class="itemcard-id">Nr.</th>
           <th class="itemcard-material">Material</th>
-          <th class="itemcard-boxtype">Behälter</th>
+          <th class="itemcard-boxtype">Behaelter</th>
           <th class="itemcard-status">Status</th>
           <th class="itemcard-weight">Gewicht</th>
-          <th class="itemcard-weight">Geprüft</th>
+          <th class="itemcard-weight">Geprueft</th>
           <th class="itemcard-note">Anmerkung</th>
         </tr>
       </thead>
 
       <tbody>
         {% for hz in today_checked %}
-        <tr>
-          <td class="itemcard-id">{{ forloop.counter }}</td>
-          <td class="itemcard-material"><p>{{ hz.delivery_unit.material }}</p></td>
-          <td class="itemcard-boxtype"><p>{{ hz.delivery_unit.get_box_type_display }}</p></td>
-          <td class="itemcard-status"><p>{{ hz.delivery_unit.get_status_display }}</p></td>
-          <td class="itemcard-weight"><p>{{ hz.delivery_unit.weight }}</p></td>
-
-          <td class="itemcard-weight">
-            <form method="post" class="checkbox-circle text-center">
-              {% csrf_token %}
-              <input type="hidden" name="delivery_unit_id" value="{{ hz.delivery_unit.id }}">
-              <input type="hidden" name="action" value="uncheck">
-            
-              <input type="checkbox"
-                    checked
-                    onchange="if(confirm('Prüfung rückgängig machen?')){this.form.submit();}">
-            </form>
-          </td>
-
-          <td><p>{{ hz.note }}</p></td>
-        </tr>
-
+          <tr>
+            <td class="itemcard-id">{{ forloop.counter }}</td>
+            <td class="itemcard-material"><p>{{ hz.delivery_unit.material }}</p></td>
+            <td class="itemcard-boxtype"><p>{{ hz.delivery_unit.get_box_type_display }}</p></td>
+            <td class="itemcard-status"><p>{{ hz.delivery_unit.get_status_display }}</p></td>
+            <td class="itemcard-weight"><p>{{ hz.delivery_unit.weight }}</p></td>
+            <td class="itemcard-weight">
+              <form method="post" class="checkbox-circle text-center">
+                {% csrf_token %}
+                <input type="hidden" name="delivery_unit_id" value="{{ hz.delivery_unit.id }}">
+                <input type="hidden" name="action" value="uncheck">
+                <input type="checkbox"
+                      checked
+                      onchange="if(confirm('Pruefung rueckgaengig machen?')){this.form.submit();}">
+              </form>
+            </td>
+            <td><p>{{ hz.note }}</p></td>
+          </tr>
         {% empty %}
-        <tr>
-          <td colspan="7" class="text-xenter">
-            <p class="text-center">Heute noch nichts geprüft</p>
-          </td>
-        </tr>
+          <tr>
+            <td colspan="7" class="text-xenter">
+              <p class="text-center">Heute noch nichts geprueft</p>
+            </td>
+          </tr>
         {% endfor %}
       </tbody>
     </table>
-
   </section>
-
 </div>
 {% endblock %}

@@ -1,4 +1,3 @@
-{# templates/shipping/shipping_update.html #}
 {% extends 'base.html' %}
 {% load static %}
 
@@ -11,25 +10,18 @@
   <div class="itemcard">
     <div class="itemcard-title itemcard-margin-left">
       <h2>Abholung bearbeiten</h2>
-
-      <input 
-        type="text" 
-        id="barcode" 
-        placeholder="Barcode scannen..." 
-        autocomplete="off" 
-        data-api="{% url 'barcode_shipping_api' %}" 
-        autofocus 
-        class="visually-hidden-input"
-      />
-
-      <label for="barcode" class="barcode-wrapper header-menu-icon svg-icon">
-        <img src="{% static 'icons/barcode-scan-active.svg' %}" id="barcode-active">
-        <img src="{% static 'icons/barcode-scan-inactive.svg' %}" id="barcode-inactive" hidden>
-      </label>
+      {% include 'components/barcode_scan_icon.html' with input_name='scan_barcode' input_value=scan_form.scan_barcode.value %}
+      <button type="submit" name="action" value="scan_barcode" hidden aria-hidden="true"></button>
     </div>
 
     <section class="itemcard-topbox itemcard-margin-left">
       {{ form.non_field_errors }}
+      {% if scan_form.scan_barcode.errors %}
+        <div class="itemcard-topbox-row">
+          <label>Barcode:</label>
+          <div>{{ scan_form.scan_barcode.errors }}</div>
+        </div>
+      {% endif %}
 
       <div class="itemcard-topbox-row">
         <label>Abholer:</label>
@@ -58,9 +50,9 @@
       <thead class="itemcard-thead">
         <tr>
           <th class="checkbox-circle itemcard-action-left"></th>
-          <th class="itemcard-id">№</th>
+          <th class="itemcard-id">Nr.</th>
           <th class="itemcard-material">Material</th>
-          <th class="itemcard-boxtype">Behälter</th>
+          <th class="itemcard-boxtype">Behaelter</th>
           <th class="itemcard-weight">Gewicht</th>
           <th class="itemcard-origin">Herkunft</th>
         </tr>
@@ -68,8 +60,6 @@
 
       <tbody class="itemcard-tbody">
         {% if recyclings or unloads or halle_zwei_units %}
-
-          {# -------- Recyclings -------- #}
           {% for rec in recyclings %}
             <tr class="itemcard-table-row" data-id="{{ rec.pk }}" data-url-detail="#">
               <td class="checkbox-circle itemcard-action-left">
@@ -77,7 +67,7 @@
                   type="checkbox"
                   name="selected_recycling"
                   value="{{ rec.pk }}"
-                  title="Zur Abholung hinzufügen"
+                  title="Zur Abholung hinzufuegen"
                   {% if rec.pk in preselected_recycling_ids %}checked{% endif %}
                 >
               </td>
@@ -89,7 +79,6 @@
             </tr>
           {% endfor %}
 
-          {# -------- Unloads -------- #}
           {% for unload in unloads %}
             <tr class="itemcard-table-row" data-id="{{ unload.pk }}" data-url-detail="{% url 'unload_barcode' pk=unload.pk %}">
               <td class="checkbox-circle itemcard-action-left">
@@ -97,7 +86,7 @@
                   type="checkbox"
                   name="selected_unload"
                   value="{{ unload.pk }}"
-                  title="Zur Abholung hinzufügen"
+                  title="Zur Abholung hinzufuegen"
                   {% if unload.pk in preselected_unload_ids %}checked{% endif %}
                 >
               </td>
@@ -109,7 +98,6 @@
             </tr>
           {% endfor %}
 
-          {# -------- Halle 2 -------- #}
           {% for hz in halle_zwei_units %}
             <tr class="itemcard-table-row" data-id="{{ hz.pk }}" data-url-detail="#">
               <td class="checkbox-circle itemcard-action-left">
@@ -117,18 +105,17 @@
                   type="checkbox"
                   name="selected_halle_zwei"
                   value="{{ hz.pk }}"
-                  title="Zur Abholung hinzufügen"
+                  title="Zur Abholung hinzufuegen"
                   {% if hz.pk in preselected_halle_zwei_ids %}checked{% endif %}
                 >
               </td>
               <td class="itemcard-id">{{ forloop.counter }}</td>
-              <td class="itemcard-material"><p>{{ hz.material }}</p></td>
-              <td class="itemcard-boxtype"><p>{{ hz.get_box_type_display }}</p></td>
-              <td class="itemcard-weight"><p>{{ hz.weight }}</p></td>
+              <td class="itemcard-material"><p>{{ hz.delivery_unit.material }}</p></td>
+              <td class="itemcard-boxtype"><p>{{ hz.delivery_unit.get_box_type_display }}</p></td>
+              <td class="itemcard-weight"><p>{{ hz.delivery_unit.weight }}</p></td>
               <td class="itemcard-status"><p>Halle 2</p></td>
             </tr>
           {% endfor %}
-
         {% else %}
           <tr class="itemcard-table-row">
             <td colspan="6" class="text-center">
@@ -144,8 +131,4 @@
     </div>
   </div>
 </form>
-{% endblock %}
-
-{% block extra_js %}
-<script src="{% static 'js/barcode/barcode-shipping.js' %}"></script>
 {% endblock %}

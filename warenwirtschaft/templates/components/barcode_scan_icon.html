@@ -4,12 +4,45 @@
   <input 
     type="text" 
     id="barcode" 
+    name="{{ input_name|default:'scan_barcode' }}"
+    value="{{ input_value|default:'' }}"
     placeholder="Barcode scannen..." 
     autocomplete="off" 
+    class="{{ input_class|default:'visually-hidden-input' }}"
     data-accepted="{{ accepted }}"
-    data-api="{% url 'barcode_delivery_api' %}"
+    {% if scan_url %}data-scan-url="{{ scan_url }}"{% endif %}
     autofocus
   />
     <img src="{% static 'icons/barcode-scan-active.svg' %}" id="barcode-active">
     <img src="{% static 'icons/barcode-scan-inactive.svg' %}" id="barcode-inactive" hidden>
 </label>
+
+<script>
+  (() => {
+    const wrapper = document.currentScript.previousElementSibling;
+    if (!wrapper) return;
+
+    const input = wrapper.querySelector("input");
+    const activeIcon = wrapper.querySelector("#barcode-active");
+    const inactiveIcon = wrapper.querySelector("#barcode-inactive");
+
+    if (!input || !activeIcon || !inactiveIcon) return;
+
+    const setState = (isActive) => {
+      activeIcon.hidden = !isActive;
+      inactiveIcon.hidden = isActive;
+    };
+
+    input.addEventListener("focus", () => setState(true));
+    input.addEventListener("blur", () => setState(false));
+
+    wrapper.addEventListener("click", () => {
+      window.requestAnimationFrame(() => input.focus());
+    });
+
+    window.requestAnimationFrame(() => {
+      input.focus();
+      setState(document.activeElement === input);
+    });
+  })();
+</script>

@@ -10,11 +10,18 @@
   <div class="itemcard">
     <div class="itemcard-title">
       <h2>Wareneingang</h2>
-      {% include 'components/barcode_scan_icon.html' %}
+      {% include 'components/barcode_scan_icon.html' with accepted='G' input_value=scan_form.scan_barcode.value %}
+      <button type="submit" name="action" value="scan" hidden aria-hidden="true"></button>
     </div>
 
-    <!-- ======= Lieferung ======= -->
     <section class="itemcard-topbox">
+      {% if scan_form.scan_barcode.errors %}
+        <div class="itemcard-topbox-row">
+          <h4>Barcode:</h4>
+          <div>{{ scan_form.scan_barcode.errors }}</div>
+        </div>
+      {% endif %}
+
       <div class="itemcard-topbox-row">
         <h4>Lieferant:</h4>
         <div class="itemcard-topbox-content">{{ delivery_form.customer }}</div>
@@ -29,19 +36,17 @@
         <h4>B2B</h4>
         <div class="itemcard-topbox-content">{{ delivery_form.b2b }}</div>
       </div>
-
     </section>
 
-    <!-- ======= Liefereinheiten ======= -->
     <section>
       <h4>Liefereinheiten:</h4>
 
       <table class="itemcard-table">
         <thead class="itemcard-thead">
           <tr>
-            <th class="itemcard-id">№</th>
+            <th class="itemcard-id">Nr.</th>
             <th class="itemcard-material">Material</th>
-            <th class="itemcard-boxtype">Behälter</th>
+            <th class="itemcard-boxtype">Behaelter</th>
             <th class="itemcard-weight">Gewicht</th>
             <th class="itemcard-note">Anmerkung</th>
             <th class="itemcard-action"></th>
@@ -61,15 +66,23 @@
                   <img class="icon-lock-open" src="{% static 'icons/lock-open-icon.svg' %}">
                 </button>
 
-                <button type="submit" class="btn btn-main btn-save">Speichern</button>
+                <button type="submit" class="btn btn-main btn-save" name="action" value="save">
+                  Speichern
+                </button>
               </div>
             </td>
           </tr>
+
+          {% if delivery_form.errors or unit_form.errors %}
+            <tr class="itemcard-table-row">
+              <td colspan="6">
+                {{ delivery_form.errors }}
+                {{ unit_form.errors }}
+              </td>
+            </tr>
+          {% endif %}
         </tbody>
       </table>
-
-      <!-- {{ delivery_form.errors }}
-      {{ unit_form.errors }} -->
     </section>
   </div>
 
@@ -79,7 +92,7 @@
     <table class="itemcard-table">
       <thead class="itemcard-thead">
         <tr>
-          <th class="itemcard-id">№</th>
+          <th class="itemcard-id">Nr.</th>
           <th class="itemcard-id">LID</th>
           <th>Lieferant</th>
           <th>Lieferschein</th>
@@ -87,7 +100,7 @@
           <th class="itemcard-action-icon"></th>
         </tr>
       </thead>
-      
+
       <tbody class="itemcard-tbody">
         {% for delivery in active_deliveries %}
           <tr class="itemcard-table-row">
@@ -95,17 +108,17 @@
             <td><p>{{ delivery.pk }}</p></td>
             <td><p>{{ delivery.customer.name }}</p></td>
             <td><p>{{ delivery.delivery_receipt }}</p></td>
-            <td class="itemcard-children"> 
+            <td class="itemcard-children">
               {% for item in delivery.delivery_units.all %}
-              <p>
-                {% if item.status == 1 or item.status == 2 %}
-                  <span style="font-size: 18px; color: green;">&bull;</span>
-                {% else %}
-                  <span style="font-size: 18px; color: red;">&bull;</span>
-                {% endif %}
-                
-                {{ item }}  
-              </p>
+                <p>
+                  {% if item.status == 1 or item.status == 2 %}
+                    <span style="font-size: 18px; color: green;">&bull;</span>
+                  {% else %}
+                    <span style="font-size: 18px; color: red;">&bull;</span>
+                  {% endif %}
+
+                  {{ item }}
+                </p>
               {% endfor %}
             </td>
             <td class="itemcard-action-icon">
@@ -115,14 +128,12 @@
             </td>
           </tr>
         {% empty %}
-          <tr><td colspan="6">Keine aktuelle Wareneingänge vorhanden.</td></tr>
+          <tr>
+            <td colspan="6">Keine aktuellen Wareneingaenge vorhanden.</td>
+          </tr>
         {% endfor %}
       </tbody>
     </table>
   </div>
 </form>
-{% endblock %}
-
-{% block extra_js %}
-  <script src="{% static 'js/barcode/barcode-delivery.js' %}"></script>
 {% endblock %}
