@@ -57,7 +57,7 @@ class WeightInputAPITest(TestCase):
     
     # Starten in PowerShell mit:
     # $env:RUN_OPTIONAL_TESTS="1"
-    # .\venv\Scripts\python.exe manage.py test warenwirtschaft.api.tests.test_weight_input_api -v 2
+    # .\venv\Scripts\python.exe manage.py test warenwirtschaft.tests.test_weight_input_api -v 2
 
     def test_mock_query_param(self):
         # --- ?mock=1 gibt immer einen stabilen Testwert zurück
