@@ -1,4 +1,4 @@
-"""Werkzeuge fuer Listenansichten mit Suche, Filtern und Sortierung.
+"""Werkzeuge für Listenansichten mit Suche, Filtern und Sortierung.
 
 Die Datei hat zwei Aufgaben:
 1. Class `SearchService` kapselt die eigentliche Suchlogik.
@@ -33,7 +33,7 @@ def text_filter(field, label, *, lookup=DEFAULT_TEXT_LOOKUP, **overrides):
 
 
 def exact_text_filter(field, label, **overrides):
-    """Kurzform fuer Textfilter mit exakter Uebereinstimmung."""
+    """Kurzform für Textfilter mit exakter Uebereinstimmung."""
     return text_filter(field, label, lookup="exact", **overrides)
 
 
@@ -105,62 +105,62 @@ def model_field_choice_filter(
 
 
 def id_filter(field="id", label="ID", **overrides):
-    """Standardfilter fuer technische IDs."""
+    """Standardfilter für technische IDs."""
     return exact_text_filter(field, label, **overrides)
 
 
 def created_at_filter(field="created_at", label="Datum", **overrides):
-    """Standardfilter fuer ein Erstellungsdatum."""
+    """Standardfilter für ein Erstellungsdatum."""
     return date_filter(field, label, **overrides)
 
 
 def inactive_at_filter(field="inactive_at", label="Erledigt am", **overrides):
-    """Standardfilter fuer ein Abschluss- oder Inaktiv-Datum."""
+    """Standardfilter für ein Abschluss- oder Inaktiv-Datum."""
     return date_filter(field, label, **overrides)
 
 
 def status_filter(model, field="status", label="Status", **overrides):
-    """Standardfilter fuer Status-Choices eines Modells."""
+    """Standardfilter für Status-Choices eines Modells."""
     return model_field_choice_filter(model, field, label, model_field_name="status", **overrides)
 
 
 def box_type_filter(model, field="box_type", label="Beh\u00e4lter", **overrides):
-    """Standardfilter fuer Behaeltertypen."""
+    """Standardfilter für Behältertypen."""
     return model_field_choice_filter(model, field, label, model_field_name="box_type", **overrides)
 
 
 def transport_filter(model, field="transport", label="Transport", **overrides):
-    """Standardfilter fuer Transportarten."""
+    """Standardfilter für Transportarten."""
     return model_field_choice_filter(model, field, label, model_field_name="transport", **overrides)
 
 
 def customer_filter(queryset, field="customer__name", label="Kunde", filter_field="customer_id", **overrides):
-    """Standardfilter fuer Kunden oder Lieferanten mit Name als Anzeige."""
+    """Standardfilter für Kunden oder Lieferanten mit Name als Anzeige."""
     return queryset_choice_filter(field, label, queryset, filter_field=filter_field, **overrides)
 
 
 def material_filter(queryset, field="material__name", label="Material", filter_field="material_id", **overrides):
-    """Standardfilter fuer Material-Auswahllisten."""
+    """Standardfilter für Material-Auswahllisten."""
     return queryset_choice_filter(field, label, queryset, filter_field=filter_field, **overrides)
 
 
 def barcode_filter(field="barcode", label="Barcode", **overrides):
-    """Standardfilter fuer Barcodes mit Teilstring-Suche."""
+    """Standardfilter für Barcodes mit Teilstring-Suche."""
     return text_filter(field, label, **overrides)
 
 
 def note_filter(field="note", label="Anmerkung", **overrides):
-    """Standardfilter fuer Freitext-Notizen."""
+    """Standardfilter für Freitext-Notizen."""
     return text_filter(field, label, **overrides)
 
 
 def weight_filter(field="weight", label="Gewicht (kg)", **overrides):
-    """Standardfilter fuer Gewichte, hier bewusst mit exakter Suche."""
+    """Standardfilter für Gewichte, hier bewusst mit exakter Suche."""
     return exact_text_filter(field, label, **overrides)
 
 
 class SearchService:
-    """Bereitet Suchfelder fuer die UI vor und wendet sie auf QuerySets an.
+    """Bereitet Suchfelder für die UI vor und wendet sie auf QuerySets an.
 
     Der Service arbeitet in zwei Modi:
     1. Neuer Modus mit `field_configs`:
@@ -194,13 +194,13 @@ class SearchService:
         return list(self.search_fields)
 
     def get_active_fields(self):
-        """Liefert Feldname plus Anzeige-Label fuer das Sortiermenue."""
+        """Liefert Feldname plus Anzeige-Label für das Sortiermenue."""
         if self.search_filters:
             return [(search_filter["field"], search_filter["label"]) for search_filter in self.search_filters]
         return [(field, field) for field in self.search_fields]
 
     def get_context_data(self):
-        """Stellt alle UI-Daten fuer Such- und Sortierkomponenten bereit."""
+        """Stellt alle UI-Daten für Such- und Sortierkomponenten bereit."""
         return {
             "request": self.request,
             "active_fields": self.get_active_fields(),
@@ -223,7 +223,7 @@ class SearchService:
         return bool(search_filter.get("value"))
 
     def build_search_filters(self):
-        """Bereitet rohe `field_configs` fuer die Template-Ausgabe auf."""
+        """Bereitet rohe `field_configs` für die Template-Ausgabe auf."""
         return [self._build_filter_definition(config) for config in self.field_configs]
 
     def _build_filter_definition(self, config):
@@ -258,7 +258,7 @@ class SearchService:
         return self.params.get(param_name, "").strip()
 
     def _serialize_choices(self, choices):
-        """Formatiert Choice-Quellen fuer das Template in ein einheitliches Format."""
+        """Formatiert Choice-Quellen für das Template in ein einheitliches Format."""
         return [
             {"value": str(value), "label": label}
             for value, label in self._resolve_choices(choices)
@@ -328,7 +328,7 @@ class SearchService:
             return queryset
 
     def _apply_legacy_text_search(self, queryset):
-        """Alte Freitextsuche fuer Views ohne `field_configs`."""
+        """Alte Freitextsuche für Views ohne `field_configs`."""
         search_query = self._get_param_value("search").lower()
         if not search_query:
             return queryset
@@ -358,7 +358,7 @@ class SearchService:
         return queryset
 
     def _apply_legacy_choice_filters(self, queryset):
-        """Alte Statusauswahl fuer Views, die noch kein `field_configs` nutzen."""
+        """Alte Statusauswahl für Views, die noch kein `field_configs` nutzen."""
         status_filter = self._get_param_value("status_filter").lower()
         choices = self.choices_fields.get("status")
         if not choices or not status_filter:
