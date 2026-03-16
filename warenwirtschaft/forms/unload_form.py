@@ -1,6 +1,6 @@
 from django import forms
 
-from warenwirtschaft.models import Unload
+from warenwirtschaft.models import Material, Unload
 from warenwirtschaft.models_common.choices import StatusChoices
 
 
@@ -18,6 +18,10 @@ class UnloadForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields["material"].queryset = Material.for_section(
+            "unload",
+            include=self.instance.material_id,
+        )
 
         allowed = {
             StatusChoices.WARTET_AUF_ZERLEGUNG,

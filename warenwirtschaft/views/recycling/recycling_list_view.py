@@ -34,7 +34,7 @@ class RecyclingListView(SearchableListViewMixin, ListView):
         inactive_at_filter(),
         choice_filter("status", "Status", lambda: RECYCLING_LIST_STATUS_CHOICES),
         choice_filter("box_type", "Behälter", lambda: RECYCLING_LIST_BOX_TYPE_CHOICES),
-        material_filter(lambda: Material.objects.filter(recycling=True)),
+        material_filter(lambda: Material.for_section("recycling")),
         weight_filter(),
         barcode_filter(),
         note_filter(),

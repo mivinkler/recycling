@@ -39,7 +39,7 @@ class UnloadListView(SearchableListViewMixin, ListView):
         inactive_at_filter(),
         choice_filter("status", "Status", lambda: UNLOAD_LIST_STATUS_CHOICES),
         box_type_filter(Unload),
-        material_filter(lambda: Material.objects.filter(unload=True)),
+        material_filter(lambda: Material.for_section("unload")),
         weight_filter(),
         barcode_filter(),
         note_filter(),

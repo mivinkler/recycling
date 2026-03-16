@@ -38,7 +38,7 @@ class DeliveryListView(SearchableListViewMixin, ListView):
         ),
         text_filter("delivery__delivery_receipt", "Lieferschein"),
         box_type_filter(DeliveryUnit),
-        material_filter(lambda: Material.objects.filter(delivery=True)),
+        material_filter(lambda: Material.for_section("delivery")),
         weight_filter(),
         barcode_filter(),
         note_filter(),
