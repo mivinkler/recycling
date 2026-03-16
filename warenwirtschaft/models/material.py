@@ -6,7 +6,6 @@ class Material(models.Model):
     delivery = models.BooleanField(default=False)
     unload = models.BooleanField(default=False)
     recycling = models.BooleanField(default=False)
-    halle_zwei = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -14,7 +13,6 @@ class Material(models.Model):
             models.Index(fields=["delivery"]),
             models.Index(fields=["unload"]),
             models.Index(fields=["recycling"]),
-            models.Index(fields=["halle_zwei"]),
         ]
 
     def __str__(self):
