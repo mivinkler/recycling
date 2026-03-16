@@ -1,13 +1,14 @@
 from django.db.models import Prefetch
 from django.views.generic import ListView
 
+from warenwirtschaft.forms.recycling_form import (
+    RECYCLING_FORM_BOX_TYPE_CHOICES,
+    RECYCLING_FORM_STATUS_CHOICES,
+)
 from warenwirtschaft.models.material import Material
 from warenwirtschaft.models.recycling import Recycling
 from warenwirtschaft.models.unload import Unload
-from warenwirtschaft.recycling_page_mixin import (
-    RECYCLING_LIST_BOX_TYPE_CHOICES,
-    RECYCLING_LIST_STATUS_CHOICES,
-)
+from warenwirtschaft.models_common.choices import StatusChoices
 from warenwirtschaft.services.search_service import (
     SearchableListViewMixin,
     barcode_filter,
@@ -19,6 +20,14 @@ from warenwirtschaft.services.search_service import (
     note_filter,
     weight_filter,
 )
+
+
+RECYCLING_LIST_STATUS_CHOICES = [
+    *RECYCLING_FORM_STATUS_CHOICES,
+    (StatusChoices.ERLEDIGT, "Erledigt"),
+]
+
+RECYCLING_LIST_BOX_TYPE_CHOICES = list(RECYCLING_FORM_BOX_TYPE_CHOICES)
 
 
 class RecyclingListView(SearchableListViewMixin, ListView):
