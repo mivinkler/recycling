@@ -150,7 +150,7 @@
   {% include "components/header_sort.html" %}
 
   <!-- Reset -->
-  {% if has_active_filters or search_query or request.GET.date_start or request.GET.date_end or request.GET.status_filter or sort_param %}
+  {% if has_active_filters or sort_param %}
   <div class="header-menu-item">
     <div></div>
     <a href="{{ request.path|cut:'?' }}" class="header-menu-icon svg-icon">

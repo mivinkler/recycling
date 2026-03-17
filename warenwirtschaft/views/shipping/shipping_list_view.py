@@ -3,17 +3,10 @@ from django.views.generic import ListView
 
 from warenwirtschaft.models import HalleZwei, Recycling, Shipping, Unload
 from warenwirtschaft.models.customer import Customer
-from warenwirtschaft.services.search_service import (
-    SearchableListViewMixin,
-    created_at_filter,
-    customer_filter,
-    id_filter,
-    note_filter,
-    transport_filter,
-)
+from warenwirtschaft.services.list_view_service import ListViewService
 
 
-class ShippingListView(SearchableListViewMixin, ListView):
+class ShippingListView(ListViewService, ListView):
     model = Shipping
     template_name = "shipping/shipping_list.html"
     context_object_name = "shippings"
@@ -21,12 +14,24 @@ class ShippingListView(SearchableListViewMixin, ListView):
     search_distinct = True
 
     field_configs = [
-        id_filter(),
-        created_at_filter(),
-        customer_filter(lambda: Customer.objects.all(), label="Abholer"),
-        id_filter("certificate", "\u00dcbernahmeschein"),
-        transport_filter(Shipping),
-        note_filter(label="Notiz"),
+        {"field": "id", "label": "ID", "lookup": "exact"},
+        {"field": "created_at", "label": "Datum", "type": "date"},
+        {
+            "field": "customer__name",
+            "label": "Abholer",
+            "type": "choice",
+            "filter_field": "customer_id",
+            "choices": lambda: Customer.objects.order_by("name").values_list("id", "name"),
+        },
+        {"field": "certificate", "label": "Übernahmeschein", "lookup": "exact"},
+        {"field": "barcode", "label": "Barcode"},
+        {
+            "field": "transport",
+            "label": "Transport",
+            "type": "choice",
+            "choices": Shipping._meta.get_field("transport").choices,
+        },
+        {"field": "note", "label": "Notiz"},
     ]
 
     def get_queryset(self):

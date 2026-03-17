@@ -173,6 +173,13 @@ class ChoiceRestrictionTests(TestCase):
             {str(recycling_material.pk), str(shared_material.pk)},
         )
 
+    def test_shipping_list_renders_barcode_filter(self):
+        response = self.client.get(reverse("shipping_list"))
+
+        barcode_filter = self._get_filter(response, "barcode")
+        self.assertEqual(barcode_filter["label"], "Barcode")
+        self.assertContains(response, 'name="barcode"')
+
     def test_material_forms_reject_materials_from_other_sections(self):
         wrong_delivery_material = Material.objects.create(name="Wrong Delivery", unload=True)
         wrong_unload_material = Material.objects.create(name="Wrong Unload", recycling=True)

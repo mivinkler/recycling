@@ -9,17 +9,7 @@ from warenwirtschaft.models.material import Material
 from warenwirtschaft.models.recycling import Recycling
 from warenwirtschaft.models.unload import Unload
 from warenwirtschaft.models_common.choices import StatusChoices
-from warenwirtschaft.services.search_service import (
-    SearchableListViewMixin,
-    barcode_filter,
-    choice_filter,
-    created_at_filter,
-    id_filter,
-    inactive_at_filter,
-    material_filter,
-    note_filter,
-    weight_filter,
-)
+from warenwirtschaft.services.list_view_service import ListViewService
 
 
 RECYCLING_LIST_STATUS_CHOICES = [
@@ -30,23 +20,39 @@ RECYCLING_LIST_STATUS_CHOICES = [
 RECYCLING_LIST_BOX_TYPE_CHOICES = list(RECYCLING_FORM_BOX_TYPE_CHOICES)
 
 
-class RecyclingListView(SearchableListViewMixin, ListView):
+class RecyclingListView(ListViewService, ListView):
     model = Recycling
     template_name = "recycling/recycling_list.html"
     context_object_name = "recycling"
     paginate_by = 28
 
     field_configs = [
-        id_filter("unloads__id", "VID"),
-        id_filter("id", "ZID"),
-        created_at_filter(label="Erstellt am"),
-        inactive_at_filter(),
-        choice_filter("status", "Status", lambda: RECYCLING_LIST_STATUS_CHOICES),
-        choice_filter("box_type", "Behälter", lambda: RECYCLING_LIST_BOX_TYPE_CHOICES),
-        material_filter(lambda: Material.for_section("recycling")),
-        weight_filter(),
-        barcode_filter(),
-        note_filter(),
+        {"field": "unloads__id", "label": "VID", "lookup": "exact"},
+        {"field": "id", "label": "ZID", "lookup": "exact"},
+        {"field": "barcode", "label": "Barcode"},
+        {"field": "created_at", "label": "Erstellt am", "type": "date"},
+        {"field": "inactive_at", "label": "Erledigt am", "type": "date"},
+        {
+            "field": "status",
+            "label": "Status",
+            "type": "choice",
+            "choices": lambda: RECYCLING_LIST_STATUS_CHOICES,
+        },
+        {
+            "field": "box_type",
+            "label": "Behälter",
+            "type": "choice",
+            "choices": lambda: RECYCLING_LIST_BOX_TYPE_CHOICES,
+        },
+        {
+            "field": "material__name",
+            "label": "Material",
+            "type": "choice",
+            "filter_field": "material_id",
+            "choices": lambda: Material.for_section("recycling").order_by("name").values_list("id", "name"),
+        },
+        {"field": "weight", "label": "Gewicht (kg)", "lookup": "exact"},
+        {"field": "note", "label": "Anmerkung"},
     ]
 
     def get_queryset(self):

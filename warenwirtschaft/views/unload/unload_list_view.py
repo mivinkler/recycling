@@ -5,18 +5,7 @@ from warenwirtschaft.models.delivery_unit import DeliveryUnit
 from warenwirtschaft.models.material import Material
 from warenwirtschaft.models.unload import Unload
 from warenwirtschaft.models_common.choices import StatusChoices
-from warenwirtschaft.services.search_service import (
-    SearchableListViewMixin,
-    barcode_filter,
-    box_type_filter,
-    choice_filter,
-    created_at_filter,
-    id_filter,
-    inactive_at_filter,
-    material_filter,
-    note_filter,
-    weight_filter,
-)
+from warenwirtschaft.services.list_view_service import ListViewService
 
 
 UNLOAD_LIST_STATUS_CHOICES = [
@@ -26,23 +15,39 @@ UNLOAD_LIST_STATUS_CHOICES = [
 ]
 
 
-class UnloadListView(SearchableListViewMixin, ListView):
+class UnloadListView(ListViewService, ListView):
     model = Unload
     template_name = "unload/unload_list.html"
     context_object_name = "unloads"
     paginate_by = 28
 
     field_configs = [
-        id_filter("delivery_units__id", "EID"),
-        id_filter("id", "VID"),
-        created_at_filter(label="Erstellt am"),
-        inactive_at_filter(),
-        choice_filter("status", "Status", lambda: UNLOAD_LIST_STATUS_CHOICES),
-        box_type_filter(Unload),
-        material_filter(lambda: Material.for_section("unload")),
-        weight_filter(),
-        barcode_filter(),
-        note_filter(),
+        {"field": "delivery_units__id", "label": "EID", "lookup": "exact"},
+        {"field": "id", "label": "VID", "lookup": "exact"},
+        {"field": "barcode", "label": "Barcode"},
+        {"field": "created_at", "label": "Erstellt am", "type": "date"},
+        {"field": "inactive_at", "label": "Erledigt am", "type": "date"},
+        {
+            "field": "status",
+            "label": "Status",
+            "type": "choice",
+            "choices": lambda: UNLOAD_LIST_STATUS_CHOICES,
+        },
+        {
+            "field": "box_type",
+            "label": "Behälter",
+            "type": "choice",
+            "choices": Unload._meta.get_field("box_type").choices,
+        },
+        {
+            "field": "material__name",
+            "label": "Material",
+            "type": "choice",
+            "filter_field": "material_id",
+            "choices": lambda: Material.for_section("unload").order_by("name").values_list("id", "name"),
+        },
+        {"field": "weight", "label": "Gewicht (kg)", "lookup": "exact"},
+        {"field": "note", "label": "Anmerkung"},
     ]
 
     def get_queryset(self):

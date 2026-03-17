@@ -3,8 +3,6 @@ from django.views.generic.detail import DetailView
 from warenwirtschaft.models.customer import Customer
 from warenwirtschaft.models.delivery_unit import DeliveryUnit
 from warenwirtschaft.services.pagination_service import PaginationPreferenceMixin, PaginationService
-from warenwirtschaft.services.search_service import SearchService
-from warenwirtschaft.services.sorting_service import SortingService
 
 
 class CustomerDetailView(PaginationPreferenceMixin, DetailView):
@@ -13,29 +11,18 @@ class CustomerDetailView(PaginationPreferenceMixin, DetailView):
     context_object_name = "customer"
     paginate_by = 14
 
-    sortable_fields = [
-        ("delivery__id", "LID"),
-        ("delivery__delivery_receipt", "Lieferschein"),
-        ("weight", "Gewicht"),
-        ("note", "Anmerkung"),
-        ("created_at", "Datum"),
-    ]
-
     def get_queryset(self):
         return super().get_queryset()
 
     def get_deliveryunits_queryset(self):
-        sort_fields = [field[0] for field in self.sortable_fields]
         customer = self.get_object()
 
-        queryset = DeliveryUnit.objects.select_related("delivery", "delivery__customer", "material").filter(
-            delivery__customer=customer
+        return (
+            DeliveryUnit.objects
+            .select_related("delivery", "delivery__customer", "material")
+            .filter(delivery__customer=customer)
+            .order_by("-created_at")
         )
-
-        queryset = SearchService(self.request, search_fields=sort_fields).apply_search(queryset)
-        queryset = SortingService(self.request, sort_fields).apply_sorting(queryset)
-
-        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -55,9 +42,6 @@ class CustomerDetailView(PaginationPreferenceMixin, DetailView):
             {
                 "page_obj": page_obj,
                 "deliveryunits": page_obj,
-                "search_query": self.request.GET.get("search", ""),
-                "sort_param": self.request.GET.get("sort", ""),
-                "sortable_fields": self.sortable_fields,
                 "selected_menu": "customer_list",
             }
         )
