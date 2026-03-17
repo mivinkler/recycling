@@ -177,13 +177,17 @@
 
 /* ================ Itemcard ================ */
 
-.itemcard {
+.itemcard-wrapper {
+  width: max-content;
   margin: 30px auto;
+}
+
+.itemcard {
   padding: 30px;
   background-color: var(--color-gray-100);
   border: 1px solid var(--color-gray-300);
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
-  width: fit-content;
+  width: 100%;
 }
 
 /* ================ Itemcard Header ================ */
@@ -194,17 +198,18 @@
 
 .itemcard-topbox-row {
   display: flex;
-  justify-content: space-between;
+  justify-content: left;
   align-items: center;
   margin-bottom: 12px;
+  height: 27px;
 }
 
+.itemcard-topbox-row span,
 .itemcard-topbox-row label,
 .itemcard-topbox-row span {
-  height: 27px;
-  font-weight: 500;
+  font-weight: bold;
   font-size: 1.05em;
-  width: 140px;
+  width: 200px;
   align-content: center;
 }
 
@@ -391,9 +396,9 @@ td p {
   box-shadow: 0 1px 3px var(--color-gray-350);
 }
 
-.btn-active-children {
-  width: max-content; 
-  margin: 0 60px 10px auto;
+.btn-itemcard-summary {
+  width: max-content;
+  margin: 16px 0 16px auto;
 }
 
 .btn-margin-top {

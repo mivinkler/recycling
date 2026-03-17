@@ -23,6 +23,28 @@
   --color-hero-100: #0b4123;
 }
 
+html,
+body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  flex: 0 0 105px;
+}
+
+main {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
 table {
   width: 100%;
   table-layout: auto;

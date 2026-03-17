@@ -4,52 +4,96 @@
 {% block title %}Eingang bearbeiten{% endblock %}
 
 {% block content %}
-<div class="itemcard">
-  <div class="itemcard-title">
-    <h2>Wareneingang</h2>
-  </div>
-
-  <section class="itemcard-topbox">
-    <div class="itemcard-topbox-row">
-      <h4>Lieferant:</h4>
-      <p>{{ delivery.customer }}</p>
+<div class="itemcard-wrapper">
+  <section class="itemcard">
+    <div class="itemcard-title">
+      <h2>Wareneingang</h2>
     </div>
 
-    <div class="itemcard-topbox-row">
-      <h4>Lieferschein:</h4>
-      <p>{{ delivery.delivery_receipt }}</p>
+    <div class="itemcard-topbox">
+      <div class="itemcard-topbox-row">
+        <span>Lieferant:</span>
+        <p>{{ delivery.customer }}</p>
+      </div>
+
+      <div class="itemcard-topbox-row">
+        <span>Lieferschein:</span>
+        <p>{{ delivery.delivery_receipt }}</p>
+      </div>
+
+      <div class="itemcard-topbox-row">
+        <span>B2B:</span>
+        <p>{{ delivery.b2b|yesno:"Ja, Nein" }}</p>
+      </div>
     </div>
 
-    <div class="itemcard-topbox-row">
-      <h4>B2B:</h4>
-      <p>{{ delivery.b2b|yesno:"Ja, Nein" }}</p>
-    </div>
-  </section>
+    <div>
+      <h4>Liefereinheiten:</h4>
 
-  <section>
-    <h4>Liefereinheiten:</h4>
+      <table class="itemcard-table">
+        <thead class="itemcard-thead">
+          <tr>
+            <th class="itemcard-id">№</th>
+            <th class="itemcard-material">Material</th>
+            <th class="itemcard-boxtype">Behälter</th>
+            <th class="itemcard-weight">Gewicht</th>
+            <th class="itemcard-note">Anmerkung</th>
+            <th class="itemcard-action"></th>
+          </tr>
+        </thead>
 
-    <table class="itemcard-table">
-      <thead class="itemcard-thead">
-        <tr>
-          <th class="itemcard-id">№</th>
-          <th class="itemcard-material">Material</th>
-          <th class="itemcard-boxtype">Behälter</th>
-          <th class="itemcard-weight">Gewicht</th>
-          <th class="itemcard-note">Anmerkung</th>
-          <th class="itemcard-action"></th>
-        </tr>
-      </thead>
+        <tbody class="itemcard-tbody">
+          {% for item in delivery_units %}
 
-      <tbody class="itemcard-tbody">
-        {% for item in delivery_units %}
+            <!-- update row -->
+            {% if edit_unit and item.pk == edit_unit.pk %}
+              <tr class="itemcard-table-row">
+                <form method="post" action="{% url 'delivery_unit_update' delivery_pk=delivery.pk delivery_unit_pk=item.pk %}">
+                  {% csrf_token %}
+                  <td class="itemcard-id">{{ forloop.counter }}</td>
+                  <td class="itemcard-material">{{ unit_form.material }}</td>
+                  <td class="itemcard-boxtype">{{ unit_form.box_type }}</td>
+                  <td class="itemcard-weight">{{ unit_form.weight }}</td>
+                  <td class="itemcard-note">{{ unit_form.note }}</td>
+                  <td class="itemcard-action-wrapper">
+                    <div class="itemcard-action">
+                      <a href="{% url 'delivery_unit_new' delivery_pk=delivery.pk %}" class="btn btn-lock" title="Abbrechen">
+                        <img class="icon-lock-open" src="{% static 'icons/lock-open-icon.svg' %}" alt="">
+                      </a>
+                      <button type="submit" class="btn btn-main btn-save">Speichern</button>
+                    </div>
+                  </td>
+                </form>
+              </tr>
+              {% if unit_form.errors %}
+                <tr>
+                  <td colspan="6">{{ unit_form.errors }}</td>
+                </tr>
+              {% endif %}
+            {% else %}
+              <tr class="itemcard-table-row">
+                <td class="itemcard-id"><p>{{ forloop.counter }}</p></td>
+                <td class="itemcard-material"><p>{{ item.material }}</p></td>
+                <td class="itemcard-boxtype"><p>{{ item.get_box_type_display }}</p></td>
+                <td class="itemcard-weight"><p>{{ item.weight }}</p></td>
+                <td class="itemcard-note"><p>{{ item.note }}</p></td>
+                <td class="itemcard-action-wrapper">
+                  <div class="itemcard-action">
+                    <a href="{% url 'delivery_unit_update' delivery_pk=delivery.pk delivery_unit_pk=item.pk %}" class="btn btn-lock" title="Bearbeiten">
+                      <img src="{% static 'icons/lock-icon.svg' %}" alt="">
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            {% endif %}
+          {% endfor %}
 
-          <!-- update row -->
-          {% if edit_unit and item.pk == edit_unit.pk %}
+          <!-- create neu row -->
+          {% if not edit_unit %}
             <tr class="itemcard-table-row">
-              <form method="post" action="{% url 'delivery_unit_update' delivery_pk=delivery.pk delivery_unit_pk=item.pk %}">
+              <form method="post" action="{% url 'delivery_unit_new' delivery_pk=delivery.pk %}">
                 {% csrf_token %}
-                <td class="itemcard-id">{{ forloop.counter }}</td>
+                <td class="itemcard-id"></td>
                 <td class="itemcard-material">{{ unit_form.material }}</td>
                 <td class="itemcard-boxtype">{{ unit_form.box_type }}</td>
                 <td class="itemcard-weight">{{ unit_form.weight }}</td>
@@ -71,66 +115,24 @@
             {% endif %}
           {% else %}
             <tr class="itemcard-table-row">
-              <td class="itemcard-id"><p>{{ forloop.counter }}</p></td>
-              <td class="itemcard-material"><p>{{ item.material }}</p></td>
-              <td class="itemcard-boxtype"><p>{{ item.get_box_type_display }}</p></td>
-              <td class="itemcard-weight"><p>{{ item.weight }}</p></td>
-              <td class="itemcard-note"><p>{{ item.note }}</p></td>
+              <td class="itemcard-id"><p> -- </p></td>
+              <td class="itemcard-material"><p> -- </p></td>
+              <td class="itemcard-boxtype"><p> -- </p></td>
+              <td class="itemcard-weight"><p> -- </p></td>
+              <td class="itemcard-note"><p> -- </p></td>
               <td class="itemcard-action-wrapper">
                 <div class="itemcard-action">
-                  <a href="{% url 'delivery_unit_update' delivery_pk=delivery.pk delivery_unit_pk=item.pk %}" class="btn btn-lock" title="Bearbeiten">
+                  <a href="{% url 'delivery_unit_new' delivery_pk=delivery.pk %}" class="btn btn-lock" title="Bearbeiten">
                     <img src="{% static 'icons/lock-icon.svg' %}" alt="">
                   </a>
                 </div>
               </td>
             </tr>
           {% endif %}
-        {% endfor %}
 
-        <!-- create neu row -->
-        {% if not edit_unit %}
-          <tr class="itemcard-table-row">
-            <form method="post" action="{% url 'delivery_unit_new' delivery_pk=delivery.pk %}">
-              {% csrf_token %}
-              <td class="itemcard-id"></td>
-              <td class="itemcard-material">{{ unit_form.material }}</td>
-              <td class="itemcard-boxtype">{{ unit_form.box_type }}</td>
-              <td class="itemcard-weight">{{ unit_form.weight }}</td>
-              <td class="itemcard-note">{{ unit_form.note }}</td>
-              <td class="itemcard-action-wrapper">
-                <div class="itemcard-action">
-                  <a href="{% url 'delivery_unit_new' delivery_pk=delivery.pk %}" class="btn btn-lock" title="Abbrechen">
-                    <img class="icon-lock-open" src="{% static 'icons/lock-open-icon.svg' %}" alt="">
-                  </a>
-                  <button type="submit" class="btn btn-main btn-save">Speichern</button>
-                </div>
-              </td>
-            </form>
-          </tr>
-          {% if unit_form.errors %}
-            <tr>
-              <td colspan="6">{{ unit_form.errors }}</td>
-            </tr>
-          {% endif %}
-        {% else %}
-          <tr class="itemcard-table-row">
-            <td class="itemcard-id"><p> -- </p></td>
-            <td class="itemcard-material"><p> -- </p></td>
-            <td class="itemcard-boxtype"><p> -- </p></td>
-            <td class="itemcard-weight"><p> -- </p></td>
-            <td class="itemcard-note"><p> -- </p></td>
-            <td class="itemcard-action-wrapper">
-              <div class="itemcard-action">
-                <a href="{% url 'delivery_unit_new' delivery_pk=delivery.pk %}" class="btn btn-lock" title="Bearbeiten">
-                  <img src="{% static 'icons/lock-icon.svg' %}" alt="">
-                </a>
-              </div>
-            </td>
-          </tr>
-        {% endif %}
-
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </section>
 </div>
 {% endblock %}
