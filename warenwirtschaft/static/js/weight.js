@@ -12,7 +12,10 @@ ready(() => {
 
     // --- Zeile & Eingabefeld bestimmen
     const row = btn.closest('tr') || btn.closest('.table-row');
-    const weightInput = row?.querySelector('input[name$="-weight"]');
+    // Unterstuetzt sowohl Formsets (...-weight) als auch einzelne ModelForms (weight)
+    const weightInput = row?.querySelector(
+      'input[name$="-weight"], input[name="weight"], input[id$="_weight"]'
+    );
     if (!weightInput) {
       console.warn('[weight.js] Kein Weight-Input in der Zeile gefunden');
       return;

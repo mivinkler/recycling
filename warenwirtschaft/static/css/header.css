@@ -99,6 +99,8 @@ header {
 
 .active-weight-category {
     text-align: left;
+    font-weight: 600;
+    color: var(--color-gray-900);
 }
 
 .header-active-weight th,

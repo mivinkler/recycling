@@ -10,42 +10,46 @@
         <table>
             <thead class="itemcard-thead">
                 <tr>
-                    <th>Bereich</th>
-                    <th>Aktiv</th>
-                    <th>B. für Behandlung</th>
-                    <th>B. für Abholung</th>
-                    <th>B. für Halle 2</th>
+                    <th></th>
+                    <th>Wareneingang</th>
+                    <th>Vorsortierung</th>
+                    <th>Zerlegung</th>
+                    <th>Halle 2</th>
                     <th>Gesamt</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td class="active-weight-category">Vorsortierung</td>
+                    <td class="active-weight-category">Wartet auf</td>
+                    <td>{{ delivery_wartet|floatformat:2 }}</td>
+                    <td>{{ unload_wartet|floatformat:2 }}</td>
+                    <td>{{ recycling_wartet|floatformat:2 }}</td>
+                    <td>{{ halle_zwei_wartet|floatformat:2 }}</td>
+                    <td>{{ expect_total|floatformat:2 }}</td>
+                </tr>
+                <tr>
+                    <td class="active-weight-category">Aktiv</td>
+                    <td>{{ delivery_aktiv|floatformat:2 }}</td>
                     <td>{{ unload_aktiv|floatformat:2 }}</td>
-                    <td>{{ unload_bereit_fuer_behandlung|floatformat:2 }}</td>
-                    <td>{{ unload_bereit_fuer_abholung|floatformat:2 }}</td>
-                    <td>{{ unload_bereit_fuer_halle_2|floatformat:2 }}</td>
-                    <td>{{ unload_total|floatformat:2 }}</td>
-                </tr>
-                <tr>
-                    <td class="active-weight-category">Zerlegung</td>
                     <td>{{ recycling_aktiv|floatformat:2 }}</td>
-                    <td>{{ recycling_bereit_fuer_behandlung|floatformat:2 }}</td>
-                    <td>{{ recycling_bereit_fuer_abholung|floatformat:2 }}</td>
-                    <td>{{ recycling_bereit_fuer_halle_2|floatformat:2 }}</td>
-                    <td>{{ recycling_total|floatformat:2 }}</td>
+                    <td>{{ halle_zwei_aktiv|floatformat:2 }}</td>
+                    <td>{{ active_weight_total|floatformat:2 }}</td>
                 </tr>
                 <tr>
-                    <td class="active-weight-category">Halle 2</td>
-                    <td>{{ halle_zwei_aktiv|floatformat:2 }}</td>
-                    <td>{{ halle_zwei_bereit_fuer_behandlung|floatformat:2 }}</td>
-                    <td>{{ halle_zwei_bereit_fuer_abholung|floatformat:2 }}</td>
-                    <td>{{ halle_zwei_bereit_fuer_halle_2|floatformat:2 }}</td>
-                    <td>{{ halle_zwei_total|floatformat:2 }}</td>
+                    <td class="active-weight-category">Abholbereit</td>
+                    <td>{{ delivery_abholbereit|floatformat:2 }}</td>
+                    <td>{{ unload_abholbereit|floatformat:2 }}</td>
+                    <td>{{ recycling_abholbereit|floatformat:2 }}</td>
+                    <td>{{ halle_zwei_abholbereit|floatformat:2 }}</td>
+                    <td>{{ ready_for_shipping_total|floatformat:2 }}</td>
                 </tr>
                 <tr class="active-weight-summe">
-                    <td colspan="5"></td>
-                    <td><b>{{ active_weight_total|floatformat:2 }} kg</b></td>
+                    <td></td>
+                    <td style="border: 1px solid #333;">{{ delivery_total|floatformat:2 }}</td>
+                    <td>{{ unload_total|floatformat:2 }}</td>
+                    <td>{{ recycling_total|floatformat:2 }}</td>
+                    <td>{{ halle_zwei_total|floatformat:2 }}</td>
+                    <td>{{ weight_total|floatformat:2 }}</td>
                 </tr>
             </tbody>
         </table>

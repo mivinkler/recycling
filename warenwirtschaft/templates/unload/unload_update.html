@@ -58,7 +58,14 @@
                 <td class="itemcard-boxtype">{{ form.box_type }}</td>
                 <td class="itemcard-status">{{ form.status }}</td>
                 <td class="itemcard-note">{{ form.note }}</td>
-                <td class="itemcard-weight">{{ form.weight }} </td>
+                <td class="itemcard-weight itemcard-weight-action">
+                  <div class="weight-container">
+                    {{ form.weight }}
+                    <button type="button" class="btn btn-weight" title="Gewicht anfragen" data-weight-url="{% url 'warenwirtschaft_api:weight_input_api' %}">
+                      <img src="{% static 'icons/dashboard-icon.svg' %}">
+                    </button>
+                  </div>
+                </td>
                 <td class="itemcard-action-wrapper">
                   <div class="itemcard-action">
                     <button type="button" class="btn btn-lock">
@@ -109,4 +116,8 @@
     </section>
   </div>
 </form>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'js/weight.js' %}"></script>
 {% endblock %}
