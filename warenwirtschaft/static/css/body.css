@@ -190,6 +190,10 @@
   width: 100%;
 }
 
+.itemcard-margin-top {
+  margin-top: 40px;
+}
+
 /* ================ Itemcard Header ================ */
 
 .itemcard-topbox {
@@ -201,14 +205,12 @@
   justify-content: left;
   align-items: center;
   margin-bottom: 12px;
-  height: 27px;
 }
 
 .itemcard-topbox-row span,
+.itemcard-topbox-row h4,
 .itemcard-topbox-row label,
 .itemcard-topbox-row span {
-  font-weight: bold;
-  font-size: 1.05em;
   width: 200px;
   align-content: center;
 }
@@ -264,6 +266,7 @@
   align-items: flex-start;
   margin-bottom: 30px;
   font-weight: 500;
+  height: 34px;
 }
 
 .itemcard-table-title {
@@ -500,6 +503,7 @@ td p {
   font-size: 0.9em; 
   text-align: center; 
   width: 105px;
+  margin-left: auto;
 }
 
 /* ====== Сontext Menu ====== */

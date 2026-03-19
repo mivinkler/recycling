@@ -3,71 +3,73 @@
 {% block title %}Lieferant erstellen{% endblock %}
 
 {% block content %}
+<div class="itemcard-wrapper">
+  <section class="itemcard">
+    <form method="post">
+      {% csrf_token %}
 
-<form method="post">
-  {% csrf_token %}
-
-  <div class="itemcard">
-    <div class="itemcard-title">
-      <h2>Kunde erstellen</h2>
-    </div>
-
-    <section class="itemcard-topbox">
-      {{ form.non_field_errors }}
-
-      {% for field in form %}
-        {% if field.errors %}
-          <div class="form-error itemcard-topbox-row">
-            <strong>{{ field.errors }}</strong>
-          </div>
-        {% endif %}
-      {% endfor %}
-
-      <div class="itemcard-topbox-row">
-        <label for="id_name">Name:</label>
-        <div class="itemcard-topbox-content">{{ form.name }}</div>
+     
+      <div class="itemcard-title">
+        <h2>Kunde erstellen</h2>
       </div>
 
-      <div class="itemcard-topbox-row">
-        <label for="id_avv_number">AVV-Nummer:</label>
-        <div class="itemcard-topbox-content">{{ form.avv_number }}</div>
+      <div class="itemcard-topbox">
+        {{ form.non_field_errors }}
+
+        {% for field in form %}
+          {% if field.errors %}
+            <div class="form-error itemcard-topbox-row">
+              <strong>{{ field.errors }}</strong>
+            </div>
+          {% endif %}
+        {% endfor %}
+
+        <div class="itemcard-topbox-row">
+          <label for="id_name">Name:</label>
+          <div class="itemcard-topbox-content">{{ form.name }}</div>
+        </div>
+
+        <div class="itemcard-topbox-row">
+          <label for="id_avv_number">AVV-Nummer:</label>
+          <div class="itemcard-topbox-content">{{ form.avv_number }}</div>
+        </div>
+
+        <div class="itemcard-topbox-row">
+          <label for="id_street">Straße:</label>
+          <div class="itemcard-topbox-content">{{ form.street }}</div>
+        </div>
+
+        <div class="itemcard-topbox-row">
+          <label for="id_postal_code">PLZ:</label>
+          <div class="itemcard-topbox-content">{{ form.postal_code }}</div>
+        </div>
+
+        <div class="itemcard-topbox-row">
+          <label for="id_city">Ort:</label>
+          <div class="itemcard-topbox-content">{{ form.city }}</div>
+        </div>
+
+        <div class="itemcard-topbox-row">
+          <label for="id_phone">Telefon:</label>
+          <div class="itemcard-topbox-content">{{ form.phone }}</div>
+        </div>
+
+        <div class="itemcard-topbox-row">
+          <label for="id_email">E-Mail:</label>
+          <div class="itemcard-topbox-content">{{ form.email }}</div>
+        </div>
+
+        <div class="itemcard-topbox-row">
+          <label for="id_note">Anmerkung:</label>
+          <div class="itemcard-topbox-textarea">{{ form.note }}</div>
+        </div>
       </div>
 
-      <div class="itemcard-topbox-row">
-        <label for="id_street">Straße:</label>
-        <div class="itemcard-topbox-content">{{ form.street }}</div>
+      <div class="buttons-form-footer">
+        <button type="submit" name="save" class="btn btn-main btn-margin-top">Speichern</button>
       </div>
 
-      <div class="itemcard-topbox-row">
-        <label for="id_postal_code">PLZ:</label>
-        <div class="itemcard-topbox-content">{{ form.postal_code }}</div>
-      </div>
-
-      <div class="itemcard-topbox-row">
-        <label for="id_city">Ort:</label>
-        <div class="itemcard-topbox-content">{{ form.city }}</div>
-      </div>
-
-      <div class="itemcard-topbox-row">
-        <label for="id_phone">Telefon:</label>
-        <div class="itemcard-topbox-content">{{ form.phone }}</div>
-      </div>
-
-      <div class="itemcard-topbox-row">
-        <label for="id_email">E-Mail:</label>
-        <div class="itemcard-topbox-content">{{ form.email }}</div>
-      </div>
-
-      <div class="itemcard-topbox-row">
-        <label for="id_note">Anmerkung:</label>
-        <div class="itemcard-topbox-textarea">{{ form.note }}</div>
-      </div>
-    </section>
-
-    <div class="buttons-form-footer">
-      <button type="submit" name="save" class="btn btn-main">Speichern</button>
-    </div>
-  </div>
-</form>
-
+    </form>
+  </section>
+</div>
 {% endblock %}

@@ -4,70 +4,69 @@
 {% block title %}Barcode erstellen{% endblock %}
 
 {% block content %}
-<form method="post">
-  {% csrf_token %}
-
-  <div class="itemcard">
-    <div class="itemcard-tabs">
+<div class="itemcard-wrapper">
+  <section class="itemcard">
+    <form method="post">
+      {% csrf_token %}
       
-    <div class="itemcard-title">
-      <h2>Barcode generieren</h2>
-    </div>
-
-    <section class="itemcard-topbox">
-    {{ form.non_field_errors }}
-
-      <div class="itemcard-topbox-row">
-        <label for="id_customer">Kunde:</label>
-        <div class="itemcard-topbox-content">
-          {{ form.customer }}
-        </div>
+      <div class="itemcard-title">
+        <h2>Barcode generieren</h2>
       </div>
 
-      <div class="itemcard-topbox-row">
-        <label>Begleitdokumente:</label>
-        <div class="itemcard-topbox-content">
-          {{ form.receipt }}
-        </div>
-      </div>
+      <div class="itemcard-topbox">
+      {{ form.non_field_errors }}
 
-      <div id="eingang-fields">
         <div class="itemcard-topbox-row">
-          <label>Behälter-Art:</label>
+          <label for="id_customer">Kunde:</label>
           <div class="itemcard-topbox-content">
-            {{ form.box_type }}
+            {{ form.customer }}
           </div>
         </div>
 
         <div class="itemcard-topbox-row">
-          <label>Material:</label>
+          <label>Begleitdokumente:</label>
           <div class="itemcard-topbox-content">
-            {{ form.material }}
+            {{ form.receipt }}
           </div>
         </div>
 
-        <div class="itemcard-topbox-row">
-          <label>Gewicht:</label>
-          <div class="itemcard-topbox-content">
-            {{ form.weight }}
+        <div id="eingang-fields">
+          <div class="itemcard-topbox-row">
+            <label>Behälter-Art:</label>
+            <div class="itemcard-topbox-content">
+              {{ form.box_type }}
+            </div>
+          </div>
+
+          <div class="itemcard-topbox-row">
+            <label>Material:</label>
+            <div class="itemcard-topbox-content">
+              {{ form.material }}
+            </div>
+          </div>
+
+          <div class="itemcard-topbox-row">
+            <label>Gewicht:</label>
+            <div class="itemcard-topbox-content">
+              {{ form.weight }}
+            </div>
           </div>
         </div>
-      </div>
 
-      <div id="abholung-fields">
-        <div class="itemcard-topbox-row">
-          <label>Transport:</label>
-          <div class="itemcard-topbox-content">
-            {{ form.transport }}
+        <div id="abholung-fields">
+          <div class="itemcard-topbox-row">
+            <label>Transport:</label>
+            <div class="itemcard-topbox-content">
+              {{ form.transport }}
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="buttons-form-footer">
-        <button type="submit" name="save" class="btn btn-main">Speichern</button>
+        <div class="buttons-form-footer">
+          <button type="submit" name="save" class="btn btn-main">Speichern</button>
+        </div>
       </div>
-    </section>
-  </div>
-</form>
-
+    </form>
+  </section>
+</div>
 {% endblock %}

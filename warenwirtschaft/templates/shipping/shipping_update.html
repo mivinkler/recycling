@@ -4,131 +4,139 @@
 {% block title %}Abholung bearbeiten{% endblock %}
 
 {% block content %}
-<form method="post" action="">
-  {% csrf_token %}
-
-  <div class="itemcard">
-    <div class="itemcard-title itemcard-margin-left">
-      <h2>Abholung bearbeiten</h2>
-      {% include 'components/barcode_scan_icon.html' with input_name='scan_barcode' input_value=scan_form.scan_barcode.value %}
-      <button type="submit" name="action" value="scan_barcode" hidden aria-hidden="true"></button>
-    </div>
-
-    <section class="itemcard-topbox itemcard-margin-left">
-      {{ form.non_field_errors }}
-      {% if scan_form.scan_barcode.errors %}
-        <div class="itemcard-topbox-row">
-          <label>Barcode:</label>
-          <div>{{ scan_form.scan_barcode.errors }}</div>
-        </div>
-      {% endif %}
-
-      <div class="itemcard-topbox-row">
-        <label>Abholer:</label>
-        <div class="itemcard-topbox-content">{{ form.customer }}</div>
+<div class="itemcard-wrapper">
+  <section class="itemcard">
+    <form method="post">
+      {% csrf_token %}
+      
+      <div class="itemcard-title itemcard-margin-left">
+        <h2>Abholung bearbeiten</h2>
+        {% include 'components/barcode_scan_icon.html' with input_name='scan_barcode' input_value=scan_form.scan_barcode.value %}
+        <button type="submit" name="action" value="scan_barcode" hidden aria-hidden="true"></button>
       </div>
 
-      <div class="itemcard-topbox-row">
-        <label>Abholschein:</label>
-        <div class="itemcard-topbox-content">{{ form.certificate }}</div>
-      </div>
-
-      <div class="itemcard-topbox-row">
-        <label>Transport:</label>
-        <div class="itemcard-topbox-content">{{ form.transport }}</div>
-      </div>
-
-      <div class="itemcard-topbox-row">
-        <label>Anmerkung:</label>
-        <div>{{ form.note }}</div>
-      </div>
-    </section>
-
-    <div class="itemcard-table-title itemcard-margin-left">Abholbereit / Zugeordnet:</div>
-
-    <table class="itemcard-table">
-      <thead class="itemcard-thead">
-        <tr>
-          <th class="checkbox-circle itemcard-action-left"></th>
-          <th class="itemcard-id">Nr.</th>
-          <th class="itemcard-material">Material</th>
-          <th class="itemcard-boxtype">Behälter</th>
-          <th class="itemcard-weight">Gewicht</th>
-          <th class="itemcard-origin">Herkunft</th>
-        </tr>
-      </thead>
-
-      <tbody class="itemcard-tbody">
-        {% if recyclings or unloads or halle_zwei_units %}
-          {% for rec in recyclings %}
-            <tr class="itemcard-table-row" data-id="{{ rec.pk }}" data-url-detail="#">
-              <td class="checkbox-circle itemcard-action-left">
-                <input
-                  type="checkbox"
-                  name="selected_recycling"
-                  value="{{ rec.pk }}"
-                  title="Zur Abholung hinzufügen"
-                  {% if rec.pk in preselected_recycling_ids %}checked{% endif %}
-                >
-              </td>
-              <td class="itemcard-id">{{ forloop.counter }}</td>
-              <td class="itemcard-material"><p>{{ rec.material }}</p></td>
-              <td class="itemcard-boxtype"><p>{{ rec.get_box_type_display }}</p></td>
-              <td class="itemcard-weight"><p>{{ rec.weight }}</p></td>
-              <td class="itemcard-status"><p>Zerlegung</p></td>
-            </tr>
-          {% endfor %}
-
-          {% for unload in unloads %}
-            <tr class="itemcard-table-row" data-id="{{ unload.pk }}" data-url-detail="{% url 'unload_barcode' pk=unload.pk %}">
-              <td class="checkbox-circle itemcard-action-left">
-                <input
-                  type="checkbox"
-                  name="selected_unload"
-                  value="{{ unload.pk }}"
-                  title="Zur Abholung hinzufügen"
-                  {% if unload.pk in preselected_unload_ids %}checked{% endif %}
-                >
-              </td>
-              <td class="itemcard-id">{{ forloop.counter }}</td>
-              <td class="itemcard-material"><p>{{ unload.material }}</p></td>
-              <td class="itemcard-boxtype"><p>{{ unload.get_box_type_display }}</p></td>
-              <td class="itemcard-weight"><p>{{ unload.weight }}</p></td>
-              <td class="itemcard-status"><p>Vorsortierung</p></td>
-            </tr>
-          {% endfor %}
-
-          {% for hz in halle_zwei_units %}
-            <tr class="itemcard-table-row" data-id="{{ hz.pk }}" data-url-detail="#">
-              <td class="checkbox-circle itemcard-action-left">
-                <input
-                  type="checkbox"
-                  name="selected_halle_zwei"
-                  value="{{ hz.pk }}"
-                  title="Zur Abholung hinzufügen"
-                  {% if hz.pk in preselected_halle_zwei_ids %}checked{% endif %}
-                >
-              </td>
-              <td class="itemcard-id">{{ forloop.counter }}</td>
-              <td class="itemcard-material"><p>{{ hz.delivery_unit.material }}</p></td>
-              <td class="itemcard-boxtype"><p>{{ hz.delivery_unit.get_box_type_display }}</p></td>
-              <td class="itemcard-weight"><p>{{ hz.delivery_unit.weight }}</p></td>
-              <td class="itemcard-status"><p>Halle 2</p></td>
-            </tr>
-          {% endfor %}
-        {% else %}
-          <tr class="itemcard-table-row">
-            <td colspan="6" class="text-center">
-              Keine Daten vorhanden
-            </td>
-          </tr>
+      <div class="itemcard-topbox itemcard-margin-left">
+        {{ form.non_field_errors }}
+        {% if scan_form.scan_barcode.errors %}
+          <div class="itemcard-topbox-row">
+            <h4>Barcode:</h4>
+            <div>{{ scan_form.scan_barcode.errors }}</div>
+          </div>
         {% endif %}
-      </tbody>
-    </table>
 
-    <div class="buttons-form-footer">
-      <button type="submit" name="save" class="btn btn-main btn-margin-top">Speichern</button>
-    </div>
-  </div>
-</form>
+        <div class="itemcard-topbox-row">
+          <h4>Abholer:</h4>
+          <div class="itemcard-topbox-content">{{ form.customer }}</div>
+        </div>
+
+        <div class="itemcard-topbox-row">
+          <h4>Abholschein:</h4>
+          <div class="itemcard-topbox-content">{{ form.certificate }}</div>
+        </div>
+
+        <div class="itemcard-topbox-row">
+          <h4>Transport:</h4>
+          <div class="itemcard-topbox-content">{{ form.transport }}</div>
+        </div>
+
+        <div class="itemcard-topbox-row">
+          <h4>Anmerkung:</h4>
+          <div>{{ form.note }}</div>
+        </div>
+      </div>
+
+      <div class="itemcard-table-title itemcard-margin-left">Abholbereit / Zugeordnet:</div>
+
+      <table class="itemcard-table">
+        <thead class="itemcard-thead">
+          <tr>
+            <th class="checkbox-circle itemcard-action-left"></th>
+            <th class="itemcard-id">Nr.</th>
+            <th class="itemcard-material">Material</th>
+            <th class="itemcard-boxtype">Behälter</th>
+            <th class="itemcard-weight">Gewicht</th>
+            <th class="itemcard-origin">Herkunft</th>
+          </tr>
+        </thead>
+
+        <tbody class="itemcard-tbody">
+          {% if recyclings or unloads or halle_zwei_units %}
+            {% for rec in recyclings %}
+              <tr class="itemcard-table-row" data-id="{{ rec.pk }}" data-url-detail="#">
+                <td class="checkbox-circle itemcard-action-left">
+                  <input
+                    type="checkbox"
+                    name="selected_recycling"
+                    value="{{ rec.pk }}"
+                    title="Zur Abholung hinzufügen"
+                    {% if rec.pk in preselected_recycling_ids %}checked{% endif %}
+                  >
+                </td>
+                <td class="itemcard-id">{{ forloop.counter }}</td>
+                <td class="itemcard-material"><p>{{ rec.material }}</p></td>
+                <td class="itemcard-boxtype"><p>{{ rec.get_box_type_display }}</p></td>
+                <td class="itemcard-weight"><p>{{ rec.weight }}</p></td>
+                <td class="itemcard-status"><p>Zerlegung</p></td>
+              </tr>
+            {% endfor %}
+
+            {% for unload in unloads %}
+              <tr class="itemcard-table-row" data-id="{{ unload.pk }}" data-url-detail="{% url 'unload_barcode' pk=unload.pk %}">
+                <td class="checkbox-circle itemcard-action-left">
+                  <input
+                    type="checkbox"
+                    name="selected_unload"
+                    value="{{ unload.pk }}"
+                    title="Zur Abholung hinzufügen"
+                    {% if unload.pk in preselected_unload_ids %}checked{% endif %}
+                  >
+                </td>
+                <td class="itemcard-id">{{ forloop.counter }}</td>
+                <td class="itemcard-material"><p>{{ unload.material }}</p></td>
+                <td class="itemcard-boxtype"><p>{{ unload.get_box_type_display }}</p></td>
+                <td class="itemcard-weight"><p>{{ unload.weight }}</p></td>
+                <td class="itemcard-status"><p>Vorsortierung</p></td>
+              </tr>
+            {% endfor %}
+
+            {% for hz in halle_zwei_units %}
+              <tr class="itemcard-table-row" data-id="{{ hz.pk }}" data-url-detail="#">
+                <td class="checkbox-circle itemcard-action-left">
+                  <input
+                    type="checkbox"
+                    name="selected_halle_zwei"
+                    value="{{ hz.pk }}"
+                    title="Zur Abholung hinzufügen"
+                    {% if hz.pk in preselected_halle_zwei_ids %}checked{% endif %}
+                  >
+                </td>
+                <td class="itemcard-id">{{ forloop.counter }}</td>
+                <td class="itemcard-material"><p>{{ hz.delivery_unit.material }}</p></td>
+                <td class="itemcard-boxtype"><p>{{ hz.delivery_unit.get_box_type_display }}</p></td>
+                <td class="itemcard-weight"><p>{{ hz.delivery_unit.weight }}</p></td>
+                <td class="itemcard-status"><p>Halle 2</p></td>
+              </tr>
+            {% endfor %}
+          {% else %}
+            <tr class="itemcard-table-row">
+              <td colspan="6" class="text-center">
+                Keine Daten vorhanden
+              </td>
+            </tr>
+          {% endif %}
+        </tbody>
+      </table>
+
+      <div class="buttons-form-footer">
+        <button type="submit" name="save" class="btn btn-main btn-margin-top">Speichern</button>
+      </div>
+      
+
+    </form>
+  </section>
+
+
+
+
+</div>
 {% endblock %}

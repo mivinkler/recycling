@@ -109,6 +109,13 @@ header {
     padding: 0 6px;
 }
 
+.active-weight-summe td {
+    font-weight: 600;
+    border: none;
+    border-top: 1px double var(--color-gray-600);
+    color: var(--color-gray-900);
+}
+
 /* ============ Details element ============*/
 
 .header-details {

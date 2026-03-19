@@ -4,54 +4,57 @@
 {% block title %}Barcodes bearbeiten{% endblock %}
 
 {% block content %}
+<div class="itemcard-wrapper">
+    <section class="itemcard">
+        <form method="post" action="{% url 'barcode_generator_update' form.instance.pk %}">
+            {% csrf_token %}
 
-<form class="itemcard-small" method="post" action="{% url 'barcode_generator_update' form.instance.pk %}">
-    {% csrf_token %}
+            <div class="itemcard-title">
+                <h2>Barcode bearbeiten</h2>
+                <a href="{% url 'barcode_generator_delete' form.instance.pk %}" class="delete-btn" title="Barcode löschen">
+                    <img src="{% static 'icons/delete-icon.svg' %}">
+                </a>
+            </div>
 
-    <div class="itemcard-title">
-        <h2>Barcode bearbeiten</h2>
-        <a href="{% url 'barcode_generator_delete' form.instance.pk %}" class="delete-btn" title="Barcode löschen">
-            <img src="{% static 'icons/delete-icon.svg' %}">
-        </a>
-    </div>
+            <div class="itemcard-topbox">
+                {{ form.non_field_errors }}
 
-    <section class="itemcard-topbox">
-        {{ form.non_field_errors }}
+                <div class="itemcard-topbox-row">
+                    <label for="id_code">Code</label>
+                    <div>{{ form.code }}</div>
+                </div>
 
-        <div class="itemcard-row">
-            <div>Code</div>
-            <div>{{ form.code }}</div>
-        </div>
+                <div class="itemcard-topbox-row">
+                    <label for="id_transport">Transport</label>
+                    <div>{{ form.transport }}</div>
+                </div>
 
-        <div class="itemcard-row">
-            <div>Transport</div>
-            <div>{{ form.transport }}</div>
-        </div>
+                <div class="itemcard-topbox-row">
+                    <label for="id_customer">Lieferant</label>
+                    <div>{{ form.customer }}</div>
+                </div>
 
-        <div class="itemcard-row">
-            <div>Lieferant</div>
-            <div>{{ form.customer }}</div>
-        </div>
+                <div class="itemcard-topbox-row">
+                    <label for="id_box_type">Behälter</label>
+                    <div>{{ form.box_type }}</div>
+                </div>
 
-        <div class="itemcard-row">
-            <div>Behälter</div>
-            <div>{{ form.box_type }}</div>
-        </div>
+                <div class="itemcard-topbox-row">
+                    <label for="id_material">Material</label>
+                    <div>{{ form.material }}</div>
+                </div>
 
-        <div class="itemcard-row">
-            <div>Material</div>
-            <div>{{ form.material }}</div>
-        </div>
+                <div class="itemcard-topbox-row">
+                    <label for="id_weight">Gewicht</label>
+                    <div>{{ form.weight }}</div>
+                </div>
+            </div>
 
-        <div class="itemcard-row">
-            <div>Gewicht</div>
-            <div>{{ form.weight }}</div>
-        </div>
+            <div class="buttons-form-footer">
+                <button type="submit" class="btn btn-main">Speichern</button>
+            </div>
+        </form>
     </section>
-
-  <div class="buttons-form-footer mt-4">
-    <button type="submit" class="btn btn-main">Speichern</button>
-  </div>
-</form>
+</div>
 {% endblock %}
 

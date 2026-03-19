@@ -139,10 +139,9 @@ class DeliveryCreateView(View):
 
             return redirect(
                 reverse(
-                    "delivery_unit_update",
+                    "delivery_unit_new",
                     kwargs={
                         "delivery_pk": delivery.pk,
-                        "delivery_unit_pk": delivery_unit.pk,
                     },
                 )
             )

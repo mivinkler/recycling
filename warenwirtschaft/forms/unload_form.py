@@ -25,7 +25,6 @@ class UnloadForm(forms.ModelForm):
 
         allowed = {
             StatusChoices.WARTET_AUF_ZERLEGUNG,
-            StatusChoices.WARTET_AUF_HALLE_ZWEI,
             StatusChoices.WARTET_AUF_ABHOLUNG,
         }
 
@@ -38,4 +37,4 @@ class UnloadForm(forms.ModelForm):
 
         # Optional: Standardwert für neue Unloads
         if not self.instance.pk:
-            self.fields["status"].initial = StatusChoices.AKTIV_IN_VORSORTIERUNG
+            self.fields["status"].initial = StatusChoices.WARTET_AUF_ZERLEGUNG

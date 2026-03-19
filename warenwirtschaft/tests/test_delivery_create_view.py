@@ -10,7 +10,7 @@ from warenwirtschaft.models import (
     DeliveryUnit,
     Material,
 )
-from warenwirtschaft.models_common.choices import BoxTypeChoices
+from warenwirtschaft.models_common.choices import BoxTypeChoices, StatusChoices
 
 
 class DeliveryCreateViewTests(TestCase):
@@ -43,6 +43,7 @@ class DeliveryCreateViewTests(TestCase):
                 "b2b": "False",
                 "material": "",
                 "box_type": "",
+                "status": "",
                 "weight": "",
                 "note": "",
             },
@@ -76,6 +77,7 @@ class DeliveryCreateViewTests(TestCase):
                 "b2b": "True",
                 "material": str(self.manual_material.pk),
                 "box_type": str(BoxTypeChoices.CONTAINER),
+                "status": str(StatusChoices.WARTET_AUF_HALLE_ZWEI),
                 "weight": "99.90",
                 "note": "Keep me",
             },
@@ -112,6 +114,7 @@ class DeliveryCreateViewTests(TestCase):
                 "b2b": "False",
                 "material": str(self.manual_material.pk),
                 "box_type": str(BoxTypeChoices.PALETTE),
+                "status": str(StatusChoices.WARTET_AUF_VORSORTIERUNG),
                 "weight": "5.50",
                 "note": "Saved unit",
             },
@@ -123,10 +126,9 @@ class DeliveryCreateViewTests(TestCase):
         self.assertRedirects(
             response,
             reverse(
-                "delivery_unit_update",
+                "delivery_unit_new",
                 kwargs={
                     "delivery_pk": delivery.pk,
-                    "delivery_unit_pk": delivery_unit.pk,
                 },
             ),
         )
@@ -135,5 +137,40 @@ class DeliveryCreateViewTests(TestCase):
         self.assertEqual(delivery_unit.delivery, delivery)
         self.assertEqual(delivery_unit.material, self.manual_material)
         self.assertEqual(delivery_unit.box_type, BoxTypeChoices.PALETTE)
+        self.assertEqual(
+            delivery_unit.status,
+            StatusChoices.WARTET_AUF_VORSORTIERUNG,
+        )
         self.assertEqual(delivery_unit.weight, Decimal("5.50"))
         self.assertTrue(delivery_unit.barcode.startswith("L"))
+
+    def test_save_accepts_halle_zwei_purpose(self):
+        response = self.client.post(
+            self.url,
+            {
+                "action": "save",
+                "scan_barcode": "",
+                "customer": str(self.manual_customer.pk),
+                "delivery_receipt": "SAVE-H2",
+                "b2b": "False",
+                "material": str(self.manual_material.pk),
+                "box_type": str(BoxTypeChoices.WAGEN),
+                "status": str(StatusChoices.WARTET_AUF_HALLE_ZWEI),
+                "weight": "8.00",
+                "note": "To Halle 2",
+            },
+        )
+
+        delivery = Delivery.objects.get(delivery_receipt="SAVE-H2")
+        delivery_unit = DeliveryUnit.objects.get(delivery=delivery)
+
+        self.assertRedirects(
+            response,
+            reverse(
+                "delivery_unit_new",
+                kwargs={
+                    "delivery_pk": delivery.pk,
+                },
+            ),
+        )
+        self.assertEqual(delivery_unit.status, StatusChoices.WARTET_AUF_HALLE_ZWEI)

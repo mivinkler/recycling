@@ -4,65 +4,68 @@
 {% block title %}Vorsortierung erfassen{% endblock %}
 
 {% block content %}
-<div class="itemcard">
-  <section class="itemcard-title">
-    <h2>Vorsortierung erstellen</h2>
-    <form method="post">
-      {% csrf_token %}
-      {% include 'components/barcode_scan_icon.html' with accepted='L' input_value=scan_form.scan_barcode.value %}
-      <button type="submit" hidden aria-hidden="true"></button>
-    </form>
-  </section>
+<div class="itemcard-wrapper">
+  <section class="itemcard">
 
-  <section class="itemcard-topbox">
-    {% if scan_form.scan_barcode.errors %}
-      <div class="itemcard-topbox-row">
-        <h4>Barcode:</h4>
-        <div>{{ scan_form.scan_barcode.errors }}</div>
-      </div>
-    {% endif %}
-  </section>
+    <div class="itemcard-title">
+      <h2>Vorsortierung erstellen</h2>
+      <form method="post">
+        {% csrf_token %}
+        {% include 'components/barcode_scan_icon.html' with accepted='L' input_value=scan_form.scan_barcode.value %}
+        <button type="submit" hidden aria-hidden="true"></button>
+      </form>
+    </div>
 
-  <section class="itemcard-topbox">
-    <h4>Neue Liefereinheiten:</h4>
-    <table class="itemcard-table">
-      <thead class="itemcard-thead">
-        <tr>
-          <th class="itemcard-id">Nr.</th>
-          <th class="itemcard-id">EID</th>
-          <th class="itemcard-note">Lieferant</th>
-          <th class="itemcard-material">Material</th>
-          <th class="itemcard-boxtype">Behälter</th>
-          <th class="itemcard-weight">Gewicht</th>
-          <th class="itemcard-note">Anmerkung</th>
-          <th class="itemcard-children">Vorsortierung-Wagen</th>
-          <th class="itemcard-action-icon"></th>
-        </tr>
-      </thead>
+    <div class="itemcard-topbox">
+      {% if scan_form.scan_barcode.errors %}
+        <div class="itemcard-topbox-row">
+          <h4>Barcode:</h4>
+          <div>{{ scan_form.scan_barcode.errors }}</div>
+        </div>
+      {% endif %}
+    </div>
 
-      <tbody class="itemcard-tbody">
-        {% for du_ready in delivery_units_ready %}
-          <tr class="itemcard-table-row">
-            <td class="itemcard-id"><p>{{ forloop.counter }}</p></td>
-            <td class="itemcard-id"><p>{{ du_ready.pk }}</p></td>
-            <td class="itemcard-note"><p>{{ du_ready.delivery.customer.name }}</p></td>
-            <td class="itemcard-material"><p>{{ du_ready.material }}</p></td>
-            <td class="itemcard-boxtype"><p>{{ du_ready.get_box_type_display }}</p></td>
-            <td class="itemcard-weight"><p>{{ du_ready.weight }}</p></td>
-            <td class="itemcard-note"><p>{{ du_ready.note }}</p></td>
-            <td class="itemcard-children"><p> -- </p></td>
-            <td class="itemcard-action-icon">
-              <a href="{% url 'unload_create' delivery_unit_pk=du_ready.pk %}" class="btn btn-lock">
-                <img class="icon-lock-closed" src="{% static 'icons/lock-icon.svg' %}">
-              </a>
-            </td>
+    <div class="itemcard-topbox">
+      <h4>Neue Liefereinheiten:</h4>
+      <table class="itemcard-table">
+        <thead class="itemcard-thead">
+          <tr>
+            <th class="itemcard-id">Nr.</th>
+            <th class="itemcard-id">EID</th>
+            <th class="itemcard-note">Lieferant</th>
+            <th class="itemcard-material">Material</th>
+            <th class="itemcard-boxtype">Behälter</th>
+            <th class="itemcard-weight">Gewicht</th>
+            <th class="itemcard-note">Anmerkung</th>
+            <th class="itemcard-children">Vorsortierung-Wagen</th>
+            <th class="itemcard-action-icon"></th>
           </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+        </thead>
+
+        <tbody class="itemcard-tbody">
+          {% for du_ready in delivery_units_ready %}
+            <tr class="itemcard-table-row">
+              <td class="itemcard-id"><p>{{ forloop.counter }}</p></td>
+              <td class="itemcard-id"><p>{{ du_ready.pk }}</p></td>
+              <td class="itemcard-note"><p>{{ du_ready.delivery.customer.name }}</p></td>
+              <td class="itemcard-material"><p>{{ du_ready.material }}</p></td>
+              <td class="itemcard-boxtype"><p>{{ du_ready.get_box_type_display }}</p></td>
+              <td class="itemcard-weight"><p>{{ du_ready.weight }}</p></td>
+              <td class="itemcard-note"><p>{{ du_ready.note }}</p></td>
+              <td class="itemcard-children"><p> -- </p></td>
+              <td class="itemcard-action-icon">
+                <a href="{% url 'unload_create' delivery_unit_pk=du_ready.pk %}" class="btn btn-lock">
+                  <img class="icon-lock-closed" src="{% static 'icons/lock-icon.svg' %}">
+                </a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   </section>
 
-  <section class="itemcard-topbox">
+  <section class="itemcard itemcard-margin-top">
     <h4>Aktive Liefereinheiten:</h4>
     <table class="itemcard-table">
       <thead class="itemcard-thead">

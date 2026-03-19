@@ -40,13 +40,20 @@ class HalleZweiCreateView(View):
         return render(request, self.template_name, self._context())
 
     def _mark_checked(self, delivery_unit):
-        HalleZwei.objects.get_or_create(
+        halle_zwei, _ = HalleZwei.objects.get_or_create(
             delivery_unit=delivery_unit,
             defaults={
                 "status": StatusChoices.WARTET_AUF_ABHOLUNG,
                 "halle_zwei": True,
             },
         )
+        if (
+            halle_zwei.status != StatusChoices.WARTET_AUF_ABHOLUNG
+            or not halle_zwei.halle_zwei
+        ):
+            halle_zwei.status = StatusChoices.WARTET_AUF_ABHOLUNG
+            halle_zwei.halle_zwei = True
+            halle_zwei.save(update_fields=["status", "halle_zwei"])
 
         delivery_unit.status = StatusChoices.ERLEDIGT
         delivery_unit.inactive_at = timezone.now()
@@ -81,12 +88,17 @@ class HalleZweiCreateView(View):
             self._mark_checked(delivery_unit)
             return redirect("halle_zwei_create")
 
-        delivery_unit_id = request.POST.get("delivery_unit_id")
-        delivery_unit = get_object_or_404(DeliveryUnit, pk=delivery_unit_id)
-
         if action == "check":
-            self._mark_checked(delivery_unit)
+            delivery_unit_id = request.POST.get("delivery_unit_id")
+            delivery_unit = DeliveryUnit.objects.filter(
+                pk=delivery_unit_id,
+                status=StatusChoices.WARTET_AUF_HALLE_ZWEI,
+            ).first()
+            if delivery_unit:
+                self._mark_checked(delivery_unit)
         elif action == "uncheck":
+            delivery_unit_id = request.POST.get("delivery_unit_id")
+            delivery_unit = get_object_or_404(DeliveryUnit, pk=delivery_unit_id)
             self._mark_unchecked(delivery_unit)
 
         return redirect("halle_zwei_create")

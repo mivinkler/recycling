@@ -6,7 +6,7 @@
 {% block content %}
 <div class="itemcard-wrapper">
   <section class="itemcard">
-    <form method="post" >
+    <form method="post">
       {% csrf_token %}
       <div class="itemcard-title">
         <h2>Wareneingang</h2>
@@ -47,6 +47,7 @@
               <th class="itemcard-id">Nr.</th>
               <th class="itemcard-material">Material</th>
               <th class="itemcard-boxtype">Behälter</th>
+              <th class="itemcard-boxtype">Zweck</th>
               <th class="itemcard-weight">Gewicht</th>
               <th class="itemcard-note">Anmerkung</th>
               <th class="itemcard-action"></th>
@@ -58,6 +59,7 @@
               <td class="itemcard-id">1</td>
               <td class="itemcard-material">{{ unit_form.material }}</td>
               <td class="itemcard-boxtype">{{ unit_form.box_type }}</td>
+              <td class="itemcard-status">{{ unit_form.status }}</td>
               <td class="itemcard-weight">{{ unit_form.weight }}</td>
               <td class="itemcard-note">{{ unit_form.note }}</td>
               <td class="itemcard-action-wrapper">
@@ -75,7 +77,7 @@
 
             {% if delivery_form.errors or unit_form.errors %}
               <tr class="itemcard-table-row">
-                <td colspan="6">
+                <td colspan="7">
                   {{ delivery_form.errors }}
                   {{ unit_form.errors }}
                 </td>
@@ -90,8 +92,9 @@
   <section>
     <details>
       <summary class="btn btn-main btn-itemcard-summary">
-        Heute zugefuegte Wagen
+        Heute zugefügte Wagen
       </summary>
+
       <div class="itemcard">
         <h4>Aktive Lieferungen in Vorsortierung:</h4>
     

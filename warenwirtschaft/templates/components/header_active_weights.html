@@ -1,8 +1,8 @@
 <details class="header-details">
     <summary class="header-menu-icon">
         <div>Aktives Gewicht:</div>  
-        <span id="header-weight-total" data-weight="{{ active_weight_total }}">
-            {{ active_weight_total|floatformat:2 }} kg
+        <span id="header-weight-total" data-weight="{{ weight_total }}">
+            {{ weight_total|floatformat:2 }} kg
         </span>
     </summary>
 
@@ -45,7 +45,7 @@
                 </tr>
                 <tr class="active-weight-summe">
                     <td></td>
-                    <td style="border: 1px solid #333;">{{ delivery_total|floatformat:2 }}</td>
+                    <td>{{ delivery_total|floatformat:2 }}</td>
                     <td>{{ unload_total|floatformat:2 }}</td>
                     <td>{{ recycling_total|floatformat:2 }}</td>
                     <td>{{ halle_zwei_total|floatformat:2 }}</td>

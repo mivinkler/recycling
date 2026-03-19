@@ -50,6 +50,29 @@ class ChoiceRestrictionTests(TestCase):
         self.assertIn(str(BoxTypeChoices.GITTERBOX), box_type_values)
         self.assertIn(str(BoxTypeChoices.OHNE_BEHAELTER), box_type_values)
 
+    def test_delivery_form_status_choices_are_restricted_to_purpose_values(self):
+        form = DeliveryUnitForm()
+        status_values = {value for value, _ in form.fields["status"].choices}
+        self.assertEqual(
+            status_values,
+            {
+                StatusChoices.WARTET_AUF_VORSORTIERUNG,
+                StatusChoices.WARTET_AUF_HALLE_ZWEI,
+            },
+        )
+
+    def test_unload_form_status_choices_exclude_halle_zwei(self):
+        form = UnloadForm()
+        status_values = {value for value, _ in form.fields["status"].choices}
+        self.assertNotIn(StatusChoices.WARTET_AUF_HALLE_ZWEI, status_values)
+        self.assertEqual(
+            status_values,
+            {
+                StatusChoices.WARTET_AUF_ZERLEGUNG,
+                StatusChoices.WARTET_AUF_ABHOLUNG,
+            },
+        )
+
     def test_recycling_create_shows_active_and_ready_items_with_restricted_form_choices(self):
         material = Material.objects.create(name="Recycling Material", recycling=True, unload=True)
         active_recycling = Recycling.objects.create(

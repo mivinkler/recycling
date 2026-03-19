@@ -36,6 +36,7 @@
             <th class="itemcard-id">№</th>
             <th class="itemcard-material">Material</th>
             <th class="itemcard-boxtype">Behälter</th>
+            <th class="itemcard-status">Zweck</th>
             <th class="itemcard-weight">Gewicht</th>
             <th class="itemcard-note">Anmerkung</th>
             <th class="itemcard-action"></th>
@@ -53,6 +54,7 @@
                   <td class="itemcard-id">{{ forloop.counter }}</td>
                   <td class="itemcard-material">{{ unit_form.material }}</td>
                   <td class="itemcard-boxtype">{{ unit_form.box_type }}</td>
+                  <td class="itemcard-status">{{ unit_form.status }}</td>
                   <td class="itemcard-weight">{{ unit_form.weight }}</td>
                   <td class="itemcard-note">{{ unit_form.note }}</td>
                   <td class="itemcard-action-wrapper">
@@ -67,7 +69,7 @@
               </tr>
               {% if unit_form.errors %}
                 <tr>
-                  <td colspan="6">{{ unit_form.errors }}</td>
+                  <td colspan="7">{{ unit_form.errors }}</td>
                 </tr>
               {% endif %}
             {% else %}
@@ -75,6 +77,7 @@
                 <td class="itemcard-id"><p>{{ forloop.counter }}</p></td>
                 <td class="itemcard-material"><p>{{ item.material }}</p></td>
                 <td class="itemcard-boxtype"><p>{{ item.get_box_type_display }}</p></td>
+                <td class="itemcard-status"><p>{{ item.get_status_display }}</p></td>
                 <td class="itemcard-weight"><p>{{ item.weight }}</p></td>
                 <td class="itemcard-note"><p>{{ item.note }}</p></td>
                 <td class="itemcard-action-wrapper">
@@ -96,6 +99,7 @@
                 <td class="itemcard-id"></td>
                 <td class="itemcard-material">{{ unit_form.material }}</td>
                 <td class="itemcard-boxtype">{{ unit_form.box_type }}</td>
+                <td class="itemcard-status">{{ unit_form.status }}</td>
                 <td class="itemcard-weight">{{ unit_form.weight }}</td>
                 <td class="itemcard-note">{{ unit_form.note }}</td>
                 <td class="itemcard-action-wrapper">
@@ -110,7 +114,7 @@
             </tr>
             {% if unit_form.errors %}
               <tr>
-                <td colspan="6">{{ unit_form.errors }}</td>
+                <td colspan="7">{{ unit_form.errors }}</td>
               </tr>
             {% endif %}
           {% else %}
@@ -118,6 +122,7 @@
               <td class="itemcard-id"><p> -- </p></td>
               <td class="itemcard-material"><p> -- </p></td>
               <td class="itemcard-boxtype"><p> -- </p></td>
+              <td class="itemcard-status"><p> -- </p></td>
               <td class="itemcard-weight"><p> -- </p></td>
               <td class="itemcard-note"><p> -- </p></td>
               <td class="itemcard-action-wrapper">
