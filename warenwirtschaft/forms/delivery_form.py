@@ -3,12 +3,26 @@ from warenwirtschaft.models import Delivery, DeliveryUnit, Material
 from warenwirtschaft.models_common.choices import StatusChoices
 
 
-class DeliveryForm(forms.ModelForm):
+DELIVERY_FORM_B2B_CHOICES = [
+    (False, "Nein"),
+    (True, "Ja"),
+]
 
-    # Boolean-Feld mit Select-Widget
+DELIVERY_UNIT_FORM_STATUS_CHOICES = [
+    (StatusChoices.WARTET_AUF_VORSORTIERUNG, "Wartet auf Vorsortierung"),
+    (StatusChoices.WARTET_AUF_HALLE_ZWEI, "Wartet auf Halle Zwei"),
+]
+
+DELIVERY_UNIT_DEFAULT_STATUS = StatusChoices.WARTET_AUF_VORSORTIERUNG
+DELIVERY_UNIT_ALLOWED_STATUSES = {
+    value for value, _ in DELIVERY_UNIT_FORM_STATUS_CHOICES
+}
+
+
+class DeliveryForm(forms.ModelForm):
     b2b = forms.ChoiceField(
-        choices=[(False, "Nein"), (True, "Ja")],
-        widget=forms.Select
+        choices=DELIVERY_FORM_B2B_CHOICES,
+        widget=forms.Select,
     )
 
     class Meta:
@@ -17,16 +31,11 @@ class DeliveryForm(forms.ModelForm):
 
 
 class DeliveryUnitForm(forms.ModelForm):
-    ALLOWED_STATUSES = {
-        StatusChoices.WARTET_AUF_VORSORTIERUNG,
-        StatusChoices.WARTET_AUF_HALLE_ZWEI,
-    }
-
     def __init__(self, *args, **kwargs):
         form_data = kwargs.get("data")
         if form_data is not None and not form_data.get("status"):
             form_data = form_data.copy()
-            form_data["status"] = str(StatusChoices.WARTET_AUF_VORSORTIERUNG)
+            form_data["status"] = str(DELIVERY_UNIT_DEFAULT_STATUS)
             kwargs["data"] = form_data
 
         super().__init__(*args, **kwargs)
@@ -34,17 +43,19 @@ class DeliveryUnitForm(forms.ModelForm):
             "delivery",
             include=self.instance.material_id,
         )
-        allowed_statuses = set(self.ALLOWED_STATUSES)
-        if self.instance.pk and self.instance.status is not None:
-            allowed_statuses.add(self.instance.status)
-
-        self.fields["status"].choices = [
-            (value, label)
-            for value, label in self.fields["status"].choices
-            if value in allowed_statuses
-        ]
+        self.fields["status"].choices = DELIVERY_UNIT_FORM_STATUS_CHOICES
+        current_status = self.instance.status
+        if (
+            self.instance.pk
+            and current_status is not None
+            and current_status not in DELIVERY_UNIT_ALLOWED_STATUSES
+        ):
+            self.fields["status"].choices = [
+                *DELIVERY_UNIT_FORM_STATUS_CHOICES,
+                (current_status, self.instance.get_status_display()),
+            ]
         if not self.instance.pk:
-            self.fields["status"].initial = StatusChoices.WARTET_AUF_VORSORTIERUNG
+            self.fields["status"].initial = DELIVERY_UNIT_DEFAULT_STATUS
 
     class Meta:
         model = DeliveryUnit

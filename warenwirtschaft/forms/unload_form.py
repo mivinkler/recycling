@@ -4,6 +4,13 @@ from warenwirtschaft.models import Material, Unload
 from warenwirtschaft.models_common.choices import StatusChoices
 
 
+UNLOAD_FORM_DEFAULT_STATUS = StatusChoices.WARTET_AUF_ZERLEGUNG
+UNLOAD_FORM_STATUS_CHOICES = [
+    (StatusChoices.WARTET_AUF_ZERLEGUNG, "Wartet auf Zerlegung"),
+    (StatusChoices.WARTET_AUF_ABHOLUNG, "Wartet auf Abholung"),
+]
+
+
 class UnloadForm(forms.ModelForm):
     class Meta:
         model = Unload
@@ -22,19 +29,6 @@ class UnloadForm(forms.ModelForm):
             "unload",
             include=self.instance.material_id,
         )
-
-        allowed = {
-            StatusChoices.WARTET_AUF_ZERLEGUNG,
-            StatusChoices.WARTET_AUF_ABHOLUNG,
-        }
-
-        # Nur erlaubte Statuswerte im Dropdown anzeigen
-        self.fields["status"].choices = [
-            (value, label)
-            for value, label in self.fields["status"].choices
-            if value in allowed
-        ]
-
-        # Optional: Standardwert für neue Unloads
+        self.fields["status"].choices = UNLOAD_FORM_STATUS_CHOICES
         if not self.instance.pk:
-            self.fields["status"].initial = StatusChoices.WARTET_AUF_ZERLEGUNG
+            self.fields["status"].initial = UNLOAD_FORM_DEFAULT_STATUS

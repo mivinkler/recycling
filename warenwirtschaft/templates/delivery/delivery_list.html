@@ -18,6 +18,7 @@
   <div class="table-header">{% sort_header "status" "Status" %}</div>
   <div class="table-header">{% sort_header "delivery__customer__name" "Kunde" %}</div>
   <div class="table-header">{% sort_header "delivery__delivery_receipt" "Lieferschein" %}</div>
+  <div class="table-header">{% sort_header "delivery__b2b" "B2B" %}</div>
   <div class="table-header">{% sort_header "box_type" "Behälter" %}</div>
   <div class="table-header">{% sort_header "material__name" "Material" %}</div>
   <div class="table-header">{% sort_header "weight" "Gewicht (kg)" %}</div>
@@ -42,6 +43,7 @@
 
     <div class="table-cell">{{ item.delivery.customer.name }}</div>
     <div class="table-cell">{{ item.delivery.delivery_receipt }}</div>
+    <div class="table-cell table-cell-center">{{ item.delivery.b2b|yesno:"Ja,Nein" }}</div>
     <div class="table-cell">{{ item.get_box_type_display }}</div>
     <div class="table-cell">{{ item.material.name|default:"-" }}</div>
     <div class="table-cell table-cell-right">{{ item.weight }}</div>
@@ -53,7 +55,7 @@
 
 {% paginate page_obj %}
 
-<!-- Wenn status 1 wird unload_create aufgerufen, wenn status 2 wird unload_update aufgerufen -->
+<!-- Wenn Status 1 wird unload_create aufgerufen, bei dem Status 2 wird unload_update aufgerufen -->
 
 <template id="context-menu-template">
   <ul id="context-menu" class="context-menu">

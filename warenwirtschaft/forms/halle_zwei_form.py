@@ -4,6 +4,12 @@ from warenwirtschaft.models.halle_zwei import HalleZwei
 from warenwirtschaft.models_common.choices import StatusChoices
 
 
+HALLE_ZWEI_FORM_DEFAULT_STATUS = StatusChoices.AKTIV_IN_HALLE_ZWEI
+HALLE_ZWEI_FORM_STATUS_CHOICES = [
+    (StatusChoices.WARTET_AUF_ABHOLUNG, "Wartet auf Abholung"),
+]
+
+
 class HalleZweiForm(forms.ModelForm):
     class Meta:
         model = HalleZwei
@@ -15,18 +21,6 @@ class HalleZweiForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-        allowed = {
-            StatusChoices.WARTET_AUF_ABHOLUNG,
-        }
-
-        # Nur erlaubte Statuswerte im Dropdown anzeigen
-        self.fields["status"].choices = [
-            (value, label)
-            for value, label in self.fields["status"].choices
-            if value in allowed
-        ]
-
-        # Standardwert für neue Units
+        self.fields["status"].choices = HALLE_ZWEI_FORM_STATUS_CHOICES
         if not self.instance.pk:
-            self.fields["status"].initial = StatusChoices.AKTIV_IN_HALLE_ZWEI
+            self.fields["status"].initial = HALLE_ZWEI_FORM_DEFAULT_STATUS

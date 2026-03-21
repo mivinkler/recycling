@@ -1,5 +1,9 @@
 from django.views.generic import ListView
 
+from warenwirtschaft.forms.delivery_form import (
+    DELIVERY_FORM_B2B_CHOICES,
+    DELIVERY_UNIT_FORM_STATUS_CHOICES,
+)
 from warenwirtschaft.models.customer import Customer
 from warenwirtschaft.models.delivery_unit import DeliveryUnit
 from warenwirtschaft.models.material import Material
@@ -22,7 +26,7 @@ class DeliveryListView(ListViewService, ListView):
             "field": "status",
             "label": "Status",
             "type": "choice",
-            "choices": DeliveryUnit._meta.get_field("status").choices,
+            "choices": lambda: DELIVERY_UNIT_FORM_STATUS_CHOICES,
         },
         {
             "field": "delivery__customer__name",
@@ -37,6 +41,12 @@ class DeliveryListView(ListViewService, ListView):
             "label": "Behälter",
             "type": "choice",
             "choices": DeliveryUnit._meta.get_field("box_type").choices,
+        },
+        {
+            "field": "delivery__b2b",
+            "label": "B2B",
+            "type": "choice",
+            "choices": lambda: DELIVERY_FORM_B2B_CHOICES,
         },
         {
             "field": "material__name",

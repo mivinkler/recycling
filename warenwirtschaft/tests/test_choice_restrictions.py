@@ -1,14 +1,34 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from warenwirtschaft.forms.delivery_form import DeliveryUnitForm
+from warenwirtschaft.forms.delivery_form import (
+    DELIVERY_FORM_B2B_CHOICES,
+    DeliveryForm,
+    DeliveryUnitForm,
+)
+from warenwirtschaft.forms.halle_zwei_form import (
+    HALLE_ZWEI_FORM_DEFAULT_STATUS,
+    HALLE_ZWEI_FORM_STATUS_CHOICES,
+    HalleZweiForm,
+)
 from warenwirtschaft.forms.recycling_form import (
     RECYCLING_FORM_BOX_TYPE_CHOICES,
     RECYCLING_FORM_STATUS_CHOICES,
     RecyclingForm,
 )
-from warenwirtschaft.forms.unload_form import UnloadForm
-from warenwirtschaft.models import DeliveryUnit, Material, Recycling, Unload
+from warenwirtschaft.forms.unload_form import (
+    UNLOAD_FORM_DEFAULT_STATUS,
+    UNLOAD_FORM_STATUS_CHOICES,
+    UnloadForm,
+)
+from warenwirtschaft.models import (
+    Customer,
+    Delivery,
+    DeliveryUnit,
+    Material,
+    Recycling,
+    Unload,
+)
 from warenwirtschaft.models_common.choices import BoxTypeChoices, StatusChoices
 
 
@@ -61,16 +81,21 @@ class ChoiceRestrictionTests(TestCase):
             },
         )
 
+    def test_delivery_form_b2b_choices_are_centralized(self):
+        form = DeliveryForm()
+        self.assertEqual(form.fields["b2b"].choices, DELIVERY_FORM_B2B_CHOICES)
+
     def test_unload_form_status_choices_exclude_halle_zwei(self):
         form = UnloadForm()
-        status_values = {value for value, _ in form.fields["status"].choices}
-        self.assertNotIn(StatusChoices.WARTET_AUF_HALLE_ZWEI, status_values)
+        self.assertEqual(form.fields["status"].choices, UNLOAD_FORM_STATUS_CHOICES)
+        self.assertEqual(form.fields["status"].initial, UNLOAD_FORM_DEFAULT_STATUS)
+
+    def test_halle_zwei_form_uses_centralized_status_choices(self):
+        form = HalleZweiForm()
+        self.assertEqual(form.fields["status"].choices, HALLE_ZWEI_FORM_STATUS_CHOICES)
         self.assertEqual(
-            status_values,
-            {
-                StatusChoices.WARTET_AUF_ZERLEGUNG,
-                StatusChoices.WARTET_AUF_ABHOLUNG,
-            },
+            form.fields["status"].initial,
+            HALLE_ZWEI_FORM_DEFAULT_STATUS,
         )
 
     def test_recycling_create_shows_active_and_ready_items_with_restricted_form_choices(self):
@@ -202,6 +227,63 @@ class ChoiceRestrictionTests(TestCase):
         barcode_filter = self._get_filter(response, "barcode")
         self.assertEqual(barcode_filter["label"], "Barcode")
         self.assertContains(response, 'name="barcode"')
+
+    def test_delivery_list_b2b_filter_uses_yes_no_choices(self):
+        response = self.client.get(reverse("delivery_list"))
+
+        b2b_filter = self._get_filter(response, "delivery__b2b")
+        self.assertEqual(
+            b2b_filter["choices"],
+            [
+                {"value": "False", "label": "Nein"},
+                {"value": "True", "label": "Ja"},
+            ],
+        )
+
+    def test_delivery_list_can_filter_and_sort_by_b2b(self):
+        customer = Customer.objects.create(name="B2B Customer")
+        material = Material.objects.create(name="Kupfer", delivery=True)
+        b2c_delivery = Delivery.objects.create(
+            customer=customer,
+            delivery_receipt="B2C-1",
+            b2b=False,
+        )
+        b2b_delivery = Delivery.objects.create(
+            customer=customer,
+            delivery_receipt="B2B-1",
+            b2b=True,
+        )
+        b2c_unit = DeliveryUnit.objects.create(
+            delivery=b2c_delivery,
+            material=material,
+            barcode="DLV-B2C-1",
+        )
+        b2b_unit = DeliveryUnit.objects.create(
+            delivery=b2b_delivery,
+            material=material,
+            barcode="DLV-B2B-1",
+        )
+
+        filter_response = self.client.get(
+            reverse("delivery_list"),
+            {"delivery_b2b": "True"},
+        )
+        self.assertEqual(
+            list(filter_response.context["page_obj"].object_list),
+            [b2b_unit],
+        )
+
+        sort_response = self.client.get(
+            reverse("delivery_list"),
+            {"sort": "delivery__b2b_desc"},
+        )
+        self.assertEqual(
+            list(sort_response.context["page_obj"].object_list[:2]),
+            [b2b_unit, b2c_unit],
+        )
+        self.assertContains(sort_response, "?sort=delivery__b2b_asc")
+        self.assertContains(sort_response, "Ja")
+        self.assertContains(sort_response, "Nein")
 
     def test_material_forms_reject_materials_from_other_sections(self):
         wrong_delivery_material = Material.objects.create(name="Wrong Delivery", unload=True)

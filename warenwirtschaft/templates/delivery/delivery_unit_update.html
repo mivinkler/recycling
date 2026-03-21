@@ -36,7 +36,7 @@
             <th class="itemcard-id">№</th>
             <th class="itemcard-material">Material</th>
             <th class="itemcard-boxtype">Behälter</th>
-            <th class="itemcard-status">Zweck</th>
+            <th class="itemcard-status">Status</th>
             <th class="itemcard-weight">Gewicht</th>
             <th class="itemcard-note">Anmerkung</th>
             <th class="itemcard-action"></th>
@@ -51,7 +51,12 @@
               <tr class="itemcard-table-row">
                 <form method="post" action="{% url 'delivery_unit_update' delivery_pk=delivery.pk delivery_unit_pk=item.pk %}">
                   {% csrf_token %}
-                  <td class="itemcard-id">{{ forloop.counter }}</td>
+                  <td class="itemcard-id">
+                    <a href=""
+                      class="material-delete" title="Löschen">
+                      <img src="{% static 'icons/delete-icon.svg' %}" alt="">
+                    </a>
+                  </td>
                   <td class="itemcard-material">{{ unit_form.material }}</td>
                   <td class="itemcard-boxtype">{{ unit_form.box_type }}</td>
                   <td class="itemcard-status">{{ unit_form.status }}</td>
